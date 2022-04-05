@@ -1,6 +1,14 @@
+import { ethers } from "ethers";
+import { NFTContractAbi, NFTMarketAbi } from "../../chainData/contracts/abis";
+import {
+  NFTContractAddress,
+  NFTMarketAddress,
+} from "../../chainData/contracts/address";
+
 export const constractsInitialState = {
   provider: {},
-  nftContracts: {},
+  nftContract: {},
+  marketContract: {},
   // TEMPLATE - ADD YOUR CUSTOM CONTRACT
   signer: {},
   web3Modal: {},
@@ -16,6 +24,17 @@ export const contractActionTypes = {
   SET_WALLET: "SET_WALLET",
   SET_BALANCE: "SET_BALANCE",
   SET_MY_ITEMS: "SET_MY_ITEMS",
+};
+
+const getContract = (type, signer) => {
+  switch (type) {
+    case "NFT":
+      return new ethers.Contract(NFTContractAddress, NFTContractAbi, signer);
+    case "NFTMarket":
+      return new ethers.Contract(NFTMarketAddress, NFTMarketAbi, signer);
+    default:
+      break;
+  }
 };
 
 const contractReducer = (state, action) => {
@@ -52,6 +71,8 @@ const contractReducer = (state, action) => {
       return {
         ...state,
         // TEMPLATE - ADD YOUR CUSTOM CONTRACT
+        nftContract: getContract("NFT", action.signer),
+        marketContract: getContract("MARKET", action.signer),
         signer: action.signer,
         wallet: action.wallet,
         provider: action.provider,
