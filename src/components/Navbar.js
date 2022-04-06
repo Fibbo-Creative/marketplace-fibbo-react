@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
+import useAccount from "../hooks/useAccount";
 
 export default function Navbar() {
+  const { connectToWallet, wallet } = useAccount();
+  const [searchText, setSearchText] = useState("Buscar...");
+
   return (
     <header className="flex flex-row justify-between sticky top-0 px-5 py-5 w-full items-center z-10 border-b b-gray-200 h-[81px]">
-
       <div className="flex items-center">
         <h1>FIBBO</h1>
       </div>
@@ -27,8 +30,13 @@ export default function Navbar() {
         </div>
 
         <div className="pl-10 flex flex-row justify-between items-center">
-          <button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
-            Connect Wallet
+          <button onClick={!wallet ? connectToWallet : undefined} class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+            {wallet
+              ? `${wallet.substring(0, 4)}...${wallet.substring(
+                  wallet.length - 3,
+                  wallet.length
+                )}`
+              : "Connect Wallet"}
           </button>
           <div className="lg:hidden pl-10 pr-5 ">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

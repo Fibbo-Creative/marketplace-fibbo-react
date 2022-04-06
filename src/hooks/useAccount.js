@@ -10,47 +10,37 @@ export default function useAccount() {
   const [loadingConnection, setLoadingConection] = useState(true);
   const [{ wallet, balance }, dispatch] = useContractsContext();
   const [, stateDispatch] = useStateContext();
-  const connectToWallet = useCallback(async () => {
-    const web3Modal = new Web3Modal();
-    const instance = await web3Modal.connect();
-    const prov = new ethers.providers.Web3Provider(instance);
+  const connectToWallet = async () => {
+    console.log("connectingToWallet");
+    const prov = new ethers.providers.Web3Provider(window.ethereum);
+
+    await prov.send("eth_requestAccounts", []);
+
     const signer = prov.getSigner();
 
     const _wallet = await signer.getAddress();
 
     let chainId = await signer.getChainId();
 
-    let correctChain = true;
-    if (chainId !== configData.chainInfo.chainId) {
-      correctChain = false;
-    }
-    return {
-      provider: prov,
+    console.log(wallet, chainId);
+
+    dispatch({
+      type: contractActionTypes.SET_WALLET,
       signer: signer,
+      provider: prov,
       wallet: _wallet,
-      web3Modal: web3Modal,
-      correctChain: correctChain,
-    };
-  }, []);
+    });
+  };
 
   useEffect(() => {
-    connectToWallet().then((res) => {
-      dispatch({
-        type: contractActionTypes.SET_WALLET,
-        signer: res.signer,
-        provider: res.provider,
-        wallet: res.wallet,
-        web3Modal: res.web3Modal,
-        balance: res.balance,
-        correctChain: res.correctChain,
-      });
-      setLoadingConection(false);
-    });
+    if (window.ethereum.isConnected()) {
+      connectToWallet();
+    }
 
     return () => {
       return;
     };
-  }, [connectToWallet, dispatch, stateDispatch, wallet]);
+  }, []);
 
-  return { wallet, balance, loadingConnection };
+  return { wallet, balance, loadingConnection, connectToWallet };
 }
