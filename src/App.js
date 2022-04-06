@@ -13,15 +13,8 @@ import ItemPage from "./pages/item/ItemPage";
 
 function App() {
   const [, dispatch] = useContractsContext();
-  const { loadingConnection, wallet, balance } = useAccount(
-    dispatch,
-    contractActionTypes.SET_WALLET
-  );
+  const { loadingConnection, wallet, balance } = useAccount();
   const { correctChain } = useChain(loadingConnection);
-  const [showModal, setShowModal] = useState(correctChain);
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
 
   return (
     <div className={`App`}>
