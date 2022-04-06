@@ -33,7 +33,7 @@ export default function useAccount() {
     };
   }, []);
 
-  useEffect(() => {
+  /*  useEffect(() => {
     connectToWallet().then((res) => {
       dispatch({
         type: contractActionTypes.SET_WALLET,
@@ -50,7 +50,7 @@ export default function useAccount() {
     return () => {
       return;
     };
-  }, [connectToWallet, dispatch, stateDispatch, wallet]);
+  }, [connectToWallet, dispatch, stateDispatch, wallet]); */
 
-  return { wallet, balance, loadingConnection };
+  return { wallet, balance, loadingConnection, connectToWallet };
 }
