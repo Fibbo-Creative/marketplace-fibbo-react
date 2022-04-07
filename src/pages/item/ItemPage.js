@@ -23,7 +23,13 @@ export default function ItemPage() {
       {tokenInfo && (
         <div key={tokenInfo.name}>
           <img src={tokenInfo.image} alt={tokenInfo.name} />
-          <p>{tokenInfo.name}</p>
+          <p className="text-3xl">{tokenInfo.name}</p>
+          <p>{tokenInfo.description}</p>
+          <p>
+            <b>
+              Owned By: <small>{tokenInfo.owner}</small>
+            </b>
+          </p>
         </div>
       )}
     </div>
