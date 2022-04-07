@@ -83,51 +83,77 @@ export default function CreateContainer() {
     }
   }, [wallet, connectToWallet]);
   return (
-    <div>
-      <form className="flex flex-col gap-5 p-3 w-fit ">
-        <div className="flex gap-3">
-          <label htmlFor="imageInput">Nft image</label>
-          <input
-            type="file"
-            onChange={(e) => onFileSelected(e)}
-            className="border border-gray-300"
-            id="imageInput"
-          />
+    <div className="flex w-auto justify-center items-center pt-10">
+    <div className="block p-6  rounded-lg shadow-xl bg-white max-w-md">
+      <form >
+        <div className="form-group mb-6">
+        
+        <input class="form-control
+          block
+          w-full
+          px-2
+          py-1
+          text-sm
+          font-normal
+          text-gray-700
+          bg-white bg-clip-padding
+          border border-solid border-gray-300
+          rounded
+          transition
+          ease-in-out
+          m-0
+          focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="formFileSm" type="file" onChange={(e) => onFileSelected(e)}/>
         </div>
-        <div className="flex gap-3 justify-between">
-          <label htmlFor="imageInput">Name</label>
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="border border-gray-300"
-            id="imageInput"
-            type="text"
-          />
+        <div className="form-group mb-6">
+          <input type="text" 
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          id="imageInput"
+          className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 
+            bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0
+            focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+            placeholder="Name"/>
         </div>
-        <div className="flex gap-3 justify-between">
-          <label htmlFor="imageInput">Description</label>
-          <textarea
-            value={desc}
-            onChange={(e) => setDesc(e.target.value)}
-            className="border border-gray-300"
-            id="imageInput"
-            type="text"
-          />
+        <div className="form-group mb-6">
+          <textarea className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding 
+          border border-solid border-gray-300 rounded transition ease-in-out m-0
+          focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+          rows="3"
+          placeholder="Description"
+          value={desc}
+          onChange={(e) => setDesc(e.target.value)}
+          id="imageInput"
+          type="text"
+        />
         </div>
-        <div className="flex gap-3 justify-between">
-          <label htmlFor="imageInput">Royalty</label>
-          <input
+        <div className="form-group mb-6">
+          <input className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700
+            bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0
+            focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
             value={royalty}
             onChange={(e) => setRoyalty(e.target.value)}
-            className="border border-gray-300"
             id="imageInput"
-            type="text"
-          />
+            type="text" 
+            placeholder="Royalties"/>
         </div>
-        <button onClick={(e) => createNFT(e)} type="submit">
-          Create NFT
-        </button>
+      
+        <button onClick={(e) => createNFT(e)} type="submit" className=" w-full px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight
+          uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0
+          active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">Create NFT</button>
       </form>
     </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
   );
 }
