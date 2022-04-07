@@ -17,10 +17,18 @@ export default function ExploreContainer() {
       });
   }, []);
   return (
-    <div className="flex flex-wrap gap-10">
-      {marketItems.map((item) => {
-        return <NftCard key={item.name} item={item} />;
-      })}
+    <div className="absolute h-7 w-full h-full ">
+      <div className="flex border-black border-2 w-full h-20">
+        FILTROOOOOS
+      </div>
+      <div className="flex flex-wrap gap-5">
+        {marketItems.map((item) => {
+          return <div className="p-5" >
+            <NftCard key={item.name} item={item} />
+          </div>
+        })}
+      </div>
     </div>
+
   );
 }
