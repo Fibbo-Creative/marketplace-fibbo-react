@@ -34,7 +34,7 @@ export default function useAccount() {
 
   useEffect(() => {
     if (!window.ethereum.isConnected()) {
-      connectToWallet();
+      connectToWallet().then((res) => {});
     }
 
     return () => {

@@ -68,16 +68,16 @@ const contractReducer = (state, action) => {
         balance: action.balance,
       };
     case contractActionTypes.SET_WALLET:
+      const nftContract = getContract("NFT", action.signer);
+      const marketContract = getContract("NFTMarket", action.signer);
       return {
         ...state,
         // TEMPLATE - ADD YOUR CUSTOM CONTRACT
-        nftContract: getContract("NFT", action.signer),
-        marketContract: getContract("MARKET", action.signer),
+        nftContract: nftContract,
+        marketContract: marketContract,
         signer: action.signer,
         wallet: action.wallet,
         provider: action.provider,
-        web3Modal: action.web3Modal,
-        correctChain: action.correctChain,
       };
     default:
       return state;
