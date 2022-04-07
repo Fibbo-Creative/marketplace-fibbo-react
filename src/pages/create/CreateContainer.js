@@ -1,34 +1,98 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useContractsContext } from "../../context/contracts/ContractProvider";
+import { create as ipfsHttpClient } from "ipfs-http-client";
+import marketplaceApi from "../../context/axios";
+import { parseEther } from "ethers/lib/utils";
+import useAccount from "../../hooks/useAccount";
+
+const ipfsClient = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
 
 export default function CreateContainer() {
-  const [image, setImage] = useState([]);
+  const [ipfsImageUrl, setIpfsImageUrl] = useState("");
+  const [sanityImgUrl, setSanityImgUrl] = useState("");
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
   const [royalty, setRoyalty] = useState("");
-
+  const { connectToWallet, wallet } = useAccount();
   const [{ nftContract, marketContract }] = useContractsContext();
 
-  const createNFT = (e) => {
-    e.preventDefault();
+  const onFileSelected = async (e) => {
+    const file = e.target.files[0];
+    try {
+      var formData = new FormData();
+      formData.append("image", file);
+      const imgAddedToIPFS = await ipfsClient.add(file, {
+        progress: (prog) => console.log(`received: ${prog}`),
+      });
+      setIpfsImageUrl(`https://ipfs.infura.io/ipfs/${imgAddedToIPFS.path}`);
 
-    //Crear NFT en el contrato
-    console.log(nftContract);
-    console.log(marketContract);
-
-    //Si todo va bien, crear a sanity
+      const imgAddedToSanity = await marketplaceApi.post(
+        "uploadTestImg",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log(imgAddedToSanity);
+      setSanityImgUrl(imgAddedToSanity.data);
+    } catch (error) {
+      console.log("Error uploading file: ", error);
+    }
   };
+
+  const createNFT = async (e) => {
+    e.preventDefault();
+    //Crear NFT en el contrato
+    const data = JSON.stringify({
+      name,
+      desc,
+      image: ipfsImageUrl,
+    });
+    try {
+      const ipfsCID = await ipfsClient.add(data);
+      const ipfsFileURL = `https://ipfs.infura.io/ipfs/${ipfsCID.path}`;
+
+      let createNFTtx = await nftContract.createToken(ipfsFileURL);
+      let tx = await createNFTtx.wait();
+
+      let event = tx.events[0];
+      let value = event.args[2];
+      let tokenId = value.toNumber();
+
+      console.log(tokenId);
+      console.log(wallet);
+      //Si todo va bien, crear a sanity
+      await marketplaceApi.post("newNftItem", {
+        name: name,
+        description: desc,
+        creator: wallet,
+        itemId: tokenId,
+        royalty: royalty,
+        sanityImgUrl: sanityImgUrl,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    if (!wallet) {
+      console.log(wallet);
+      connectToWallet();
+    }
+  }, [wallet]);
   return (
     <div>
       <form className="flex flex-col gap-5 p-3 w-fit ">
         <div className="flex gap-3">
           <label htmlFor="imageInput">Nft image</label>
           <input
-            value={image}
-            onChange={(e) => setImage([...image, e.target.files[0]])}
+            type="file"
+            onChange={(e) => onFileSelected(e)}
             className="border border-gray-300"
             id="imageInput"
-            type="file"
           />
         </div>
         <div className="flex gap-3 justify-between">

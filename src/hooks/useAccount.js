@@ -22,7 +22,7 @@ export default function useAccount() {
 
     let chainId = await signer.getChainId();
 
-    console.log(wallet, chainId);
+    console.log(_wallet, chainId);
 
     dispatch({
       type: contractActionTypes.SET_WALLET,
@@ -33,7 +33,7 @@ export default function useAccount() {
   };
 
   useEffect(() => {
-    if (!window.ethereum.isConnected()) {
+    if (window.ethereum.isConnected()) {
       connectToWallet().then((res) => {});
     }
 
