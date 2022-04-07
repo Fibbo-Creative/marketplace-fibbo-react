@@ -1,10 +1,8 @@
 import { ethers } from "ethers";
-import { useCallback, useEffect, useState } from "react";
-import Web3Modal from "web3modal";
+import { useEffect, useState } from "react";
 import { useContractsContext } from "../context/contracts/ContractProvider";
 import { contractActionTypes } from "../context/contracts/contractsReducer";
 import { useStateContext } from "../context/StateProvider";
-import { configData } from "../chainData/configData";
 
 export default function useAccount() {
   const [loadingConnection, setLoadingConection] = useState(true);

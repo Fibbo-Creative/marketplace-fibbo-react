@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useContractsContext } from "../../context/contracts/ContractProvider";
 import { create as ipfsHttpClient } from "ipfs-http-client";
 import marketplaceApi from "../../context/axios";
-import { parseEther } from "ethers/lib/utils";
 import useAccount from "../../hooks/useAccount";
 
 const ipfsClient = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
@@ -14,7 +13,7 @@ export default function CreateContainer() {
   const [desc, setDesc] = useState("");
   const [royalty, setRoyalty] = useState("");
   const { connectToWallet, wallet } = useAccount();
-  const [{ nftContract, marketContract }] = useContractsContext();
+  const [{ nftContract }] = useContractsContext();
 
   const onFileSelected = async (e) => {
     const file = e.target.files[0];
@@ -82,7 +81,7 @@ export default function CreateContainer() {
       console.log(wallet);
       connectToWallet();
     }
-  }, [wallet]);
+  }, [wallet, connectToWallet]);
   return (
     <div>
       <form className="flex flex-col gap-5 p-3 w-fit ">
