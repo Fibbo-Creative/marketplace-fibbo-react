@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import useAccount from "../hooks/useAccount";
 import { Icon } from "@iconify/react";
-import logo from '../assets/FibboLogo.png'
+import logo from "../assets/FibboLogo.png";
 
 export default function Navbar() {
-  const { connectToWallet, wallet } = useAccount();
   const [searchText, setSearchText] = useState("Buscar...");
-
+  const { wallet, connectToWallet } = useAccount();
   return (
     <header className="flex bg-white flex-row justify-between sticky top-0 px-5 py-5 w-full items-center z-10 border-b b-gray-200 h-[81px]">
       <div className="flex items-center">
-        <img src={logo} className="flex w-32"></img>
+        <img src={logo} alt="FibboLogo" className="flex w-32"></img>
       </div>
       <div className="flex items-center p-0 m-0 align-baseline">
         <div>
@@ -30,24 +29,21 @@ export default function Navbar() {
         <div className="">
           <a
             className="lg:inline hidden ml-5 hover:text-blue-400 hover:font-bold text-primary-1 "
-            href="/explore"
+            href="/"
           >
-            {" "}
-            Explore{" "}
+            Home
           </a>
           <a
-            className="lg:inline hidden ml-5 hover:text-blue-400 hover:font-bold"
-            href="/home"
+            className="lg:inline hidden ml-5 hover:text-blue-400 hover:font-bold text-primary-1 "
+            href="/explore"
           >
-            {" "}
-            Collection{" "}
+            Explore
           </a>
           <a
             className="lg:inline hidden ml-5 hover:text-blue-400 hover:font-bold"
             href="/create"
           >
-            {" "}
-            Create{" "}
+            Create
           </a>
         </div>
 
@@ -56,8 +52,8 @@ export default function Navbar() {
             onClick={!wallet ? connectToWallet : undefined}
             className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
           >
-            {wallet
-              ? `${wallet.substring(0, 4)}...${wallet.substring(
+            {wallet !== ""
+              ? `${wallet?.substring(0, 4)}...${wallet?.substring(
                   wallet.length - 3,
                   wallet.length
                 )}`

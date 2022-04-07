@@ -1,6 +1,6 @@
 import "./App.css";
 import Navbar from "./components/Navbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useContractsContext } from "./context/contracts/ContractProvider";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { contractActionTypes } from "./context/contracts/contractsReducer";
@@ -12,15 +12,23 @@ import CreateContainer from "./pages/create/CreateContainer";
 import ItemPage from "./pages/item/ItemPage";
 
 function App() {
-  const [, dispatch] = useContractsContext();
-  const { loadingConnection, wallet, balance } = useAccount();
-  const { correctChain } = useChain(loadingConnection);
+  const [{ wallet }, dispatch] = useContractsContext();
+  const { connectToWallet } = useAccount();
 
+  useEffect(() => {
+    if (window.ethereum.isConnected()) {
+      connectToWallet().then((res) => {});
+    }
+
+    return () => {
+      return;
+    };
+  }, [connectToWallet]);
   return (
     <div className={`App`}>
       <BrowserRouter>
         <>
-          <Navbar wallet={wallet} balance={balance} />
+          <Navbar wallet={wallet} connectToWallet={connectToWallet} />
 
           <Routes>
             <Route path="/create" element={<CreateContainer />} />
