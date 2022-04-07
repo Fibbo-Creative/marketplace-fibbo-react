@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import useAccount from "../hooks/useAccount";
 import { Icon } from "@iconify/react";
+import logo from '../assets/FibboLogo.png'
 
 export default function Navbar() {
   const { connectToWallet, wallet } = useAccount();
@@ -9,7 +10,7 @@ export default function Navbar() {
   return (
     <header className="flex bg-white flex-row justify-between sticky top-0 px-5 py-5 w-full items-center z-10 border-b b-gray-200 h-[81px]">
       <div className="flex items-center">
-        <h1>FIBBO</h1>
+        <img src={logo} className="flex w-32"></img>
       </div>
       <div className="flex items-center p-0 m-0 align-baseline">
         <div>
