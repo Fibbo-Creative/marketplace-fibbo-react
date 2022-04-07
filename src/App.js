@@ -15,15 +15,6 @@ function App() {
   const [{ wallet }, dispatch] = useContractsContext();
   const { connectToWallet } = useAccount();
 
-  useEffect(() => {
-    if (window.ethereum.isConnected()) {
-      connectToWallet().then((res) => {});
-    }
-
-    return () => {
-      return;
-    };
-  }, [connectToWallet]);
   return (
     <div className={`App`}>
       <BrowserRouter>

@@ -22,23 +22,17 @@ export default function useAccount() {
 
     console.log(_wallet, chainId);
 
-    return {
+    dispatch({
+      type: contractActionTypes.SET_WALLET,
       signer: signer,
       provider: prov,
       wallet: _wallet,
-    };
+    });
   }, []);
 
   useEffect(() => {
     if (!window.ethereum.isConnected()) {
-      connectToWallet().then((res) => {
-        dispatch({
-          type: contractActionTypes.SET_WALLET,
-          signer: res.signer,
-          provider: res.provider,
-          wallet: res.wallet,
-        });
-      });
+      connectToWallet().then((res) => {});
     }
 
     return () => {
