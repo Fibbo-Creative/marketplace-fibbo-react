@@ -28,19 +28,19 @@ export default function Navbar() {
         </div>
         <div className="">
           <a
-            className="lg:inline hidden ml-5 hover:text-blue-400 hover:font-bold text-primary-1 "
+            className="lg:inline hidden ml-5  hover:font-bold text-primary-1 hover:text-primary-3 "
             href="/"
           >
             Home
           </a>
           <a
-            className="lg:inline hidden ml-5 hover:text-blue-400 hover:font-bold text-primary-1 "
+            className="lg:inline hidden ml-5 hover:text-blue-400 hover:font-bold text-primary-1 hover:text-primary-3 "
             href="/explore"
           >
             Explore
           </a>
           <a
-            className="lg:inline hidden ml-5 hover:text-blue-400 hover:font-bold"
+            className="lg:inline hidden ml-5 hover:text-blue-400 hover:font-bold text-primary-1 hover:text-primary-3"
             href="/create"
           >
             Create
@@ -50,7 +50,7 @@ export default function Navbar() {
         <div className="pl-10 flex flex-row justify-between items-center">
           <button
             onClick={!wallet ? connectToWallet : undefined}
-            className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+            className="bg-white text-xs hover:bg-gray-100 text-gray-800 font-semibold py-3 px-4 border border-gray-400 rounded shadow w-[130px]"
           >
             {wallet !== ""
               ? `${wallet?.substring(0, 4)}...${wallet?.substring(
@@ -60,20 +60,7 @@ export default function Navbar() {
               : "Connect Wallet"}
           </button>
           <div className="lg:hidden pl-10 pr-5 ">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-6 h-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h8m-8 6h16"
-              />
-            </svg>
+            <Icon className="text-3xl text-gray-600" icon="bx:menu-alt-left" />
           </div>
         </div>
       </div>

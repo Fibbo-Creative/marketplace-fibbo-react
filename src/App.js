@@ -16,7 +16,7 @@ function App() {
   const { connectToWallet } = useAccount();
 
   return (
-    <div className={`App`}>
+    <div className={`App`} >
       <BrowserRouter>
         <>
           <Navbar wallet={wallet} connectToWallet={connectToWallet} />
