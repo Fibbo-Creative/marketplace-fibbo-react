@@ -62,7 +62,7 @@ export default function ExploreContainer() {
           </button>
         </div>
       </div>
-      <div className="flex flex-wrap gap-5 items-center justify-center ">
+      <div className="flex w-full flex-wrap gap-5 items-center justify-center ">
         {marketItems.map((item) => {
           return (
             <div key={Math.random(1, 9999)} className="p-5">

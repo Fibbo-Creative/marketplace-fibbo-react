@@ -83,8 +83,8 @@ export default function CreateContainer() {
     }
   }, [wallet, connectToWallet]);
   return (
-    <div className="flex w-auto justify-center items-center pt-10">
-      <div className="block p-6  rounded-lg shadow-xl bg-white max-w-md">
+    <div className="flex justify-center items-center pt-10">
+      <div className="block p-6  rounded-lg shadow-xl  max-w-md">
         <form>
           <div className="form-group mb-6">
             <input
@@ -109,6 +109,23 @@ export default function CreateContainer() {
             />
           </div>
           <div className="form-group mb-6">
+            <select
+              type="text"
+             /*  value={}
+              onChange={} */
+              
+              placeholder="Collection"
+              id="collectionInput"
+              className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 
+            bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0
+            focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+              
+            >
+            <option value={1}>Default Collection</option>
+            <option value={2}>Other</option>
+          </select>
+          </div>
+          <div className="form-group mb-6">
             <input
               type="text"
               value={name}
@@ -120,6 +137,7 @@ export default function CreateContainer() {
               placeholder="Name"
             />
           </div>
+         
           <div className="form-group mb-6">
             <textarea
               className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding 
@@ -145,7 +163,6 @@ export default function CreateContainer() {
               placeholder="Royalties"
             />
           </div>
-
           <button
             onClick={(e) => createNFT(e)}
             type="submit"
