@@ -116,7 +116,7 @@ export default function CreateContainer() {
               type="text"
               /*  value={}
               onChange={} */
-
+              disabled="true"
               placeholder="Collection"
               id="collectionInput"
               className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 
