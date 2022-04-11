@@ -1,22 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import PutForSaleModal from "../../components/PutForSaleModal";
 import marketplaceApi from "../../context/axios";
+import useAccount from "../../hooks/useAccount";
 
 export default function ItemPage() {
+  const { wallet } = useAccount();
   const [tokenInfo, setTokenInfo] = useState(null);
   let { tokenId } = useParams();
+  const [openModal, setOpenModal] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
+  const [isForSale, setIsForSale] = useState(false);
   useEffect(() => {
     //Cuando carge pagina consultar /getNftsForSale
     marketplaceApi
       .get(`getNftInfoById?nftId=${tokenId}`)
       .then((res) => {
-        console.log(res.data);
-        setTokenInfo(res.data);
+        const tokenInfoResponse = res.data;
+        console.log(tokenInfoResponse);
+        setIsForSale(tokenInfoResponse.forSale);
+        setIsOwner(tokenInfoResponse.owner === wallet);
+
+        setTokenInfo(tokenInfoResponse);
       })
       .catch((e) => {
         console.log(e);
       });
-  }, [tokenId]);
+  }, [tokenId, wallet]);
+
   return (
     <div className="flex w-full h-full justify-center items-center p-5">
       {tokenInfo && (
@@ -49,23 +60,58 @@ export default function ItemPage() {
                 {/* cambiar token royality y el valor en € */}
               </div>
               <div className="flex flex-row gap-5">
-                <button
-                  type="button"
-                  className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
-                >
-                  Buy Now
-                </button>
-                <button
-                  type="button"
-                  className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
-                >
-                  Make offer
-                </button>
+                {isForSale && !isOwner && (
+                  <button
+                    type="button"
+                    className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
+                  >
+                    Buy Now
+                  </button>
+                )}
+                {!isForSale && !isOwner && (
+                  <button
+                    type="button"
+                    className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
+                  >
+                    Make offer
+                  </button>
+                )}
+                {isOwner && !isForSale && (
+                  <button
+                    onClick={() => setOpenModal(true)}
+                    type="button"
+                    className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
+                  >
+                    Put For Sale
+                  </button>
+                )}
+                {isOwner && isForSale && (
+                  <>
+                    <button
+                      type="button"
+                      className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                      Change Price
+                    </button>
+                    <button
+                      type="button"
+                      className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                      Unlist Item
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </div>
         </div>
       )}
+      <PutForSaleModal
+        itemId={tokenId}
+        wallet={wallet}
+        showModal={openModal}
+        handleCloseModal={() => setOpenModal(false)}
+      />
     </div>
   );
 }
