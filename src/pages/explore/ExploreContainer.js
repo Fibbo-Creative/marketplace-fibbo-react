@@ -3,9 +3,12 @@ import NftCard from "../../components/NftCard";
 import marketplaceApi from "../../context/axios";
 import { Icon } from "@iconify/react";
 import { useNavigate } from "react-router-dom";
+import NftCardSmall from "../../components/NftCardSmall";
+
 
 export default function ExploreContainer() {
   const [marketItems, setMarketItems] = useState([]);
+  const [userSmallview, setSmallViewUser] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     //Cuando carge pagina consultar /getNftsForSale
@@ -23,6 +26,14 @@ export default function ExploreContainer() {
   const goToNftDetail = (item) => {
     navigate(`/explore/${item.nft.itemId}`);
   };
+
+  const changeSmallDisplay = () =>{
+    setSmallViewUser( true)
+  }
+  const changeBigDisplay = () =>{
+    setSmallViewUser(false)
+  }
+
   return (
     <div className="absolute h-7 w-full h-full ">
       <div className="flex w-full h-20 items-center justify-center gap-2 pl-5 md:gap-5 ">
@@ -43,20 +54,22 @@ export default function ExploreContainer() {
             <option value={3}>Oldest</option>
           </select>
         </div>
-        <div className="flex flex-row gap-2 md:gap-5 ">
-          <button className="hover:-translate-y-1">
+
+        <div className="flex flex-row items-center justify-center gap-2 md:gap-5 ">
+          <button onClick={changeSmallDisplay} className="hover:-translate-y-1">
             <Icon
-              icon="typcn:arrow-minimise"
+              icon="akar-icons:dot-grid-fill"
               width="40"
               height="40"
               color="grey"
             />
           </button>
-          <button className="hover:-translate-y-1">
+          <button onClick={changeBigDisplay} className="hover:-translate-y-1"
+          >
             <Icon
-              icon="typcn:arrow-maximise"
-              width="40"
-              height="40"
+              icon="ci:grid-big-round"
+              width="60"
+              height="60"
               color="grey"
             />
           </button>
@@ -66,7 +79,8 @@ export default function ExploreContainer() {
         {marketItems.map((item) => {
           return (
             <div key={Math.random(1, 9999)} className="p-5">
-              <NftCard onClick={() => goToNftDetail(item)} item={item} />
+              {userSmallview ? <NftCardSmall onClick={() => goToNftDetail(item)} item={item} /> : <NftCard onClick={() => goToNftDetail(item)} item={item} />} 
+                
             </div>
           );
         })}
