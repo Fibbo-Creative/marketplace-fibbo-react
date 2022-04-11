@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import BuyItemModal from "../../components/BuyItemModal";
+import MakeOfferModal from "../../components/MakeOfferModal";
 import PutForSaleModal from "../../components/PutForSaleModal";
 import marketplaceApi from "../../context/axios";
 import useAccount from "../../hooks/useAccount";
@@ -12,6 +13,7 @@ export default function ItemPage() {
 
   const [openSellModal, setOpenSellModal] = useState(false);
   const [openBuyModal, setOpenBuyModal] = useState(false);
+  const [openOfferModal, setOpenOfferModal] = useState(false);
 
   const [isOwner, setIsOwner] = useState(false);
   const [isForSale, setIsForSale] = useState(false);
@@ -35,11 +37,14 @@ export default function ItemPage() {
   return (
     <div className="flex w-full h-full justify-center items-center p-5">
       {tokenInfo && (
-        <div className="flex flex-row justify-center" key={tokenInfo.name}>
-          <div className="flex flex-wrap justify-center content-center border-grey border-2 p-2 rounded-md ">
-            <img src={tokenInfo.image} alt={tokenInfo.name} />
+        <div
+          className="flex flex-row justify-center items-center"
+          key={tokenInfo.name}
+        >
+          <div className="flex justify-center items-center h-fit border-gray border-2 p-2 rounded-md w-1/3">
+            <img width={"500px"} src={tokenInfo.image} alt={tokenInfo.name} />
           </div>
-          <div className="flex flex-col p-10 gap-5">
+          <div className="flex flex-col p-10 gap-5 w-2/3">
             <p className="text-3xl">
               <b>{tokenInfo.name}</b>
             </p>
@@ -55,14 +60,23 @@ export default function ItemPage() {
               </small>
             </p>
             <div className="flex flex-col justify-center flex-wrap border-grey border-2 p-2 rounded-md gap-3">
-              <p>Current Price</p>
-              <div className="flex flex-row gap-3 ">
-                <p>{tokenInfo.royalty}</p>{" "}
-                <p className=" decoration-grey align-text-bottom text-xs">
-                  (${tokenInfo.royalty})
-                </p>{" "}
-                {/* cambiar token royality y el valor en € */}
-              </div>
+              {isForSale && (
+                <>
+                  <p>Current Price</p>
+                  <div className="flex flex-row items-center gap-3 ">
+                    <img
+                      width={32}
+                      src="https://cdn.sanity.io/images/lmw8etck/dev/397928e6abbf8235445fe90e6414b5a62f034532-128x128.webp"
+                      alt="Fantom coin"
+                    />
+                    <p>{tokenInfo.price} FTM </p>
+                    <p className="text-gray-600 text-xs">
+                      (${tokenInfo.price * 1.24})
+                    </p>
+                  </div>
+                </>
+              )}
+
               <div className="flex flex-row gap-5">
                 {isForSale && !isOwner && (
                   <button
@@ -75,6 +89,7 @@ export default function ItemPage() {
                 )}
                 {!isForSale && !isOwner && (
                   <button
+                    onClick={() => setOpenOfferModal(true)}
                     type="button"
                     className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
                   >
@@ -126,6 +141,15 @@ export default function ItemPage() {
           wallet={wallet}
           showModal={openBuyModal}
           handleCloseModal={() => setOpenBuyModal(false)}
+        />
+      )}
+      {!isOwner && !isForSale && (
+        <MakeOfferModal
+          itemId={tokenId}
+          tokenInfo={tokenInfo}
+          wallet={wallet}
+          showModal={openOfferModal}
+          handleCloseModal={() => setOpenOfferModal(false)}
         />
       )}
     </div>
