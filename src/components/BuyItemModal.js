@@ -38,12 +38,13 @@ export default function BuyItemModal({
       await marketplaceApi.post("nftBought", {
         prevOwner: tokenInfo.owner,
         newOwner: wallet,
-        boughtFor: price,
+        boughtFor: tokenInfo.price,
         sanityItemId: tokenInfo._id,
         nftItemId: tokenInfo.itemId,
       });
 
       navigate(`/explore/${itemId}`);
+      window.location.reload();
     } catch (e) {
       console.log(e);
     }
