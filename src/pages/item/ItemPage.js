@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import BuyItemModal from "../../components/BuyItemModal";
 import PutForSaleModal from "../../components/PutForSaleModal";
 import marketplaceApi from "../../context/axios";
 import useAccount from "../../hooks/useAccount";
@@ -8,7 +9,10 @@ export default function ItemPage() {
   const { wallet } = useAccount();
   const [tokenInfo, setTokenInfo] = useState(null);
   let { tokenId } = useParams();
-  const [openModal, setOpenModal] = useState(false);
+
+  const [openSellModal, setOpenSellModal] = useState(false);
+  const [openBuyModal, setOpenBuyModal] = useState(false);
+
   const [isOwner, setIsOwner] = useState(false);
   const [isForSale, setIsForSale] = useState(false);
   useEffect(() => {
@@ -62,6 +66,7 @@ export default function ItemPage() {
               <div className="flex flex-row gap-5">
                 {isForSale && !isOwner && (
                   <button
+                    onClick={() => setOpenBuyModal(true)}
                     type="button"
                     className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
                   >
@@ -78,7 +83,7 @@ export default function ItemPage() {
                 )}
                 {isOwner && !isForSale && (
                   <button
-                    onClick={() => setOpenModal(true)}
+                    onClick={() => setOpenSellModal(true)}
                     type="button"
                     className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
                   >
@@ -106,12 +111,23 @@ export default function ItemPage() {
           </div>
         </div>
       )}
-      <PutForSaleModal
-        itemId={tokenId}
-        wallet={wallet}
-        showModal={openModal}
-        handleCloseModal={() => setOpenModal(false)}
-      />
+      {isOwner && !isForSale && (
+        <PutForSaleModal
+          itemId={tokenId}
+          wallet={wallet}
+          showModal={openSellModal}
+          handleCloseModal={() => setOpenSellModal(false)}
+        />
+      )}
+      {!isOwner && isForSale && (
+        <BuyItemModal
+          itemId={tokenId}
+          tokenInfo={tokenInfo}
+          wallet={wallet}
+          showModal={openBuyModal}
+          handleCloseModal={() => setOpenBuyModal(false)}
+        />
+      )}
     </div>
   );
 }
