@@ -52,14 +52,16 @@ export default function ItemPage() {
             <p className="flex-row justify-center ">
               <b> Owned By: </b>
               <small>
-                {tokenInfo.owner?.substring(0, 4)}...
-                {tokenInfo.owner?.substring(
+                {tokenInfo.owner === wallet
+                  ? "You"
+                  : `${tokenInfo.owner?.substring(0, 4)}...
+                ${tokenInfo.owner?.substring(
                   tokenInfo.owner.length - 3,
                   tokenInfo.owner.length
-                )}
+                )}`}
               </small>
             </p>
-            <div className="flex flex-col justify-center flex-wrap border-grey border-2 p-2 rounded-md gap-3">
+            <div className="flex flex-col justify-center flex-wrap border-grey border-2 p-3 rounded-md gap-3">
               {isForSale && (
                 <>
                   <p>Current Price</p>
@@ -76,7 +78,6 @@ export default function ItemPage() {
                   </div>
                 </>
               )}
-
               <div className="flex flex-row gap-5">
                 {isForSale && !isOwner && (
                   <button

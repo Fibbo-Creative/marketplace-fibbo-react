@@ -11,6 +11,7 @@ import HomeContainer from "./pages/home/HomeContainer";
 import CreateContainer from "./pages/create/CreateContainer";
 import ItemPage from "./pages/item/ItemPage";
 import ReactModal from "react-modal";
+import ProfileContainer from "./pages/profile/ProfileContainer";
 
 ReactModal.defaultStyles.overlay.backgroundColor = "rgba(73, 77, 91, 0.5)";
 ReactModal.defaultStyles.content.width = "max-content";
@@ -30,6 +31,7 @@ function App() {
 
           <Routes>
             <Route path="/create" element={<CreateContainer />} />
+            <Route path="/profile" element={<ProfileContainer />} />
             <Route path="/create" element={<CreateContainer />} />
             <Route path="/explore" element={<ExploreContainer />} />
             <Route path="/explore/:tokenId" element={<ItemPage />} />

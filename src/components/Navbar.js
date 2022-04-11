@@ -12,12 +12,17 @@ export default function Navbar() {
   const gotoHomepage = () => {
     navigate("/");
   };
-  
+
   return (
     <header className="flex bg-white flex-row justify-between sticky top-0 px-5 py-5 w-full items-center z-10 border-b b-gray-200 h-[81px]">
-      <div className="flex items-center">
-        <img src={logo} href="/" onClick={gotoHomepage} alt="FibboLogo" className="flex w-32"></img>
-
+      <div className="flex items-center cursor-pointer">
+        <img
+          src={logo}
+          href="/"
+          onClick={gotoHomepage}
+          alt="FibboLogo"
+          className="flex w-32"
+        ></img>
       </div>
       <div className="flex items-center p-0 m-0 align-baseline">
         <div>
@@ -36,12 +41,6 @@ export default function Navbar() {
         </div>
         <div className="">
           <a
-            className="lg:inline hidden ml-5  hover:font-bold text-primary-1 hover:text-primary-3 "
-            href="/"
-          >
-            Home
-          </a>
-          <a
             className="lg:inline hidden ml-5 hover:text-blue-400 hover:font-bold text-primary-1 hover:text-primary-3 "
             href="/explore"
           >
@@ -53,6 +52,14 @@ export default function Navbar() {
           >
             Create
           </a>
+          {wallet !== "" && (
+            <a
+              className="lg:inline hidden ml-5  hover:font-bold text-primary-1 hover:text-primary-3 "
+              href="/profile"
+            >
+              Profile
+            </a>
+          )}
         </div>
 
         <div className="pl-10 flex flex-row justify-between items-center">
