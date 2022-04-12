@@ -13,7 +13,7 @@ export default function NftCardSmall({ item, onClick }) {
         <p>
           <b>{item.name}</b>
         </p>
-        <small>{item.price} USDT</small>
+        <small>{item.price} FTM</small>
       </div>
     </div>
   );
