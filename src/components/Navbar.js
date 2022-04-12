@@ -3,6 +3,7 @@ import useAccount from "../hooks/useAccount";
 import { Icon } from "@iconify/react";
 import logo from "../assets/FibboLogo.png";
 import { useNavigate } from "react-router-dom";
+import WalletButton from "./WalletButton";
 
 export default function Navbar() {
   const [searchText, setSearchText] = useState("Buscar...");
@@ -63,17 +64,7 @@ export default function Navbar() {
         </div>
 
         <div className="pl-10 flex flex-row justify-between items-center">
-          <button
-            onClick={!wallet ? connectToWallet : undefined}
-            className="bg-white text-xs hover:bg-gray-100 text-gray-800 font-semibold py-3 px-4 border border-gray-400 rounded shadow w-[130px]"
-          >
-            {wallet !== ""
-              ? `${wallet?.substring(0, 4)}...${wallet?.substring(
-                  wallet.length - 3,
-                  wallet.length
-                )}`
-              : "Connect Wallet"}
-          </button>
+          <WalletButton wallet={wallet} connectToWallet={connectToWallet} />
           <div className="lg:hidden pl-10 pr-5 ">
             <Icon className="text-3xl text-gray-600" icon="bx:menu-alt-left" />
           </div>
