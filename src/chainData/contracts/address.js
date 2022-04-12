@@ -1,4 +1,4 @@
-const NFTContractAddress = "0x1EBBa5E8b6476E533FB07B897B5874549Cd6534e";
-const NFTMarketAddress = "0x0FAA7F0269aDA1a74b023A50F80D43d7673d4F39";
+const NFTContractAddress = "0x7171C5d86a229Ba6776f14a352be3A4685312A05";
+const NFTMarketAddress = "0x46F9517355C60220ad67DdBfce81C84c631eC6b4";
 
 export { NFTContractAddress, NFTMarketAddress };
