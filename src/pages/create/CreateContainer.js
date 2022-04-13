@@ -86,7 +86,7 @@ export default function CreateContainer() {
     }
   }, [wallet, connectToWallet]);
   return (
-    <div className="flex justify-center items-center pt-10">
+    <div className="flex mt-[90px] justify-center items-center pt-10">
       <div className="block p-6  rounded-lg shadow-xl  max-w-md">
         <form>
           <div className="form-group mb-6">

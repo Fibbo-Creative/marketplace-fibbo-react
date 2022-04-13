@@ -35,7 +35,7 @@ export default function ItemPage() {
   }, [tokenId, wallet]);
 
   return (
-    <div className="flex w-full h-full justify-center items-center p-5">
+    <div className="flex mt-[90px] w-full h-full justify-center items-center p-5">
       {tokenInfo && (
         <div
           className="flex flex-row justify-center items-center"
