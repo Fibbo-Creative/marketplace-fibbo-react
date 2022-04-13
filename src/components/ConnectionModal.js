@@ -26,7 +26,7 @@ export default function ConnectionModal({
       <div className="flex flex-col w-full h-full p-2 w-[400px]">
         <div
           className="absolute right-10 top-5 cursor-pointer"
-          onClick={handleCloseModal}
+          onClick={() => handleCloseModal()}
         >
           <Icon className="text-2xl" icon="ant-design:close-outlined" />
         </div>

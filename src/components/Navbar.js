@@ -4,13 +4,19 @@ import { Icon } from "@iconify/react";
 import logo from "../assets/FibboLogo.png";
 import { useNavigate } from "react-router-dom";
 import WalletButton from "./WalletButton";
+import ConnectionModal from "./ConnectionModal";
 
 export default function Navbar() {
   const [searchText, setSearchText] = useState("Buscar...");
   const { wallet, connectToWallet } = useAccount();
+  const [openModal, setOpenModal] = useState(false);
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
   const navigate = useNavigate();
 
   const gotoHomepage = () => {
+    setOpenModal(false);
     navigate("/");
   };
 
@@ -64,12 +70,21 @@ export default function Navbar() {
         </div>
 
         <div className="pl-10 flex flex-row justify-between items-center">
-          <WalletButton wallet={wallet} connectToWallet={connectToWallet} />
+          <WalletButton
+            openModal={handleOpenModal}
+            wallet={wallet}
+            connectToWallet={connectToWallet}
+          />
           <div className="lg:hidden pl-10 pr-5 ">
             <Icon className="text-3xl text-gray-600" icon="bx:menu-alt-left" />
           </div>
         </div>
       </div>
+      <ConnectionModal
+        showModal={openModal}
+        handleCloseModal={() => setOpenModal(false)}
+        connectToWallet={connectToWallet}
+      />
     </header>
   );
 }

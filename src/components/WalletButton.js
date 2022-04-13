@@ -2,19 +2,15 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ConnectionModal from "./ConnectionModal";
 
-export default function WalletButton({ wallet, connectToWallet }) {
+export default function WalletButton({ wallet, connectToWallet, openModal }) {
   const navigate = useNavigate();
-  const [openModal, setOpenModal] = useState(false);
 
-  const handleOpenModal = () => {
-    setOpenModal(true);
-  };
   const goToProfile = () => {
     navigate("/profile");
   };
   return (
     <button
-      onClick={!wallet ? handleOpenModal : goToProfile}
+      onClick={!wallet ? openModal : goToProfile}
       className="bg-white  hover:bg-gray-100  border border-gray-400 text-gray-600 rounded shadow w-[180px]"
     >
       {wallet !== "" ? (
@@ -39,11 +35,6 @@ export default function WalletButton({ wallet, connectToWallet }) {
       ) : (
         <div className="py-3 px-2">Connect Wallet</div>
       )}
-      <ConnectionModal
-        showModal={openModal}
-        handleCloseModal={() => setOpenModal(false)}
-        connectToWallet={connectToWallet}
-      />
     </button>
   );
 }

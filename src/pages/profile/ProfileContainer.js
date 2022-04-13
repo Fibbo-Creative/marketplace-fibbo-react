@@ -32,7 +32,7 @@ export default function ProfileContainer() {
     }
   }, [wallet]);
   return (
-    <div className="mt-[90px] w-screen h-full">
+    <div className="mt-[81px] w-screen h-full">
       {/*BANNER*/}
       <div className="w-screen h-[200px] bg-gray-300"></div>
       {/*Profile Img*/}
