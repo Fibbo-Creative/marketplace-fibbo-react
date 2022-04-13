@@ -15,7 +15,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="flex bg-white flex-row justify-between sticky top-0 px-5 py-5 w-full items-center z-10 border-b b-gray-200 h-[81px]">
+    <header className="flex bg-white flex-row justify-between fixed top-0 px-5 py-5 w-full items-center z-10 border-b b-gray-200 h-[81px]">
       <div className="flex items-center cursor-pointer">
         <img
           src={logo}
