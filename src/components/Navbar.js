@@ -1,18 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useAccount from "../hooks/useAccount";
 import { Icon } from "@iconify/react";
 import logo from "../assets/FibboLogo.png";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import WalletButton from "./WalletButton";
 
 export default function Navbar() {
   const [searchText, setSearchText] = useState("Buscar...");
   const { wallet, connectToWallet } = useAccount();
   const navigate = useNavigate();
+  const location = useLocation();
+
 
   const gotoHomepage = () => {
     navigate("/");
   };
+
 
   return (
     <header className="flex bg-white flex-row justify-between fixed top-0 px-5 py-5 w-full items-center z-10 border-b b-gray-200 h-[81px]">
@@ -23,6 +26,7 @@ export default function Navbar() {
           onClick={gotoHomepage}
           alt="FibboLogo"
           className="flex w-32"
+          
         ></img>
       </div>
       <div className="flex items-center p-0 m-0 align-baseline">
@@ -42,20 +46,22 @@ export default function Navbar() {
         </div>
         <div className="">
           <a
-            className="lg:inline hidden ml-5 hover:text-blue-400 hover:font-bold text-primary-1 hover:text-primary-3 "
+            className={`lg:inline hidden ml-5 hover:text-blue-400 hover:font-bold ${location.pathname === "/explore"? "text-primary-b font-bold" : "text-primary-1 "} hover:text-primary-3 `}
             href="/explore"
+            
           >
             Explore
           </a>
           <a
-            className="lg:inline hidden ml-5 hover:text-blue-400 hover:font-bold text-primary-1 hover:text-primary-3"
+            className={`lg:inline hidden ml-5 hover:text-blue-400 hover:font-bold ${location.pathname === "/create"? "text-primary-b font-bold" : "text-primary-1 "} hover:text-primary-3`}
             href="/create"
+        
           >
             Create
           </a>
           {wallet !== "" && (
             <a
-              className="lg:inline hidden ml-5  hover:font-bold text-primary-1 hover:text-primary-3 "
+              className={`lg:inline hidden ml-5  hover:font-bold ${location.pathname === "/profile"? "text-primary-b font-bold" : "text-primary-1 "} hover:text-primary-3`}
               href="/profile"
             >
               Profile
