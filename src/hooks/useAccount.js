@@ -30,6 +30,15 @@ export default function useAccount() {
     });
   }, []);
 
+  const disconnectWallet = useCallback(async () => {
+    dispatch({
+      type: contractActionTypes.SET_WALLET,
+      signer: null,
+      provider: null,
+      wallet: "",
+    });
+  }, []);
+
   useEffect(() => {
     if (!window.ethereum.isConnected()) {
       connectToWallet().then((res) => {});
@@ -40,5 +49,11 @@ export default function useAccount() {
     };
   }, [connectToWallet, dispatch]);
 
-  return { wallet, balance, loadingConnection, connectToWallet };
+  return {
+    wallet,
+    balance,
+    loadingConnection,
+    connectToWallet,
+    disconnectWallet,
+  };
 }

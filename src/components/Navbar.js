@@ -8,7 +8,7 @@ import ConnectionModal from "./ConnectionModal";
 
 export default function Navbar() {
   const [searchText, setSearchText] = useState("Buscar...");
-  const { wallet, connectToWallet } = useAccount();
+  const { wallet, connectToWallet, disconnectWallet } = useAccount();
   const [openModal, setOpenModal] = useState(false);
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -16,12 +16,10 @@ export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
 
-
   const gotoHomepage = () => {
     setOpenModal(false);
     navigate("/");
   };
-
 
   return (
     <header className="flex bg-white flex-row justify-between fixed top-0 px-5 py-5 w-full items-center z-10 border-b b-gray-200 h-[81px]">
@@ -31,8 +29,7 @@ export default function Navbar() {
           href="/"
           onClick={gotoHomepage}
           alt="FibboLogo"
-          className="flex w-32"
-          
+          className="w-[128px] object-contain"
         ></img>
       </div>
       <div className="flex items-center p-0 m-0 align-baseline">
@@ -52,22 +49,32 @@ export default function Navbar() {
         </div>
         <div className="">
           <a
-            className={`lg:inline hidden ml-5 hover:text-blue-400 hover:font-bold ${location.pathname === "/explore"? "text-primary-b font-bold" : "text-primary-1 "} hover:text-primary-3 `}
+            className={`lg:inline hidden ml-5 hover:text-blue-400 hover:font-bold ${
+              location.pathname === "/explore"
+                ? "text-primary-b font-bold"
+                : "text-primary-1 "
+            } hover:text-primary-3 `}
             href="/explore"
-            
           >
             Explore
           </a>
           <a
-            className={`lg:inline hidden ml-5 hover:text-blue-400 hover:font-bold ${location.pathname === "/create"? "text-primary-b font-bold" : "text-primary-1 "} hover:text-primary-3`}
+            className={`lg:inline hidden ml-5 hover:text-blue-400 hover:font-bold ${
+              location.pathname === "/create"
+                ? "text-primary-b font-bold"
+                : "text-primary-1 "
+            } hover:text-primary-3`}
             href="/create"
-        
           >
             Create
           </a>
           {wallet !== "" && (
             <a
-              className={`lg:inline hidden ml-5  hover:font-bold ${location.pathname === "/profile"? "text-primary-b font-bold" : "text-primary-1 "} hover:text-primary-3`}
+              className={`lg:inline hidden ml-5  hover:font-bold ${
+                location.pathname === "/profile"
+                  ? "text-primary-b font-bold"
+                  : "text-primary-1 "
+              } hover:text-primary-3`}
               href="/profile"
             >
               Profile
@@ -80,6 +87,7 @@ export default function Navbar() {
             openModal={handleOpenModal}
             wallet={wallet}
             connectToWallet={connectToWallet}
+            disconnectWallet={disconnectWallet}
           />
           <div className="lg:hidden pl-10 pr-5 ">
             <Icon className="text-3xl text-gray-600" icon="bx:menu-alt-left" />

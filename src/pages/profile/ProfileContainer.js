@@ -20,7 +20,7 @@ export default function ProfileContainer() {
   };
 
   const goToNftDetail = (item) => {
-    navigate(`/explore/${item.nft.itemId}`);
+    navigate(`/explore/${item.itemId}`);
   };
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export default function ProfileContainer() {
       <div className="w-screen h-[200px] bg-gray-300"></div>
       {/*Profile Img*/}
       <div className="w-screen flex flex-col gap-4 items-center justify-center">
-        <div className="rounded-full bg-primary-1  w-[112px] h-[112px] -mt-20">
+        <div className="flex justify-center items-center rounded-full bg-primary-1  w-[112px] h-[112px] -mt-20">
           <img
             src={`https://avatars.dicebear.com/api/adventurer/${
               wallet ? wallet : "default"
