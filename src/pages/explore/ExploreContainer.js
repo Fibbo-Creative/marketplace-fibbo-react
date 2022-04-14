@@ -58,12 +58,29 @@ export default function ExploreContainer() {
     }
     return 0;
   };
-
   const orderByOldest = (a, b) => {
     if (a.forSaleAt < b.forSaleAt) {
       return -1;
     }
     if (a.forSaleAt > b.forSaleAt) {
+      return 1;
+    }
+    return 0;
+  };
+  const orderByLowestP = (a, b) => {
+    if (a.price < b.price) {
+      return -1;
+    }
+    if (a.price > b.price) {
+      return 1;
+    }
+    return 0;
+  };
+  const orderByHighestP= (a, b) => {
+    if (a.price > b.price) {
+      return -1;
+    }
+    if (a.price < b.price) {
       return 1;
     }
     return 0;
@@ -84,9 +101,24 @@ export default function ExploreContainer() {
       const sortedArray = allMarketItems.sort(orderByOldest);
       const visibledsortedArray = visibleMarketItems.sort(orderByOldest);
       setAllMarketItems(sortedArray);
+      setVisibleMarketItems(visibledsortedArray);    
+      console.log(sortedArray);
+    }
+    if (value === "4") {
+      //highest price
+      const sortedArray = allMarketItems.sort(orderByHighestP);
+      const visibledsortedArray = visibleMarketItems.sort(orderByHighestP);
+      setAllMarketItems(sortedArray);
       setVisibleMarketItems(visibledsortedArray); 
       console.log(sortedArray);
-
+    }
+    if (value === "5") {
+      //Lowest price
+      const sortedArray = allMarketItems.sort(orderByLowestP);
+      const visibledsortedArray = visibleMarketItems.sort(orderByLowestP);
+      setAllMarketItems(sortedArray);
+      setVisibleMarketItems(visibledsortedArray); 
+      console.log(sortedArray);
     }
   };
 
@@ -103,6 +135,8 @@ export default function ExploreContainer() {
               <option value={1}>Sort by</option>
               <option value={2}>Recently Created</option>
               <option value={3}>Oldest</option>
+              <option value={4}>Highest Price</option>
+              <option value={5}>Lowest Price</option>
             </select>
             <div className="flex flex-row items-center justify-center gap-2 md:gap-5 ">
               <button
