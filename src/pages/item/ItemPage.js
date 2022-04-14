@@ -4,6 +4,7 @@ import BuyItemModal from "../../components/BuyItemModal";
 import MakeOfferModal from "../../components/MakeOfferModal";
 import PutForSaleModal from "../../components/PutForSaleModal";
 import marketplaceApi from "../../context/axios";
+import { useContractsContext } from "../../context/contracts/ContractProvider";
 import useAccount from "../../hooks/useAccount";
 
 export default function ItemPage() {
@@ -14,19 +15,22 @@ export default function ItemPage() {
   const [openSellModal, setOpenSellModal] = useState(false);
   const [openBuyModal, setOpenBuyModal] = useState(false);
   const [openOfferModal, setOpenOfferModal] = useState(false);
-
+  const [{ marketContract }] = useContractsContext();
   const [isOwner, setIsOwner] = useState(false);
   const [isForSale, setIsForSale] = useState(false);
   useEffect(() => {
     //Cuando carge pagina consultar /getNftsForSale
     marketplaceApi
       .get(`getNftInfoById?nftId=${tokenId}`)
-      .then((res) => {
+      .then(async (res) => {
         const tokenInfoResponse = res.data;
         console.log(tokenInfoResponse);
         setIsForSale(tokenInfoResponse.forSale);
         setIsOwner(tokenInfoResponse.owner === wallet);
-
+        const tokenInfos = await marketContract.fetchMarketItem(
+          parseInt(tokenId)
+        );
+        console.log(tokenInfos);
         setTokenInfo(tokenInfoResponse);
       })
       .catch((e) => {

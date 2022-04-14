@@ -19,9 +19,10 @@ export default function BuyItemModal({
 
   const buyItem = async () => {
     try {
-      console.log(tokenInfo.price);
+      console.log(tokenInfo);
       const price = parseEther(tokenInfo.price.toString());
       console.log(price);
+
       //en el contrato del marketplace -> createMarketItem
       const buyItemTransaction = await marketContract.createMarketSale(
         nftContract.address,
