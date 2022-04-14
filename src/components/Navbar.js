@@ -23,7 +23,42 @@ export default function Navbar() {
     navigate("/");
   };
 
-  const width = "200";
+  const [width, setWidth] = useState(0);
+  
+    useEffect(() => {
+      // Creamos una función para actualizar el estado con el clientWidth
+      const updateWidth = () => {
+        const width = document.body.clientWidth
+        console.log(`updateWidth con ${width}`)
+        setWidth(width)
+        
+        try{
+          if (width <= 1024 && document.getElementById("iconCloseBurguer").style.visibility === "hidden") {
+            document.getElementById("iconOpenBurguer").style.visibility = "visible"
+
+          }
+          if (width > 1024 && document.getElementById("iconCloseBurguer").style.visibility === "visible") {
+            document.getElementById("iconCloseBurguer").style.visibility = "hidden"
+
+          }
+
+          
+        }
+        catch {
+          console.log("Error")
+        }
+      }
+      // Actualizaremos el width al montar el componente
+      updateWidth()
+      // Nos suscribimos al evento resize de window
+      window.addEventListener("resize", updateWidth)
+  
+      // Devolvemos una función para anular la suscripción al evento
+      return () => {
+        window.removeEventListener("resize", updateWidth)
+      }
+    })
+  
 
   function openBurguer() {
     document.getElementById("iconOpenBurguer").style.visibility = "hidden";
@@ -46,12 +81,36 @@ export default function Navbar() {
   function closeBurguer () {
     document.getElementById("iconOpenBurguer").style.visibility = "visible";
     document.getElementById("iconCloseBurguer").style.visibility = "hidden";
-
     document.getElementById("burguerContentMobile").style.visibility = "hidden";
 
+  }
 
-
-    
+  function ShowWindowWidth() {
+    const [width, setWidth] = useState(0);
+  
+    useEffect(() => {
+      // Creamos una función para actualizar el estado con el clientWidth
+      const updateWidth = () => {
+        const width = document.body.clientWidth
+        console.log(`updateWidth con ${width}`)
+        setWidth(width)
+      }
+      // Actualizaremos el width al montar el componente
+      updateWidth()
+      // Nos suscribimos al evento resize de window
+      window.addEventListener("resize", updateWidth)
+  
+      // Devolvemos una función para anular la suscripción al evento
+      return () => {
+        window.removeEventListener("resize", updateWidth)
+      }
+    })
+  
+    return (
+      <div>
+        <span>Width es de {width}px</span>
+      </div>
+    )
   }
 
   return (
@@ -138,7 +197,7 @@ export default function Navbar() {
         handleCloseModal={() => setOpenModal(false)}
         connectToWallet={connectToWallet}
       />
-        
+        {width <= 1024 && (
           <div id="burguerContentMobile" className="bg-white absolute flex invisible lg:invisible w-screen h-screen top-24 left-0"> 
               
             <div className="flex flex-col gap-10 mt-10 w-full">
@@ -202,7 +261,7 @@ export default function Navbar() {
           </div>
 
       
-
+        )}
 
     
     </header>
