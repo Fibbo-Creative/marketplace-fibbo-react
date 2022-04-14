@@ -100,11 +100,11 @@ export default function CreateContainer() {
     <div className=" flex-col h-full w-full justify-center items-center pt-20">
     
       <form className="">
-        <div className="flex gap-20 block p-20">
+        <div className="flex lg:flex-row flex-col gap-20 block p-20 items-center justify-center ">
 
 
           <div className="">
-            <div id="divImgNFT" tabindex="0" bis_skin_checked="1" onClick={selectNFTImg} className="outline-dashed w-80 h-80  flex-col items-center justify-center cursor-pointer ">
+            <div id="divImgNFT" tabindex="0" bis_skin_checked="1" onClick={selectNFTImg} className="outline-dashed w-80 h-80 items-center justify-center cursor-pointer ">
               
               <input id="inputNFT" onChange={(e) => onFileSelected(e)} accept="image/*" name="uploadImage" type="file" autocomplete="off" className="hidden "/>
               <img src={ipfsImageUrl} className=""></img>
@@ -114,7 +114,7 @@ export default function CreateContainer() {
           
           
           <div className="w-80">
-            <div className="form-group mb-6">
+            <div className="form-group mb-6 mt-6">
               <select
                 type="text"
                 /*  value={}
@@ -123,7 +123,7 @@ export default function CreateContainer() {
                 placeholder="Collection"
                 id="collectionInput"
                 className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 
-              bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0
+              bg-white bg-clip-padding border border-solid border-black rounded transition ease-in-out m-0
               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
               >
                 <option value={1}>Default Collection</option>
@@ -137,7 +137,7 @@ export default function CreateContainer() {
                 onChange={(e) => setName(e.target.value)}
                 id="imageInput"
                 className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 
-              bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0
+              bg-white bg-clip-padding border border-solid border-black rounded transition ease-in-out m-0
               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                 placeholder="Name"
               />
@@ -146,7 +146,7 @@ export default function CreateContainer() {
             <div className="form-group mb-6">
               <textarea
                 className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding 
-            border border-solid border-gray-300 rounded transition ease-in-out m-0
+            border border-solid border-black rounded transition ease-in-out m-0
             focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                 rows="3"
                 placeholder="Description"
@@ -159,24 +159,32 @@ export default function CreateContainer() {
             <div className="form-group mb-6">
               <input
                 className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700
-              bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0
+              bg-white bg-clip-padding border border-solid border-black rounded transition ease-in-out m-0
               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                 value={royalty}
                 onChange={(e) => setRoyalty(e.target.value)}
                 id="imageInput"
                 type="text"
-                placeholder="Royalties"
+                placeholder="Royalties(%)"
               />
+            </div>
+            <div className="form-group mb-6">
+              <div class="fforminput fforminput_toggle" bis_skin_checked="1">
+                <label class="ftogglebutton togglebtn togglebtn-v1">
+                  <input type="checkbox" id="ixwZk4_Gf5Hmhsd4d" name="unlockContentToogle" className="" value=""/>
+                    <span className="text-gray-700 border-gray-300 p-3">Unlockable Content</span>
+                </label>
+              </div>
             </div>
         </div>
       </div>
 
-      <div className="flex justify-center items-center w-full ">
+      <div className="flex justify-center items-center w-full lg:p-0 pb-20 ">
       <button 
         onClick={(e) => createNFT(e)}
         type="submit"
-        className=" w-60 px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight
-        uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0
+        className=" w-60 px-6 py-2.5 bg-primary-4 text-white font-medium text-xs leading-tight border-black
+        uppercase rounded shadow-md hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0
         active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
         >
         Create NFT
