@@ -64,7 +64,9 @@ export default function ExploreContainer() {
     if (value === "3") {
       //recentyl created
       const sortedArray = allMarketItems.sort(orderByOldest);
-      console.log(sortedArray);
+      setAllMarketItems(sortedArray);
+      const sortedArray2 = visibleMarketItems.sort(orderByOldest);
+      setAllMarketItems(sortedArray2);
     }
   };
 
