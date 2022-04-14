@@ -75,16 +75,16 @@ export default function ExploreContainer() {
       //recentyl created
       const sortedArray = allMarketItems.sort(orderByRecently);
       const visibledsortedArray = visibleMarketItems.sort(orderByRecently);
-      /* setAllMarketItems(sortedArray);
-      setVisibleMarketItems(visibledsortedArray); */
+      setAllMarketItems(sortedArray);
+      setVisibleMarketItems(visibledsortedArray); 
       console.log(sortedArray);
     }
     if (value === "3") {
       //oldest created
       const sortedArray = allMarketItems.sort(orderByOldest);
       const visibledsortedArray = visibleMarketItems.sort(orderByOldest);
-      /* setAllMarketItems(sortedArray);
-      setVisibleMarketItems(visibledsortedArray); */
+      setAllMarketItems(sortedArray);
+      setVisibleMarketItems(visibledsortedArray); 
       console.log(sortedArray);
 
     }

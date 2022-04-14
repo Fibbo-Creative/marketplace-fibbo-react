@@ -30,6 +30,11 @@ export default function ProfileContainer() {
     inputRef.click();
   };
 
+  const selectProfileImg = () => {
+    const inputRef = document.getElementById("profileImageInput");
+    inputRef.click();
+  };
+
   const setBannerImg = async (e) => {
     const file = e.target.files[0];
     try {
@@ -39,6 +44,29 @@ export default function ProfileContainer() {
 
       const imgAddedToSanity = await marketplaceApi.post(
         "uploadBannerImg",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log(imgAddedToSanity);
+      window.location.reload();
+    } catch (error) {
+      console.log("Error uploading file: ", error);
+    }
+  };
+
+  const setProfileImg = async (e) => {
+    const file = e.target.files[0];
+    try {
+      var formData = new FormData();
+      formData.append("image", file);
+      formData.append("wallet", wallet);
+
+      const imgAddedToSanity = await marketplaceApi.post(
+        "uploadProfileImg",
         formData,
         {
           headers: {
@@ -84,9 +112,18 @@ export default function ProfileContainer() {
       </button>
       {/*Profile Img*/}
       <div className="w-screen flex flex-col gap-4 items-center justify-center">
-        <div className="flex justify-center items-center rounded-full bg-primary-1  w-[112px] h-[112px] -mt-20">
+        <button
+          onClick={() => selectProfileImg()}
+          className="flex justify-center items-center rounded-full bg-primary-1  w-[112px] h-[112px] -mt-20"
+        >
+          <input
+            id="profileImageInput"
+            type="file"
+            onChange={(e) => setProfileImg(e)}
+            hidden={true}
+          />
           <img src={userProfile.profileImg} alt="ProfileImage" />
-        </div>
+        </button>
         {/*User info*/}
         <div className="text-2xl">
           <b>{userProfile.username}</b>
