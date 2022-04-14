@@ -49,6 +49,16 @@ export default function ExploreContainer() {
     setSmallViewUser(false);
   };
 
+  const orderByRecently = (a, b) => {
+    if (a.forSaleAt > b.forSaleAt) {
+      return -1;
+    }
+    if (a.forSaleAt < b.forSaleAt) {
+      return 1;
+    }
+    return 0;
+  };
+
   const orderByOldest = (a, b) => {
     if (a.forSaleAt < b.forSaleAt) {
       return -1;
@@ -61,10 +71,22 @@ export default function ExploreContainer() {
 
   const sortItems = (value) => {
     console.log(value);
-    if (value === "3") {
+    if (value === "2") {
       //recentyl created
-      const sortedArray = allMarketItems.sort(orderByOldest);
+      const sortedArray = allMarketItems.sort(orderByRecently);
+      const visibledsortedArray = visibleMarketItems.sort(orderByRecently);
+      /* setAllMarketItems(sortedArray);
+      setVisibleMarketItems(visibledsortedArray); */
       console.log(sortedArray);
+    }
+    if (value === "3") {
+      //oldest created
+      const sortedArray = allMarketItems.sort(orderByOldest);
+      const visibledsortedArray = visibleMarketItems.sort(orderByOldest);
+      /* setAllMarketItems(sortedArray);
+      setVisibleMarketItems(visibledsortedArray); */
+      console.log(sortedArray);
+
     }
   };
 
