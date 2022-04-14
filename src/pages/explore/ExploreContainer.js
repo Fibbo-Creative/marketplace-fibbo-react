@@ -76,7 +76,7 @@ export default function ExploreContainer() {
     }
     return 0;
   };
-  const orderByHighestP= (a, b) => {
+  const orderByHighestP = (a, b) => {
     if (a.price > b.price) {
       return -1;
     }
@@ -93,7 +93,7 @@ export default function ExploreContainer() {
       const sortedArray = allMarketItems.sort(orderByRecently);
       const visibledsortedArray = visibleMarketItems.sort(orderByRecently);
       setAllMarketItems(sortedArray);
-      setVisibleMarketItems(visibledsortedArray); 
+      setVisibleMarketItems(visibledsortedArray);
       console.log(sortedArray);
     }
     if (value === "3") {
@@ -101,7 +101,7 @@ export default function ExploreContainer() {
       const sortedArray = allMarketItems.sort(orderByOldest);
       const visibledsortedArray = visibleMarketItems.sort(orderByOldest);
       setAllMarketItems(sortedArray);
-      setVisibleMarketItems(visibledsortedArray);    
+      setVisibleMarketItems(visibledsortedArray);
       console.log(sortedArray);
     }
     if (value === "4") {
@@ -109,7 +109,7 @@ export default function ExploreContainer() {
       const sortedArray = allMarketItems.sort(orderByHighestP);
       const visibledsortedArray = visibleMarketItems.sort(orderByHighestP);
       setAllMarketItems(sortedArray);
-      setVisibleMarketItems(visibledsortedArray); 
+      setVisibleMarketItems(visibledsortedArray);
       console.log(sortedArray);
     }
     if (value === "5") {
@@ -117,7 +117,7 @@ export default function ExploreContainer() {
       const sortedArray = allMarketItems.sort(orderByLowestP);
       const visibledsortedArray = visibleMarketItems.sort(orderByLowestP);
       setAllMarketItems(sortedArray);
-      setVisibleMarketItems(visibledsortedArray); 
+      setVisibleMarketItems(visibledsortedArray);
       console.log(sortedArray);
     }
   };
@@ -125,7 +125,7 @@ export default function ExploreContainer() {
   return (
     <div className="mt-[90px] " style={{ height: "94vh" }}>
       {allMarketItems.length > 0 && (
-        <div className="absolute flex flex-col items-center justify-center ">
+        <div className="flex flex-col items-center justify-center ">
           <div className="flex flex-row items-center gap-2 md:gap-5  ">
             <select
               autoComplete="country"
