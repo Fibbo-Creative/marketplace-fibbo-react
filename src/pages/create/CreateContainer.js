@@ -97,10 +97,18 @@ export default function CreateContainer() {
     }
   }, [wallet, connectToWallet]);
   return (
-    <div className=" flex-col h-full w-full justify-center items-center pt-20">
+    <div>
+      <div className=" flex h-20 mt-40 justify-center  ">
+        <div className="flex justify-center items-center">
+          <h1 className="text-4xl"><b>CREA TU PROPIO NFT! </b></h1>
+        </div>
+      </div>
+    
+    
+    <div className=" flex-col h-full w-full justify-center items-center ">
     
       <form className="">
-        <div className="flex lg:flex-row flex-col gap-20 block p-20 items-center justify-center ">
+        <div className="flex lg:flex-row flex-col gap-20 block p-16 items-center justify-center ">
 
 
           <div className="">
@@ -179,19 +187,21 @@ export default function CreateContainer() {
         </div>
       </div>
 
-      <div className="flex justify-center items-center w-full lg:p-0 pb-20 ">
-      <button 
-        onClick={(e) => createNFT(e)}
-        type="submit"
-        className=" w-60 px-6 py-2.5 bg-primary-4 text-white font-medium text-xs leading-tight border-black
-        uppercase rounded shadow-md hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0
-        active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
-        >
-        Create NFT
-      </button>
+      <div className="flex flex-col justify-center items-center w-full lg:p-0 pb-20 gap-5 ">
+        <h1><b><i>* 1 FTM are charged to create a new NFT. </i></b> </h1>
+        <button 
+          onClick={(e) => createNFT(e)}
+          type="submit"
+          className=" w-60 px-6 py-2.5 bg-primary-4 text-white font-medium text-xs leading-tight border-black
+          uppercase rounded shadow-md hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0
+          active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+          >
+          Create NFT
+        </button>
       </div>
       
     </form>
+  </div>
   </div>
     
   
