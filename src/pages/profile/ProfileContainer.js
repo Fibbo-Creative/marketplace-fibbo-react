@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import NftCard from "../../components/NftCard";
 import NftCardSmall from "../../components/NftCardSmall";
 import marketplaceApi from "../../context/axios";
+import { useStateContext } from "../../context/StateProvider";
 import useAccount from "../../hooks/useAccount";
 
 export default function ProfileContainer() {
@@ -11,6 +12,7 @@ export default function ProfileContainer() {
   const navigate = useNavigate();
   const [userItems, setUserItems] = useState([]);
   const [userSmallview, setSmallViewUser] = useState(true);
+  const [{ userProfile }, stateDispatch] = useStateContext();
 
   const changeSmallDisplay = () => {
     setSmallViewUser(true);
@@ -38,23 +40,18 @@ export default function ProfileContainer() {
       {/*Profile Img*/}
       <div className="w-screen flex flex-col gap-4 items-center justify-center">
         <div className="flex justify-center items-center rounded-full bg-primary-1  w-[112px] h-[112px] -mt-20">
-          <img
-            src={`https://avatars.dicebear.com/api/adventurer/${
-              wallet ? wallet : "default"
-            }.svg`}
-            alt="ProfileImage"
-          />
+          <img src={userProfile.profileImg} alt="ProfileImage" />
         </div>
         {/*User info*/}
         <div className="text-2xl">
-          <b>Fibbo Artist</b>
+          <b>{userProfile.username}</b>
         </div>
         <div>
-          <i>{wallet}</i>
+          <i>{userProfile.wallet}</i>
         </div>
         <div className="flex gap-10">
-          <div>0 Followers</div>
-          <div>0 Following</div>
+          <div>{userProfile.followers} Followers</div>
+          <div>{userProfile.following} Following</div>
         </div>
       </div>
       <div className="h-[10px] w-sceen bg-gray-300 mt-10"></div>

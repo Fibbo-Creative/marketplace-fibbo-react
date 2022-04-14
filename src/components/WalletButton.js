@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ConnectionModal from "./ConnectionModal";
 
-export default function WalletButton({ wallet, disconnectWallet, openModal }) {
+export default function WalletButton({
+  userProfile,
+  wallet,
+  disconnectWallet,
+  openModal,
+}) {
   return (
     <button
       onClick={!wallet ? openModal : disconnectWallet}
@@ -11,11 +16,7 @@ export default function WalletButton({ wallet, disconnectWallet, openModal }) {
       {wallet !== "" ? (
         <div className="flex justify-evenly items-center py-1 px-2">
           <div>
-            <img
-              width={48}
-              src={`https://avatars.dicebear.com/api/adventurer/${wallet}.svg`}
-              alt=""
-            />
+            <img width={48} src={userProfile.profileImg} alt="" />
           </div>
           <div>
             <div>

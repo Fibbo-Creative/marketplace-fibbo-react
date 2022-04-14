@@ -3,7 +3,8 @@ import { useCallback, useEffect, useState } from "react";
 import { useContractsContext } from "../context/contracts/ContractProvider";
 import { contractActionTypes } from "../context/contracts/contractsReducer";
 import { useStateContext } from "../context/StateProvider";
-
+import marketplaceApi from "../context/axios";
+import { actionTypes } from "../context/stateReducer";
 export default function useAccount() {
   const [loadingConnection, setLoadingConection] = useState(true);
   const [{ wallet, balance }, dispatch] = useContractsContext();
@@ -21,6 +22,35 @@ export default function useAccount() {
     let chainId = await signer.getChainId();
 
     console.log(_wallet, chainId);
+
+    //Una vez tenemos wallet, creamos o recogemos user en sanity
+
+    const userProfileRequest = await marketplaceApi.get(
+      `userProfile?wallet=${_wallet}`
+    );
+
+    const status = userProfileRequest.status;
+    console.log(status, userProfileRequest.data);
+    if (status === 200) {
+      const _userProfile = userProfileRequest.data;
+      stateDispatch({
+        type: actionTypes.SET_USER_PROFILE,
+        userProfile: _userProfile,
+      });
+    } else if (status === 205) {
+      //Create profile
+      const createdProfileReq = await marketplaceApi.post("newProfile", {
+        wallet: _wallet,
+      });
+
+      if (createdProfileReq.status === 200) {
+        const _newProfile = createdProfileReq.data;
+        stateDispatch({
+          type: actionTypes.SET_USER_PROFILE,
+          userProfile: _newProfile,
+        });
+      }
+    }
 
     dispatch({
       type: contractActionTypes.SET_WALLET,

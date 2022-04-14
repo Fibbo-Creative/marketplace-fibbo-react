@@ -5,11 +5,13 @@ import logo from "../assets/FibboLogo.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import WalletButton from "./WalletButton";
 import ConnectionModal from "./ConnectionModal";
+import { useStateContext } from "../context/StateProvider";
 
 export default function Navbar() {
   const [searchText, setSearchText] = useState("Buscar...");
   const { wallet, connectToWallet, disconnectWallet } = useAccount();
   const [openModal, setOpenModal] = useState(false);
+  const [{ userProfile }, stateDispatch] = useStateContext();
   const handleOpenModal = () => {
     setOpenModal(true);
   };
@@ -84,6 +86,7 @@ export default function Navbar() {
 
         <div className="pl-10 flex flex-row justify-between items-center">
           <WalletButton
+            userProfile={userProfile}
             openModal={handleOpenModal}
             wallet={wallet}
             connectToWallet={connectToWallet}
