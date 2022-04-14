@@ -17,13 +17,9 @@ export default function ExploreContainer() {
     marketplaceApi
       .get("getNftsForSale")
       .then((res) => {
-        const items = res.data
-          .concat(res.data)
-          .concat(res.data)
-          .concat(res.data)
-          .concat(res.data)
-          .concat(res.data)
-          .concat(res.data);
+        console.log(res.data);
+        const items = res.data;
+
         console.log(items.length);
         setAllMarketItems(items);
         setVisibleMarketItems(res.data.slice(0, 12));
@@ -53,6 +49,79 @@ export default function ExploreContainer() {
     setSmallViewUser(false);
   };
 
+  const orderByRecently = (a, b) => {
+    if (a.forSaleAt > b.forSaleAt) {
+      return -1;
+    }
+    if (a.forSaleAt < b.forSaleAt) {
+      return 1;
+    }
+    return 0;
+  };
+  const orderByOldest = (a, b) => {
+    if (a.forSaleAt < b.forSaleAt) {
+      return -1;
+    }
+    if (a.forSaleAt > b.forSaleAt) {
+      return 1;
+    }
+    return 0;
+  };
+  const orderByLowestP = (a, b) => {
+    if (a.price < b.price) {
+      return -1;
+    }
+    if (a.price > b.price) {
+      return 1;
+    }
+    return 0;
+  };
+  const orderByHighestP= (a, b) => {
+    if (a.price > b.price) {
+      return -1;
+    }
+    if (a.price < b.price) {
+      return 1;
+    }
+    return 0;
+  };
+
+  const sortItems = (value) => {
+    console.log(value);
+    if (value === "2") {
+      //recentyl created
+      const sortedArray = allMarketItems.sort(orderByRecently);
+      const visibledsortedArray = visibleMarketItems.sort(orderByRecently);
+      setAllMarketItems(sortedArray);
+      setVisibleMarketItems(visibledsortedArray); 
+      console.log(sortedArray);
+    }
+    if (value === "3") {
+      //oldest created
+      const sortedArray = allMarketItems.sort(orderByOldest);
+      const visibledsortedArray = visibleMarketItems.sort(orderByOldest);
+      setAllMarketItems(sortedArray);
+      setVisibleMarketItems(visibledsortedArray);    
+      console.log(sortedArray);
+    }
+    if (value === "4") {
+      //highest price
+      const sortedArray = allMarketItems.sort(orderByHighestP);
+      const visibledsortedArray = visibleMarketItems.sort(orderByHighestP);
+      setAllMarketItems(sortedArray);
+      setVisibleMarketItems(visibledsortedArray); 
+      console.log(sortedArray);
+    }
+    if (value === "5") {
+      //Lowest price
+      const sortedArray = allMarketItems.sort(orderByLowestP);
+      const visibledsortedArray = visibleMarketItems.sort(orderByLowestP);
+      setAllMarketItems(sortedArray);
+      setVisibleMarketItems(visibledsortedArray); 
+      console.log(sortedArray);
+    }
+  };
+
   return (
     <div className="mt-[90px] " style={{ height: "94vh" }}>
       {allMarketItems.length > 0 && (
@@ -61,10 +130,13 @@ export default function ExploreContainer() {
             <select
               autoComplete="country"
               className="cursor-pointer h-10 flex border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              onChange={(e) => sortItems(e.target.value)}
             >
               <option value={1}>Sort by</option>
               <option value={2}>Recently Created</option>
               <option value={3}>Oldest</option>
+              <option value={4}>Highest Price</option>
+              <option value={5}>Lowest Price</option>
             </select>
             <div className="flex flex-row items-center justify-center gap-2 md:gap-5 ">
               <button
@@ -116,17 +188,4 @@ export default function ExploreContainer() {
       )}
     </div>
   );
-}
-
-{
-  /* <div className="w-full relative ">
-          <div className="w-full h-full relative flex flex-col items-center justify-center ">
-           
-          </div>
-
-            <div className="">
-              
-            </div>
-          </div>
-        </div> */
 }

@@ -68,7 +68,7 @@ export default function ItemPage() {
                   <div className="flex flex-row items-center gap-3 ">
                     <img
                       width={32}
-                      src="https://cdn.sanity.io/images/lmw8etck/dev/397928e6abbf8235445fe90e6414b5a62f034532-128x128.webp"
+                      src="https://assets.trustwalletapp.com/blockchains/fantom/info/logo.png"
                       alt="Fantom coin"
                     />
                     <p>{tokenInfo.price} FTM </p>
