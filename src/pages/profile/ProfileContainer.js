@@ -25,18 +25,63 @@ export default function ProfileContainer() {
     navigate(`/explore/${item.itemId}`);
   };
 
+  const selectBannerImg = () => {
+    const inputRef = document.getElementById("bannerInput");
+    inputRef.click();
+  };
+
+  const setBannerImg = async (e) => {
+    const file = e.target.files[0];
+    try {
+      var formData = new FormData();
+      formData.append("image", file);
+      formData.append("wallet", wallet);
+
+      const imgAddedToSanity = await marketplaceApi.post(
+        "uploadBannerImg",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log(imgAddedToSanity);
+      window.location.reload();
+    } catch (error) {
+      console.log("Error uploading file: ", error);
+    }
+  };
+
   useEffect(() => {
     if (wallet !== "") {
       marketplaceApi.get(`getNftsByAddress?address=${wallet}`).then((res) => {
         console.log(res.data);
         setUserItems(res.data);
+        console.log(userProfile);
       });
     }
   }, [wallet]);
   return (
     <div className="mt-[81px] w-screen h-full">
       {/*BANNER*/}
-      <div className="w-screen h-[200px] bg-gray-300"></div>
+      <button
+        onClick={() => selectBannerImg()}
+        className="w-screen h-[200px] bg-gray-300 z-10"
+        style={{
+          backgroundImage:
+            userProfile.profileBanner !== ""
+              ? `url(${userProfile.profileBanner})`
+              : "none",
+        }}
+      >
+        <input
+          id="bannerInput"
+          type="file"
+          onChange={(e) => setBannerImg(e)}
+          hidden={true}
+        />
+      </button>
       {/*Profile Img*/}
       <div className="w-screen flex flex-col gap-4 items-center justify-center">
         <div className="flex justify-center items-center rounded-full bg-primary-1  w-[112px] h-[112px] -mt-20">

@@ -17,13 +17,9 @@ export default function ExploreContainer() {
     marketplaceApi
       .get("getNftsForSale")
       .then((res) => {
-        const items = res.data
-          .concat(res.data)
-          .concat(res.data)
-          .concat(res.data)
-          .concat(res.data)
-          .concat(res.data)
-          .concat(res.data);
+        console.log(res.data);
+        const items = res.data;
+
         console.log(items.length);
         setAllMarketItems(items);
         setVisibleMarketItems(res.data.slice(0, 12));
@@ -53,6 +49,25 @@ export default function ExploreContainer() {
     setSmallViewUser(false);
   };
 
+  const orderByOldest = (a, b) => {
+    if (a.forSaleAt < b.forSaleAt) {
+      return -1;
+    }
+    if (a.forSaleAt > b.forSaleAt) {
+      return 1;
+    }
+    return 0;
+  };
+
+  const sortItems = (value) => {
+    console.log(value);
+    if (value === "3") {
+      //recentyl created
+      const sortedArray = allMarketItems.sort(orderByOldest);
+      console.log(sortedArray);
+    }
+  };
+
   return (
     <div className="mt-[90px] " style={{ height: "94vh" }}>
       {allMarketItems.length > 0 && (
@@ -61,6 +76,7 @@ export default function ExploreContainer() {
             <select
               autoComplete="country"
               className="cursor-pointer h-10 flex border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              onChange={(e) => sortItems(e.target.value)}
             >
               <option value={1}>Sort by</option>
               <option value={2}>Recently Created</option>
@@ -116,17 +132,4 @@ export default function ExploreContainer() {
       )}
     </div>
   );
-}
-
-{
-  /* <div className="w-full relative ">
-          <div className="w-full h-full relative flex flex-col items-center justify-center ">
-           
-          </div>
-
-            <div className="">
-              
-            </div>
-          </div>
-        </div> */
 }
