@@ -22,7 +22,7 @@ export default function ProfileContainer() {
   };
 
   const goToNftDetail = (item) => {
-    navigate(`/explore/${item.itemId}`);
+    navigate(`/explore/${item.collectionAddress}/${item.itemId}`);
   };
 
   const selectBannerImg = () => {

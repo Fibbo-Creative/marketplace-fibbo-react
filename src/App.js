@@ -34,7 +34,10 @@ function App() {
             <Route path="/profile" element={<ProfileContainer />} />
             <Route path="/create" element={<CreateContainer />} />
             <Route path="/explore" element={<ExploreContainer />} />
-            <Route path="/explore/:tokenId" element={<ItemPage />} />
+            <Route
+              path="/explore/:collection/:tokenId"
+              element={<ItemPage />}
+            />
 
             <Route path="" element={<HomeContainer />} />
           </Routes>

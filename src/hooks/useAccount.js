@@ -10,7 +10,6 @@ export default function useAccount() {
   const [{ wallet, balance }, dispatch] = useContractsContext();
   const [, stateDispatch] = useStateContext();
   const connectToWallet = useCallback(async () => {
-    console.log("connectingToWallet");
     const prov = new ethers.providers.Web3Provider(window.ethereum);
 
     await prov.send("eth_requestAccounts", []);
@@ -21,8 +20,6 @@ export default function useAccount() {
 
     let chainId = await signer.getChainId();
 
-    console.log(_wallet, chainId);
-
     //Una vez tenemos wallet, creamos o recogemos user en sanity
 
     const userProfileRequest = await marketplaceApi.get(
@@ -30,7 +27,6 @@ export default function useAccount() {
     );
 
     const status = userProfileRequest.status;
-    console.log(status, userProfileRequest.data);
     if (status === 200) {
       const _userProfile = userProfileRequest.data;
       stateDispatch({

@@ -10,7 +10,7 @@ import useAccount from "../../hooks/useAccount";
 export default function ItemPage() {
   const { wallet } = useAccount();
   const [tokenInfo, setTokenInfo] = useState(null);
-  let { tokenId } = useParams();
+  let { collection, tokenId } = useParams();
 
   const [openSellModal, setOpenSellModal] = useState(false);
   const [openBuyModal, setOpenBuyModal] = useState(false);
@@ -20,17 +20,15 @@ export default function ItemPage() {
   const [isForSale, setIsForSale] = useState(false);
   useEffect(() => {
     //Cuando carge pagina consultar /getNftsForSale
+    console.log(collection, tokenId);
     marketplaceApi
-      .get(`getNftInfoById?nftId=${tokenId}`)
+      .get(`getNftInfoById?collection=${collection}&nftId=${tokenId}`)
       .then(async (res) => {
         const tokenInfoResponse = res.data;
         console.log(tokenInfoResponse);
         setIsForSale(tokenInfoResponse.forSale);
         setIsOwner(tokenInfoResponse.owner === wallet);
-        const tokenInfos = await marketContract.fetchMarketItem(
-          parseInt(tokenId)
-        );
-        console.log(tokenInfos);
+
         setTokenInfo(tokenInfoResponse);
       })
       .catch((e) => {
@@ -133,6 +131,7 @@ export default function ItemPage() {
       )}
       {isOwner && !isForSale && (
         <PutForSaleModal
+          collectionAddress={collection}
           itemId={tokenId}
           wallet={wallet}
           showModal={openSellModal}
@@ -141,6 +140,7 @@ export default function ItemPage() {
       )}
       {!isOwner && isForSale && (
         <BuyItemModal
+          collectionAddress={collection}
           itemId={tokenId}
           tokenInfo={tokenInfo}
           wallet={wallet}
@@ -150,6 +150,7 @@ export default function ItemPage() {
       )}
       {!isOwner && !isForSale && (
         <MakeOfferModal
+          collectionAddress={collection}
           itemId={tokenId}
           tokenInfo={tokenInfo}
           wallet={wallet}

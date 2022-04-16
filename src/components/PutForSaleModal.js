@@ -11,6 +11,7 @@ export default function PutForSaleModal({
   showModal,
   handleCloseModal,
   itemId,
+  collectionAddress,
   wallet,
 }) {
   const navigate = useNavigate();
@@ -31,14 +32,19 @@ export default function PutForSaleModal({
         }
       );
 
-      await createItemTransaction.wait();
+      let tx = await createItemTransaction.wait();
 
-      //Si todo va bien, guardar en sanity item en venta
+      let event = tx.events[2];
+      let value = event.args[0];
+
+      let forSaleItemId = value.toNumber();
 
       await marketplaceApi.post("putForSale", {
         itemId: parseInt(itemId),
         owner: wallet,
         price: parseFloat(priceFor),
+        collectionAddress: collectionAddress,
+        forSaleItemId: forSaleItemId,
       });
 
       navigate("/explore");

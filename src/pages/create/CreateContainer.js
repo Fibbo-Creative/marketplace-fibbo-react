@@ -33,7 +33,6 @@ export default function CreateContainer() {
 
       document.getElementById("divTextImgNFT").style.visibility = "hidden";
       document.getElementById("divImgNFT").style.padding = "0";
-      
 
       setIpfsImageUrl(`https://ipfs.infura.io/ipfs/${imgAddedToIPFS.path}`);
 
@@ -48,7 +47,6 @@ export default function CreateContainer() {
       );
       console.log(imgAddedToSanity);
       setSanityImgUrl(imgAddedToSanity.data);
-
     } catch (error) {
       console.log("Error uploading file: ", error);
     }
@@ -83,16 +81,16 @@ export default function CreateContainer() {
         itemId: tokenId,
         royalty: royalty,
         sanityImgUrl: sanityImgUrl,
+        collection: nftContract.address,
       });
-      navigate(`/explore/${tokenId}`);
+      navigate(`/explore/${nftContract.address}/${tokenId}`);
     } catch (e) {
       console.log(e);
     }
   };
 
   useEffect(() => {
-    if (!wallet) {
-      console.log(wallet);
+    if (!wallet !== "") {
       connectToWallet();
     }
   }, [wallet, connectToWallet]);
@@ -100,110 +98,140 @@ export default function CreateContainer() {
     <div>
       <div className=" flex h-20 mt-40 justify-center  ">
         <div className="flex justify-center items-center">
-          <h1 className="text-4xl"><b>CREA TU PROPIO NFT! </b></h1>
+          <h1 className="text-4xl">
+            <b>CREA TU PROPIO NFT! </b>
+          </h1>
         </div>
       </div>
-    
-    
-    <div className=" flex-col h-full w-full justify-center items-center ">
-    
-      <form className="">
-        <div className="flex lg:flex-row flex-col gap-20 block p-16 items-center justify-center ">
 
-
-          <div className="">
-            <div id="divImgNFT" tabindex="0" bis_skin_checked="1" onClick={selectNFTImg} className="outline-dashed w-80 h-80 items-center justify-center cursor-pointer ">
-              
-              <input id="inputNFT" onChange={(e) => onFileSelected(e)} accept="image/*" name="uploadImage" type="file" autocomplete="off" className="hidden "/>
-              <img src={ipfsImageUrl} className=""></img>
-              <div id="divTextImgNFT" className="flex h-full items-center justify-center text-center" bis_skin_checked="1"> Drop files here or browse <br></br> JPG, PNG, BMP, GIF, SVG, Max 15mb. </div>
-            </div>
-          </div>
-          
-          
-          <div className="w-80">
-            <div className="form-group mb-6 mt-6">
-              <select
-                type="text"
-                /*  value={}
-                onChange={} */
-                disabled="true"
-                placeholder="Collection"
-                id="collectionInput"
-                className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 
-              bg-white bg-clip-padding border border-solid border-black rounded transition ease-in-out m-0
-              focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+      <div className=" flex-col h-full w-full justify-center items-center ">
+        <form className="">
+          <div className="flex lg:flex-row flex-col gap-20 block p-16 items-center justify-center ">
+            <div className="">
+              <div
+                id="divImgNFT"
+                tabIndex="0"
+                bis_skin_checked="1"
+                onClick={selectNFTImg}
+                className="outline-dashed w-80 h-80 items-center justify-center cursor-pointer "
               >
-                <option value={1}>Default Collection</option>
-                <option value={2}>Other</option>
-              </select>
-            </div>
-            <div className="form-group mb-6">
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                id="imageInput"
-                className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 
-              bg-white bg-clip-padding border border-solid border-black rounded transition ease-in-out m-0
-              focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                placeholder="Name"
-              />
-            </div>
-
-            <div className="form-group mb-6">
-              <textarea
-                className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding 
-            border border-solid border-black rounded transition ease-in-out m-0
-            focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                rows="3"
-                placeholder="Description"
-                value={desc}
-                onChange={(e) => setDesc(e.target.value)}
-                id="imageInput"
-                type="text"
-              />
-            </div>
-            <div className="form-group mb-6">
-              <input
-                className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700
-              bg-white bg-clip-padding border border-solid border-black rounded transition ease-in-out m-0
-              focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                value={royalty}
-                onChange={(e) => setRoyalty(e.target.value)}
-                id="imageInput"
-                type="text"
-                placeholder="Royalties(%)"
-              />
-            </div>
-            <div className="form-group mb-6">
-              <div class="fforminput fforminput_toggle" bis_skin_checked="1">
-                <label class="ftogglebutton togglebtn togglebtn-v1">
-                  <input type="checkbox" id="ixwZk4_Gf5Hmhsd4d" name="unlockContentToogle" className="" value=""/>
-                    <span className="text-gray-700 border-gray-300 p-3">Unlockable Content</span>
-                </label>
+                <input
+                  id="inputNFT"
+                  onChange={(e) => onFileSelected(e)}
+                  accept="image/*"
+                  name="uploadImage"
+                  type="file"
+                  autoComplete="off"
+                  className="hidden "
+                />
+                <img src={ipfsImageUrl} className=""></img>
+                <div
+                  id="divTextImgNFT"
+                  className="flex h-full items-center justify-center text-center"
+                  bis_skin_checked="1"
+                >
+                  {" "}
+                  Drop files here or browse <br></br> JPG, PNG, BMP, GIF, SVG,
+                  Max 15mb.{" "}
+                </div>
               </div>
             </div>
-        </div>
-      </div>
 
-      <div className="flex flex-col justify-center items-center w-full lg:p-0 pb-20 gap-5 ">
-        <h1><b><i>* 1 FTM are charged to create a new NFT. </i></b> </h1>
-        <button 
-          onClick={(e) => createNFT(e)}
-          type="submit"
-          className=" w-60 px-6 py-2.5 bg-primary-4 text-white font-medium text-xs leading-tight border-black
+            <div className="w-80">
+              <div className="form-group mb-6 mt-6">
+                <select
+                  type="text"
+                  /*  value={}
+                onChange={} */
+                  disabled={true}
+                  placeholder="Collection"
+                  id="collectionInput"
+                  className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 
+              bg-white bg-clip-padding border border-solid border-black rounded transition ease-in-out m-0
+              focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                >
+                  <option value={1}>Default Collection</option>
+                  <option value={2}>Other</option>
+                </select>
+              </div>
+              <div className="form-group mb-6">
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  id="imageInput"
+                  className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 
+              bg-white bg-clip-padding border border-solid border-black rounded transition ease-in-out m-0
+              focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  placeholder="Name"
+                />
+              </div>
+
+              <div className="form-group mb-6">
+                <textarea
+                  className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding 
+            border border-solid border-black rounded transition ease-in-out m-0
+            focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  rows="3"
+                  placeholder="Description"
+                  value={desc}
+                  onChange={(e) => setDesc(e.target.value)}
+                  id="imageInput"
+                  type="text"
+                />
+              </div>
+              <div className="form-group mb-6">
+                <input
+                  className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700
+              bg-white bg-clip-padding border border-solid border-black rounded transition ease-in-out m-0
+              focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  value={royalty}
+                  onChange={(e) => setRoyalty(e.target.value)}
+                  id="imageInput"
+                  type="text"
+                  placeholder="Royalties(%)"
+                />
+              </div>
+              <div className="form-group mb-6">
+                <div
+                  className="fforminput fforminput_toggle"
+                  bis_skin_checked="1"
+                >
+                  <label className="ftogglebutton togglebtn togglebtn-v1">
+                    <input
+                      type="checkbox"
+                      id="ixwZk4_Gf5Hmhsd4d"
+                      name="unlockContentToogle"
+                      className=""
+                      value=""
+                    />
+                    <span className="text-gray-700 border-gray-300 p-3">
+                      Unlockable Content
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col justify-center items-center w-full lg:p-0 pb-20 gap-5 ">
+            <h1>
+              <b>
+                <i>* 1 FTM are charged to create a new NFT. </i>
+              </b>{" "}
+            </h1>
+            <button
+              onClick={(e) => createNFT(e)}
+              type="submit"
+              className=" w-60 px-6 py-2.5 bg-primary-4 text-white font-medium text-xs leading-tight border-black
           uppercase rounded shadow-md hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0
           active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
-          >
-          Create NFT
-        </button>
+            >
+              Create NFT
+            </button>
+          </div>
+        </form>
       </div>
-      
-    </form>
-  </div>
-  </div>
-    
-  
+    </div>
   );
 }
