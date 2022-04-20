@@ -6,6 +6,7 @@ import PutForSaleModal from "../../components/PutForSaleModal";
 import marketplaceApi from "../../context/axios";
 import { useContractsContext } from "../../context/contracts/ContractProvider";
 import useAccount from "../../hooks/useAccount";
+import DropDown from "../../components/DropDown"
 
 export default function ItemPage() {
   const { wallet } = useAccount();
@@ -125,9 +126,12 @@ export default function ItemPage() {
                   </>
                 )}
               </div>
+              <DropDown/>
             </div>
           </div>
         </div>
+          
+
       )}
       {isOwner && !isForSale && (
         <PutForSaleModal
