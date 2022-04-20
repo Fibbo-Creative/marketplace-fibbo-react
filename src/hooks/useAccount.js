@@ -5,6 +5,8 @@ import { contractActionTypes } from "../context/contracts/contractsReducer";
 import { useStateContext } from "../context/StateProvider";
 import marketplaceApi from "../context/axios";
 import { actionTypes } from "../context/stateReducer";
+import { configData } from "../chainData/configData";
+import { changeChainCorrect } from "../chainData/utils";
 export default function useAccount() {
   const [loadingConnection, setLoadingConection] = useState(true);
   const [{ wallet, balance }, dispatch] = useContractsContext();
@@ -21,7 +23,15 @@ export default function useAccount() {
     let chainId = await signer.getChainId();
 
     //Una vez tenemos wallet, creamos o recogemos user en sanity
-
+    console.log(chainId);
+    let correctChain = true;
+    if (chainId !== configData.chainInfo.chainId) {
+      console.log("change to ftm testnet");
+      correctChain = false;
+    }
+    if (!correctChain) {
+      await changeChainCorrect();
+    }
     const userProfileRequest = await marketplaceApi.get(
       `userProfile?wallet=${_wallet}`
     );
