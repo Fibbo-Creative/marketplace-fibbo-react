@@ -59,7 +59,7 @@ export default function ItemPage() {
           royalty: res.data.royalty,
           recipient: res.data.creator,
           collection: collectionData.name,
-          totalItems: collection.numberOfItems,
+          totalItems: collectionData.numberOfItems,
         });
       })
       .catch((e) => {
