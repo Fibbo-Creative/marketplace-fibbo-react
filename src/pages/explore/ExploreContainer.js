@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import NftCard from "../../components/NftCard";
 import marketplaceApi from "../../context/axios";
 import { Icon } from "@iconify/react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import NftCardSmall from "../../components/NftCardSmall";
 import InfiniteScroll from "react-infinite-scroll-component";
 
@@ -12,6 +12,8 @@ export default function ExploreContainer() {
   const [visibleItemsCount, setVisibleItemsCount] = useState(12);
   const [userSmallview, setSmallViewUser] = useState(true);
   const navigate = useNavigate();
+
+
   useEffect(() => {
     //Cuando carge pagina consultar /getNftsForSale
     marketplaceApi
@@ -90,10 +92,12 @@ export default function ExploreContainer() {
     console.log(value);
     if (value === "2") {
       //recentyl created
+      
       const sortedArray = allMarketItems.sort(orderByRecently);
       const visibledsortedArray = visibleMarketItems.sort(orderByRecently);
       setAllMarketItems(sortedArray);
       setVisibleMarketItems(visibledsortedArray);
+
       console.log(sortedArray);
     }
     if (value === "3") {
@@ -119,6 +123,7 @@ export default function ExploreContainer() {
       setAllMarketItems(sortedArray);
       setVisibleMarketItems(visibledsortedArray);
       console.log(sortedArray);
+     
     }
   };
 
