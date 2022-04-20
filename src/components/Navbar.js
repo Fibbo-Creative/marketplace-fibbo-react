@@ -23,8 +23,76 @@ export default function Navbar() {
     navigate("/");
   };
 
+  const [width, setWidth] = useState(0);
+  
+    useEffect(() => {
+      // Creamos una función para actualizar el estado con el clientWidth
+      const updateWidth = () => {
+        const width = document.body.clientWidth
+        console.log(`updateWidth con ${width}`)
+        setWidth(width)
+        
+        try{
+          if (width <= 1024 && document.getElementById("iconCloseBurguer").style.visibility === "hidden") {
+            document.getElementById("iconOpenBurguer").style.visibility = "visible"
+          }
+          if (width > 1024 && document.getElementById("iconCloseBurguer").style.visibility === "visible") {
+            document.getElementById("iconCloseBurguer").style.visibility = "hidden"
+          }  
+        }
+        catch {
+          console.log("Error")
+        }
+      }
+      // Actualizaremos el width al montar el componente
+      updateWidth()
+      // Nos suscribimos al evento resize de window
+      window.addEventListener("resize", updateWidth)
+  
+      // Devolvemos una función para anular la suscripción al evento
+      return () => {
+        window.removeEventListener("resize", updateWidth)
+      }
+    })
+  
+
+  function openBurguer() {
+    document.getElementById("iconOpenBurguer").style.visibility = "hidden";
+    document.getElementById("iconCloseBurguer").style.visibility = "visible";
+    document.getElementById("iconCloseBurguer").style.display = "flex";
+
+    if (document.getElementById("burguerContentMobile").style.visibility === "visible"){  
+      document.getElementById("burguerContentMobile").style.visibility = "hidden";
+    }
+    else  {
+      document.getElementById("burguerContentMobile").style.visibility = "visible";
+    }
+  }
+
+  function closeBurguer () {
+    document.getElementById("iconOpenBurguer").style.visibility = "visible";
+    document.getElementById("iconCloseBurguer").style.visibility = "hidden";
+    document.getElementById("burguerContentMobile").style.visibility = "hidden";
+  }
+
+  function ShowWindowWidth() {
+    const [width, setWidth] = useState(0);
+    useEffect(() => {
+      const updateWidth = () => {
+        const width = document.body.clientWidth
+        console.log(`updateWidth con ${width}`)
+        setWidth(width)
+      }
+      updateWidth()
+      window.addEventListener("resize", updateWidth)
+      return () => {
+        window.removeEventListener("resize", updateWidth)
+      }
+    })
+  }
   return (
     <header className="flex bg-white flex-row justify-between fixed top-0 px-5 py-5 w-full items-center z-10 border-b b-gray-200 h-[81px]">
+      
       <div className="flex items-center cursor-pointer">
         <img
           src={logo}
@@ -34,9 +102,10 @@ export default function Navbar() {
           className="w-[128px] object-contain"
         ></img>
       </div>
-      <div className="flex items-center p-0 m-0 align-baseline">
+
+      <div id="burguerContent" className=" hidden lg:flex  items-center p-0 m-0 align-baseline">
         <div>
-          <div className="lg:inline hidden flex items-center justify-center">
+          <div className=" flex items-center justify-center">
             <div className="flex border-2 rounded">
               <input
                 type="text"
@@ -51,7 +120,7 @@ export default function Navbar() {
         </div>
         <div className="">
           <a
-            className={`lg:inline hidden ml-5 hover:text-blue-400 hover:font-bold ${
+            className={` ml-5 hover:text-blue-400 hover:font-bold ${
               location.pathname === "/explore"
                 ? "text-primary-b font-bold"
                 : "text-primary-1 "
@@ -61,7 +130,7 @@ export default function Navbar() {
             Explore
           </a>
           <a
-            className={`lg:inline hidden ml-5 hover:text-blue-400 hover:font-bold ${
+            className={` ml-5 hover:text-blue-400 hover:font-bold ${
               location.pathname === "/create"
                 ? "text-primary-b font-bold"
                 : "text-primary-1 "
@@ -72,7 +141,7 @@ export default function Navbar() {
           </a>
           {wallet !== "" && (
             <a
-              className={`lg:inline hidden ml-5  hover:font-bold ${
+              className={` ml-5  hover:font-bold ${
                 location.pathname === "/profile"
                   ? "text-primary-b font-bold"
                   : "text-primary-1 "
@@ -83,8 +152,8 @@ export default function Navbar() {
             </a>
           )}
         </div>
-
-        <div className="pl-10 flex flex-row justify-between items-center">
+        </div>
+        <div className="gap-10 flex flex-row justify-between ">
           <WalletButton
             userProfile={userProfile}
             openModal={handleOpenModal}
@@ -92,9 +161,13 @@ export default function Navbar() {
             connectToWallet={connectToWallet}
             disconnectWallet={disconnectWallet}
           />
-          <div className="lg:hidden pl-10 pr-5 ">
-            <Icon className="text-3xl text-gray-600" icon="bx:menu-alt-left" />
-          </div>
+          <div className="flex">
+            <div id="iconOpenBurguer" className="lg:hidden flex w-auto">
+              <Icon  className="text-3xl text-gray-600 cursor-pointer" onClick={openBurguer} icon="bx:menu-alt-left" />
+            </div>
+            <div id="iconCloseBurguer" className="flex hidden  ">
+              <Icon  className="text-3xl text-gray-600 cursor-pointer " onClick={closeBurguer} icon="bx:menu-alt-right" />
+            </div>
         </div>
       </div>
       <ConnectionModal
@@ -102,6 +175,71 @@ export default function Navbar() {
         handleCloseModal={() => setOpenModal(false)}
         connectToWallet={connectToWallet}
       />
+        {width <= 1024 && (
+          <div id="burguerContentMobile" className="bg-white absolute flex invisible lg:invisible w-screen h-screen top-20 left-0"> 
+              
+            <div className="flex flex-col gap-10 mt-10 w-full">
+
+
+              <div className=" flex items-center justify-center">
+                <div className="flex border-2 rounded">
+                  <input
+                    type="text"
+                    className="px-4 py-2 w-80"
+                    placeholder="Search..."
+                  />
+                  <button className="flex items-center justify-center px-4 border-l">
+                    <Icon icon="ant-design:search-outlined" />
+                  </button>
+                </div>
+              </div>
+            <div className="flex items-center justify-center">
+              <a
+              className={` ml-5 hover:text-blue-400 hover:font-bold ${
+                location.pathname === "/explore"
+                  ? "text-primary-b font-bold"
+                  : "text-primary-1 "
+              } hover:text-primary-3 `}
+              href="/explore"
+            >
+              Explore
+            </a>
+              
+            </div>
+            <div className="flex items-center justify-center">
+
+            <a
+              className={` ml-5 hover:text-blue-400 hover:font-bold ${
+                location.pathname === "/create"
+                  ? "text-primary-b font-bold"
+                  : "text-primary-1 "
+              } hover:text-primary-3`}
+              href="/create"
+            >
+              Create
+            </a>
+
+            </div>
+              <div className="flex items-center justify-center">
+            {wallet !== "" && (
+              <a
+                className={` ml-5  hover:font-bold ${
+                  location.pathname === "/profile"
+                    ? "text-primary-b font-bold"
+                    : "text-primary-1 "
+                } hover:text-primary-3`}
+                href="/profile"
+              >
+                Profile
+              </a>
+            )}
+
+          </div>
+            </div> 
+          </div>
+        )}
+
     </header>
+          
   );
 }
