@@ -5,12 +5,13 @@ import { contractActionTypes } from "../context/contracts/contractsReducer";
 import { useStateContext } from "../context/StateProvider";
 import marketplaceApi from "../context/axios";
 import { actionTypes } from "../context/stateReducer";
+import { configData } from "../chainData/configData";
+import { changeChainCorrect } from "../chainData/utils";
 export default function useAccount() {
   const [loadingConnection, setLoadingConection] = useState(true);
   const [{ wallet, balance }, dispatch] = useContractsContext();
   const [, stateDispatch] = useStateContext();
   const connectToWallet = useCallback(async () => {
-    console.log("connectingToWallet");
     const prov = new ethers.providers.Web3Provider(window.ethereum);
 
     await prov.send("eth_requestAccounts", []);
@@ -21,16 +22,21 @@ export default function useAccount() {
 
     let chainId = await signer.getChainId();
 
-    console.log(_wallet, chainId);
-
     //Una vez tenemos wallet, creamos o recogemos user en sanity
-
+    console.log(chainId);
+    let correctChain = true;
+    if (chainId !== configData.chainInfo.chainId) {
+      console.log("change to ftm testnet");
+      correctChain = false;
+    }
+    if (!correctChain) {
+      await changeChainCorrect();
+    }
     const userProfileRequest = await marketplaceApi.get(
       `userProfile?wallet=${_wallet}`
     );
 
     const status = userProfileRequest.status;
-    console.log(status, userProfileRequest.data);
     if (status === 200) {
       const _userProfile = userProfileRequest.data;
       stateDispatch({

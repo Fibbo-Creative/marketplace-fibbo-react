@@ -22,7 +22,7 @@ export default function ProfileContainer() {
   };
 
   const goToNftDetail = (item) => {
-    navigate(`/explore/${item.itemId}`);
+    navigate(`/explore/${item.collectionAddress}/${item.itemId}`);
   };
 
   const selectBannerImg = () => {
@@ -114,18 +114,20 @@ export default function ProfileContainer() {
       <div className="w-screen flex flex-col gap-4 items-center justify-center">
         <button
           onClick={() => selectProfileImg()}
-          className="flex justify-center items-center rounded-full bg-primary-1  w-[112px] h-[112px] -mt-20"
+          className="flex justify-center items-center rounded-full bg-primary-1 m-4 w-[112px] h-[112px] -mt-20"
         >
-          <input
+          <input 
             id="profileImageInput"
             type="file"
             onChange={(e) => setProfileImg(e)}
             hidden={true}
           />
-          <img src={userProfile.profileImg} alt="ProfileImage" />
+          <img src={userProfile.profileImg} className= "rounded-md" alt="ProfileImage"  />
         </button>
+
         {/*User info*/}
-        <div className="text-2xl">
+        
+        <div className="text-2xl justify-center items-center ">
           <b>{userProfile.username}</b>
         </div>
         <div>
@@ -134,8 +136,10 @@ export default function ProfileContainer() {
         <div className="flex gap-10">
           <div>{userProfile.followers} Followers</div>
           <div>{userProfile.following} Following</div>
+      
         </div>
       </div>
+
       <div className="h-[10px] w-sceen bg-gray-300 mt-10"></div>
       <div className="flex flex-row items-center justify-center gap-2 md:gap-5 ">
         <button onClick={changeSmallDisplay} className="hover:-translate-y-1">

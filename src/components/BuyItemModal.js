@@ -11,6 +11,7 @@ export default function BuyItemModal({
   showModal,
   handleCloseModal,
   itemId,
+  collectionAddress,
   tokenInfo,
   wallet,
 }) {
@@ -23,10 +24,12 @@ export default function BuyItemModal({
       const price = parseEther(tokenInfo.price.toString());
       console.log(price);
 
+      const itemInContract = await marketContract.fetchMarketItem(12);
+      console.log(itemInContract);
       //en el contrato del marketplace -> createMarketItem
       const buyItemTransaction = await marketContract.createMarketSale(
         nftContract.address,
-        parseInt(itemId),
+        tokenInfo.forSaleItemId,
         {
           value: price,
         }
@@ -42,9 +45,10 @@ export default function BuyItemModal({
         boughtFor: tokenInfo.price,
         sanityItemId: tokenInfo._id,
         nftItemId: tokenInfo.itemId,
+        collectionAddress: collectionAddress,
       });
 
-      navigate(`/explore/${itemId}`);
+      navigate(`/explore/${collectionAddress}/${itemId}`);
       window.location.reload();
     } catch (e) {
       console.log(e);
