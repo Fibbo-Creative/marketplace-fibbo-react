@@ -35,14 +35,10 @@ export default function Navbar() {
         try{
           if (width <= 1024 && document.getElementById("iconCloseBurguer").style.visibility === "hidden") {
             document.getElementById("iconOpenBurguer").style.visibility = "visible"
-
           }
           if (width > 1024 && document.getElementById("iconCloseBurguer").style.visibility === "visible") {
             document.getElementById("iconCloseBurguer").style.visibility = "hidden"
-
-          }
-
-          
+          }  
         }
         catch {
           console.log("Error")
@@ -65,54 +61,35 @@ export default function Navbar() {
     document.getElementById("iconCloseBurguer").style.visibility = "visible";
     document.getElementById("iconCloseBurguer").style.display = "flex";
 
-
-
     if (document.getElementById("burguerContentMobile").style.visibility === "visible"){  
-      
       document.getElementById("burguerContentMobile").style.visibility = "hidden";
     }
     else  {
       document.getElementById("burguerContentMobile").style.visibility = "visible";
-
     }
-    
   }
 
   function closeBurguer () {
     document.getElementById("iconOpenBurguer").style.visibility = "visible";
     document.getElementById("iconCloseBurguer").style.visibility = "hidden";
     document.getElementById("burguerContentMobile").style.visibility = "hidden";
-
   }
 
   function ShowWindowWidth() {
     const [width, setWidth] = useState(0);
-  
     useEffect(() => {
-      // Creamos una función para actualizar el estado con el clientWidth
       const updateWidth = () => {
         const width = document.body.clientWidth
         console.log(`updateWidth con ${width}`)
         setWidth(width)
       }
-      // Actualizaremos el width al montar el componente
       updateWidth()
-      // Nos suscribimos al evento resize de window
       window.addEventListener("resize", updateWidth)
-  
-      // Devolvemos una función para anular la suscripción al evento
       return () => {
         window.removeEventListener("resize", updateWidth)
       }
     })
-  
-    return (
-      <div>
-        <span>Width es de {width}px</span>
-      </div>
-    )
   }
-
   return (
     <header className="flex bg-white flex-row justify-between fixed top-0 px-5 py-5 w-full items-center z-10 border-b b-gray-200 h-[81px]">
       
@@ -176,7 +153,7 @@ export default function Navbar() {
           )}
         </div>
         </div>
-        <div className="pl-10 flex flex-row justify-between items-center">
+        <div className="gap-10 flex flex-row justify-between ">
           <WalletButton
             userProfile={userProfile}
             openModal={handleOpenModal}
@@ -184,12 +161,13 @@ export default function Navbar() {
             connectToWallet={connectToWallet}
             disconnectWallet={disconnectWallet}
           />
-          <div className="lg:hidden pl-10 pr-5 ">
-            <Icon id="iconOpenBurguer" className="text-3xl text-gray-600 cursor-pointer" onClick={openBurguer} icon="bx:menu-alt-left" />
-            <Icon id="iconCloseBurguer" className="text-3xl text-gray-600 cursor-pointer hidden" onClick={closeBurguer} icon="bx:menu-alt-right" />
-
-          
-          
+          <div className="flex">
+            <div id="iconOpenBurguer" className="lg:hidden flex w-auto">
+              <Icon  className="text-3xl text-gray-600 cursor-pointer" onClick={openBurguer} icon="bx:menu-alt-left" />
+            </div>
+            <div id="iconCloseBurguer" className="flex hidden  ">
+              <Icon  className="text-3xl text-gray-600 cursor-pointer " onClick={closeBurguer} icon="bx:menu-alt-right" />
+            </div>
         </div>
       </div>
       <ConnectionModal
@@ -198,7 +176,7 @@ export default function Navbar() {
         connectToWallet={connectToWallet}
       />
         {width <= 1024 && (
-          <div id="burguerContentMobile" className="bg-white absolute flex invisible lg:invisible w-screen h-screen top-24 left-0"> 
+          <div id="burguerContentMobile" className="bg-white absolute flex invisible lg:invisible w-screen h-screen top-20 left-0"> 
               
             <div className="flex flex-col gap-10 mt-10 w-full">
 
@@ -259,11 +237,8 @@ export default function Navbar() {
           </div>
             </div> 
           </div>
-
-      
         )}
 
-    
     </header>
           
   );
