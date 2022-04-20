@@ -10,9 +10,8 @@ export default function ExploreContainer() {
   const [allMarketItems, setAllMarketItems] = useState([]);
   const [visibleMarketItems, setVisibleMarketItems] = useState([]);
   const [visibleItemsCount, setVisibleItemsCount] = useState(12);
-  const [userSmallview, setSmallViewUser] = useState(true);
+  const [userSmallview, setSmallViewUser] = useState(false);
   const navigate = useNavigate();
-
 
   useEffect(() => {
     //Cuando carge pagina consultar /getNftsForSale
@@ -92,7 +91,7 @@ export default function ExploreContainer() {
     console.log(value);
     if (value === "2") {
       //recentyl created
-      
+
       const sortedArray = allMarketItems.sort(orderByRecently);
       const visibledsortedArray = visibleMarketItems.sort(orderByRecently);
       setAllMarketItems(sortedArray);
@@ -123,7 +122,6 @@ export default function ExploreContainer() {
       setAllMarketItems(sortedArray);
       setVisibleMarketItems(visibledsortedArray);
       console.log(sortedArray);
-     
     }
   };
 
