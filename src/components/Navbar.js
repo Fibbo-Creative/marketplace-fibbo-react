@@ -81,10 +81,10 @@ export default function Navbar() {
           className="w-[128px] object-contain"
         ></img>
       </div>
-      <div className="flex justify-evenly">
-        <div className=" hidden lg:flex  items-center p-0 m-0 align-baseline">
+      <div className="flex gap-5 items-center">
+        <div className="hidden lg:flex  items-center p-0 m-0 align-baseline">
           <div>
-            <div className=" flex items-center justify-center">
+            <div className="flex items-center justify-center">
               <div className="flex border-2 rounded">
                 <input
                   type="text"
@@ -132,7 +132,7 @@ export default function Navbar() {
             )}
           </div>
         </div>
-        <div className="gap-10 flex flex-row justify-between ">
+        <div className="gap-10 flex flex-row justify-between items-center ">
           <WalletButton
             userProfile={userProfile}
             openModal={handleOpenModal}
