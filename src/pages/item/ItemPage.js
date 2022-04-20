@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { configData } from "../../chainData/configData";
 import BuyItemModal from "../../components/BuyItemModal";
 import MakeOfferModal from "../../components/MakeOfferModal";
 import PutForSaleModal from "../../components/PutForSaleModal";
@@ -10,6 +11,10 @@ import useAccount from "../../hooks/useAccount";
 export default function ItemPage() {
   const { wallet } = useAccount();
   const [tokenInfo, setTokenInfo] = useState(null);
+  const [tokenHistoryInfo, setTokenHistoryInfo] = useState([]);
+  const [chainInfo, setChainInfo] = useState({});
+  const [properties, setProperties] = useState({});
+
   let { collection, tokenId } = useParams();
 
   const [openSellModal, setOpenSellModal] = useState(false);
@@ -30,6 +35,32 @@ export default function ItemPage() {
         setIsOwner(tokenInfoResponse.owner === wallet);
 
         setTokenInfo(tokenInfoResponse);
+
+        const tokenHistoryRequest = await marketplaceApi.get(
+          `getItemHistory?tokenId=${tokenId}&collection=${collection}`
+        );
+
+        setTokenHistoryInfo(tokenHistoryRequest.data);
+
+        setChainInfo({
+          collection: collection,
+          tokenId: tokenId,
+          network: configData.chainInfo.name,
+          chainId: configData.chainInfo.chainId,
+        });
+
+        const collectionRequest = await marketplaceApi.get(
+          `getCollectionData?collection=${collection}`
+        );
+
+        const collectionData = collectionRequest.data;
+
+        setProperties({
+          royalty: res.data.royalty,
+          recipient: res.data.creator,
+          collection: collectionData.name,
+          totalItems: collection.numberOfItems,
+        });
       })
       .catch((e) => {
         console.log(e);
