@@ -10,7 +10,7 @@ export default function NftCard({ title, children }) {
 
     return (
 
-            <details className=" p-6 border-2 rounded-md w-96  ">
+            <details className=" p-6 border-2 rounded-md flex ">
 
                 <summary className=" cursor-pointer pb-5 border-b-2 ">{title}
              

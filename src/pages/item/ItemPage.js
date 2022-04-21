@@ -69,10 +69,10 @@ export default function ItemPage() {
   }, [tokenId, wallet]);
 
   return (
-    <div className="flex mt-[90px] w-full h-full justify-center items-center p-5">
+    <div className="flex mt-[90px] w-full h-full justify-center items-center p-10">
       {tokenInfo && (
         <div
-          className="flex flex-row justify-center items-center"
+          className="flex flex-col lg:flex-row justify-center items-center"
           key={tokenInfo.name}
         >
           <div className="flex justify-center items-center h-fit border-gray border-2 p-2 rounded-md w-1/3">
@@ -158,16 +158,17 @@ export default function ItemPage() {
                 )}
               </div>
               
+              
             </div>
-            
+            <div>
+                <DropDown title={"PROPERTIES"}  >
+                  <p className="break-words"> AAAAAAAAAAAAAAAAAA EEEEEEE</p> 
+                </DropDown>
+              </div>
           </div>
-          <DropDown title={"edsrf"} content={"EWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEW"} >
-            <p className="break-words">dsafgjnhiadfhgkjashndgfjkanhgdfois11111111111111111111111111111111111111111111111111111 dsafgjnhiadfhgkjashndgfjkanhgdfois dsafgjnhiadfhgkjashndgfjkanhgdfois dsafgjnhiadfhgkjashndgfjkanhgdfois dsafgjnhiadfhgkjashndgfjkanhgdfois dsafgjnhiadfhgkjashndgfjkanhgdfois dsafgjnhiadfhgkjashndgfjkanhgdfois dsafgjnhiadfhgkjashndgfjkanhgdfois dsafgjnhiadfhgkjashndgfjkanhgdfois</p>
-            
-            
-          </DropDown>
 
-          </div>
+
+        </div>
           
           
           
