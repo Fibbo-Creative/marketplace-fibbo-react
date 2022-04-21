@@ -14,6 +14,9 @@ export default function ProfileContainer() {
   const [userSmallview, setSmallViewUser] = useState(true);
   const [{ userProfile }, stateDispatch] = useStateContext();
 
+  const [newUsername, setNewUsername] = useState(userProfile.username);
+  const [showEditUsername, setShowEditUsername] = useState(false);
+
   const changeSmallDisplay = () => {
     setSmallViewUser(true);
   };
@@ -81,6 +84,36 @@ export default function ProfileContainer() {
     }
   };
 
+  const editProfileUsername = async (e) => {
+    console.log(newUsername);
+    e.preventDefault();
+    try {
+      const imgAddedToSanity = await marketplaceApi.post("uploadUsername", {
+        wallet: wallet,
+        username: newUsername,
+      });
+      console.log(imgAddedToSanity);
+      window.location.reload();
+    } catch (error) {
+      console.log("Error uploading file: ", error);
+    }
+    setShowEditUsername(!showEditUsername);
+  };
+
+  const toggleEditUsername = async (e) => {
+    setShowEditUsername(!showEditUsername);
+    /* try {
+      const imgAddedToSanity = await marketplaceApi.post("uploadUsername", {
+        wallet: wallet,
+        username: "",
+      });
+      console.log(imgAddedToSanity);
+      window.location.reload();
+    } catch (error) {
+      console.log("Error uploading file: ", error);
+    } */
+  };
+
   useEffect(() => {
     if (wallet !== "") {
       marketplaceApi.get(`getNftsByAddress?address=${wallet}`).then((res) => {
@@ -116,19 +149,35 @@ export default function ProfileContainer() {
           onClick={() => selectProfileImg()}
           className="flex justify-center items-center rounded-full bg-primary-1 m-4 w-[112px] h-[112px] -mt-20"
         >
-          <input 
+          <input
             id="profileImageInput"
             type="file"
             onChange={(e) => setProfileImg(e)}
             hidden={true}
           />
-          <img src={userProfile.profileImg} className= "rounded-md" alt="ProfileImage"  />
+          <img
+            src={userProfile.profileImg}
+            className="rounded-md"
+            alt="ProfileImage"
+          />
         </button>
 
         {/*User info*/}
-        
-        <div className="text-2xl justify-center items-center ">
-          <b>{userProfile.username}</b>
+
+        <div className="flex gap-3 items-center text-2xl justify-center items-center ">
+          {showEditUsername ? (
+            <form onSubmit={(e) => editProfileUsername(e)}>
+              <input
+                value={newUsername}
+                onChange={(e) => setNewUsername(e.target.value)}
+              />
+            </form>
+          ) : (
+            <b>{userProfile.username}</b>
+          )}
+          <button onClick={() => toggleEditUsername()}>
+            <Icon icon="bxs:edit" />
+          </button>
         </div>
         <div>
           <i>{userProfile.wallet}</i>
@@ -136,7 +185,6 @@ export default function ProfileContainer() {
         <div className="flex gap-10">
           <div>{userProfile.followers} Followers</div>
           <div>{userProfile.following} Following</div>
-      
         </div>
       </div>
 

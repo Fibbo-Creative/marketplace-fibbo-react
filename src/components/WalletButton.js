@@ -25,7 +25,7 @@ export default function WalletButton({
                 {wallet?.substring(wallet.length - 3, wallet.length)}
               </b>
             </div>
-            <div className="text-xs text-gray-300">Fantom Testnet</div>
+            <div className="text-xs text-gray-300">{userProfile.username}</div>
           </div>
         </div>
       ) : (
