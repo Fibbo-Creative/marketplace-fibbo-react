@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import React, { useState } from "react";
 import FilterBottomDropDown from "./FilterBottomDropDown";
+import FilterButtons from "./FilterButtons";
 import FilterRange from "./FilterRange";
 
 export default function FiltersSidebar({
@@ -31,7 +32,7 @@ export default function FiltersSidebar({
     <>
       {showSidebar ? (
         <div
-          className={`flex flex-col top-20 left-0 w-[20vw] bg-purple-600 p-10 pl-20 fixed h-full z-40 ease-in-out duration-300 ${
+          className={`flex flex-col top-20 left-0 w-[17vw] bg-purple-600 p-10 pl-20 fixed h-full z-40 ease-in-out duration-300 ${
             showSidebar ? "-translate-x-0 " : "-translate-x-full"
           }`}
         >
@@ -50,19 +51,9 @@ export default function FiltersSidebar({
               />
             </button>
           </div>
-          <div className="flex flex-col left-0  w-full top-28 fixed gap-7">
+          <div className="flex flex-col left-0  w-full top-28 fixed gap-4">
             <FilterBottomDropDown name="Status">
-              <div className="grid grid-cols-2 gap-4 w-full h-30 p-5">
-                <button className="flex items-center bg-purple-600 text-white font-bold py-2 px-4 rounded justify-center border border-gray-300 hover:bg-purple-700">
-                  Buy Now
-                </button>
-                <button className="flex items-center bg-purple-600 text-white font-bold py-2 px-4 rounded justify-center border border-gray-300 hover:bg-purple-700">
-                  Has Offers
-                </button>
-                <button className="flex items-center bg-purple-600 text-white font-bold py-2 px-4 rounded justify-center border border-gray-300 hover:bg-purple-700">
-                  On Auction
-                </button>{" "}
-              </div>
+              <FilterButtons />
             </FilterBottomDropDown>
 
             <FilterBottomDropDown name="Price">
