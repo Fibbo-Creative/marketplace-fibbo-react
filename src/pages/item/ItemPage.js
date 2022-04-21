@@ -157,10 +157,23 @@ export default function ItemPage() {
                   </>
                 )}
               </div>
-              <DropDown/>
+              
             </div>
+            
           </div>
-        </div>
+          <DropDown title={"edsrf"} content={"EWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEW"} >
+            <p className="break-words">dsafgjnhiadfhgkjashndgfjkanhgdfois11111111111111111111111111111111111111111111111111111 dsafgjnhiadfhgkjashndgfjkanhgdfois dsafgjnhiadfhgkjashndgfjkanhgdfois dsafgjnhiadfhgkjashndgfjkanhgdfois dsafgjnhiadfhgkjashndgfjkanhgdfois dsafgjnhiadfhgkjashndgfjkanhgdfois dsafgjnhiadfhgkjashndgfjkanhgdfois dsafgjnhiadfhgkjashndgfjkanhgdfois dsafgjnhiadfhgkjashndgfjkanhgdfois</p>
+            
+            
+          </DropDown>
+
+          </div>
+          
+          
+          
+
+          
+
           
 
       )}
