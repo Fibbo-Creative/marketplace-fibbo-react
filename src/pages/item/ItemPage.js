@@ -7,6 +7,7 @@ import PutForSaleModal from "../../components/PutForSaleModal";
 import marketplaceApi from "../../context/axios";
 import { useContractsContext } from "../../context/contracts/ContractProvider";
 import useAccount from "../../hooks/useAccount";
+import DropDown from "../../components/DropDown"
 
 export default function ItemPage() {
   const { wallet } = useAccount();
@@ -156,9 +157,25 @@ export default function ItemPage() {
                   </>
                 )}
               </div>
+              
             </div>
+            
           </div>
-        </div>
+          <DropDown title={"edsrf"} content={"EWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEWEW"} >
+            <p className="break-words">dsafgjnhiadfhgkjashndgfjkanhgdfois11111111111111111111111111111111111111111111111111111 dsafgjnhiadfhgkjashndgfjkanhgdfois dsafgjnhiadfhgkjashndgfjkanhgdfois dsafgjnhiadfhgkjashndgfjkanhgdfois dsafgjnhiadfhgkjashndgfjkanhgdfois dsafgjnhiadfhgkjashndgfjkanhgdfois dsafgjnhiadfhgkjashndgfjkanhgdfois dsafgjnhiadfhgkjashndgfjkanhgdfois dsafgjnhiadfhgkjashndgfjkanhgdfois</p>
+            
+            
+          </DropDown>
+
+          </div>
+          
+          
+          
+
+          
+
+          
+
       )}
       {isOwner && !isForSale && (
         <PutForSaleModal
