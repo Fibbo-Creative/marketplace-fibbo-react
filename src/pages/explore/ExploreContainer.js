@@ -6,12 +6,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import NftCardSmall from "../../components/NftCardSmall";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Collapse } from "react-collapse";
+import FiltersSidebar from "../../components/FiltersSidebar";
 
 export default function ExploreContainer() {
   const [allMarketItems, setAllMarketItems] = useState([]);
   const [visibleMarketItems, setVisibleMarketItems] = useState([]);
   const [visibleItemsCount, setVisibleItemsCount] = useState(12);
-  const [showSidebar, setShowSidebar] = useState(false);
   const [userSmallview, setSmallViewUser] = useState(false);
   const navigate = useNavigate();
 
@@ -131,42 +131,7 @@ export default function ExploreContainer() {
     <div className="mt-[90px] " style={{ height: "94vh" }}>
       {allMarketItems.length > 0 && (
         <div className="flex flex-col items-center justify-center ">          
-          {showSidebar ? (
-           <div
-           className={`flex flex-col top-20 left-0 w-[20vw] bg-purple-600 p-10 pl-20 fixed h-full z-40 ease-in-out duration-300 ${
-             showSidebar ? "-translate-x-0 " : "-translate-x-full"
-           }`}
-           >
-          <div className="flex flex-row  items-center justify-center cursor-pointer gap-3"  onClick={() => setShowSidebar(!showSidebar)}>          
-           <h3 className="text-4xl font-semibold text-white">Filter</h3>
-              <button>
-                <Icon
-                    icon="bi:filter-left"
-                    hFlip={true}
-                    width="40"
-                    height="40"
-                    color="purple"/> 
-                    </button>
-            </div>
-            <div className="flex flex-col items-center justify-center p-10 gap-3">
-            <h3 className="text-2xl font-semibold text-white">Status</h3>
-            <h3 className="text-2xl font-semibold text-white">Price</h3>
-            <h3 className="text-2xl font-semibold text-white">Collections</h3>
-            </div>
-           </div>
-              ):(
-            <button
-                onClick={() => setShowSidebar(!showSidebar)}
-                className="flex text-4xl text-white items-center cursor-pointer fixed left-10 top-24 z-50 hover:-translate-y-1"
-              >
-                <Icon
-                  icon="bi:filter-left"
-                  width="40"
-                  height="40"
-                  color="purple"
-                />
-              </button>
-          )}
+          <FiltersSidebar/>
           <div className="flex flex-row items-center gap-2 md:gap-5  ">
             <select
               autoComplete="country"
