@@ -13,6 +13,8 @@ export default function ExploreContainer() {
   const [visibleMarketItems, setVisibleMarketItems] = useState([]);
   const [visibleItemsCount, setVisibleItemsCount] = useState(12);
   const [userSmallview, setSmallViewUser] = useState(false);
+  const [statusFilter, setStatusFilter] = useState(0);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -130,67 +132,77 @@ export default function ExploreContainer() {
   return (
     <div className="mt-[90px] " style={{ height: "94vh" }}>
       {allMarketItems.length > 0 && (
-        <div className="flex flex-col items-center justify-center ">          
-          <FiltersSidebar/>
-          <div className="flex flex-row items-center gap-2 md:gap-5  ">
-            <select
-              autoComplete="country"
-              className="cursor-pointer h-10 flex border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              onChange={(e) => sortItems(e.target.value)}
-            >
-              <option value={1}>Sort by</option>
-              <option value={2}>Recently Created</option>
-              <option value={3}>Oldest</option>
-              <option value={4}>Highest Price</option>
-              <option value={5}>Lowest Price</option>
-            </select>
-            <div className="flex flex-row items-center justify-center gap-2 md:gap-5 ">
-              <button
-                onClick={changeSmallDisplay}
-                className="hover:-translate-y-1"
+        <>
+          <FiltersSidebar
+            allMarketItems={allMarketItems}
+            setAllMarketItems={setAllMarketItems}
+            visibleMarketItems={visibleMarketItems}
+            setVisibleMarketItems={setVisibleMarketItems}
+          />
+          <div className="flex flex-col items-center justify-center ">
+            <div className="flex flex-row items-center gap-2 md:gap-5  ">
+              <select
+                autoComplete="country"
+                className="cursor-pointer h-10 flex border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                onChange={(e) => sortItems(e.target.value)}
               >
-                <Icon
-                  icon="akar-icons:dot-grid-fill"
-                  width="40"
-                  height="40"
-                  color="grey"
-                />
-              </button>
-              <button
-                onClick={changeBigDisplay}
-                className="hover:-translate-y-1"
-              >
-                <Icon
-                  icon="ci:grid-big-round"
-                  width="60"
-                  height="60"
-                  color="grey"
-                />
-              </button>
+                <option value={1}>Sort by</option>
+                <option value={2}>Recently Created</option>
+                <option value={3}>Oldest</option>
+                <option value={4}>Highest Price</option>
+                <option value={5}>Lowest Price</option>
+              </select>
+              <div className="flex flex-row items-center justify-center gap-2 md:gap-5 ">
+                <button
+                  onClick={changeSmallDisplay}
+                  className="hover:-translate-y-1"
+                >
+                  <Icon
+                    icon="akar-icons:dot-grid-fill"
+                    width="40"
+                    height="40"
+                    color="grey"
+                  />
+                </button>
+                <button
+                  onClick={changeBigDisplay}
+                  className="hover:-translate-y-1"
+                >
+                  <Icon
+                    icon="ci:grid-big-round"
+                    width="60"
+                    height="60"
+                    color="grey"
+                  />
+                </button>
+              </div>
             </div>
+            <InfiniteScroll
+              className="flex  mt-2 flex-wrap justify-center"
+              dataLength={visibleMarketItems.length}
+              next={addMoreItems}
+              hasMore={true}
+            >
+              {visibleMarketItems.map((item) => {
+                return (
+                  <div key={Math.random(1, 9999)} className="p-5">
+                    {userSmallview ? (
+                      <NftCardSmall
+                        onClick={() => goToNftDetail(item)}
+                        item={item}
+                      />
+                    ) : (
+                      <NftCard
+                        onClick={() => goToNftDetail(item)}
+                        item={item}
+                      />
+                    )}
+                  </div>
+                );
+              })}
+            </InfiniteScroll>
           </div>
-          <InfiniteScroll
-            className="flex  mt-2 flex-wrap justify-center"
-            dataLength={visibleMarketItems.length}
-            next={addMoreItems}
-            hasMore={true}
-          >
-            {visibleMarketItems.map((item) => {
-              return (
-                <div key={Math.random(1, 9999)} className="p-5">
-                  {userSmallview ? (
-                    <NftCardSmall
-                      onClick={() => goToNftDetail(item)}
-                      item={item}
-                    />
-                  ) : (
-                    <NftCard onClick={() => goToNftDetail(item)} item={item} />
-                  )}
-                </div>
-              );
-            })}
-          </InfiniteScroll>
-        </div>
+        </>
       )}
     </div>
   );
