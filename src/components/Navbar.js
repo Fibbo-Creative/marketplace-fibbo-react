@@ -30,7 +30,6 @@ export default function Navbar() {
     // Creamos una función para actualizar el estado con el clientWidth
     const updateWidth = () => {
       const _width = document.body.clientWidth;
-      console.log(`updateWidth con ${width}`);
       setWidth(_width);
       if (_width >= 1024) {
         setOpenedMenu(false);

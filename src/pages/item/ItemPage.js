@@ -10,6 +10,13 @@ import useAccount from "../../hooks/useAccount";
 import DropDown from "../../components/DropDown";
 import ItemHistory from "../../components/ItemHistory";
 
+export const truncateWallet = (wallet) => {
+  return `${wallet.slice(0, 8)}...${wallet.slice(
+    wallet.length - 8,
+    wallet.length
+  )}`;
+};
+
 export default function ItemPage() {
   const { wallet } = useAccount();
   const [tokenInfo, setTokenInfo] = useState(null);
@@ -164,11 +171,36 @@ export default function ItemPage() {
             </div>
           </div>
           <div>
-            <DropDown title={"PROPERTIES"}>
-              <p className="break-words"> AAAAAAAAAAAAAAAAAA EEEEEEE</p>
+            <DropDown title={"Chain Data"}>
+              <div className="flex flex-col gap-2"></div>
             </DropDown>
-            <ItemHistory historyItems={tokenHistoryInfo} />
+            {properties.recipient && (
+              <DropDown title={"PROPERTIES"}>
+                <div className="flex flex-col gap-2">
+                  <div className="flex justify-between">
+                    <div>
+                      <b>Royalties</b>
+                    </div>
+                    <div>{properties.royalty}%</div>
+                  </div>
+                  <div className="flex justify-between">
+                    <div>
+                      <b>Recipient</b>
+                    </div>
+                    <div>{truncateWallet(properties.recipient)}</div>
+                  </div>
+                  <div className="flex justify-between">
+                    <div>
+                      <b>Collection</b>
+                    </div>
+                    <div>{properties.collection}</div>
+                  </div>
+                </div>
+              </DropDown>
+            )}
           </div>
+
+          <ItemHistory historyItems={tokenHistoryInfo} />
         </div>
       )}
       {isOwner && !isForSale && (
