@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import WalletButton from "./WalletButton";
 import ConnectionModal from "./ConnectionModal";
 import { useStateContext } from "../context/StateProvider";
+import useRespnsive from "../hooks/useResponsive";
 
 export default function Navbar() {
   const [searchText, setSearchText] = useState("Buscar...");
@@ -13,6 +14,7 @@ export default function Navbar() {
   const [openModal, setOpenModal] = useState(false);
   const [openedMenu, setOpenedMenu] = useState(false);
   const [{ userProfile }, stateDispatch] = useStateContext();
+  const { _width } = useRespnsive();
   const handleOpenModal = () => {
     setOpenModal(true);
   };
@@ -24,28 +26,6 @@ export default function Navbar() {
     navigate("/");
   };
 
-  const [width, setWidth] = useState(0);
-
-  useEffect(() => {
-    // Creamos una función para actualizar el estado con el clientWidth
-    const updateWidth = () => {
-      const _width = document.body.clientWidth;
-      setWidth(_width);
-      if (_width >= 1024) {
-        setOpenedMenu(false);
-      }
-    };
-    // Actualizaremos el width al montar el componente
-    updateWidth();
-    // Nos suscribimos al evento resize de window
-    window.addEventListener("resize", updateWidth);
-
-    // Devolvemos una función para anular la suscripción al evento
-    return () => {
-      window.removeEventListener("resize", updateWidth);
-    };
-  });
-
   function openBurguer() {
     setOpenedMenu(true);
   }
@@ -54,21 +34,11 @@ export default function Navbar() {
     setOpenedMenu(false);
   }
 
-  function ShowWindowWidth() {
-    const [width, setWidth] = useState(0);
-    useEffect(() => {
-      const updateWidth = () => {
-        const width = document.body.clientWidth;
-        console.log(`updateWidth con ${width}`);
-        setWidth(width);
-      };
-      updateWidth();
-      window.addEventListener("resize", updateWidth);
-      return () => {
-        window.removeEventListener("resize", updateWidth);
-      };
-    });
-  }
+  useEffect(() => {
+    if (_width >= 1024) {
+      setOpenedMenu(false);
+    }
+  }, [_width]);
   return (
     <header className="flex bg-white flex-row justify-between fixed top-0 px-5 py-5 w-full items-center z-10 border-b b-gray-200 h-[81px]">
       <div className="flex items-center cursor-pointer">
