@@ -8,7 +8,7 @@ export default function FilterBottomDropDown({ name, children }) {
   const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });
 
   return (
-    <div className="flex flex-col text-white bg-white-600 z-50 p-2 h-50 border border-black">
+    <div className="flex flex-col text-white bg-white-600 z-50 p-2 h-50 border border-[#4F1A97]">
       <button
         className=""
         {...getToggleProps({
