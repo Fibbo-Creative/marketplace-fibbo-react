@@ -14,6 +14,7 @@ export default function ExploreContainer() {
   const [visibleItemsCount, setVisibleItemsCount] = useState(12);
   const [userSmallview, setSmallViewUser] = useState(false);
   const [statusFilter, setStatusFilter] = useState(0);
+  const [openedSidebar, setOpenedSidebar] = useState(false);
 
   const navigate = useNavigate();
 
@@ -134,12 +135,17 @@ export default function ExploreContainer() {
       {allMarketItems.length > 0 && (
         <>
           <FiltersSidebar
+            setOpenedSidebar={setOpenedSidebar}
             allMarketItems={allMarketItems}
             setAllMarketItems={setAllMarketItems}
             visibleMarketItems={visibleMarketItems}
             setVisibleMarketItems={setVisibleMarketItems}
           />
-          <div className="flex flex-col items-center justify-center ">
+          <div
+            className={`flex flex-col items-center justify-center ${
+              openedSidebar && "ml-[17vw]"
+            }`}
+          >
             <div className="flex flex-row items-center gap-2 md:gap-5  ">
               <select
                 autoComplete="country"

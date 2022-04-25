@@ -8,13 +8,14 @@ export default function FiltersSidebar({
   allMarketItems,
   setAllMarketItems,
   visibleMarketItems,
+  setOpenedSidebar,
   setVisibleMarketItems,
 }) {
   const [showSidebar, setShowSidebar] = useState(false);
   const [min_state, setMinState] = useState(0);
   const [max_state, setMaxState] = useState(100);
 
-  function applyRangeFilter() {
+  const applyRangeFilter = () => {
     console.log(allMarketItems);
 
     let visiblefilterArray = allMarketItems.filter((item) => {
@@ -26,21 +27,26 @@ export default function FiltersSidebar({
 
     setVisibleMarketItems(visiblefilterArray);
     console.log(min_state, max_state, visiblefilterArray);
-  }
+  };
+
+  const handleShowSidebar = (show) => {
+    setOpenedSidebar(show);
+    setShowSidebar(show);
+  };
 
   return (
     <>
       {showSidebar ? (
         <div
-          className={`flex flex-col top-20 left-0 w-[17vw] bg-purple-600 p-10 pl-20 fixed h-full z-40 ease-in-out duration-300 ${
+          className={`flex flex-col top-20 left-0 w-[17vw] bg-white-600 p-10 pl-20 fixed h-full z-40 ease-in-out duration-300 border-r border-gray-300 ${
             showSidebar ? "-translate-x-0 " : "-translate-x-full"
           }`}
         >
           <div
             className="flex flex-row cursor-pointer gap-20"
-            onClick={() => setShowSidebar(!showSidebar)}
+            onClick={() => handleShowSidebar(!showSidebar)}
           >
-            <h3 className="text-4xl font-semibold text-white">Filters</h3>
+            <h3 className="text-4xl font-semibold text-black">Filters</h3>
             <button>
               <Icon
                 icon="bi:filter-left"
@@ -70,10 +76,10 @@ export default function FiltersSidebar({
         </div>
       ) : (
         <button
-          onClick={() => setShowSidebar(!showSidebar)}
-          className="flex text-4xl text-white items-center cursor-pointer fixed left-10 top-24 z-50 hover:-translate-y-1"
+          onClick={() => handleShowSidebar(!showSidebar)}
+          className="flex text-4xl text-black items-center cursor-pointer fixed left-10 top-24 z-50 hover:-translate-y-1"
         >
-          <Icon icon="bi:filter-left" width="40" height="40" color="purple" />/
+          <Icon icon="bi:filter-left" width="40" height="40" color="purple" />
         </button>
       )}
     </>
