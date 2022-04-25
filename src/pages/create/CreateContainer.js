@@ -4,9 +4,19 @@ import { create as ipfsHttpClient } from "ipfs-http-client";
 import marketplaceApi from "../../context/axios";
 import useAccount from "../../hooks/useAccount";
 import { useNavigate } from "react-router-dom";
+import ActionButton from "../../components/ActionButton";
 
 const ipfsClient = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
 
+const validateName = (name) => {
+  if (name.length > 4 && name.length < 15) return true;
+  else return false;
+};
+
+const validateDesc = (desc) => {
+  if (desc.length > 25 && desc.length < 300) return true;
+  else return false;
+};
 export default function CreateContainer() {
   const navigate = useNavigate();
   const [ipfsImageUrl, setIpfsImageUrl] = useState("");
@@ -17,6 +27,11 @@ export default function CreateContainer() {
   const { connectToWallet, wallet } = useAccount();
   const [{ nftContract }] = useContractsContext();
 
+  const [imageError, setImageError] = useState(false);
+  const [nameError, setNameError] = useState(false);
+  const [descError, setDescError] = useState(false);
+  const [royaltyError, setRoyaltyError] = useState(false);
+
   const selectNFTImg = () => {
     const inputRef = document.getElementById("inputNFT");
     inputRef.click();
@@ -24,6 +39,7 @@ export default function CreateContainer() {
 
   const onFileSelected = async (e) => {
     const file = e.target.files[0];
+
     try {
       var formData = new FormData();
       formData.append("image", file);
@@ -47,6 +63,7 @@ export default function CreateContainer() {
       );
       console.log(imgAddedToSanity);
       setSanityImgUrl(imgAddedToSanity.data);
+      setImageError(false);
     } catch (error) {
       console.log("Error uploading file: ", error);
     }
@@ -54,39 +71,76 @@ export default function CreateContainer() {
 
   const createNFT = async (e) => {
     e.preventDefault();
+    setNameError(false);
+    setDescError(false);
+    setRoyaltyError(false);
     //Crear NFT en el contrato
     const data = JSON.stringify({
       name,
       desc,
       image: ipfsImageUrl,
     });
-    try {
-      const ipfsCID = await ipfsClient.add(data);
-      const ipfsFileURL = `https://ipfs.infura.io/ipfs/${ipfsCID.path}`;
-
-      let createNFTtx = await nftContract.createToken(ipfsFileURL);
-      let tx = await createNFTtx.wait();
-
-      let event = tx.events[0];
-      let value = event.args[2];
-      let tokenId = value.toNumber();
-
-      console.log(tokenId);
-      console.log(wallet);
-      //Si todo va bien, crear a sanity
-      await marketplaceApi.post("newNftItem", {
-        name: name,
-        description: desc,
-        creator: wallet,
-        itemId: tokenId,
-        royalty: royalty,
-        sanityImgUrl: sanityImgUrl,
-        collection: nftContract.address,
-      });
-      navigate(`/explore/${nftContract.address}/${tokenId}`);
-    } catch (e) {
-      console.log(e);
+    let error = false;
+    if (sanityImgUrl === "") {
+      setImageError(true);
+      error = true;
     }
+    if (!validateName(name)) {
+      setNameError(true);
+      error = true;
+    }
+    if (!validateDesc(desc)) {
+      setDescError(true);
+      error = true;
+    }
+    if (royalty > 10) {
+      setRoyaltyError(true);
+      error = true;
+    }
+    if (!error) {
+      try {
+        const ipfsCID = await ipfsClient.add(data);
+        const ipfsFileURL = `https://ipfs.infura.io/ipfs/${ipfsCID.path}`;
+
+        let createNFTtx = await nftContract.createToken(ipfsFileURL);
+        let tx = await createNFTtx.wait();
+
+        let event = tx.events[0];
+        let value = event.args[2];
+        let tokenId = value.toNumber();
+
+        console.log(tokenId);
+        console.log(wallet);
+        //Si todo va bien, crear a sanity
+        await marketplaceApi.post("newNftItem", {
+          name: name,
+          description: desc,
+          creator: wallet,
+          itemId: tokenId,
+          royalty: royalty,
+          sanityImgUrl: sanityImgUrl,
+          collection: nftContract.address,
+        });
+        navigate(`/explore/${nftContract.address}/${tokenId}`);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
+  const handleChangeName = (value) => {
+    setNameError(false);
+    setName(value);
+  };
+
+  const handleChangeDescription = (value) => {
+    setDescError(false);
+    setDesc(value);
+  };
+
+  const handleChangeRoyalty = (value) => {
+    setRoyaltyError(false);
+    setRoyalty(value);
   };
 
   useEffect(() => {
@@ -113,7 +167,9 @@ export default function CreateContainer() {
                 tabIndex="0"
                 bis_skin_checked="1"
                 onClick={selectNFTImg}
-                className="outline-dashed w-80 h-80 items-center justify-center cursor-pointer "
+                className={`outline-dashed ${
+                  imageError && "outline-red-400"
+                } w-80 h-80 items-center justify-center cursor-pointer`}
               >
                 <input
                   id="inputNFT"
@@ -122,17 +178,26 @@ export default function CreateContainer() {
                   name="uploadImage"
                   type="file"
                   autoComplete="off"
-                  className="hidden "
+                  className="hidden"
                 />
-                <img src={ipfsImageUrl} className=""></img>
+                {ipfsImageUrl !== "" && (
+                  <img className="h-80" src={ipfsImageUrl}></img>
+                )}
                 <div
                   id="divTextImgNFT"
-                  className="flex h-full items-center justify-center text-center"
+                  className={`flex h-full items-center justify-center text-center ${
+                    imageError && "text-red-400"
+                  }`}
                   bis_skin_checked="1"
                 >
-                  {" "}
-                  Drop files here or browse <br></br> JPG, PNG, BMP, GIF, SVG,
-                  Max 15mb.{" "}
+                  {imageError ? (
+                    "Please select a file!"
+                  ) : (
+                    <div>
+                      Drop files here or browse <br></br> JPG, PNG, BMP, GIF,
+                      SVG...
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -154,45 +219,68 @@ export default function CreateContainer() {
                   <option value={2}>Other</option>
                 </select>
               </div>
-              <div className="form-group mb-6">
+              <div className="flex flex-col gap-1  mb-4">
                 <input
                   type="text"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => handleChangeName(e.target.value)}
                   id="imageInput"
-                  className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 
+                  placeholder="Name*"
+                  className={`w-full px-3 py-1.5 text-base font-normal text-gray-700 
               bg-white bg-clip-padding border border-solid border-black rounded transition ease-in-out m-0
               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                  placeholder="Name"
+                   ${nameError && "border-red-400"}`}
                 />
+
+                {nameError && (
+                  <div className="text-xs text-red-400 ">
+                    Name must be between 4 and 15 characters
+                  </div>
+                )}
               </div>
 
-              <div className="form-group mb-6">
+              <div className="flex flex-col gap-1  mb-4">
                 <textarea
-                  className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding 
+                  className={`form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding 
             border border-solid border-black rounded transition ease-in-out m-0
-            focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+            focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none ${
+              descError && "border-red-400"
+            }`}
                   rows="3"
-                  placeholder="Description"
+                  placeholder="Description*"
                   value={desc}
-                  onChange={(e) => setDesc(e.target.value)}
+                  onChange={(e) => handleChangeDescription(e.target.value)}
                   id="imageInput"
                   type="text"
                 />
+                {descError && (
+                  <div className="text-xs text-red-400 ">
+                    Description must be between 50 and 300 characters
+                  </div>
+                )}
               </div>
-              <div className="form-group mb-6">
+
+              <div className="flex flex-col gap-1  mb-4">
                 <input
-                  className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700
+                  className={`form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700
               bg-white bg-clip-padding border border-solid border-black rounded transition ease-in-out m-0
-              focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+              focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none ${
+                royaltyError && "border-red-400"
+              }`}
                   value={royalty}
-                  onChange={(e) => setRoyalty(e.target.value)}
+                  onChange={(e) => handleChangeRoyalty(e.target.value)}
                   id="imageInput"
                   type="text"
                   placeholder="Royalties(%)"
                 />
+                {royaltyError && (
+                  <div className="text-xs text-red-400 ">
+                    Royalties can't be higher than 10% !
+                  </div>
+                )}
               </div>
-              <div className="form-group mb-6">
+
+              <div className="flex flex-col gap-1 mb-4">
                 <div
                   className="fforminput fforminput_toggle"
                   bis_skin_checked="1"
@@ -220,15 +308,10 @@ export default function CreateContainer() {
                 <i>* 1 FTM are charged to create a new NFT. </i>
               </b>{" "}
             </h1>
-            <button
-              onClick={(e) => createNFT(e)}
-              type="submit"
-              className=" w-60 px-6 py-2.5 bg-primary-4 text-white font-medium text-xs leading-tight border-black
-          uppercase rounded shadow-md hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0
-          active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
-            >
-              Create NFT
-            </button>
+            <ActionButton
+              text="Create NFT"
+              buttonAction={(e) => createNFT(e)}
+            />
           </div>
         </form>
       </div>

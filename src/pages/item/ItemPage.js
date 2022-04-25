@@ -64,7 +64,7 @@ export default function ItemPage() {
           tokenId: tokenId,
           network: configData.chainInfo.name,
           chainId: configData.chainInfo.chainId,
-        })
+        });
 
         const collectionRequest = await marketplaceApi.get(
           `getCollectionData?collection=${collection}`
@@ -177,37 +177,41 @@ export default function ItemPage() {
               </div>
             </div>
           </div>
-          <div >
-            <DropDown title={"Chain Data"} className="p-8">
-              <div className="flex flex-col gap-2">
-                <div className="flex justify-between">
-                  <div>
-                    <b>Collection</b>
+          <div>
+            {chainInfo.chainId && (
+              <DropDown title={"Chain Data"} className="p-8">
+                <div className="flex flex-col gap-2">
+                  <div className="flex justify-between">
+                    <div>
+                      <b>Collection</b>
+                    </div>
+                    <div>{chainInfo.collection}</div>
                   </div>
-                  <div>{chainInfo.collection}</div>
-                </div>
-                <div className="flex justify-between">
-                  <div>
-                    <b>Network</b>
+                  <div className="flex justify-between">
+                    <div>
+                      <b>Network</b>
+                    </div>
+                    <div>{chainInfo.network}</div>
                   </div>
-                  <div>{chainInfo.network}</div>
-                </div>
-                <div className="flex justify-between">
-                  <div>
-                    <b>Chain Id</b>
+                  <div className="flex justify-between">
+                    <div>
+                      <b>Chain Id</b>
+                    </div>
+                    <div>{chainInfo.chainId}</div>
                   </div>
-                  <div>{chainInfo.chainId}</div>
-                </div>
-                <div className="flex justify-between">
-                  <div>
-                    <b>Token Id</b>
+                  <div className="flex justify-between">
+                    <div>
+                      <b>Token Id</b>
+                    </div>
+                    <div>
+                      {chainInfo.tokenId} / {properties.totalItems}
+                    </div>
                   </div>
-                  <div>{chainInfo.tokenId} / {properties.totalItems}</div>
                 </div>
-              </div>
-            </DropDown>
+              </DropDown>
+            )}
             {properties.recipient && (
-              <DropDown title={"PROPERTIES"}>
+              <DropDown title={"Properties"}>
                 <div className="flex flex-col gap-2">
                   <div className="flex justify-between">
                     <div>
@@ -232,7 +236,9 @@ export default function ItemPage() {
             )}
           </div>
 
-          <ItemHistory historyItems={tokenHistoryInfo} />
+          {tokenHistoryInfo.length > 0 && (
+            <ItemHistory historyItems={tokenHistoryInfo} />
+          )}
         </div>
       )}
       {isOwner && !isForSale && (
