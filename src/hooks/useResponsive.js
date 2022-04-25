@@ -1,25 +1,24 @@
 import { useEffect, useState } from "react";
-function getWindowDimensions() {
-  const { innerWidth: width, innerHeight: height } = window;
-  return {
-    width,
-    height,
-  };
-}
 
 export default function useRespnsive() {
-  const [windowDimensions, setWindowDimensions] = useState(
-    getWindowDimensions()
-  );
+  const [_width, setWidth] = useState(0);
 
   useEffect(() => {
-    function handleResize() {
-      setWindowDimensions(getWindowDimensions());
-    }
+    // Creamos una función para actualizar el estado con el clientWidth
+    const updateWidth = () => {
+      const width = document.body.clientWidth;
+      setWidth(width);
+    };
+    // Actualizaremos el width al montar el componente
+    updateWidth();
+    // Nos suscribimos al evento resize de window
+    window.addEventListener("resize", updateWidth);
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    // Devolvemos una función para anular la suscripción al evento
+    return () => {
+      window.removeEventListener("resize", updateWidth);
+    };
+  });
 
-  return windowDimensions;
+  return { _width };
 }

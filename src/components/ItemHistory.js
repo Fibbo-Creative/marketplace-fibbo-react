@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
+import useRespnsive from "../hooks/useResponsive";
 import { truncateWallet } from "../pages/item/ItemPage";
 import DropDown from "./DropDown";
 
 export default function ItemHistory({ historyItems }) {
+  const { _width } = useRespnsive();
+  useEffect(() => {
+    console.log(_width);
+  }, [_width]);
   return (
     <DropDown title="Item Activity">
-      {document.body.clientWidth > 1024 ? (
+      {_width > 1024 ? (
         <table className="w-full text-left table-auto">
           <thead className="bg-gray-200 p-2">
             <tr className="p-2">
