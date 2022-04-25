@@ -59,6 +59,13 @@ export default function ItemPage() {
           chainId: configData.chainInfo.chainId,
         });
 
+        console.log({
+          collection: collection,
+          tokenId: tokenId,
+          network: configData.chainInfo.name,
+          chainId: configData.chainInfo.chainId,
+        })
+
         const collectionRequest = await marketplaceApi.get(
           `getCollectionData?collection=${collection}`
         );
@@ -170,9 +177,34 @@ export default function ItemPage() {
               </div>
             </div>
           </div>
-          <div>
-            <DropDown title={"Chain Data"}>
-              <div className="flex flex-col gap-2"></div>
+          <div >
+            <DropDown title={"Chain Data"} className="p-8">
+              <div className="flex flex-col gap-2">
+                <div className="flex justify-between">
+                  <div>
+                    <b>Collection</b>
+                  </div>
+                  <div>{chainInfo.collection}</div>
+                </div>
+                <div className="flex justify-between">
+                  <div>
+                    <b>Network</b>
+                  </div>
+                  <div>{chainInfo.network}</div>
+                </div>
+                <div className="flex justify-between">
+                  <div>
+                    <b>Chain Id</b>
+                  </div>
+                  <div>{chainInfo.chainId}</div>
+                </div>
+                <div className="flex justify-between">
+                  <div>
+                    <b>Token Id</b>
+                  </div>
+                  <div>{chainInfo.tokenId} / {properties.totalItems}</div>
+                </div>
+              </div>
             </DropDown>
             {properties.recipient && (
               <DropDown title={"PROPERTIES"}>
