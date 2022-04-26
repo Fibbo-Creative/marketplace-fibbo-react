@@ -5,6 +5,7 @@ import { useContractsContext } from "../context/contracts/ContractProvider";
 import { parseEther } from "ethers/lib/utils";
 import marketplaceApi from "../context/axios";
 import { useNavigate } from "react-router-dom";
+import ActionButton from "./ActionButton";
 
 export default function PutForSaleModal({
   children,
@@ -88,12 +89,11 @@ export default function PutForSaleModal({
             </div>
           </div>
           <div className="w-full flex items-center justify-center">
-            <button
-              onClick={() => putItemForSale()}
-              className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
-            >
-              List Item
-            </button>
+            <ActionButton
+              variant={"contained"}
+              text="Buy Now"
+              buttonAction={(e) => putItemForSale()}
+            />
           </div>
         </div>
       </div>

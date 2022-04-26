@@ -9,6 +9,7 @@ import { useContractsContext } from "../../context/contracts/ContractProvider";
 import useAccount from "../../hooks/useAccount";
 import DropDown from "../../components/DropDown";
 import ItemHistory from "../../components/ItemHistory";
+import ActionButton from "../../components/ActionButton";
 
 export const truncateWallet = (wallet) => {
   return `${wallet.slice(0, 8)}...${wallet.slice(
@@ -89,7 +90,7 @@ export default function ItemPage() {
       {tokenInfo && (
         <div className="flex flex-col">
           <div
-            className="flex flex-col lg:flex-row justify-center items-center"
+            className="flex h-full flex-col lg:flex-row justify-center items-center"
             key={tokenInfo.name}
           >
             <div className="flex justify-center items-center h-fit border-gray border-2 p-2 rounded-md w-1/3">
@@ -131,46 +132,38 @@ export default function ItemPage() {
                 )}
                 <div className="flex flex-row gap-5">
                   {isForSale && !isOwner && (
-                    <button
-                      onClick={() => setOpenBuyModal(true)}
-                      type="button"
-                      className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
-                    >
-                      Buy Now
-                    </button>
+                    <ActionButton
+                      size="small"
+                      buttonAction={() => setOpenBuyModal(true)}
+                      text="Buy Item"
+                    />
                   )}
                   {!isForSale && !isOwner && (
-                    <button
-                      onClick={() => setOpenOfferModal(true)}
-                      type="button"
-                      className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
-                    >
-                      Make offer
-                    </button>
+                    <ActionButton
+                      size="small"
+                      buttonAction={() => setOpenOfferModal(true)}
+                      text="Make Offer"
+                    />
                   )}
                   {isOwner && !isForSale && (
-                    <button
-                      onClick={() => setOpenSellModal(true)}
-                      type="button"
-                      className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
-                    >
-                      Put For Sale
-                    </button>
+                    <ActionButton
+                      size="small"
+                      buttonAction={() => setOpenSellModal(true)}
+                      text="List item"
+                    />
                   )}
                   {isOwner && isForSale && (
                     <>
-                      <button
-                        type="button"
-                        className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
-                      >
-                        Change Price
-                      </button>
-                      <button
-                        type="button"
-                        className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
-                      >
-                        Unlist Item
-                      </button>
+                      <ActionButton
+                        size="small"
+                        buttonAction={() => setOpenBuyModal(true)}
+                        text="Change Price"
+                      />
+                      <ActionButton
+                        size="small"
+                        buttonAction={() => setOpenBuyModal(true)}
+                        text="UnlistItem"
+                      />
                     </>
                   )}
                 </div>

@@ -309,6 +309,7 @@ export default function CreateContainer() {
               </b>{" "}
             </h1>
             <ActionButton
+              variant={"contained"}
               text="Create NFT"
               buttonAction={(e) => createNFT(e)}
             />

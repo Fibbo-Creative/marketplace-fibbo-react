@@ -5,6 +5,7 @@ import { useContractsContext } from "../context/contracts/ContractProvider";
 import { parseEther } from "ethers/lib/utils";
 import marketplaceApi from "../context/axios";
 import { useNavigate } from "react-router-dom";
+import ActionButton from "./ActionButton";
 
 export default function BuyItemModal({
   children,
@@ -99,12 +100,11 @@ export default function BuyItemModal({
                   <p>{tokenInfo?.price}</p>
                   <p>FTM</p>
                 </div>
-                <button
-                  onClick={() => buyItem()}
-                  className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
-                >
-                  Buy Now
-                </button>
+                <ActionButton
+                  variant={"contained"}
+                  text="Buy Now"
+                  buttonAction={(e) => buyItem()}
+                />
               </div>
             </div>
           </div>
