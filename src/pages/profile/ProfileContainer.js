@@ -17,6 +17,7 @@ export default function ProfileContainer() {
   const [{ userProfile }, stateDispatch] = useStateContext();
 
   const [myProfile, setMyprofile] = useState(false);
+  const [profileData, setProfileData] = useState({});
 
   const [newUsername, setNewUsername] = useState(userProfile.username);
   const [showEditUsername, setShowEditUsername] = useState(false);
@@ -104,8 +105,14 @@ export default function ProfileContainer() {
     setShowEditUsername(!showEditUsername);
   };
 
-  const followUser = () => {
-    //
+  const followUser = async () => {
+    const followUserReq = await marketplaceApi.post("followUser", {
+      from: wallet,
+      to: address,
+    });
+    if (followUserReq.status === 200) {
+      window.location.reload();
+    }
   };
 
   const toggleEditUsername = async (e) => {
@@ -122,12 +129,24 @@ export default function ProfileContainer() {
     } */
   };
 
+  const userIsFollowing = () => {
+    const follower = profileData.followers.find((f) => f === wallet);
+    if (follower) return true;
+    else return false;
+  };
+
   useEffect(() => {
     if (wallet !== "") {
       console.log(wallet === address);
       setMyprofile(wallet === address);
-      marketplaceApi.get(`getNftsByAddress?address=${address}`).then((res) => {
-        setUserItems(res.data);
+      marketplaceApi.get(`userProfile?wallet=${address}`).then((res) => {
+        setProfileData(res.data);
+        console.log(res.data);
+        marketplaceApi
+          .get(`getNftsByAddress?address=${address}`)
+          .then((nfts) => {
+            setUserItems(nfts.data);
+          });
       });
     }
   }, [wallet]);
@@ -140,7 +159,7 @@ export default function ProfileContainer() {
           className="w-screen h-[200px] bg-gray-300 z-10"
           style={{
             backgroundImage:
-              userProfile.profileBanner !== ""
+              profileData.profileBanner !== ""
                 ? `url(${userProfile.profileBanner})`
                 : "none",
           }}
@@ -157,8 +176,8 @@ export default function ProfileContainer() {
           className="w-screen h-[200px] bg-gray-300 z-10"
           style={{
             backgroundImage:
-              userProfile.profileBanner !== ""
-                ? `url(${userProfile.profileBanner})`
+              profileData.profileBanner !== ""
+                ? `url(${profileData.profileBanner})`
                 : "none",
           }}
         ></div>
@@ -188,7 +207,7 @@ export default function ProfileContainer() {
             className={`flex justify-center items-center rounded-full  m-4 w-[112px] h-[112px] -mt-20`}
           >
             <img
-              src={userProfile.profileImg}
+              src={profileData.profileImg}
               className="rounded-full"
               alt="ProfileImage"
             />
@@ -206,7 +225,7 @@ export default function ProfileContainer() {
               />
             </form>
           ) : (
-            <b>{userProfile.username}</b>
+            <b>{profileData.username}</b>
           )}
           {myProfile && (
             <button onClick={() => toggleEditUsername()}>
@@ -215,12 +234,21 @@ export default function ProfileContainer() {
           )}
         </div>
         <div>
-          <i>{userProfile.wallet}</i>
+          <i>{address}</i>
         </div>
         <div className="flex gap-10 items-center">
-          {!myProfile && <ActionButton text="Follow" size="smaller" />}
-          <div>{userProfile.followers} Followers</div>
-          <div>{userProfile.following} Following</div>
+          {!myProfile &&
+            wallet !== "" &&
+            profileData.followers &&
+            !userIsFollowing() && (
+              <ActionButton
+                buttonAction={(e) => followUser()}
+                text="Follow"
+                size="smaller"
+              />
+            )}
+          <div>{profileData.followers?.length} Followers</div>
+          <div>{profileData.following?.length} Following</div>
         </div>
       </div>
 
