@@ -90,8 +90,9 @@ export default function PutForSaleModal({
           </div>
           <div className="w-full flex items-center justify-center">
             <ActionButton
-              variant={"contained"}
-              text="Buy Now"
+              variant="contained"
+              size="small"
+              text="List Item"
               buttonAction={(e) => putItemForSale()}
             />
           </div>
