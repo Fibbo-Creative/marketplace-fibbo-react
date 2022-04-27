@@ -156,7 +156,7 @@ export default function ProfileContainer() {
       {myProfile ? (
         <button
           onClick={() => selectBannerImg()}
-          className="w-screen h-[200px] bg-gray-300 z-10"
+          className="w-screen h-[200px] bg-gray-300 z-10 object-cover object-center"
           style={{
             backgroundImage:
               profileData.profileBanner !== ""
@@ -188,7 +188,7 @@ export default function ProfileContainer() {
         {myProfile ? (
           <button
             onClick={() => selectProfileImg()}
-            className={`flex justify-center items-center rounded-full  m-4 w-[112px] h-[112px] -mt-20`}
+            className={`flex justify-center items-center rounded-full  m-4  -mt-20`}
           >
             <input
               id="profileImageInput"
@@ -198,7 +198,7 @@ export default function ProfileContainer() {
             />
             <img
               src={userProfile.profileImg}
-              className="rounded-full"
+              className="rounded-full w-[112px] h-[112px] object-cover object-center  "
               alt="ProfileImage"
             />
           </button>

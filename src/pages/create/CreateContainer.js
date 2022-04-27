@@ -181,11 +181,14 @@ export default function CreateContainer() {
                   className="hidden"
                 />
                 {ipfsImageUrl !== "" && (
-                  <img className="h-80" src={ipfsImageUrl}></img>
+                  <img
+                    className="h-80 w-80 object-cover object-center p-1"
+                    src={ipfsImageUrl}
+                  ></img>
                 )}
                 <div
                   id="divTextImgNFT"
-                  className={`flex h-full items-center justify-center text-center ${
+                  className={`flex h-full items-center justify-center text-center${
                     imageError && "text-red-400"
                   }`}
                   bis_skin_checked="1"

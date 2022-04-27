@@ -8,7 +8,7 @@ export default function FilterRange({
   applyFilter,
 }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-2 w-full border-t  border-black bg-[#D2CAFA] ">
+    <div className="flex flex-col items-center justify-center gap-2 w-full border-t p-1  border-black bg-[#E3DEFC] ">
       <div className="flex flex-row justify-center items-center w-full gap-3 p-2">
         <div className="relative mt-2 flex-row text-black">
           <input

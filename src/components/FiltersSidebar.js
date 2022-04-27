@@ -49,8 +49,7 @@ export default function FiltersSidebar({
             <h3 className="text-3xl font-semibold text-black">Filters</h3>
             <button>
               <Icon
-                icon="bi:filter-left"
-                hFlip={true}
+                icon="eva:menu-arrow-outline"
                 width="40"
                 height="40"
                 color="purple"
@@ -77,9 +76,15 @@ export default function FiltersSidebar({
       ) : (
         <button
           onClick={() => handleShowSidebar(!showSidebar)}
-          className=" text-4xl text-black items-center cursor-pointer fixed left-10 top-24 z-50 hover:-translate-y-1"
+          className=" text-4xl text-black items-center cursor-pointer fixed left-10 top-24 z-50 hover:-translate-y-0.5"
         >
-          <Icon icon="bi:filter-left" width="40" height="40" color="purple" />
+          <Icon
+            icon="eva:menu-arrow-outline"
+            hFlip={true}
+            width="40"
+            height="40"
+            color="purple"
+          />
         </button>
       )}
     </>
