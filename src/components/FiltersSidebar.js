@@ -38,7 +38,7 @@ export default function FiltersSidebar({
     <>
       {showSidebar ? (
         <div
-          className={`flex flex-col top-20 left-0 w-[17vw] bg-white-600 p-10 pl-20 fixed h-full z-40 ease-in-out duration-300 border-r border-gray-300 ${
+          className={`flex flex-col top-20 left-0 w-[17vw] bg-white-600 p-7 pl-20 fixed h-full z-40 ease-in-out duration-300 border-r border-gray-300 ${
             showSidebar ? "-translate-x-0 " : "-translate-x-full"
           }`}
         >
@@ -46,7 +46,7 @@ export default function FiltersSidebar({
             className="flex flex-row cursor-pointer gap-20"
             onClick={() => handleShowSidebar(!showSidebar)}
           >
-            <h3 className="text-4xl font-semibold text-black">Filters</h3>
+            <h3 className="text-3xl font-semibold text-black">Filters</h3>
             <button>
               <Icon
                 icon="bi:filter-left"
@@ -57,7 +57,7 @@ export default function FiltersSidebar({
               />
             </button>
           </div>
-          <div className="flex flex-col left-0  w-full top-28 fixed gap-4">
+          <div className="flex flex-col left-0 font-medium w-full top-24 fixed gap-4">
             <FilterBottomDropDown name="Status">
               <FilterButtons />
             </FilterBottomDropDown>
@@ -77,7 +77,7 @@ export default function FiltersSidebar({
       ) : (
         <button
           onClick={() => handleShowSidebar(!showSidebar)}
-          className="flex text-4xl text-black items-center cursor-pointer fixed left-10 top-24 z-50 hover:-translate-y-1"
+          className=" text-4xl text-black items-center cursor-pointer fixed left-10 top-24 z-50 hover:-translate-y-1"
         >
           <Icon icon="bi:filter-left" width="40" height="40" color="purple" />
         </button>

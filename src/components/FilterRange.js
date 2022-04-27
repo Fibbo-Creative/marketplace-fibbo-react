@@ -8,7 +8,7 @@ export default function FilterRange({
   applyFilter,
 }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-2 w-full border-t border-[#4F1A97] ">
+    <div className="flex flex-col items-center justify-center gap-2 w-full border-t  border-black bg-[#D2CAFA] ">
       <div className="flex flex-row justify-center items-center w-full gap-3 p-2">
         <div className="relative mt-2 flex-row text-black">
           <input
@@ -30,7 +30,7 @@ export default function FilterRange({
             />
           </div>
         </div>
-        <h1 className="text-white font-semibold m-1">to</h1>
+        <h1 className="text-black font-semibold m-1">-</h1>
 
         <div className="relative mt-2 flex-row text-black">
           <input

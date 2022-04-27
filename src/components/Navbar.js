@@ -68,21 +68,21 @@ export default function Navbar() {
           </div>
           <div className="">
             <a
-              className={` ml-5 hover:text-blue-400 hover:font-bold ${
+              className={` ml-5  hover:font-bold ${
                 location.pathname === "/explore"
-                  ? "text-primary-b font-bold"
+                  ? "text-primary-1 font-bold border-b-2 border-[#733ADA]"
                   : "text-primary-1 "
-              } hover:text-primary-3 `}
+              } `}
               href="/explore"
             >
               Explore
             </a>
             <a
-              className={` ml-5 hover:text-blue-400 hover:font-bold ${
+              className={` ml-5  hover:font-bold ${
                 location.pathname === "/create"
-                  ? "text-primary-b font-bold"
+                  ? "text-primary-1 font-bold border-b-2 border-[#733ADA]"
                   : "text-primary-1 "
-              } hover:text-primary-3`}
+              } `}
               href="/create"
             >
               Create
@@ -90,10 +90,10 @@ export default function Navbar() {
             {wallet !== "" && (
               <a
                 className={` ml-5  hover:font-bold ${
-                  location.pathname === "/profile"
-                    ? "text-primary-b font-bold"
+                  location.pathname === `/profile/${wallet}`
+                    ? "text-primary-1 font-bold border-b-2 border-[#733ADA]"
                     : "text-primary-1 "
-                } hover:text-primary-3`}
+                } `}
                 href={`/profile/${wallet}`}
               >
                 Profile
