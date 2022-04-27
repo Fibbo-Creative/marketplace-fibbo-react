@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 
 const styles = {
-  small: "w-40 p-2",
-  large: "w-60 py-2.5 ",
+  small: "w-40 py-2 px-3 ",
+  smaller: "w-32 py-1.5 px-1",
+  large: "w-60 py-2.5 px-4 ",
   outlined:
-    "px-4  border border-primary-4 text-primary-4  text-sm  uppercase rounded shadow-md leading-tight  hover:bg-primary-4 hover:text-white transition duration-150 ease-in-out",
+    " border border-primary-4 text-primary-4  text-sm  uppercase rounded shadow-md leading-tight  hover:bg-primary-4 hover:text-white transition duration-150 ease-in-out",
   contained:
-    "px-4 bg-primary-4 text-white  text-sm uppercase rounded shadow-md  leading-tight hover:bg-white hover:text-primary-4 hover:border hover:border-primary-4 transition duration-150 ease-in-out",
+    "bg-primary-4 border text-white  text-sm uppercase rounded shadow-md  leading-tight hover:bg-white hover:text-primary-4 hover:border hover:border-primary-4 transition duration-150 ease-in-out",
 };
 
 const getVariantStyle = (variant, size) => {
-  let finalStyle = size === "small" ? styles.small : styles.large;
+  let finalStyle = styles[size];
   switch (variant) {
     case "outlined":
       finalStyle = `${finalStyle} ${styles.outlined}`;
@@ -33,16 +34,26 @@ export default function ActionButton({
   const [loading, setLoading] = useState(false);
 
   const executeAction = async (e) => {
+    const doc = document.getElementById(text + variant);
     setLoading(true);
     await buttonAction(e);
     setLoading(false);
   };
   return (
     <button
+      id={text + variant}
       onClick={(e) => executeAction(e)}
-      className={getVariantStyle(variant, size)}
+      className={`${getVariantStyle(variant, size, loading)}`}
+      disabled={loading}
     >
-      {loading ? "Loading" : text}
+      {loading ? (
+        <div className="flex gap-4 items-center">
+          <div className="w-2 h-2 p-2 border-blue border-4 rounded-lg animate-spin"></div>
+          <div>Processing...</div>{" "}
+        </div>
+      ) : (
+        text
+      )}
     </button>
   );
 }

@@ -31,13 +31,15 @@ function App() {
 
           <Routes>
             <Route path="/create" element={<CreateContainer />} />
-            <Route path="/profile" element={<ProfileContainer />} />
+
             <Route path="/create" element={<CreateContainer />} />
             <Route path="/explore" element={<ExploreContainer />} />
             <Route
               path="/explore/:collection/:tokenId"
               element={<ItemPage />}
             />
+
+            <Route path="/profile/:address" element={<ProfileContainer />} />
 
             <Route path="" element={<HomeContainer />} />
           </Routes>

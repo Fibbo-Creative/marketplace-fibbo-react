@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import ActionButton from "../../components/ActionButton";
 import NftCard from "../../components/NftCard";
 import NftCardSmall from "../../components/NftCardSmall";
 import marketplaceApi from "../../context/axios";
@@ -10,9 +11,12 @@ import useAccount from "../../hooks/useAccount";
 export default function ProfileContainer() {
   const { wallet } = useAccount();
   const navigate = useNavigate();
+  const { address } = useParams();
   const [userItems, setUserItems] = useState([]);
   const [userSmallview, setSmallViewUser] = useState(true);
   const [{ userProfile }, stateDispatch] = useStateContext();
+
+  const [myProfile, setMyprofile] = useState(false);
 
   const [newUsername, setNewUsername] = useState(userProfile.username);
   const [showEditUsername, setShowEditUsername] = useState(false);
@@ -89,7 +93,7 @@ export default function ProfileContainer() {
     e.preventDefault();
     try {
       const imgAddedToSanity = await marketplaceApi.post("uploadUsername", {
-        wallet: wallet,
+        wallet: address,
         username: newUsername,
       });
       console.log(imgAddedToSanity);
@@ -98,6 +102,10 @@ export default function ProfileContainer() {
       console.log("Error uploading file: ", error);
     }
     setShowEditUsername(!showEditUsername);
+  };
+
+  const followUser = () => {
+    //
   };
 
   const toggleEditUsername = async (e) => {
@@ -116,56 +124,81 @@ export default function ProfileContainer() {
 
   useEffect(() => {
     if (wallet !== "") {
-      marketplaceApi.get(`getNftsByAddress?address=${wallet}`).then((res) => {
-        console.log(res.data);
+      console.log(wallet === address);
+      setMyprofile(wallet === address);
+      marketplaceApi.get(`getNftsByAddress?address=${address}`).then((res) => {
         setUserItems(res.data);
-        console.log(userProfile);
       });
     }
   }, [wallet]);
   return (
     <div className="mt-[81px] w-screen h-full">
       {/*BANNER*/}
-      <button
-        onClick={() => selectBannerImg()}
-        className="w-screen h-[200px] bg-gray-300 z-10"
-        style={{
-          backgroundImage:
-            userProfile.profileBanner !== ""
-              ? `url(${userProfile.profileBanner})`
-              : "none",
-        }}
-      >
-        <input
-          id="bannerInput"
-          type="file"
-          onChange={(e) => setBannerImg(e)}
-          hidden={true}
-        />
-      </button>
-      {/*Profile Img*/}
-      <div className="w-screen flex flex-col gap-4 items-center justify-center">
+      {myProfile ? (
         <button
-          onClick={() => selectProfileImg()}
-          className="flex justify-center items-center rounded-full bg-primary-1 m-4 w-[112px] h-[112px] -mt-20"
+          onClick={() => selectBannerImg()}
+          className="w-screen h-[200px] bg-gray-300 z-10"
+          style={{
+            backgroundImage:
+              userProfile.profileBanner !== ""
+                ? `url(${userProfile.profileBanner})`
+                : "none",
+          }}
         >
           <input
-            id="profileImageInput"
+            id="bannerInput"
             type="file"
-            onChange={(e) => setProfileImg(e)}
+            onChange={(e) => setBannerImg(e)}
             hidden={true}
           />
-          <img
-            src={userProfile.profileImg}
-            className="rounded-md"
-            alt="ProfileImage"
-          />
         </button>
+      ) : (
+        <div
+          className="w-screen h-[200px] bg-gray-300 z-10"
+          style={{
+            backgroundImage:
+              userProfile.profileBanner !== ""
+                ? `url(${userProfile.profileBanner})`
+                : "none",
+          }}
+        ></div>
+      )}
+
+      {/*Profile Img*/}
+      <div className="w-screen flex flex-col gap-4 items-center justify-center">
+        {myProfile ? (
+          <button
+            onClick={() => selectProfileImg()}
+            className={`flex justify-center items-center rounded-full  m-4 w-[112px] h-[112px] -mt-20`}
+          >
+            <input
+              id="profileImageInput"
+              type="file"
+              onChange={(e) => setProfileImg(e)}
+              hidden={true}
+            />
+            <img
+              src={userProfile.profileImg}
+              className="rounded-full"
+              alt="ProfileImage"
+            />
+          </button>
+        ) : (
+          <div
+            className={`flex justify-center items-center rounded-full  m-4 w-[112px] h-[112px] -mt-20`}
+          >
+            <img
+              src={userProfile.profileImg}
+              className="rounded-full"
+              alt="ProfileImage"
+            />
+          </div>
+        )}
 
         {/*User info*/}
 
         <div className="flex gap-3 items-center text-2xl justify-center items-center ">
-          {showEditUsername ? (
+          {myProfile && showEditUsername ? (
             <form onSubmit={(e) => editProfileUsername(e)}>
               <input
                 value={newUsername}
@@ -175,14 +208,17 @@ export default function ProfileContainer() {
           ) : (
             <b>{userProfile.username}</b>
           )}
-          <button onClick={() => toggleEditUsername()}>
-            <Icon icon="bxs:edit" />
-          </button>
+          {myProfile && (
+            <button onClick={() => toggleEditUsername()}>
+              <Icon icon="bxs:edit" />
+            </button>
+          )}
         </div>
         <div>
           <i>{userProfile.wallet}</i>
         </div>
-        <div className="flex gap-10">
+        <div className="flex gap-10 items-center">
+          {!myProfile && <ActionButton text="Follow" size="smaller" />}
           <div>{userProfile.followers} Followers</div>
           <div>{userProfile.following} Following</div>
         </div>
