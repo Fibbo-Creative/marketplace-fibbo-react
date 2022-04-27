@@ -19,7 +19,7 @@ export default function HomeContainer() {
             <b>FIBBO : El Arte de expresar tu Arte</b>
           </h1>
           <p className="text-sm sm:text-lg md:text-xl p-0  xl:p-10 text-justify">
-            Marketplace enfocado con especial énfasis en artitas y creadores de
+            Marketplace enfocado con especial énfasis en artistas y creadores de
             contenido.
           </p>
           <div className="flex felx-wrap gap-10 p-10">

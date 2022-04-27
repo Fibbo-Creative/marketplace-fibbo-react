@@ -136,19 +136,15 @@ export default function ProfileContainer() {
   };
 
   useEffect(() => {
-    if (wallet !== "") {
-      console.log(wallet === address);
-      setMyprofile(wallet === address);
-      marketplaceApi.get(`userProfile?wallet=${address}`).then((res) => {
-        setProfileData(res.data);
-        console.log(res.data);
-        marketplaceApi
-          .get(`getNftsByAddress?address=${address}`)
-          .then((nfts) => {
-            setUserItems(nfts.data);
-          });
+    console.log(wallet === address);
+    setMyprofile(wallet === address);
+    marketplaceApi.get(`userProfile?wallet=${address}`).then((res) => {
+      setProfileData(res.data);
+      console.log(res.data);
+      marketplaceApi.get(`getNftsByAddress?address=${address}`).then((nfts) => {
+        setUserItems(nfts.data);
       });
-    }
+    });
   }, [wallet]);
   return (
     <div className="mt-[81px] w-screen h-full">
