@@ -47,7 +47,7 @@ export default function ActionButton({
       disabled={loading}
     >
       {loading ? (
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-4 items-center justify-center text-xs">
           <div className="w-2 h-2 p-2 border-blue border-4 rounded-lg animate-spin"></div>
           <div>Processing...</div>{" "}
         </div>

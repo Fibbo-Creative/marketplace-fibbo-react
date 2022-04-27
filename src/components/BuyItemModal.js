@@ -101,6 +101,7 @@ export default function BuyItemModal({
                   <p>FTM</p>
                 </div>
                 <ActionButton
+                  size="large"
                   variant={"contained"}
                   text="Buy Now"
                   buttonAction={(e) => buyItem()}
