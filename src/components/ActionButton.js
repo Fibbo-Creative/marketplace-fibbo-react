@@ -34,16 +34,14 @@ export default function ActionButton({
   const [loading, setLoading] = useState(false);
 
   const executeAction = async (e) => {
-    const doc = document.getElementById(text + variant);
     setLoading(true);
     await buttonAction(e);
     setLoading(false);
   };
   return (
     <button
-      id={text + variant}
       onClick={(e) => executeAction(e)}
-      className={`${getVariantStyle(variant, size, loading)}`}
+      className={`${getVariantStyle(variant, size)}`}
       disabled={loading}
     >
       {loading ? (

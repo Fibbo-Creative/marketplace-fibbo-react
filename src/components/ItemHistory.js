@@ -53,7 +53,10 @@ export default function ItemHistory({ historyItems }) {
         <div className="flex flex-col gap-10">
           {historyItems.map((item) => {
             return (
-              <div className="flex flex-col gap-3 bg-gray-100 p-3 hover:bg-gray-300">
+              <div
+                key={Math.random(9999) * 100}
+                className="flex flex-col gap-3 bg-gray-100 p-3 hover:bg-gray-300"
+              >
                 <div className="flex justify-between">
                   <div>
                     <b>Event</b>
