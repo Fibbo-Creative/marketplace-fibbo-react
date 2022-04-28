@@ -6,7 +6,9 @@ import NftCard from "../../components/NftCard";
 import NftCardSmall from "../../components/NftCardSmall";
 import marketplaceApi from "../../context/axios";
 import { useStateContext } from "../../context/StateProvider";
+import { truncateWallet } from "../../context/utils";
 import useAccount from "../../hooks/useAccount";
+import useRespnsive from "../../hooks/useResponsive";
 
 export default function ProfileContainer() {
   const { wallet } = useAccount();
@@ -21,7 +23,7 @@ export default function ProfileContainer() {
 
   const [newUsername, setNewUsername] = useState(userProfile.username);
   const [showEditUsername, setShowEditUsername] = useState(false);
-
+  const { _width } = useRespnsive();
   const changeSmallDisplay = () => {
     setSmallViewUser(true);
   };
@@ -230,7 +232,7 @@ export default function ProfileContainer() {
           )}
         </div>
         <div>
-          <i>{address}</i>
+          <i>{_width < 500 ? truncateWallet(address) : address}</i>
         </div>
         <div className="flex gap-10 items-center">
           {!myProfile &&
