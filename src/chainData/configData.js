@@ -1,6 +1,6 @@
 export const configData = {
   chainInfo: {
-    name: "Fhantom Testnet",
+    name: "Fantom Testnet",
     rpcUrl: "https://rpc.testnet.fantom.network/",
     chainId: 4002,
     coinCurrency: "FTM",

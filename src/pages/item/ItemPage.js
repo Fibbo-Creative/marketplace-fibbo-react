@@ -73,30 +73,33 @@ export default function ItemPage() {
   }, [tokenId, wallet]);
 
   return (
-    <div className=" mt-[120px] mb-[50px] mx-[50px] grid grid-cols-1 md:grid-cols-[400px_minmax(300px,_0.9fr)] md:grid-rows-[auto_auto] gap-5">
-      {tokenInfo && (
-        <DetailImage tokenImage={tokenInfo.image} tokenName={tokenInfo.name} />
-      )}
-      {/**BASIC INFO */}
-      {tokenInfo && profileOwnerData && (
-        <DetailProductInfo
-          isOwner={isOwner}
-          isForSale={isForSale}
-          tokenInfo={tokenInfo}
-          tokenOwnerData={profileOwnerData}
-          tokenId={tokenId}
-          collection={collection}
-        />
-      )}
-      {chainInfo.chainId && properties.royalty && (
-        <DetailInfo properties={properties} chainInfo={chainInfo} />
-      )}
+    <>
+      {tokenInfo &&
+        profileOwnerData &&
+        tokenHistoryInfo.length > 0 &&
+        chainInfo.chainId &&
+        properties.royalty && (
+          <div className=" mt-[120px] mb-[50px] mx-[50px] grid grid-cols-1  md:grid-cols-[400px_minmax(300px,_0.9fr)] md:grid-rows-[auto_auto] gap-5">
+            <DetailImage
+              tokenImage={tokenInfo.image}
+              tokenName={tokenInfo.name}
+            />
+            <DetailProductInfo
+              isOwner={isOwner}
+              isForSale={isForSale}
+              tokenInfo={tokenInfo}
+              tokenOwnerData={profileOwnerData}
+              tokenId={tokenId}
+              collection={collection}
+            />
 
-      <div className="col-span-2 row-span-3 ">
-        {tokenHistoryInfo.length > 0 && (
-          <ItemHistory historyItems={tokenHistoryInfo} />
+            <DetailInfo properties={properties} chainInfo={chainInfo} />
+
+            <div className="col-span-1 md:col-span-2 row-span-3 ">
+              <ItemHistory historyItems={tokenHistoryInfo} />
+            </div>
+          </div>
         )}
-      </div>
-    </div>
+    </>
   );
 }
