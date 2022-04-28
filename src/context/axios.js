@@ -1,5 +1,7 @@
 import axios from "axios";
 
-const marketplaceApi = axios.create({ baseURL: "http://localhost:9000/" });
+const marketplaceApi = axios.create({
+  baseURL: "https://fibbo-market-api.herokuapp.com/",
+});
 
 export default marketplaceApi;
