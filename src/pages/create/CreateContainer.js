@@ -150,17 +150,15 @@ export default function CreateContainer() {
   }, [wallet, connectToWallet]);
   return (
     <div>
-      <div className=" flex h-20 mt-40 justify-center  ">
+      <div className=" flex mt-[90px] justify-center ">
         <div className="flex justify-center items-center">
-          <h1 className="text-4xl">
-            <b>CREA TU PROPIO NFT! </b>
-          </h1>
+          <h1 className="text-4xl"></h1>
         </div>
       </div>
 
       <div className=" flex-col h-full w-full justify-center items-center ">
         <form className="">
-          <div className="flex lg:flex-row flex-col gap-20 block p-16 items-center justify-center ">
+          <div className="flex lg:flex-row flex-col gap-10 block p-8 items-center justify-center ">
             <div className="">
               <div
                 id="divImgNFT"
@@ -169,7 +167,7 @@ export default function CreateContainer() {
                 onClick={selectNFTImg}
                 className={`outline-dashed ${
                   imageError && "outline-red-400"
-                } w-80 h-80 items-center justify-center cursor-pointer`}
+                } w-[400px] h-[400px] items-center justify-center cursor-pointer`}
               >
                 <input
                   id="inputNFT"
@@ -182,8 +180,8 @@ export default function CreateContainer() {
                 />
                 {ipfsImageUrl !== "" && (
                   <img
-                    className="h-80 w-80 object-cover object-center p-1"
-                    src={ipfsImageUrl}
+                    className="h-full w-full object-contain p-1"
+                    src={sanityImgUrl}
                   ></img>
                 )}
                 <div
@@ -206,7 +204,7 @@ export default function CreateContainer() {
             </div>
 
             <div className="w-80">
-              <div className="form-group mb-6 mt-6">
+              <div className="form-group mb-6">
                 <select
                   type="text"
                   /*  value={}
@@ -283,7 +281,7 @@ export default function CreateContainer() {
                 )}
               </div>
 
-              <div className="flex flex-col gap-1 mb-4">
+              <div className="flex flex-col gap-1">
                 <div
                   className="fforminput fforminput_toggle"
                   bis_skin_checked="1"
@@ -306,11 +304,6 @@ export default function CreateContainer() {
           </div>
 
           <div className="flex flex-col justify-center items-center w-full lg:p-0 pb-20 gap-5 ">
-            <h1>
-              <b>
-                <i>* 1 FTM are charged to create a new NFT. </i>
-              </b>{" "}
-            </h1>
             <ActionButton
               variant={"contained"}
               size="large"
