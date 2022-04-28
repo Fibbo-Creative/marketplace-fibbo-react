@@ -167,7 +167,7 @@ export default function CreateContainer() {
                 onClick={selectNFTImg}
                 className={`outline-dashed ${
                   imageError && "outline-red-400"
-                } w-[400px] h-[400px] items-center justify-center cursor-pointer`}
+                } w-[300px] h-[300px] md:w-[400px] md:h-[400px] items-center justify-center cursor-pointer`}
               >
                 <input
                   id="inputNFT"
