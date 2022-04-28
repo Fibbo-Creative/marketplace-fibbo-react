@@ -183,7 +183,7 @@ export default function Navbar() {
                       ? "text-primary-b font-bold"
                       : "text-primary-1 "
                   } hover:text-primary-3`}
-                  href="/profile"
+                  href={`/profile/${wallet}`}
                 >
                   Profile
                 </a>
