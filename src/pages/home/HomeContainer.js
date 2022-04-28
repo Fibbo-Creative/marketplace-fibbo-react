@@ -12,7 +12,7 @@ export default function HomeContainer() {
     navigate("/create");
   };
   return (
-    <div className="absolute w-full h-full m-0 p-0 b-0 ">
+    <div className="absolute w-screen h-full m-0 p-0 b-0 ">
       <section className="flex flex-col-reverse lg:flex-row items-center justify-center align-middle w-full h-full gap-10 py-20 px-10">
         <div className="flex flex-col items-center justify-center w-full h-auto ">
           <h1 className="flex text-2xl leading-normal sm:text-4xl pb-4 md:pb-7 xl:text-6xl xl:p-10 ">
