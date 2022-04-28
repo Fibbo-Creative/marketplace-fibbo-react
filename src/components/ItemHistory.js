@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
+import { truncateWallet } from "../context/utils";
 import useRespnsive from "../hooks/useResponsive";
-import { truncateWallet } from "../pages/item/ItemPage";
 import DropDown from "./DropDown";
 
 export default function ItemHistory({ historyItems }) {

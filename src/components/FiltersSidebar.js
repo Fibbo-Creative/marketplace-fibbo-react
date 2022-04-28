@@ -35,7 +35,7 @@ export default function FiltersSidebar({
   };
 
   return (
-    <>
+    <div className="hidden lg:flex">
       {showSidebar ? (
         <div
           className={`flex flex-col top-20 left-0 w-[17vw] bg-white-600 p-7 pl-20 fixed h-full z-40 ease-in-out duration-300 border-r border-gray-300 ${
@@ -76,7 +76,7 @@ export default function FiltersSidebar({
       ) : (
         <button
           onClick={() => handleShowSidebar(!showSidebar)}
-          className=" text-4xl text-black items-center cursor-pointer fixed left-10 top-24 z-50 hover:-translate-y-0.5"
+          className="text-4xl text-black items-center cursor-pointer fixed left-10 top-24 z-50 hover:-translate-y-0.5"
         >
           <Icon
             icon="eva:menu-arrow-outline"
@@ -87,6 +87,6 @@ export default function FiltersSidebar({
           />
         </button>
       )}
-    </>
+    </div>
   );
 }
