@@ -100,7 +100,7 @@ export default function ExploreContainer() {
       const sortedArray = allMarketItems.sort(orderByRecently);
       const visibledsortedArray = visibleMarketItems.sort(orderByRecently);
       setAllMarketItems(sortedArray);
-      setVisibleMarketItems(visibledsortedArray.slice(0, 12));
+      setVisibleMarketItems(visibledsortedArray.slice(0, visibleItemsCount));
 
       console.log(sortedArray);
     }
@@ -109,7 +109,7 @@ export default function ExploreContainer() {
       const sortedArray = allMarketItems.sort(orderByOldest);
       const visibledsortedArray = visibleMarketItems.sort(orderByOldest);
       setAllMarketItems(sortedArray);
-      setVisibleMarketItems(visibledsortedArray.slice(0, 12));
+      setVisibleMarketItems(visibledsortedArray.slice(0, visibleItemsCount));
       console.log(sortedArray);
     }
     if (value === "4") {
@@ -117,7 +117,7 @@ export default function ExploreContainer() {
       const sortedArray = allMarketItems.sort(orderByHighestP);
       const visibledsortedArray = visibleMarketItems.sort(orderByHighestP);
       setAllMarketItems(sortedArray);
-      setVisibleMarketItems(visibledsortedArray.slice(0, 12));
+      setVisibleMarketItems(visibledsortedArray.slice(0, visibleItemsCount));
       console.log(sortedArray);
     }
     if (value === "5") {
@@ -125,7 +125,7 @@ export default function ExploreContainer() {
       const sortedArray = allMarketItems.sort(orderByLowestP);
       const visibledsortedArray = visibleMarketItems.sort(orderByLowestP);
       setAllMarketItems(sortedArray);
-      setVisibleMarketItems(visibledsortedArray.slice(0, 12));
+      setVisibleMarketItems(visibledsortedArray.slice(0, visibleItemsCount));
       console.log(sortedArray);
     }
   };
