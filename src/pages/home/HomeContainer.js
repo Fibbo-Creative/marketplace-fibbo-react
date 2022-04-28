@@ -33,7 +33,7 @@ export default function HomeContainer() {
               size="small"
               variant="outlined"
               text="Create"
-              buttonAction={(e) => goToExplore()}
+              buttonAction={(e) => goToCreate()}
             />
           </div>
         </div>
