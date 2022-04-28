@@ -4,7 +4,7 @@ import { truncateWallet } from "../../../context/utils";
 
 export default function DetailInfo({ properties, chainInfo }) {
   return (
-    <div className="col-span-1 row-span-1 flex flex-col rounded-md border-2 ">
+    <div className="col-span-1 flex flex-col rounded-md border-2 ">
       {chainInfo.chainId && (
         <DropDown title={"Chain Data"}>
           <div className="flex flex-col gap-2">
