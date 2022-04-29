@@ -109,7 +109,7 @@ export default function DetailProductInfo({
             />
           )}
           {isOwner && isForSale && (
-            <>
+            <div className="flex flex-col md:flex-row gap-3">
               <ActionButton
                 size="small"
                 buttonAction={() => setOpenBuyModal(true)}
@@ -120,7 +120,7 @@ export default function DetailProductInfo({
                 buttonAction={() => setOpenBuyModal(true)}
                 text="UnlistItem"
               />
-            </>
+            </div>
           )}
         </div>
       </div>
