@@ -61,7 +61,7 @@ export default function BuyItemModal({
       isOpen={showModal}
       contentLabel="Minimal Modal Example"
     >
-      <div className="flex flex-col w-full h-full p-2 w-[600px]">
+      <div className="flex flex-col w-full h-full p-2 w-fit lg:w-[600px]">
         <div
           className="absolute right-10 top-5 cursor-pointer"
           onClick={handleCloseModal}
@@ -74,7 +74,7 @@ export default function BuyItemModal({
 
         <div className="my-10 mx-8 flex flex-col gap-10">
           <div className="w-full flex-col items-center justify-center">
-            <div className="flex gap-3 justify-between">
+            <div className="flex flex-col md:flex-row items-center gap-3 justify-between">
               <div>
                 <img
                   src={tokenInfo?.image}
