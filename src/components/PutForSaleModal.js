@@ -57,7 +57,7 @@ export default function PutForSaleModal({
       isOpen={showModal}
       contentLabel="Minimal Modal Example"
     >
-      <div className="flex flex-col w-full h-full p-2 w-[600px]">
+      <div className="flex flex-col w-full h-full p-1 w-fit lg:w-[600px]">
         <div
           className="absolute right-10 top-5 cursor-pointer"
           onClick={handleCloseModal}
@@ -83,7 +83,7 @@ export default function PutForSaleModal({
               <input
                 value={priceFor}
                 onChange={(e) => setPriceFor(e.target.value)}
-                className="flex-1 border p-2 text-end"
+                className="border p-2 text-end"
                 type="number"
               />
             </div>

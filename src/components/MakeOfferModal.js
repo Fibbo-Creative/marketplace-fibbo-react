@@ -38,7 +38,7 @@ export default function MakeOfferModal({
       isOpen={showModal}
       contentLabel="Minimal Modal Example"
     >
-      <div className="flex flex-col w-full h-full p-2 w-[600px]">
+      <div className="flex flex-col w-full h-full p-2 w-fit lg:w-[600px]">
         <div
           className="absolute right-10 top-5 cursor-pointer"
           onClick={handleCloseModal}
