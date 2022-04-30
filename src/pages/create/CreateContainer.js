@@ -271,7 +271,7 @@ export default function CreateContainer() {
                   value={royalty}
                   onChange={(e) => handleChangeRoyalty(e.target.value)}
                   id="imageInput"
-                  type="text"
+                  type="number"
                   placeholder="Royalties(%)"
                 />
                 {royaltyError && (
