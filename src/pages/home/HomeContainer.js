@@ -26,13 +26,13 @@ export default function HomeContainer() {
             <ActionButton
               size="small"
               variant="contained"
-              text="Explore"
+              text="Explorar"
               buttonAction={(e) => goToExplore()}
             />
             <ActionButton
               size="small"
               variant="outlined"
-              text="Create"
+              text="Crear"
               buttonAction={(e) => goToCreate()}
             />
           </div>

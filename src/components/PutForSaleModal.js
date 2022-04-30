@@ -65,12 +65,12 @@ export default function PutForSaleModal({
           <Icon className="text-2xl" icon="ant-design:close-outlined" />
         </div>
         <div className="flex items-center justify-center w-full border-b border-gray-300">
-          <div className="text-center">Put Item form Sale</div>
+          <div className="text-center">Poner NFT en venta</div>
         </div>
 
         <div className="my-10 mx-8 flex flex-col gap-10">
           <div>
-            <div>Price</div>
+            <div>Precio</div>
             <div className="flex">
               <div className="flex w-[100px] bg-gray-300 justify-evenly items-center">
                 <img
@@ -92,7 +92,7 @@ export default function PutForSaleModal({
             <ActionButton
               variant="contained"
               size="small"
-              text="List Item"
+              text="Listar Ítem"
               buttonAction={(e) => putItemForSale()}
             />
           </div>

@@ -46,7 +46,7 @@ export default function FiltersSidebar({
             className="flex flex-row cursor-pointer gap-20"
             onClick={() => handleShowSidebar(!showSidebar)}
           >
-            <h3 className="text-3xl font-semibold text-black">Filters</h3>
+            <h3 className="text-3xl font-semibold text-black">Filtros</h3>
             <button>
               <Icon
                 icon="eva:menu-arrow-outline"
@@ -57,19 +57,18 @@ export default function FiltersSidebar({
             </button>
           </div>
           <div className="flex flex-col left-0 font-medium w-full top-24 fixed gap-4">
-            <FilterBottomDropDown name="Status">
+            <FilterBottomDropDown name="Estado">
               <FilterButtons />
             </FilterBottomDropDown>
 
-            <FilterBottomDropDown name="Price">
-              {" "}
+            <FilterBottomDropDown name="Precio">
               <FilterRange
                 min_state={min_state}
                 max_state={max_state}
                 setMaxState={setMaxState}
                 setMinState={setMinState}
                 applyFilter={applyRangeFilter}
-              />{" "}
+              />
             </FilterBottomDropDown>
           </div>
         </div>
