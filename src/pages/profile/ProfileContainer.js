@@ -234,7 +234,7 @@ export default function ProfileContainer() {
         <div>
           <i>{_width < 500 ? truncateWallet(address) : address}</i>
         </div>
-        <div className="flex gap-10 items-center">
+        {/* <div className="flex gap-10 items-center">
           {!myProfile &&
             wallet !== "" &&
             profileData.followers &&
@@ -247,7 +247,7 @@ export default function ProfileContainer() {
             )}
           <div>{profileData.followers?.length} Followers</div>
           <div>{profileData.following?.length} Following</div>
-        </div>
+        </div> */}
       </div>
 
       <div className="h-[10px] w-sceen bg-gray-300 mt-10"></div>
