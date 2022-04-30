@@ -44,7 +44,7 @@ export default function DetailProductInfo({
       <p>{tokenInfo.description}</p>
       <div className="flex-row justify-center items-center ">
         <div className="flex items-center gap-4">
-          <b> Owned By: </b>
+          <b> Pertenece a: </b>
           <div
             onClick={() => redirectToProfile()}
             className="flex items-center gap-2 border border-gray-200 p-2 rounded-full cursor-pointer hover:bg-gray-200 transition duration-150 ease-in-out"
@@ -72,7 +72,7 @@ export default function DetailProductInfo({
       <div className="flex flex-col justify-center flex-wrap border-grey border-2 p-3 rounded-md gap-3">
         {isForSale && (
           <>
-            <p>Current Price</p>
+            <p>Precio Actual</p>
             <div className="flex flex-row items-center gap-3 ">
               <img
                 width={32}
@@ -91,21 +91,21 @@ export default function DetailProductInfo({
             <ActionButton
               size="small"
               buttonAction={() => setOpenBuyModal(true)}
-              text="Buy Item"
+              text="Comprar NFT"
             />
           )}
           {!isForSale && !isOwner && (
             <ActionButton
               size="small"
               buttonAction={() => setOpenOfferModal(true)}
-              text="Make Offer"
+              text="Realizar Oferta"
             />
           )}
           {isOwner && !isForSale && (
             <ActionButton
               size="small"
               buttonAction={() => setOpenSellModal(true)}
-              text="List item"
+              text="Poner en Venta"
             />
           )}
           {isOwner && isForSale && (
@@ -113,12 +113,12 @@ export default function DetailProductInfo({
               <ActionButton
                 size="small"
                 buttonAction={() => setOpenBuyModal(true)}
-                text="Change Price"
+                text="Cambiar Precio"
               />
               <ActionButton
                 size="small"
                 buttonAction={() => setOpenBuyModal(true)}
-                text="UnlistItem"
+                text="Quitar en venta"
               />
             </div>
           )}

@@ -152,11 +152,11 @@ export default function ExploreContainer() {
                 className="cursor-pointer h-10 flex border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 onChange={(e) => sortItems(e.target.value)}
               >
-                <option value={1}>Sort by</option>
-                <option value={2}>Recently Created</option>
-                <option value={3}>Oldest</option>
-                <option value={4}>Highest Price</option>
-                <option value={5}>Lowest Price</option>
+                <option value={1}>Ordenar Por</option>
+                <option value={2}>Creados Recientemente</option>
+                <option value={3}>Mas antiguos</option>
+                <option value={4}>Mas caros</option>
+                <option value={5}>Mas baratos</option>
               </select>
               <div className="flex flex-row items-center justify-center gap-2 md:gap-5 ">
                 <button

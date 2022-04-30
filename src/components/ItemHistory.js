@@ -15,19 +15,19 @@ export default function ItemHistory({ historyItems }) {
           <thead className="bg-gray-200 p-2">
             <tr className="p-2">
               <th scope="col" className="px-6 py-3">
-                Event
+                Evento
               </th>
               <th cope="col" className="px-6 py-3">
-                Price
+                Precio
               </th>
               <th cope="col" className="px-6 py-3">
-                From
+                De
               </th>
               <th cope="col" className="px-6 py-3">
-                To
+                A
               </th>
               <th cope="col" className="px-6 py-3">
-                Date
+                Fecha
               </th>
             </tr>
           </thead>
@@ -59,31 +59,31 @@ export default function ItemHistory({ historyItems }) {
               >
                 <div className="flex justify-between">
                   <div>
-                    <b>Event</b>
+                    <b>Evento</b>
                   </div>
                   <div>{item.eventType}</div>
                 </div>
                 <div className="flex justify-between">
                   <div>
-                    <b>Price</b>
+                    <b>Precio</b>
                   </div>
                   <div> {item.price !== 0 ? `${item.price} FTM` : ""}</div>
                 </div>
                 <div className="flex justify-between">
                   <div>
-                    <b>From</b>
+                    <b>De</b>
                   </div>
                   <div>{truncateWallet(item.from)}</div>
                 </div>
                 <div className="flex justify-between">
                   <div>
-                    <b>To</b>
+                    <b>A</b>
                   </div>
                   <div>{truncateWallet(item.to)}</div>
                 </div>
                 <div className="flex justify-between">
                   <div>
-                    <b>Date</b>
+                    <b>Fecha</b>
                   </div>
                   <div> {new Date(item._createdAt).toLocaleString()}</div>
                 </div>

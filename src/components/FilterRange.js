@@ -56,7 +56,7 @@ export default function FilterRange({
         className="flex items-center bg-purple-600 text-white font-bold py-2 px-4 rounded justify-center border border-gray-300 hover:bg-[#B27FF7]"
         onClick={(e) => applyFilter()}
       >
-        Apply
+        Filtrar
       </button>
     </div>
   );

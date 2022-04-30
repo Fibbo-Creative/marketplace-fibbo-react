@@ -226,7 +226,7 @@ export default function CreateContainer() {
                   value={name}
                   onChange={(e) => handleChangeName(e.target.value)}
                   id="imageInput"
-                  placeholder="Name*"
+                  placeholder="Nombre*"
                   className={`w-full px-3 py-1.5 text-base font-normal text-gray-700 
               bg-white bg-clip-padding border border-solid border-black rounded transition ease-in-out m-0
               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
@@ -235,7 +235,7 @@ export default function CreateContainer() {
 
                 {nameError && (
                   <div className="text-xs text-red-400 ">
-                    Name must be between 4 and 15 characters
+                    El nombre debe tener entre 4 y 15 carácteres
                   </div>
                 )}
               </div>
@@ -248,7 +248,7 @@ export default function CreateContainer() {
               descError && "border-red-400"
             }`}
                   rows="3"
-                  placeholder="Description*"
+                  placeholder="Descripción*"
                   value={desc}
                   onChange={(e) => handleChangeDescription(e.target.value)}
                   id="imageInput"
@@ -256,7 +256,7 @@ export default function CreateContainer() {
                 />
                 {descError && (
                   <div className="text-xs text-red-400 ">
-                    Description must be between 50 and 300 characters
+                    La descripción debe tener entre 50 y 300 carácteres
                   </div>
                 )}
               </div>
@@ -276,7 +276,7 @@ export default function CreateContainer() {
                 />
                 {royaltyError && (
                   <div className="text-xs text-red-400 ">
-                    Royalties can't be higher than 10% !
+                    Los royalties no puede ser mas de un 10% !
                   </div>
                 )}
               </div>
@@ -295,7 +295,7 @@ export default function CreateContainer() {
                       value=""
                     />
                     <span className="text-gray-700 border-gray-300 p-3">
-                      Unlockable Content
+                      Contenido Descargable
                     </span>
                   </label>
                 </div>
@@ -307,7 +307,7 @@ export default function CreateContainer() {
             <ActionButton
               variant={"contained"}
               size="large"
-              text="Create NFT"
+              text="Crear NFT"
               buttonAction={(e) => createNFT(e)}
             />
           </div>

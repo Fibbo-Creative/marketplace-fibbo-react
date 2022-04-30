@@ -31,7 +31,7 @@ export default function ConnectionModal({
           <Icon className="text-2xl" icon="ant-design:close-outlined" />
         </div>
         <div className="flex items-center justify-center w-full border-b border-gray-300">
-          <div className="text-center">Connect to a Wallet</div>
+          <div className="text-center">Connectar una billetera</div>
         </div>
 
         <div className="my-10 mx-8 flex flex-col gap-10">
@@ -39,7 +39,7 @@ export default function ConnectionModal({
             onClick={() => connectToMetamask()}
             className="flex w-full justify-between items-center hover:bg-gray-300 p-5"
           >
-            <div>Connect to Metamask</div>
+            <div>Connectar con Metamask</div>
             <div>
               <Icon className="text-3xl" icon="logos:metamask-icon" />
             </div>

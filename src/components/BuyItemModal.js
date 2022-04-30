@@ -69,7 +69,7 @@ export default function BuyItemModal({
           <Icon className="text-2xl" icon="ant-design:close-outlined" />
         </div>
         <div className="flex items-center justify-center w-full border-b border-gray-300">
-          <div className="text-center">Buy Item</div>
+          <div className="text-center">Comprar NFT</div>
         </div>
 
         <div className="my-10 mx-8 flex flex-col gap-10">
@@ -84,7 +84,7 @@ export default function BuyItemModal({
               </div>
               <div className="flex flex-col gap-3">
                 <div className="flex gap-2">
-                  <b>Name:</b>
+                  <b>Nombre:</b>
                   <p>{tokenInfo?.name}</p>
                 </div>
                 <div className="flex gap-2">
@@ -96,14 +96,14 @@ export default function BuyItemModal({
                   />
                 </div>
                 <div className="flex gap-2">
-                  <b>Price:</b>
+                  <b>Precio:</b>
                   <p>{tokenInfo?.price}</p>
                   <p>FTM</p>
                 </div>
                 <ActionButton
                   size="large"
                   variant={"contained"}
-                  text="Buy Now"
+                  text="Comprar Ítem"
                   buttonAction={(e) => buyItem()}
                 />
               </div>
