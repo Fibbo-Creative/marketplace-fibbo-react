@@ -36,7 +36,7 @@ export default function ItemPage() {
         const tokenHistoryRequest = await marketplaceApi.get(
           `getItemHistory?tokenId=${tokenId}&collection=${collection}`
         );
-
+        console.log(tokenInfoResponse);
         setTokenHistoryInfo(tokenHistoryRequest.data);
 
         setChainInfo({
