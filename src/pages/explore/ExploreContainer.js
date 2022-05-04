@@ -21,7 +21,7 @@ export default function ExploreContainer() {
   useEffect(() => {
     //Cuando carge pagina consultar /getNftsForSale
     marketplaceApi
-      .get("getNftsForSale")
+      .get("getAllNfts")
       .then((res) => {
         console.log(res.data);
         const items = res.data;
@@ -45,7 +45,7 @@ export default function ExploreContainer() {
   };
 
   const goToNftDetail = (item) => {
-    navigate(`/explore/${item.nft.collectionAddress}/${item.nft.itemId}`);
+    navigate(`/explore/${item.collectionAddress}/${item.itemId}`);
   };
 
   const changeSmallDisplay = () => {

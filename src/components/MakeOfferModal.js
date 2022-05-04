@@ -12,6 +12,7 @@ export default function MakeOfferModal({
   handleCloseModal,
   itemId,
   wallet,
+  tokenInfo,
 }) {
   const navigate = useNavigate();
   const [{ marketContract, nftContract }, dispatch] = useContractsContext();
@@ -46,7 +47,9 @@ export default function MakeOfferModal({
           <Icon className="text-2xl" icon="ant-design:close-outlined" />
         </div>
         <div className="flex items-center justify-center w-full border-b border-gray-300">
-          <div className="text-center">Make offer for item</div>
+          <div className="text-center">
+            Realizar Oferta para {tokenInfo.name}
+          </div>
         </div>
 
         <div className="my-10 mx-8 flex flex-col gap-10">
