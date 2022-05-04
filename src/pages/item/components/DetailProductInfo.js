@@ -8,6 +8,12 @@ import { truncateWallet } from "../../../context/utils";
 import useAccount from "../../../hooks/useAccount";
 import CoinGecko from "coingecko-api";
 
+const formatPriceInUsd = (price) => {
+  let priceStr = price.toString().split(".");
+  let finalPrice = `${priceStr[0]},${priceStr[1]}`;
+  return finalPrice;
+};
+
 export default function DetailProductInfo({
   tokenInfo,
   tokenOwnerData,
@@ -16,7 +22,6 @@ export default function DetailProductInfo({
   isOwner,
   isForSale,
 }) {
-  const CoinGeckoClient = new CoinGecko();
   const { wallet } = useAccount();
 
   const [openSellModal, setOpenSellModal] = useState(false);
@@ -31,11 +36,12 @@ export default function DetailProductInfo({
 
   useEffect(() => {
     const fetchData = async () => {
+      const CoinGeckoClient = new CoinGecko();
       let data = await CoinGeckoClient.simple.price({ ids: ["fantom"] });
       setCoinPrice(data.data.fantom.usd);
     };
     fetchData();
-  }, [CoinGeckoClient]);
+  }, []);
   return (
     <div className="col-span-1 row-span-3  flex flex-col gap-5">
       <p className="text-3xl">
@@ -81,7 +87,11 @@ export default function DetailProductInfo({
               />
               <p>{tokenInfo.price} FTM </p>
               <p className="text-gray-600 text-xs">
-                (${parseFloat(tokenInfo.price * coinPrice).toFixed(3)})
+                ($
+                {formatPriceInUsd(
+                  parseFloat(tokenInfo.price * coinPrice).toFixed(3)
+                )}
+                )
               </p>
             </div>
           </>

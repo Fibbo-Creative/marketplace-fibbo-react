@@ -35,6 +35,7 @@ export default function PutForSaleModal({
 
       let tx = await createItemTransaction.wait();
 
+      console.log(tx);
       let event = tx.events[2];
       let value = event.args[0];
 

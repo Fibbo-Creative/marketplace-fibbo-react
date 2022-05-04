@@ -144,9 +144,7 @@ export default function CreateContainer() {
   };
 
   useEffect(() => {
-    if (!wallet !== "") {
-      connectToWallet();
-    }
+    connectToWallet();
   }, [wallet, connectToWallet]);
   return (
     <div>
