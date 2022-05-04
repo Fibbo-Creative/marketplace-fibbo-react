@@ -45,7 +45,7 @@ export default function ExploreContainer() {
   };
 
   const goToNftDetail = (item) => {
-    navigate(`/explore/${item.collectionAddress}/${item.itemId}`);
+    navigate(`/explore/${item.collectionAddress}/${item.tokenId}`);
   };
 
   const changeSmallDisplay = () => {
