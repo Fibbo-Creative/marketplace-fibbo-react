@@ -7,6 +7,8 @@ import PutForSaleModal from "../../../components/PutForSaleModal";
 import { truncateWallet } from "../../../context/utils";
 import useAccount from "../../../hooks/useAccount";
 import CoinGecko from "coingecko-api";
+import ChangePriceModal from "../../../components/ChangePriceModal";
+import UnlistItemModal from "../../../components/UnlistItemModal";
 
 const formatPriceInUsd = (price) => {
   let priceStr = price.toString().split(".");
@@ -27,6 +29,9 @@ export default function DetailProductInfo({
   const [openSellModal, setOpenSellModal] = useState(false);
   const [openBuyModal, setOpenBuyModal] = useState(false);
   const [openOfferModal, setOpenOfferModal] = useState(false);
+  const [openChangePriceModal, setOpenChangePriceModal] = useState(false);
+  const [openUnlistItemModal, setOpenUnlistItemModal] = useState(false);
+
   const [coinPrice, setCoinPrice] = useState(1.2);
   const navigate = useNavigate();
 
@@ -122,12 +127,12 @@ export default function DetailProductInfo({
             <div className="flex flex-col md:flex-row gap-3">
               <ActionButton
                 size="small"
-                buttonAction={() => setOpenBuyModal(true)}
+                buttonAction={() => setOpenChangePriceModal(true)}
                 text="Cambiar Precio"
               />
               <ActionButton
                 size="small"
-                buttonAction={() => setOpenBuyModal(true)}
+                buttonAction={() => setOpenUnlistItemModal(true)}
                 text="Quitar en venta"
               />
             </div>
@@ -162,6 +167,25 @@ export default function DetailProductInfo({
           showModal={openOfferModal}
           handleCloseModal={() => setOpenOfferModal(false)}
         />
+      )}
+      {isOwner && isForSale && (
+        <>
+          <ChangePriceModal
+            collectionAddress={collection}
+            tokenId={tokenId}
+            wallet={wallet}
+            showModal={openChangePriceModal}
+            handleCloseModal={() => setOpenChangePriceModal(false)}
+          />
+          <UnlistItemModal
+            collectionAddress={collection}
+            itemId={tokenId}
+            tokenInfo={tokenInfo}
+            wallet={wallet}
+            showModal={openUnlistItemModal}
+            handleCloseModal={() => setOpenUnlistItemModal(false)}
+          />
+        </>
       )}
     </div>
   );
