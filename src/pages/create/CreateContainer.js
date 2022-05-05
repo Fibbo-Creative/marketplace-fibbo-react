@@ -102,6 +102,7 @@ export default function CreateContainer() {
         const ipfsCID = await ipfsClient.add(data);
         const ipfsFileURL = `https://ipfs.infura.io/ipfs/${ipfsCID.path}`;
 
+        console.log(nftContract);
         let createNFTtx = await nftContract.createToken(ipfsFileURL);
         let tx = await createNFTtx.wait();
 
@@ -116,7 +117,7 @@ export default function CreateContainer() {
           name: name,
           description: desc,
           creator: wallet,
-          itemId: tokenId,
+          tokenId: tokenId,
           royalty: royalty,
           sanityImgUrl: sanityImgUrl,
           collection: nftContract.address,

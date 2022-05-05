@@ -36,7 +36,7 @@ export default function ItemPage() {
         const tokenHistoryRequest = await marketplaceApi.get(
           `getItemHistory?tokenId=${tokenId}&collection=${collection}`
         );
-        console.log(tokenInfoResponse);
+
         setTokenHistoryInfo(tokenHistoryRequest.data);
 
         setChainInfo({
@@ -62,8 +62,6 @@ export default function ItemPage() {
         const profileOwnerReq = await marketplaceApi.get(
           `userProfile?wallet=${tokenInfoResponse.owner}`
         );
-
-        console.log(profileOwnerReq.data);
 
         setProfileOwnerData(profileOwnerReq.data);
       })

@@ -6,12 +6,13 @@ import { parseEther } from "ethers/lib/utils";
 import marketplaceApi from "../context/axios";
 import { useNavigate } from "react-router-dom";
 import ActionButton from "./ActionButton";
+import { NFTMarketAddress } from "../chainData/contracts/address";
 
 export default function PutForSaleModal({
   children,
   showModal,
   handleCloseModal,
-  itemId,
+  tokenId,
   collectionAddress,
   wallet,
 }) {
@@ -23,30 +24,20 @@ export default function PutForSaleModal({
     if (priceFor > 0) {
       //en el contrato del marketplace -> createMarketItem
       const priceFormatted = parseEther(priceFor.toString());
-      const listingPrice = parseEther("0.1");
-      const createItemTransaction = await marketContract.createMarketItem(
+
+      const createItemTransaction = await marketContract.listItem(
         nftContract.address,
-        itemId,
-        priceFormatted,
-        {
-          value: listingPrice,
-        }
+        tokenId,
+        priceFormatted
       );
 
-      let tx = await createItemTransaction.wait();
-
-      console.log(tx);
-      let event = tx.events[2];
-      let value = event.args[0];
-
-      let forSaleItemId = value.toNumber();
+      await createItemTransaction.wait();
 
       await marketplaceApi.post("putForSale", {
-        itemId: parseInt(itemId),
+        tokenId: parseInt(tokenId),
         owner: wallet,
         price: parseFloat(priceFor),
         collectionAddress: collectionAddress,
-        forSaleItemId: forSaleItemId,
       });
 
       navigate("/explore");

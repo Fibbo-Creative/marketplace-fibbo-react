@@ -32,7 +32,7 @@ export default function ProfileContainer() {
   };
 
   const goToNftDetail = (item) => {
-    navigate(`/explore/${item.collectionAddress}/${item.itemId}`);
+    navigate(`/explore/${item.collectionAddress}/${item.tokenId}`);
   };
 
   const selectBannerImg = () => {

@@ -137,7 +137,7 @@ export default function DetailProductInfo({
       {isOwner && !isForSale && (
         <PutForSaleModal
           collectionAddress={collection}
-          itemId={tokenId}
+          tokenId={tokenId}
           wallet={wallet}
           showModal={openSellModal}
           handleCloseModal={() => setOpenSellModal(false)}

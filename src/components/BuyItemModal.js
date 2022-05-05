@@ -6,6 +6,7 @@ import { parseEther } from "ethers/lib/utils";
 import marketplaceApi from "../context/axios";
 import { useNavigate } from "react-router-dom";
 import ActionButton from "./ActionButton";
+import { NFTMarketAddress } from "../chainData/contracts/address";
 
 export default function BuyItemModal({
   children,
@@ -22,18 +23,13 @@ export default function BuyItemModal({
   const buyItem = async () => {
     try {
       console.log(tokenInfo);
-      const price = parseEther(tokenInfo.price.toString());
-      console.log(price);
 
-      const itemInContract = await marketContract.fetchMarketItem(12);
-      console.log(itemInContract);
+      console.log(await marketContract.platformFee());
       //en el contrato del marketplace -> createMarketItem
-      const buyItemTransaction = await marketContract.createMarketSale(
+      const buyItemTransaction = await marketContract.buyItem(
         nftContract.address,
-        tokenInfo.forSaleItemId,
-        {
-          value: price,
-        }
+        itemId,
+        tokenInfo.owner
       );
 
       await buyItemTransaction.wait();
@@ -45,7 +41,7 @@ export default function BuyItemModal({
         newOwner: wallet,
         boughtFor: tokenInfo.price,
         sanityItemId: tokenInfo._id,
-        nftItemId: tokenInfo.itemId,
+        nftItemId: tokenInfo.tokenId,
         collectionAddress: collectionAddress,
       });
 
