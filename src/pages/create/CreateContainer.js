@@ -118,7 +118,7 @@ export default function CreateContainer() {
           description: desc,
           creator: wallet,
           tokenId: tokenId,
-          royalty: royalty,
+          royalty: royalty ? royalty : 0,
           sanityImgUrl: sanityImgUrl,
           collection: nftContract.address,
         });

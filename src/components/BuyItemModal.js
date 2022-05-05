@@ -29,10 +29,18 @@ export default function BuyItemModal({
       const buyItemTransaction = await marketContract.buyItem(
         nftContract.address,
         itemId,
-        tokenInfo.owner
+        tokenInfo.owner,
+        { value: parseEther(tokenInfo.price.toString()) }
       );
 
       await buyItemTransaction.wait();
+
+      const approveTx = await nftContract.setApprovalForAll(
+        marketContract.address,
+        true
+      );
+
+      await approveTx.wait();
 
       //Si todo va bien, guardar en sanity item en venta
 
@@ -40,8 +48,7 @@ export default function BuyItemModal({
         prevOwner: tokenInfo.owner,
         newOwner: wallet,
         boughtFor: tokenInfo.price,
-        sanityItemId: tokenInfo._id,
-        nftItemId: tokenInfo.tokenId,
+        tokenId: tokenInfo.tokenId,
         collectionAddress: collectionAddress,
       });
 

@@ -27,6 +27,7 @@ export default function ItemPage() {
     marketplaceApi
       .get(`getNftInfoById?collection=${collection}&nftId=${tokenId}`)
       .then(async (res) => {
+        console.log(res.data);
         const tokenInfoResponse = res.data;
 
         setIsForSale(tokenInfoResponse.forSale);
