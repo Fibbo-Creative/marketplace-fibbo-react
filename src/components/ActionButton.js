@@ -30,6 +30,7 @@ export default function ActionButton({
   buttonAction,
   variant,
   size,
+  gradient,
 }) {
   const [loading, setLoading] = useState(false);
 

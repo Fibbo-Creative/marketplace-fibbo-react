@@ -4,7 +4,7 @@ export default function NftCard({ item, onClick }) {
   return (
     <div
       onClick={onClick}
-      className="flex flex-col gap-3  border-grey border-2 p-3 rounded-md cursor-pointer hover:shadow-lg hover:border-3 hover:-translate-y-1"
+      className="flex flex-col gap-3   border-2 p-3 rounded-md cursor-pointer hover:shadow-lg hover:border-3 hover:-translate-y-1"
     >
       <div className="h-[322px] w-[322px] flex pb-3 border-b-2 ">
         <img
