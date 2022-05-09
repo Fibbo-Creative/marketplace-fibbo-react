@@ -58,7 +58,6 @@ export default function BuyItemModal({
       });
 
       navigate(`/explore/${collectionAddress}/${itemId}`);
-      window.location.reload();
     } catch (e) {
       console.log(e);
     }
