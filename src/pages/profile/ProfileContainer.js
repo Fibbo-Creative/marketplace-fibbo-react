@@ -160,6 +160,9 @@ export default function ProfileContainer() {
               profileData.profileBanner !== ""
                 ? `url(${userProfile.profileBanner})`
                 : "none",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center center",
           }}
         >
           <input

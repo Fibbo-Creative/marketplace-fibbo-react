@@ -3,7 +3,8 @@ import React, { useState } from "react";
 const styles = {
   basicStyle:
     "flex items-center justify-center bg-gradient-to-r from-[#7E29F1] to-[#8BC3FD]  text-white  text-sm uppercase rounded shadow-md  leading-tight ",
-  disabledStyle: "bg-gray-300 text-gray-600 cursor-not-allowed",
+  disabledStyle:
+    "bg-gray-300 text-gray-600 cursor-not-allowed text-sm uppercase rounded shadow-md  leading-tight ",
   small: "w-[150px] h-[35px]  ",
   smaller: "py-1.5 px-1",
   large: "w-[225px] h-[40px]   ",

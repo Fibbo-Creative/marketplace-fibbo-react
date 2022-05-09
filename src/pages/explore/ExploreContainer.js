@@ -21,7 +21,7 @@ export default function ExploreContainer() {
   useEffect(() => {
     //Cuando carge pagina consultar /getNftsForSale
     marketplaceApi
-      .get("getAllNfts")
+      .get("getNftsForSale")
       .then((res) => {
         console.log(res.data);
         const items = res.data;
@@ -134,13 +134,13 @@ export default function ExploreContainer() {
     <div className="mt-[90px] " style={{ height: "94vh" }}>
       {allMarketItems.length > 0 && (
         <>
-          <FiltersSidebar
+          {/*  <FiltersSidebar
             setOpenedSidebar={setOpenedSidebar}
             allMarketItems={allMarketItems}
             setAllMarketItems={setAllMarketItems}
             visibleMarketItems={visibleMarketItems}
             setVisibleMarketItems={setVisibleMarketItems}
-          />
+          /> */}
           <div
             className={`flex flex-col items-center justify-center ${
               openedSidebar && "ml-[17vw]"
