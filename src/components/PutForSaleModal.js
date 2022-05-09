@@ -40,7 +40,7 @@ export default function PutForSaleModal({
         collectionAddress: collectionAddress,
       });
 
-      navigate("/explore");
+      navigate(`/explore/${collectionAddress}/${tokenId}`);
     }
   };
   return (
