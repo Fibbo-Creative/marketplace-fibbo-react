@@ -78,7 +78,7 @@ export default function ItemPage() {
         tokenHistoryInfo.length > 0 &&
         chainInfo.chainId &&
         properties.royalty && (
-          <div className=" mt-[120px] mb-[50px] mx-[50px] grid grid-cols-1  md:grid-cols-[400px_minmax(300px,_0.9fr)] md:grid-rows-[auto_auto] gap-5">
+          <div className=" mt-[120px] mb-[50px] mx-[50px] grid grid-cols-1  md:grid-cols-[400px_minmax(300px,_0.9fr)] md:grid-rows-[auto_auto] gap-7">
             <DetailImage
               tokenImage={tokenInfo.image}
               tokenName={tokenInfo.name}

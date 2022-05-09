@@ -40,7 +40,7 @@ export default function ChangePriceModal({
         collectionAddress: collectionAddress,
       });
 
-      navigate("/explore");
+      navigate(`/explore/${collectionAddress}/${tokenId}`);
     }
   };
   return (
@@ -75,7 +75,7 @@ export default function ChangePriceModal({
               <input
                 value={priceFor}
                 onChange={(e) => setPriceFor(e.target.value)}
-                className="border p-2 text-end"
+                className="border w-full p-2 text-end"
                 type="number"
               />
             </div>

@@ -40,7 +40,7 @@ export default function Navbar() {
     }
   }, [_width]);
   return (
-    <header className=" fixed top-0 w-full h-[81px] bg-gradient-to-r from-[#7E29F1] z-10 to-[#8BC3FD] ">
+    <header className=" fixed top-0 w-full h-[81px] bg-gradient-to-r from-[#7E29F1] z-10 to-[#b9dafe] ">
       <div className="h-[79px] bg-white flex flex-row justify-between w-full items-center px-5">
         <div className=" flex items-center cursor-pointer">
           <img

@@ -16,3 +16,11 @@ body {
   font-family: "Century Gothic";
   overflow-x: hidden;
 }
+
+summary {
+  cursor: pointer;
+}
+
+summary > * {
+  display: inline;
+}

@@ -42,8 +42,8 @@ export default function DetailProductInfo({
   const handleOpenBuyModal = async () => {
     if (wallet === "") {
       await connectToWallet();
-      setOpenBuyModal(true);
     }
+    setOpenBuyModal(true);
   };
 
   useEffect(() => {
@@ -89,7 +89,7 @@ export default function DetailProductInfo({
       </div>
       <div className="flex flex-col justify-center flex-wrap border-grey border-2 p-3 rounded-md gap-3">
         {isForSale && (
-          <>
+          <div>
             <p>Precio Actual</p>
             <div className="flex flex-row items-center gap-3 ">
               <img
@@ -106,7 +106,7 @@ export default function DetailProductInfo({
                 )
               </p>
             </div>
-          </>
+          </div>
         )}
         <div className="flex flex-row gap-5">
           {isForSale && !isOwner && (
