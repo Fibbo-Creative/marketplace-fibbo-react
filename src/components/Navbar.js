@@ -194,14 +194,29 @@ export default function Navbar() {
             <div className="flex flex-col gap-10 mt-10 w-full">
               <div className=" flex items-center justify-center">
                 <div className="flex border-2 rounded">
-                  <input
-                    type="text"
-                    className="px-4 py-2 w-80"
-                    placeholder="Search..."
-                  />
-                  <button className="flex items-center justify-center px-4 border-l">
-                    <Icon icon="ant-design:search-outlined" />
-                  </button>
+                  <div>
+                    <div className="flex items-center justify-center">
+                      <div className="flex border-2 rounded">
+                        <div className="flex items-center justify-center px-4 border-l">
+                          <Icon icon="ant-design:search-outlined" />
+                        </div>
+                        <input
+                          type="text"
+                          className="px-4 py-2 w-[350px] outline-none"
+                          placeholder="Buscar Items..."
+                          onChange={(e) => searchItems(e.target.value)}
+                          value={searchText}
+                        />
+                      </div>
+                    </div>
+                    {(searchItemsData.length > 0 ||
+                      searchProfilesData.length > 0) && (
+                      <SearchResult
+                        itemsResult={searchItemsData}
+                        profilesResult={searchProfilesData}
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
               <div className="flex items-center justify-center">
