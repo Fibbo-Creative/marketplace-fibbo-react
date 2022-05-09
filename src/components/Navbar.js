@@ -202,7 +202,7 @@ export default function Navbar() {
                         </div>
                         <input
                           type="text"
-                          className="px-4 py-2 w-[350px] outline-none"
+                          className="px-4 py-2 w-[275px] outline-none"
                           placeholder="Buscar Items..."
                           onChange={(e) => searchItems(e.target.value)}
                           value={searchText}

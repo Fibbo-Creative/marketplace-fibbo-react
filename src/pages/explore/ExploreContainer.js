@@ -2,11 +2,8 @@ import React, { useEffect, useState } from "react";
 import NftCard from "../../components/NftCard";
 import marketplaceApi from "../../context/axios";
 import { Icon } from "@iconify/react";
-import { useLocation, useNavigate } from "react-router-dom";
 import NftCardSmall from "../../components/NftCardSmall";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Collapse } from "react-collapse";
-import FiltersSidebar from "../../components/FiltersSidebar";
 
 export default function ExploreContainer() {
   const [allMarketItems, setAllMarketItems] = useState([]);
@@ -15,8 +12,6 @@ export default function ExploreContainer() {
   const [userSmallview, setSmallViewUser] = useState(false);
   const [statusFilter, setStatusFilter] = useState(0);
   const [openedSidebar, setOpenedSidebar] = useState(false);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     //Cuando carge pagina consultar /getNftsForSale

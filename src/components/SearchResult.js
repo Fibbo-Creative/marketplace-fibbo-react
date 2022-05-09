@@ -13,7 +13,7 @@ export default function SearchResult({ itemsResult, profilesResult }) {
   };
 
   return (
-    <div className="absolute z-99 flex flex-col bg-white w-[400px] border border-gray">
+    <div className="absolute z-99 flex flex-col bg-white w-[300px]  md:w-[400px] border border-gray">
       <div className=" uppercase cursor-pointer flex items-center px-2 py-1 gap-3 bg-gray-100 border-b ">
         <div>Items</div>
       </div>
