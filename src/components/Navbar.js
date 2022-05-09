@@ -7,13 +7,17 @@ import WalletButton from "./WalletButton";
 import ConnectionModal from "./ConnectionModal";
 import { useStateContext } from "../context/StateProvider";
 import useRespnsive from "../hooks/useResponsive";
+import marketplaceApi from "../context/axios";
+import SearchResult from "./SearchResult";
 
 export default function Navbar() {
-  const [searchText, setSearchText] = useState("Buscar...");
+  const [searchText, setSearchText] = useState("");
   const { wallet, connectToWallet, disconnectWallet } = useAccount();
   const [openModal, setOpenModal] = useState(false);
   const [openedMenu, setOpenedMenu] = useState(false);
   const [{ userProfile }, stateDispatch] = useStateContext();
+  const [searchItemsData, setSearchItemsData] = useState([]);
+  const [searchProfilesData, setSearchProfilesData] = useState([]);
   const { _width } = useRespnsive();
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -21,6 +25,45 @@ export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const searchItems = async (queryText) => {
+    setSearchText(queryText);
+    if (queryText.length >= 4) {
+      const searchResult = await marketplaceApi.get(
+        `searchItems?query=${queryText}`
+      );
+      if (searchResult.status === 200) {
+        const resultData = searchResult.data;
+        const resultItems = resultData.items;
+        const resultProfiles = resultData.profiles;
+        if (resultItems.length === 0) {
+          setSearchItemsData([
+            {
+              name: "No items found...",
+              image:
+                "https://cdn2.iconfinder.com/data/icons/documents-and-files-v-2/100/doc-03-512.png",
+            },
+          ]);
+        } else {
+          setSearchItemsData(resultItems);
+        }
+
+        if (resultProfiles.length === 0) {
+          setSearchProfilesData([
+            {
+              username: "No profiles found",
+              profileImg:
+                "https://cdn2.iconfinder.com/data/icons/documents-and-files-v-2/100/doc-03-512.png",
+            },
+          ]);
+        } else {
+          setSearchProfilesData(resultProfiles);
+        }
+      }
+    } else {
+      setSearchItemsData([]);
+      setSearchProfilesData([]);
+    }
+  };
   const gotoHomepage = () => {
     setOpenModal(false);
     navigate("/");
@@ -56,16 +99,25 @@ export default function Navbar() {
             <div>
               <div className="flex items-center justify-center">
                 <div className="flex border-2 rounded">
+                  <div className="flex items-center justify-center px-4 border-l">
+                    <Icon icon="ant-design:search-outlined" />
+                  </div>
                   <input
                     type="text"
-                    className="px-4 py-2 w-80"
-                    placeholder="Search..."
+                    className="px-4 py-2 w-[350px] outline-none"
+                    placeholder="Buscar Items..."
+                    onChange={(e) => searchItems(e.target.value)}
+                    value={searchText}
                   />
-                  <button className="flex items-center justify-center px-4 border-l">
-                    <Icon icon="ant-design:search-outlined" />
-                  </button>
                 </div>
               </div>
+              {(searchItemsData.length > 0 ||
+                searchProfilesData.length > 0) && (
+                <SearchResult
+                  itemsResult={searchItemsData}
+                  profilesResult={searchProfilesData}
+                />
+              )}
             </div>
             <div className="">
               <a
