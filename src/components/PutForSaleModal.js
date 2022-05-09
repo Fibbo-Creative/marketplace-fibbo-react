@@ -40,7 +40,7 @@ export default function PutForSaleModal({
         collectionAddress: collectionAddress,
       });
 
-      navigate(`/explore/${collectionAddress}/${tokenId}`);
+      window.location.reload();
     }
   };
   return (
@@ -75,7 +75,7 @@ export default function PutForSaleModal({
               <input
                 value={priceFor}
                 onChange={(e) => setPriceFor(e.target.value)}
-                className="border p-2 text-end"
+                className="border w-full p-2 text-end"
                 type="number"
               />
             </div>

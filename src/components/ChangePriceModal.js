@@ -40,7 +40,7 @@ export default function ChangePriceModal({
         collectionAddress: collectionAddress,
       });
 
-      navigate(`/explore/${collectionAddress}/${tokenId}`);
+      window.location.reload();
     }
   };
   return (
