@@ -42,8 +42,8 @@ export default function DetailProductInfo({
   const handleOpenBuyModal = async () => {
     if (wallet === "") {
       await connectToWallet();
-      setOpenBuyModal(true);
     }
+    setOpenBuyModal(true);
   };
 
   useEffect(() => {
