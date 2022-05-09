@@ -24,6 +24,7 @@ export default function HomeContainer() {
           </p>
           <div className="flex felx-wrap gap-10 p-10">
             <ActionButton
+              gradient
               size="small"
               variant="contained"
               text="Explorar"
@@ -31,7 +32,8 @@ export default function HomeContainer() {
             />
             <ActionButton
               size="small"
-              variant="outlined"
+              variant="contained"
+              gradient
               text="Crear"
               buttonAction={(e) => goToCreate()}
             />

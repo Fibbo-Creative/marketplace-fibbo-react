@@ -24,7 +24,7 @@ export default function DetailProductInfo({
   isOwner,
   isForSale,
 }) {
-  const { wallet } = useAccount();
+  const { wallet, connectToWallet } = useAccount();
 
   const [openSellModal, setOpenSellModal] = useState(false);
   const [openBuyModal, setOpenBuyModal] = useState(false);
@@ -37,6 +37,13 @@ export default function DetailProductInfo({
 
   const redirectToProfile = () => {
     navigate(`/profile/${tokenInfo.owner}`);
+  };
+
+  const handleOpenBuyModal = async () => {
+    if (wallet === "") {
+      await connectToWallet();
+      setOpenBuyModal(true);
+    }
   };
 
   useEffect(() => {
@@ -105,7 +112,7 @@ export default function DetailProductInfo({
           {isForSale && !isOwner && (
             <ActionButton
               size="small"
-              buttonAction={() => setOpenBuyModal(true)}
+              buttonAction={() => handleOpenBuyModal(true)}
               text="Comprar NFT"
             />
           )}

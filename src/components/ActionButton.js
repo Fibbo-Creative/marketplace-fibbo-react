@@ -1,26 +1,39 @@
 import React, { useState } from "react";
 
 const styles = {
-  small: "w-40 py-2 px-3 ",
-  smaller: "w-32 py-1.5 px-1",
-  large: "w-60 py-2.5 px-4 ",
-  outlined:
-    " border border-primary-4 text-primary-4  text-sm  uppercase rounded shadow-md leading-tight  hover:bg-primary-4 hover:text-white transition duration-150 ease-in-out",
+  basicStyle:
+    "flex items-center justify-center bg-gradient-to-r from-[#7E29F1] to-[#8BC3FD]  text-white  text-sm uppercase rounded shadow-md  leading-tight ",
+  disabledStyle: "bg-gray-300 text-gray-600 cursor-not-allowed",
+  small: "w-[150px] h-[35px]  ",
+  smaller: "py-1.5 px-1",
+  large: "w-[225px] h-[40px]   ",
   contained:
-    "bg-primary-4 border text-white  text-sm uppercase rounded shadow-md  leading-tight hover:bg-white hover:text-primary-4 hover:border hover:border-primary-4 transition duration-150 ease-in-out",
+    "border text-white  text-sm uppercase rounded shadow-md  leading-tight hover:bg-white hover:text-primary-4 hover:border hover:border-primary-4 transition duration-150 ease-in-out",
+  gradient: "",
+  contentDisabled: "",
+  smallContent:
+    "w-[148px] h-[33px] py-2 px-3 flex items-center justify-center ",
+  largeContent:
+    "w-[223px]  h-[38px] py-2.5 px-4  flex items-center justify-center",
 };
 
-const getVariantStyle = (variant, size) => {
+const getVariantStyle = (size, disabled) => {
   let finalStyle = styles[size];
-  switch (variant) {
-    case "outlined":
-      finalStyle = `${finalStyle} ${styles.outlined}`;
-      break;
-    case "contained":
-      finalStyle = `${finalStyle} ${styles.contained}`;
-      break;
-    default:
-      finalStyle = `${finalStyle} ${styles.contained}`;
+  if (disabled) {
+    finalStyle = `${finalStyle} ${styles.disabledStyle}`;
+  } else {
+    finalStyle = `${finalStyle} ${styles.basicStyle}`;
+  }
+
+  return finalStyle;
+};
+
+const getContentStyles = (size, disabled) => {
+  let finalStyle = "";
+  if (disabled) {
+    finalStyle = `${finalStyle} ${styles.content}`;
+  } else {
+    finalStyle = `${finalStyle} ${styles[`${size}Content`]}`;
   }
   return finalStyle;
 };
@@ -29,8 +42,8 @@ export default function ActionButton({
   children,
   buttonAction,
   variant,
+  disabled,
   size,
-  gradient,
 }) {
   const [loading, setLoading] = useState(false);
 
@@ -42,8 +55,8 @@ export default function ActionButton({
   return (
     <button
       onClick={(e) => executeAction(e)}
-      className={`${getVariantStyle(variant, size)}`}
-      disabled={loading}
+      disabled={loading || disabled}
+      className={`${getVariantStyle(size, disabled)} `}
     >
       {loading ? (
         <div className="flex gap-4 items-center justify-center text-xs">
@@ -51,7 +64,20 @@ export default function ActionButton({
           <div>Processing...</div>{" "}
         </div>
       ) : (
-        text
+        <div
+          className={`${getContentStyles(size, disabled)} ${
+            !disabled && "hover:bg-white hover:text-primary-1"
+          }`}
+        >
+          <h1
+            className={`${
+              !disabled &&
+              "hover:bg-clip-text hover:text-transparent hover:bg-gradient-to-r hover:from-[#7E29F1] hover:to-[#8BC3FD]"
+            }`}
+          >
+            {text}
+          </h1>
+        </div>
       )}
     </button>
   );
