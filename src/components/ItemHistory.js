@@ -42,7 +42,7 @@ export default function ItemHistory({ historyItems }) {
                   <td className="px-6 py-4">{truncateWallet(item.from)}</td>
                   <td className="px-6 py-4">{truncateWallet(item.to)}</td>
                   <td className="px-6 py-4">
-                    {new Date(item._createdAt).toLocaleString()}
+                    {new Date(item.timestamp).toLocaleString()}
                   </td>
                 </tr>
               );

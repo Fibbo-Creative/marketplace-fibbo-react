@@ -118,6 +118,7 @@ export default function DetailProductInfo({
           )}
           {!isForSale && !isOwner && (
             <ActionButton
+              disabled
               size="small"
               buttonAction={() => setOpenOfferModal(true)}
               text="Realizar Oferta"
