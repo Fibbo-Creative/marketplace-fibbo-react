@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function NftCard({ title, children }) {
+export default function DropDown({ title, children }) {
   const [showShow, setShowShow] = useState(false);
 
   const toggleShow = () => setShowShow(!showShow);

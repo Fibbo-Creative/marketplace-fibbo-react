@@ -85,7 +85,7 @@ export default function ItemHistory({ historyItems }) {
                   <div>
                     <b>Fecha</b>
                   </div>
-                  <div> {new Date(item._createdAt).toLocaleString()}</div>
+                  <div> {new Date(item.timestamp).toLocaleString()}</div>
                 </div>
               </div>
             );

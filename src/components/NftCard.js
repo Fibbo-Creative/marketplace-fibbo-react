@@ -14,7 +14,10 @@ export default function NftCard({ item, onClick }) {
         />
       </div>
       <div className="flex justify-between gap-2 items-center">
-        <div className="flex flex-col items-center justify-center pt-3 pb-1">
+        <div className="flex flex-col justify-center pt-3 pb-1">
+          <p className="text-xs">
+            <i>{item.collectionName}</i>
+          </p>
           <p>
             <b>{item.name}</b>
           </p>
