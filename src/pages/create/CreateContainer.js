@@ -9,7 +9,7 @@ import ActionButton from "../../components/ActionButton";
 const ipfsClient = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
 
 const validateName = (name) => {
-  if (name.length > 4 && name.length < 15) return true;
+  if (name.length > 4 && name.length < 30) return true;
   else return false;
 };
 
@@ -93,7 +93,7 @@ export default function CreateContainer() {
       setDescError(true);
       error = true;
     }
-    if (royalty > 10) {
+    if (royalty < 0 || royalty > 20) {
       setRoyaltyError(true);
       error = true;
     }
@@ -234,7 +234,7 @@ export default function CreateContainer() {
 
                 {nameError && (
                   <div className="text-xs text-red-400 ">
-                    El nombre debe tener entre 4 y 15 carácteres
+                    El nombre debe tener entre 4 y 30 carácteres
                   </div>
                 )}
               </div>
@@ -275,7 +275,8 @@ export default function CreateContainer() {
                 />
                 {royaltyError && (
                   <div className="text-xs text-red-400 ">
-                    Los royalties no puede ser mas de un 10% !
+                    Los royalties no puede ser mas de un 20% ni un valor
+                    negativo!
                   </div>
                 )}
               </div>
