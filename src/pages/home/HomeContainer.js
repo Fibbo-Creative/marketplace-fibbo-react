@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import FiboIMG from "../../assets/logoHome.png";
+import FiboIMG from "../../assets/logoNavbarSmall.png";
 import ActionButton from "../../components/ActionButton";
 
 export default function HomeContainer() {
