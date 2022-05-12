@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import useAccount from "../hooks/useAccount";
 import { Icon } from "@iconify/react";
-import logo from "../assets/FibboLogo.png";
+import logo from "../assets/logoNavbar.png";
+import logoSmall from "../assets/logoNavbarSmall.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import WalletButton from "./WalletButton";
 import ConnectionModal from "./ConnectionModal";
@@ -87,11 +88,11 @@ export default function Navbar() {
       <div className="h-[79px] bg-white flex flex-row justify-between w-full items-center px-5">
         <div className=" flex items-center cursor-pointer">
           <img
-            src={logo}
+            src={_width < 700 ? logoSmall : logo}
             href="/"
             onClick={gotoHomepage}
             alt="FibboLogo"
-            className="w-[128px] object-contain"
+            className="w-[64px] md:w-[128px] object-contain"
           ></img>
         </div>
         <div className="flex gap-5 items-center">

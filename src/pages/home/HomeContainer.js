@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import FiboIMG from "../../assets/FibboInicio.png";
+import FiboIMG from "../../assets/logoHome.png";
 import ActionButton from "../../components/ActionButton";
 
 export default function HomeContainer() {
@@ -12,8 +12,8 @@ export default function HomeContainer() {
     navigate("/create");
   };
   return (
-    <div className="absolute w-screen h-full m-0 p-0 b-0 ">
-      <section className="flex flex-col-reverse lg:flex-row items-center justify-center align-middle w-full h-full gap-10 py-20 px-10">
+    <div className="w-screen h-full m-0 p-0 b-0 ">
+      <section className="flex flex-col-reverse lg:flex-row items-center justify-center w-full h-full gap-10 py-20 px-10">
         <div className="flex flex-col items-center justify-center w-full h-auto ">
           <h1 className="flex text-2xl leading-normal sm:text-4xl pb-4 md:pb-7 xl:text-6xl xl:p-10 ">
             <b>FIBBO : El Arte de expresar tu Arte</b>
@@ -43,7 +43,7 @@ export default function HomeContainer() {
           <img
             src={FiboIMG}
             alt="FibboLogo"
-            className="w-[400px] h-[500px] object-contain flex p-10 xl:p-0"
+            className="w-[600px]  h-[375px] md:h-[700px] object-contain flex p-10 xl:p-0"
           ></img>
         </div>
       </section>
