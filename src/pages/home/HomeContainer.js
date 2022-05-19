@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FiboIMG from "../../assets/logoNavbarSmall.png";
 import ActionButton from "../../components/ActionButton";
+import MobileDetect from "mobile-detect";
 
 export default function HomeContainer() {
+  let type = new MobileDetect(window.navigator.userAgent);
+  const [phone, setPhone] = useState(type.phone());
   const navigate = useNavigate();
   const goToExplore = () => {
     navigate("/explore");
@@ -22,6 +25,7 @@ export default function HomeContainer() {
             Marketplace enfocado con especial énfasis en artistas y creadores de
             contenido.
           </p>
+          <p>{phone}</p>
           <div className="flex felx-wrap gap-10 p-10">
             <ActionButton
               gradient

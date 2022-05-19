@@ -1,10 +1,7 @@
 import "./App.css";
 import Navbar from "./components/Navbar";
-import { useEffect, useState } from "react";
 import { useContractsContext } from "./context/contracts/ContractProvider";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { contractActionTypes } from "./context/contracts/contractsReducer";
-import useChain from "./hooks/useChain";
 import useAccount from "./hooks/useAccount";
 import ExploreContainer from "./pages/explore/ExploreContainer";
 import HomeContainer from "./pages/home/HomeContainer";
@@ -13,19 +10,22 @@ import ItemPage from "./pages/item/ItemPage";
 import ReactModal from "react-modal";
 import ProfileContainer from "./pages/profile/ProfileContainer";
 import NotFoundContainer from "./pages/notFound/NotFoundContainer";
+import MobileDetect from "mobile-detect";
 
 ReactModal.defaultStyles.overlay.backgroundColor = "rgba(73, 77, 91, 0.5)";
 ReactModal.defaultStyles.content.width = "max-content";
-ReactModal.defaultStyles.content.height = "fit-content";
+ReactModal.defaultStyles.content.height = "max-content";
 ReactModal.defaultStyles.content.margin = "auto";
+ReactModal.defaultStyles.content.maxHeight = "";
 ReactModal.defaultStyles.content.borderRadius = 50;
 
 function App() {
   const [{ wallet }, dispatch] = useContractsContext();
   const { connectToWallet } = useAccount();
-
+  let type = new MobileDetect(window.navigator.userAgent);
+  console.log(type.phone());
   return (
-    <div className={`App`}>
+    <div className={`App`} id="App">
       <BrowserRouter>
         <>
           <Navbar wallet={wallet} connectToWallet={connectToWallet} />
