@@ -25,7 +25,6 @@ export default function HomeContainer() {
             Marketplace enfocado con especial énfasis en artistas y creadores de
             contenido.
           </p>
-          <p>{phone}</p>
           <div className="flex felx-wrap gap-10 p-10">
             <ActionButton
               gradient
