@@ -10,6 +10,7 @@ import ItemPage from "./pages/item/ItemPage";
 import ReactModal from "react-modal";
 import ProfileContainer from "./pages/profile/ProfileContainer";
 import NotFoundContainer from "./pages/notFound/NotFoundContainer";
+import FeaturesContainer from "./pages/features/FeaturesContainer";
 
 ReactModal.defaultStyles.overlay.backgroundColor = "rgba(73, 77, 91, 0.5)";
 ReactModal.defaultStyles.content.width = "max-content";
@@ -31,7 +32,7 @@ function App() {
           <Routes>
             <Route path="*" element={<NotFoundContainer />} />
             <Route path="/create" element={<CreateContainer />} />
-
+            <Route path="/features" element={<FeaturesContainer />} />
             <Route path="/create" element={<CreateContainer />} />
             <Route path="/explore" element={<ExploreContainer />} />
             <Route
