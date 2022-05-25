@@ -1,12 +1,10 @@
 import { Icon } from "@iconify/react";
-import React, { useState } from "react";
+import React from "react";
 import ReactModal from "react-modal";
 import { useContractsContext } from "../context/contracts/ContractProvider";
-import { parseEther } from "ethers/lib/utils";
 import marketplaceApi from "../context/axios";
 import { useNavigate } from "react-router-dom";
 import ActionButton from "./ActionButton";
-import { NFTMarketAddress } from "../chainData/contracts/address";
 
 export default function UnlistItemModal({
   children,
@@ -18,7 +16,7 @@ export default function UnlistItemModal({
   wallet,
 }) {
   const navigate = useNavigate();
-  const [{ marketContract, nftContract }, dispatch] = useContractsContext();
+  const [{ marketContract, nftContract }] = useContractsContext();
 
   const unlistItem = async () => {
     try {

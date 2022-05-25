@@ -6,7 +6,6 @@ import { formatEther, parseEther } from "ethers/lib/utils";
 import marketplaceApi from "../context/axios";
 import { useNavigate } from "react-router-dom";
 import ActionButton from "./ActionButton";
-import { NFTMarketAddress } from "../chainData/contracts/address";
 
 export default function BuyItemModal({
   children,
@@ -20,8 +19,7 @@ export default function BuyItemModal({
   const [walletBalance, setWalletBalance] = useState(0);
 
   const navigate = useNavigate();
-  const [{ marketContract, nftContract, provider }, dispatch] =
-    useContractsContext();
+  const [{ marketContract, nftContract, provider }] = useContractsContext();
 
   const checkBalance = async () => {
     let balance = await provider.getBalance(wallet);

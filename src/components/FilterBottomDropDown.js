@@ -1,7 +1,6 @@
 import { Icon } from "@iconify/react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import useCollapse from "react-collapsed";
-import FilterRange from "./FilterRange";
 
 export default function FilterBottomDropDown({ name, children }) {
   const [isExpanded, setExpanded] = useState(false);

@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import ConnectionModal from "./ConnectionModal";
+import React from "react";
 
 export default function WalletButton({
   userProfile,

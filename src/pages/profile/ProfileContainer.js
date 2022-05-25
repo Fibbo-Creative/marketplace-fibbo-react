@@ -1,7 +1,6 @@
 import { Icon } from "@iconify/react";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import ActionButton from "../../components/ActionButton";
+import { useParams } from "react-router-dom";
 import NftCard from "../../components/NftCard";
 import NftCardSmall from "../../components/NftCardSmall";
 import marketplaceApi from "../../context/axios";
@@ -12,7 +11,6 @@ import useRespnsive from "../../hooks/useResponsive";
 
 export default function ProfileContainer() {
   const { wallet } = useAccount();
-  const navigate = useNavigate();
   const { address } = useParams();
   const [userItems, setUserItems] = useState([]);
   const [userSmallview, setSmallViewUser] = useState(true);
@@ -109,16 +107,6 @@ export default function ProfileContainer() {
     setShowEditUsername(!showEditUsername);
   };
 
-  const followUser = async () => {
-    const followUserReq = await marketplaceApi.post("followUser", {
-      from: wallet,
-      to: address,
-    });
-    if (followUserReq.status === 200) {
-      window.location.reload();
-    }
-  };
-
   const toggleEditUsername = async (e) => {
     setShowEditUsername(!showEditUsername);
     /* try {
@@ -131,12 +119,6 @@ export default function ProfileContainer() {
     } catch (error) {
       console.log("Error uploading file: ", error);
     } */
-  };
-
-  const userIsFollowing = () => {
-    const follower = profileData.followers.find((f) => f === wallet);
-    if (follower) return true;
-    else return false;
   };
 
   useEffect(() => {
@@ -239,20 +221,6 @@ export default function ProfileContainer() {
         <div>
           <i>{_width < 500 ? truncateWallet(address) : address}</i>
         </div>
-        {/* <div className="flex gap-10 items-center">
-          {!myProfile &&
-            wallet !== "" &&
-            profileData.followers &&
-            !userIsFollowing() && (
-              <ActionButton
-                buttonAction={(e) => followUser()}
-                text="Follow"
-                size="smaller"
-              />
-            )}
-          <div>{profileData.followers?.length} Followers</div>
-          <div>{profileData.following?.length} Following</div>
-        </div> */}
       </div>
 
       <div className="h-[10px] w-sceen bg-gray-300 mt-10"></div>

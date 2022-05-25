@@ -2,8 +2,6 @@ import { Icon } from "@iconify/react";
 import React, { useState } from "react";
 import ReactModal from "react-modal";
 import { useContractsContext } from "../context/contracts/ContractProvider";
-import { parseEther } from "ethers/lib/utils";
-import marketplaceApi from "../context/axios";
 import { useNavigate } from "react-router-dom";
 
 export default function MakeOfferModal({
@@ -15,7 +13,6 @@ export default function MakeOfferModal({
   tokenInfo,
 }) {
   const navigate = useNavigate();
-  const [{ marketContract, nftContract }, dispatch] = useContractsContext();
   const [offerPrice, setOfferPrice] = useState(0);
 
   const makeOffer = async () => {

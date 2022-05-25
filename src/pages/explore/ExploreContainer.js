@@ -10,7 +10,6 @@ export default function ExploreContainer() {
   const [visibleMarketItems, setVisibleMarketItems] = useState([]);
   const [visibleItemsCount, setVisibleItemsCount] = useState(12);
   const [userSmallview, setSmallViewUser] = useState(false);
-  const [statusFilter, setStatusFilter] = useState(0);
   const [openedSidebar, setOpenedSidebar] = useState(false);
 
   useEffect(() => {

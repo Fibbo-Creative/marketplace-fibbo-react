@@ -6,7 +6,6 @@ import { parseEther } from "ethers/lib/utils";
 import marketplaceApi from "../context/axios";
 import { useNavigate } from "react-router-dom";
 import ActionButton from "./ActionButton";
-import { NFTMarketAddress } from "../chainData/contracts/address";
 
 export default function ChangePriceModal({
   children,
@@ -16,8 +15,7 @@ export default function ChangePriceModal({
   collectionAddress,
   wallet,
 }) {
-  const navigate = useNavigate();
-  const [{ marketContract, nftContract }, dispatch] = useContractsContext();
+  const [{ marketContract, nftContract }] = useContractsContext();
   const [priceFor, setPriceFor] = useState(0);
 
   const changeListingPrice = async () => {

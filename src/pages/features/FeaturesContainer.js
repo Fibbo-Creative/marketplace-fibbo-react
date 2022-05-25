@@ -21,6 +21,7 @@ export default function FeaturesContainer() {
   const [suggestionsInProgress, setSuggestionsInProgress] = useState([]);
   const [showNewSuggestion, setShowNewSuggestion] = useState(false);
   const [{ suggestionsContract }, dispatch] = useContractsContext();
+
   useEffect(() => {
     const fetchSuggestions = async () => {
       let _suggInProg = await suggestionsContract.getInProgressSuggestions();
@@ -50,7 +51,13 @@ export default function FeaturesContainer() {
       </div>
       <div className="mt-10 flex flex-col justify-center items-center gap-2 mx-20">
         {suggestionsInProgress.map((item) => {
-          return <FeatureItem key={Math.random(999) * 100} suggestion={item} />;
+          return (
+            <FeatureItem
+              suggestionsContract={suggestionsContract}
+              key={Math.random(999) * 100}
+              suggestion={item}
+            />
+          );
         })}
       </div>
       <NewFeatureModal

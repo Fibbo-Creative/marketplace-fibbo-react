@@ -1,7 +1,6 @@
 import { Icon } from "@iconify/react";
-import React, { useState } from "react";
+import React from "react";
 import ReactModal from "react-modal";
-import { useNavigate } from "react-router-dom";
 
 export default function ConnectionModal({
   children,
@@ -9,10 +8,6 @@ export default function ConnectionModal({
   handleCloseModal,
   connectToWallet,
 }) {
-  const navigate = useNavigate();
-
-  const [priceFor, setPriceFor] = useState(0);
-
   const connectToMetamask = async () => {
     await connectToWallet();
     handleCloseModal();

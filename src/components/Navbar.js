@@ -16,7 +16,7 @@ export default function Navbar() {
   const { wallet, connectToWallet, disconnectWallet } = useAccount();
   const [openModal, setOpenModal] = useState(false);
   const [openedMenu, setOpenedMenu] = useState(false);
-  const [{ userProfile }, stateDispatch] = useStateContext();
+  const [{ userProfile }] = useStateContext();
   const [searchItemsData, setSearchItemsData] = useState([]);
   const [searchProfilesData, setSearchProfilesData] = useState([]);
   const { _width } = useRespnsive();

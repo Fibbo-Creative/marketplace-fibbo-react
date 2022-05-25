@@ -1,11 +1,23 @@
+import { parseEther } from "ethers/lib/utils";
 import React, { useState } from "react";
 import tw from "tailwind-styled-components";
 import ActionButton from "../../../components/ActionButton";
+import { useContractsContext } from "../../../context/contracts/ContractProvider";
 
-export const FeatureItem = ({ suggestion }) => {
+export const FeatureItem = ({ suggestion, suggestionsContract }) => {
   const [depositValue, setDepositValue] = useState(0.01);
+
   const { suggestionId, title, description, totalAmount, progress } =
     suggestion;
+
+  const depositToSuggestion = async () => {
+    let tx = await suggestionsContract.addTokensToSuggestion(suggestionId, {
+      value: parseEther(depositValue.toString()),
+    });
+    tx.wait(1);
+
+    window.location.reload();
+  };
   return (
     <Container>
       <TitleContainer>{title}</TitleContainer>
@@ -13,7 +25,7 @@ export const FeatureItem = ({ suggestion }) => {
       <ProgressContainer>
         <div>Progress</div>
         <div>
-          {progress} / {totalAmount} MATIC
+          {progress} / {totalAmount} FTM
         </div>
       </ProgressContainer>
       <DepositContainer>
@@ -23,7 +35,11 @@ export const FeatureItem = ({ suggestion }) => {
           type="number"
           step=".01"
         />
-        <ActionButton text={"Deposit"} size={"small"} />
+        <ActionButton
+          buttonAction={depositToSuggestion}
+          text={"Deposit"}
+          size={"small"}
+        />
       </DepositContainer>
     </Container>
   );
