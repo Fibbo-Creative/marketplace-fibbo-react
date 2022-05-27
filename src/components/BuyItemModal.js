@@ -17,6 +17,7 @@ export default function BuyItemModal({
   wallet,
 }) {
   const [walletBalance, setWalletBalance] = useState(0);
+  const [completedAction, setCompletedAction] = useState(false);
 
   const navigate = useNavigate();
   const [{ marketContract, nftContract, provider }] = useContractsContext();
@@ -55,7 +56,7 @@ export default function BuyItemModal({
         collectionAddress: collectionAddress,
       });
 
-      navigate(`/explore/${collectionAddress}/${itemId}`);
+      setCompletedAction(true);
     } catch (e) {
       console.log(e);
     }
@@ -86,46 +87,75 @@ export default function BuyItemModal({
 
           <div className="my-10 mx-8 flex flex-col gap-10">
             <div className="w-full flex-col items-center justify-center">
-              <div className="flex flex-col md:flex-row items-center gap-3 justify-between">
-                <div>
-                  <img
-                    src={tokenInfo?.image}
-                    width={"128px"}
-                    alt={`tokenImage-${tokenInfo?.name}`}
-                  />
-                </div>
-                <div className="flex flex-col gap-3">
-                  <div className="flex gap-2">
-                    <b>Nombre:</b>
-                    <p>{tokenInfo?.name}</p>
-                  </div>
-                  <div className="flex gap-2">
-                    <b>Royalties:</b>
-                    <p>{tokenInfo?.royalty}</p>
-                    <Icon
-                      className="text-gray-500"
-                      icon="ci:help-circle-outline"
+              {!completedAction ? (
+                <div className="flex flex-col md:flex-row items-center gap-3 justify-between">
+                  <div>
+                    <img
+                      src={tokenInfo?.image}
+                      width={"128px"}
+                      alt={`tokenImage-${tokenInfo?.name}`}
                     />
                   </div>
-                  <div className="flex gap-2">
-                    <b>Precio:</b>
-                    <p>{tokenInfo?.price}</p>
-                    <p>FTM</p>
-                  </div>
-                  <ActionButton
-                    disabled={walletBalance < tokenInfo.price}
-                    size="large"
-                    variant={"contained"}
-                    text="Comprar Ítem"
-                    buttonAction={(e) => buyItem()}
-                  />
-                  {walletBalance < tokenInfo.price && (
-                    <div className="text-xs text-red-700">
-                      Insuficientes FTM para comprar!
+                  <div className="flex flex-col gap-3">
+                    <div className="flex gap-2">
+                      <b>Nombre:</b>
+                      <p>{tokenInfo?.name}</p>
                     </div>
-                  )}
+                    <div className="flex gap-2">
+                      <b>Royalties:</b>
+                      <p>{tokenInfo?.royalty}</p>
+                      <Icon
+                        className="text-gray-500"
+                        icon="ci:help-circle-outline"
+                      />
+                    </div>
+                    <div className="flex gap-2">
+                      <b>Precio:</b>
+                      <p>{tokenInfo?.price}</p>
+                      <p>FTM</p>
+                    </div>
+                    <ActionButton
+                      disabled={walletBalance < tokenInfo.price}
+                      size="large"
+                      variant={"contained"}
+                      text="Comprar Ítem"
+                      buttonAction={(e) => buyItem()}
+                    />
+                    {walletBalance < tokenInfo.price && (
+                      <div className="text-xs text-red-700">
+                        Insuficientes FTM para comprar!
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="flex flex-col md:flex-row items-center gap-3 justify-between">
+                  <div>
+                    <img
+                      src={tokenInfo?.image}
+                      width={"164px"}
+                      alt={`tokenImage-${tokenInfo?.name}`}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-5 items-center">
+                    <div className="flex gap-5 items-center">
+                      <Icon
+                        fontSize={24}
+                        color="green"
+                        icon="teenyicons:tick-circle-solid"
+                      />
+                      <p>Item comprado correctamente</p>
+                    </div>
+
+                    <ActionButton
+                      size="large"
+                      variant={"contained"}
+                      text="Ver item en posesión"
+                      buttonAction={(e) => window.location.reload()}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

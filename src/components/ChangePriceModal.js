@@ -17,6 +17,7 @@ export default function ChangePriceModal({
 }) {
   const [{ marketContract, nftContract }] = useContractsContext();
   const [priceFor, setPriceFor] = useState(0);
+  const [completedAction, setCompletedAction] = useState(false);
 
   const changeListingPrice = async () => {
     if (priceFor > 0) {
@@ -38,7 +39,7 @@ export default function ChangePriceModal({
         collectionAddress: collectionAddress,
       });
 
-      window.location.reload();
+      setCompletedAction(true);
     }
   };
   return (
@@ -57,36 +58,56 @@ export default function ChangePriceModal({
         <div className="flex items-center justify-center w-full border-b border-gray-300">
           <div className="text-center">Cambiar precio del item</div>
         </div>
-
-        <div className="my-10 mx-8 flex flex-col gap-10">
-          <div>
-            <div>Precio</div>
-            <div className="flex">
-              <div className="flex w-[100px] bg-gray-300 justify-evenly items-center">
-                <img
-                  width={32}
-                  src="https://assets.trustwalletapp.com/blockchains/fantom/info/logo.png"
-                  alt="Fantom coin"
+        {!completedAction ? (
+          <div className="my-10 mx-8 flex flex-col gap-10">
+            <div>
+              <div>Precio</div>
+              <div className="flex">
+                <div className="flex w-[100px] bg-gray-300 justify-evenly items-center">
+                  <img
+                    width={32}
+                    src="https://assets.trustwalletapp.com/blockchains/fantom/info/logo.png"
+                    alt="Fantom coin"
+                  />
+                  FTM
+                </div>
+                <input
+                  value={priceFor}
+                  onChange={(e) => setPriceFor(e.target.value)}
+                  className="border w-full p-2 text-end"
+                  type="number"
                 />
-                FTM
               </div>
-              <input
-                value={priceFor}
-                onChange={(e) => setPriceFor(e.target.value)}
-                className="border w-full p-2 text-end"
-                type="number"
+            </div>
+            <div className="w-full flex items-center justify-center">
+              <ActionButton
+                variant="contained"
+                size="small"
+                text="Cambiar Precio"
+                buttonAction={(e) => changeListingPrice()}
               />
             </div>
           </div>
-          <div className="w-full flex items-center justify-center">
-            <ActionButton
-              variant="contained"
-              size="small"
-              text="Cambiar Precio"
-              buttonAction={(e) => changeListingPrice()}
-            />
+        ) : (
+          <div className="my-10 mx-8 flex flex-col gap-10 items-center">
+            <div className="flex gap-5 items-center">
+              <Icon
+                fontSize={24}
+                color="green"
+                icon="teenyicons:tick-circle-solid"
+              />
+              <p>Item Listado correctamente por {priceFor} FTM</p>
+            </div>
+            <div className="w-full flex items-center justify-center">
+              <ActionButton
+                variant="contained"
+                size="large"
+                text="Ver Item Actualizado"
+                buttonAction={(e) => window.location.reload()}
+              />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </ReactModal>
   );
