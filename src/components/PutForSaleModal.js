@@ -32,7 +32,7 @@ export default function PutForSaleModal({
 
       await createItemTransaction.wait();
 
-      await marketplaceApi.post("putForSale", {
+      await marketplaceApi.post("nfts/putForSale", {
         tokenId: parseInt(tokenId),
         owner: wallet,
         price: parseFloat(priceFor),

@@ -53,7 +53,7 @@ export default function ProfileContainer() {
       formData.append("wallet", wallet);
 
       const imgAddedToSanity = await marketplaceApi.post(
-        "uploadBannerImg",
+        "users/setBanner",
         formData,
         {
           headers: {
@@ -76,7 +76,7 @@ export default function ProfileContainer() {
       formData.append("wallet", wallet);
 
       const imgAddedToSanity = await marketplaceApi.post(
-        "uploadProfileImg",
+        "users/setProfileImg",
         formData,
         {
           headers: {
@@ -95,7 +95,7 @@ export default function ProfileContainer() {
     console.log(newUsername);
     e.preventDefault();
     try {
-      const imgAddedToSanity = await marketplaceApi.post("uploadUsername", {
+      const imgAddedToSanity = await marketplaceApi.post("users/setUsername", {
         wallet: address,
         username: newUsername,
       });
@@ -122,14 +122,14 @@ export default function ProfileContainer() {
   };
 
   useEffect(() => {
-    console.log(wallet === address);
     setMyprofile(wallet === address);
-    marketplaceApi.get(`userProfile?wallet=${address}`).then((res) => {
+    marketplaceApi.get(`users/profile?wallet=${address}`).then((res) => {
       setProfileData(res.data);
-      console.log(res.data);
-      marketplaceApi.get(`getNftsByAddress?address=${address}`).then((nfts) => {
-        setUserItems(nfts.data);
-      });
+      marketplaceApi
+        .get(`nfts/nftsByAddress?address=${address}`)
+        .then((nfts) => {
+          setUserItems(nfts.data);
+        });
     });
   }, [wallet]);
   return (

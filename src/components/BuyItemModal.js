@@ -48,7 +48,7 @@ export default function BuyItemModal({
 
       //Si todo va bien, guardar en sanity item en venta
 
-      await marketplaceApi.post("nftBought", {
+      await marketplaceApi.post("nfts/nftBought", {
         prevOwner: tokenInfo.owner,
         newOwner: wallet,
         boughtFor: tokenInfo.price,

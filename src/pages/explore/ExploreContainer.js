@@ -15,7 +15,7 @@ export default function ExploreContainer() {
   useEffect(() => {
     //Cuando carge pagina consultar /getNftsForSale
     marketplaceApi
-      .get("getNftsForSale")
+      .get("nfts/nftsForSale")
       .then((res) => {
         console.log(res.data);
         const items = res.data;

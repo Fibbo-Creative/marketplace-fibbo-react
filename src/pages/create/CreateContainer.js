@@ -53,7 +53,7 @@ export default function CreateContainer() {
       setIpfsImageUrl(`https://ipfs.infura.io/ipfs/${imgAddedToIPFS.path}`);
 
       const imgAddedToSanity = await marketplaceApi.post(
-        "uploadTestImg",
+        "api/uploadImg",
         formData,
         {
           headers: {
@@ -113,7 +113,7 @@ export default function CreateContainer() {
         console.log(tokenId);
         console.log(wallet);
         //Si todo va bien, crear a sanity
-        await marketplaceApi.post("newNftItem", {
+        await marketplaceApi.post("nfts/newItem", {
           name: name,
           description: desc,
           creator: wallet,

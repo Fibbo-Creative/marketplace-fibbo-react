@@ -25,7 +25,7 @@ export default function ItemPage() {
     //Cuando carge pagina consultar /getNftsForSale
     console.log(collection, tokenId);
     marketplaceApi
-      .get(`getNftInfoById?collection=${collection}&nftId=${tokenId}`)
+      .get(`nfts/nftInfo?collection=${collection}&nftId=${tokenId}`)
       .then(async (res) => {
         if (res.status === 205) {
           window.location.replace("/notFound");
@@ -37,7 +37,7 @@ export default function ItemPage() {
 
         setTokenInfo(tokenInfoResponse);
         const tokenHistoryRequest = await marketplaceApi.get(
-          `getItemHistory?tokenId=${tokenId}&collection=${collection}`
+          `nfts/itemHistory?tokenId=${tokenId}&collection=${collection}`
         );
 
         setTokenHistoryInfo(tokenHistoryRequest.data);
@@ -50,7 +50,7 @@ export default function ItemPage() {
         });
 
         const collectionRequest = await marketplaceApi.get(
-          `getCollectionData?collection=${collection}`
+          `collections/collectionData?collection=${collection}`
         );
 
         const collectionData = collectionRequest.data;
@@ -63,7 +63,7 @@ export default function ItemPage() {
         });
 
         const profileOwnerReq = await marketplaceApi.get(
-          `userProfile?wallet=${tokenInfoResponse.owner}`
+          `users/profile?wallet=${tokenInfoResponse.owner}`
         );
 
         setProfileOwnerData(profileOwnerReq.data);

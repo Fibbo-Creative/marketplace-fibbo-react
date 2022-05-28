@@ -33,7 +33,7 @@ export default function useAccount() {
       await changeChainCorrect();
     }
     const userProfileRequest = await marketplaceApi.get(
-      `userProfile?wallet=${_wallet}`
+      `users/profile?wallet=${_wallet}`
     );
 
     const status = userProfileRequest.status;
@@ -45,7 +45,7 @@ export default function useAccount() {
       });
     } else if (status === 205) {
       //Create profile
-      const createdProfileReq = await marketplaceApi.post("newProfile", {
+      const createdProfileReq = await marketplaceApi.post("users/newProfile", {
         wallet: _wallet,
       });
 

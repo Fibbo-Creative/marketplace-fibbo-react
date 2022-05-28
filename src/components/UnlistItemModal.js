@@ -31,7 +31,7 @@ export default function UnlistItemModal({
 
       //Si todo va bien, eliminar item en bd
 
-      await marketplaceApi.post("unlistItem", {
+      await marketplaceApi.post("nfts/unlistItem", {
         owner: tokenInfo.owner,
         tokenId: tokenInfo.tokenId,
         collectionAddress: collectionAddress,

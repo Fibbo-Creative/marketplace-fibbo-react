@@ -18,7 +18,7 @@ export default function NewFeatureModal({
     //Añadir la sugerencia en el Backend
     console.log(title, desc, wallet);
 
-    const newSuggestionRequest = await marketplaceApi.post("newSuggestion", {
+    const newSuggestionRequest = await marketplaceApi.post("suggestions/new", {
       wallet: wallet,
       title: title,
       description: desc,

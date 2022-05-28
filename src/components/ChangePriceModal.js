@@ -32,7 +32,7 @@ export default function ChangePriceModal({
 
       await changePriceTx.wait();
 
-      await marketplaceApi.post("changePrice", {
+      await marketplaceApi.post("nfts/changePrice", {
         tokenId: parseInt(tokenId),
         owner: wallet,
         newPrice: parseFloat(priceFor),

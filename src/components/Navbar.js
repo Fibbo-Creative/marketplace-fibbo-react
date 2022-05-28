@@ -30,7 +30,7 @@ export default function Navbar() {
     setSearchText(queryText);
     if (queryText.length >= 4) {
       const searchResult = await marketplaceApi.get(
-        `searchItems?query=${queryText}`
+        `api/search?query=${queryText}`
       );
       if (searchResult.status === 200) {
         const resultData = searchResult.data;
