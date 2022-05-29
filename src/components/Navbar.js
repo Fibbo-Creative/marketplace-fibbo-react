@@ -78,6 +78,10 @@ export default function Navbar() {
     setOpenedMenu(false);
   }
 
+  function isVerified() {
+    return userProfile.verified ? true : false;
+  }
+
   useEffect(() => {
     if (_width >= 1024) {
       setOpenedMenu(false);
@@ -131,16 +135,18 @@ export default function Navbar() {
               >
                 Explore
               </a>
-              <a
-                className={` ml-5  hover:font-bold ${
-                  location.pathname === "/create"
-                    ? "text-primary-1 font-bold border-b-2 border-[#733ADA]"
-                    : "text-primary-1 "
-                } `}
-                href="/create"
-              >
-                Create
-              </a>
+              {isVerified() && (
+                <a
+                  className={` ml-5  hover:font-bold ${
+                    location.pathname === "/create"
+                      ? "text-primary-1 font-bold border-b-2 border-[#733ADA]"
+                      : "text-primary-1 "
+                  } `}
+                  href="/create"
+                >
+                  Create
+                </a>
+              )}
               {wallet !== "" && (
                 <a
                   className={` ml-5  hover:font-bold ${
