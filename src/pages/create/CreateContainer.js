@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useContractsContext } from "../../context/contracts/ContractProvider";
 import { create as ipfsHttpClient } from "ipfs-http-client";
 import marketplaceApi from "../../context/axios";
 import useAccount from "../../hooks/useAccount";
 import { useNavigate } from "react-router-dom";
 import ActionButton from "../../components/ActionButton";
 import { useStateContext } from "../../context/StateProvider";
+import { useDefaultCollection } from "../../contracts/collection";
 
 const ipfsClient = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
 
@@ -28,7 +28,7 @@ export default function CreateContainer() {
   const { connectToWallet, wallet } = useAccount();
   const [{ userProfile }] = useStateContext();
 
-  const [{ nftContract }] = useContractsContext();
+  const { createToken, getContractAddress } = useDefaultCollection();
 
   const [imageError, setImageError] = useState(false);
   const [nameError, setNameError] = useState(false);
@@ -105,27 +105,19 @@ export default function CreateContainer() {
         const ipfsCID = await ipfsClient.add(data);
         const ipfsFileURL = `https://ipfs.infura.io/ipfs/${ipfsCID.path}`;
 
-        console.log(nftContract);
-        let createNFTtx = await nftContract.createToken(ipfsFileURL);
-        let tx = await createNFTtx.wait();
-
-        let event = tx.events[0];
-        let value = event.args[2];
-        let tokenId = value.toNumber();
-
-        console.log(tokenId);
-        console.log(wallet);
+        let newTokenId = await createToken(ipfsFileURL);
+        const address = await getContractAddress();
         //Si todo va bien, crear a sanity
         await marketplaceApi.post("nfts/newItem", {
           name: name,
           description: desc,
           creator: wallet,
-          tokenId: tokenId,
+          tokenId: newTokenId,
           royalty: royalty ? royalty : 0,
           sanityImgUrl: sanityImgUrl,
-          collection: nftContract.address,
+          collection: address,
         });
-        navigate(`/explore/${nftContract.address}/${tokenId}`);
+        navigate(`/explore/${address}/${newTokenId}`);
       } catch (e) {
         console.log(e);
       }

@@ -1,6 +1,5 @@
 import "./App.css";
 import Navbar from "./components/Navbar";
-import { useContractsContext } from "./context/contracts/ContractProvider";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import useAccount from "./hooks/useAccount";
 import ExploreContainer from "./pages/explore/ExploreContainer";
@@ -20,8 +19,7 @@ ReactModal.defaultStyles.content.maxHeight = "";
 ReactModal.defaultStyles.content.borderRadius = 50;
 
 function App() {
-  const [{ wallet }, dispatch] = useContractsContext();
-  const { connectToWallet } = useAccount();
+  const { wallet, connectToWallet } = useAccount();
 
   return (
     <div className={`App`} id="App">

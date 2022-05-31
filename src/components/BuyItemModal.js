@@ -1,11 +1,11 @@
 import { Icon } from "@iconify/react";
 import React, { useEffect, useState } from "react";
 import ReactModal from "react-modal";
-import { useContractsContext } from "../context/contracts/ContractProvider";
 import { formatEther, parseEther } from "ethers/lib/utils";
 import marketplaceApi from "../context/axios";
-import { useNavigate } from "react-router-dom";
 import ActionButton from "./ActionButton";
+import { useMarketplace } from "../contracts/market";
+import useProvider from "../hooks/useProvider";
 
 export default function BuyItemModal({
   children,
@@ -18,34 +18,23 @@ export default function BuyItemModal({
 }) {
   const [walletBalance, setWalletBalance] = useState(0);
   const [completedAction, setCompletedAction] = useState(false);
-
-  const navigate = useNavigate();
-  const [{ marketContract, nftContract, provider }] = useContractsContext();
+  const { buyItem } = useMarketplace();
+  const { getBalance } = useProvider();
 
   const checkBalance = async () => {
-    let balance = await provider.getBalance(wallet);
+    let balance = await getBalance(wallet);
     balance = formatEther(balance);
     setWalletBalance(balance);
   };
-  const buyItem = async () => {
+  const buyItemAction = async () => {
     try {
       //en el contrato del marketplace -> createMarketItem
-      const buyItemTransaction = await marketContract.buyItem(
-        nftContract.address,
+      await buyItem(
+        collectionAddress,
         itemId,
         tokenInfo.owner,
-        { value: parseEther(tokenInfo.price.toString()) }
+        parseEther(tokenInfo.price.toString())
       );
-
-      await buyItemTransaction.wait();
-
-      const approveTx = await nftContract.setApprovalForAll(
-        marketContract.address,
-        true
-      );
-
-      await approveTx.wait();
-
       //Si todo va bien, guardar en sanity item en venta
 
       await marketplaceApi.post("nfts/nftBought", {
@@ -119,7 +108,7 @@ export default function BuyItemModal({
                       size="large"
                       variant={"contained"}
                       text="Comprar Ítem"
-                      buttonAction={(e) => buyItem()}
+                      buttonAction={(e) => buyItemAction()}
                     />
                     {walletBalance < tokenInfo.price && (
                       <div className="text-xs text-red-700">

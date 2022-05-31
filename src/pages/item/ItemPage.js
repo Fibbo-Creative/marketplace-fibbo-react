@@ -23,7 +23,6 @@ export default function ItemPage() {
 
   useEffect(() => {
     //Cuando carge pagina consultar /getNftsForSale
-    console.log(collection, tokenId);
     marketplaceApi
       .get(`nfts/nftInfo?collection=${collection}&nftId=${tokenId}`)
       .then(async (res) => {
@@ -71,15 +70,14 @@ export default function ItemPage() {
       .catch((e) => {
         console.log(e);
       });
-  }, [tokenId, wallet]);
+  }, [collection, tokenId, wallet]);
 
   return (
     <>
       {tokenInfo &&
         profileOwnerData &&
         tokenHistoryInfo.length > 0 &&
-        chainInfo.chainId &&
-        properties.royalty && (
+        chainInfo.chainId && (
           <div className=" mt-[120px] mb-[50px] mx-[50px] grid grid-cols-1  md:grid-cols-[400px_minmax(300px,_0.9fr)] md:grid-rows-[auto_auto] gap-7">
             <DetailImage
               tokenImage={tokenInfo.image}

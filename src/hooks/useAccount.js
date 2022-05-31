@@ -1,7 +1,5 @@
 import { ethers } from "ethers";
 import { useCallback, useEffect, useState } from "react";
-import { useContractsContext } from "../context/contracts/ContractProvider";
-import { contractActionTypes } from "../context/contracts/contractsReducer";
 import { useStateContext } from "../context/StateProvider";
 import marketplaceApi from "../context/axios";
 import { actionTypes } from "../context/stateReducer";
@@ -9,8 +7,7 @@ import { configData } from "../chainData/configData";
 import { changeChainCorrect } from "../chainData/utils";
 export default function useAccount() {
   const [loadingConnection, setLoadingConection] = useState(true);
-  const [{ wallet, balance }, dispatch] = useContractsContext();
-  const [, stateDispatch] = useStateContext();
+  const [{ wallet }, stateDispatch] = useStateContext();
   const connectToWallet = useCallback(async () => {
     const prov = new ethers.providers.Web3Provider(window.ethereum);
 
@@ -35,13 +32,14 @@ export default function useAccount() {
     const userProfileRequest = await marketplaceApi.get(
       `users/profile?wallet=${_wallet}`
     );
-
+    console.log("KEKE");
     const status = userProfileRequest.status;
     if (status === 200) {
       const _userProfile = userProfileRequest.data;
       stateDispatch({
         type: actionTypes.SET_USER_PROFILE,
         userProfile: _userProfile,
+        wallet: _wallet,
       });
     } else if (status === 205) {
       //Create profile
@@ -54,23 +52,16 @@ export default function useAccount() {
         stateDispatch({
           type: actionTypes.SET_USER_PROFILE,
           userProfile: _newProfile,
+          wallet: _wallet,
         });
       }
     }
-
-    dispatch({
-      type: contractActionTypes.SET_WALLET,
-      signer: signer,
-      provider: prov,
-      wallet: _wallet,
-    });
   }, []);
 
   const disconnectWallet = useCallback(async () => {
-    dispatch({
-      type: contractActionTypes.SET_WALLET,
-      signer: null,
-      provider: null,
+    stateDispatch({
+      type: actionTypes.SET_USER_PROFILE,
+      userProfile: {},
       wallet: "",
     });
   }, []);
@@ -83,11 +74,10 @@ export default function useAccount() {
     return () => {
       return;
     };
-  }, [connectToWallet, dispatch]);
+  }, [connectToWallet]);
 
   return {
     wallet,
-    balance,
     loadingConnection,
     connectToWallet,
     disconnectWallet,

@@ -1,11 +1,10 @@
 import { Icon } from "@iconify/react";
 import React, { useState } from "react";
 import ReactModal from "react-modal";
-import { useContractsContext } from "../context/contracts/ContractProvider";
 import { parseEther } from "ethers/lib/utils";
 import marketplaceApi from "../context/axios";
-import { useNavigate } from "react-router-dom";
 import ActionButton from "./ActionButton";
+import { useMarketplace } from "../contracts/market";
 
 export default function ChangePriceModal({
   children,
@@ -15,7 +14,7 @@ export default function ChangePriceModal({
   collectionAddress,
   wallet,
 }) {
-  const [{ marketContract, nftContract }] = useContractsContext();
+  const { updateListing } = useMarketplace();
   const [priceFor, setPriceFor] = useState(0);
   const [completedAction, setCompletedAction] = useState(false);
 
@@ -24,13 +23,7 @@ export default function ChangePriceModal({
       //en el contrato del marketplace -> createMarketItem
       const priceFormatted = parseEther(priceFor.toString());
 
-      const changePriceTx = await marketContract.updateListing(
-        nftContract.address,
-        tokenId,
-        priceFormatted
-      );
-
-      await changePriceTx.wait();
+      await updateListing(collectionAddress, tokenId, priceFormatted);
 
       await marketplaceApi.post("nfts/changePrice", {
         tokenId: parseInt(tokenId),

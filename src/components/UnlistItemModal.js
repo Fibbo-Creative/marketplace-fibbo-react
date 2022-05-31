@@ -1,10 +1,9 @@
 import { Icon } from "@iconify/react";
 import React, { useState } from "react";
 import ReactModal from "react-modal";
-import { useContractsContext } from "../context/contracts/ContractProvider";
 import marketplaceApi from "../context/axios";
-import { useNavigate } from "react-router-dom";
 import ActionButton from "./ActionButton";
+import { useMarketplace } from "../contracts/market";
 
 export default function UnlistItemModal({
   children,
@@ -15,19 +14,14 @@ export default function UnlistItemModal({
   tokenInfo,
   wallet,
 }) {
-  const navigate = useNavigate();
-  const [{ marketContract, nftContract }] = useContractsContext();
+  const { cancelListing } = useMarketplace();
+
   const [completedAction, setCompletedAction] = useState(false);
 
   const unlistItem = async () => {
     try {
       //en el contrato del marketplace -> createMarketItem
-      const cancelListingTx = await marketContract.cancelListing(
-        nftContract.address,
-        itemId
-      );
-
-      await cancelListingTx.wait();
+      await cancelListing(collectionAddress, itemId);
 
       //Si todo va bien, eliminar item en bd
 

@@ -13,6 +13,7 @@ export default function NewFeatureModal({
 }) {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
+  const [completedAction, setCompletedAction] = useState(false);
   const { wallet } = useAccount();
   const addNewSuggestion = async () => {
     //Añadir la sugerencia en el Backend
@@ -24,7 +25,7 @@ export default function NewFeatureModal({
       description: desc,
     });
 
-    handleCloseModal();
+    setCompletedAction(true);
   };
   return (
     <ReactModal
@@ -43,32 +44,46 @@ export default function NewFeatureModal({
           <div className="text-center">Nueva Suggerencia</div>
         </div>
 
-        <div className="my-10 mx-8 flex flex-col gap-10">
-          <div>
-            Tu suggerencia será revisada y se le asignará un valor por parte del
-            equipo técnico, una vez sea acceptada y valorada se mostrará en la
-            lista!
+        {!completedAction ? (
+          <div className="my-10 mx-8 flex flex-col gap-10">
+            <div>
+              Tu suggerencia será revisada y se le asignará un valor por parte
+              del equipo técnico, una vez sea acceptada y valorada se mostrará
+              en la lista!
+            </div>
+            <div className="flex flex-col gap-2">
+              <div className="uppercase">Título</div>
+              <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+            </div>
+            <div className="flex flex-col gap-2">
+              <div className="uppercase">Descripción</div>
+              <InputTextArea
+                value={desc}
+                onChange={(e) => setDesc(e.target.value)}
+                rows="5"
+              />
+            </div>
+            <div className="w-full flex justify-center">
+              <ActionButton
+                buttonAction={() => addNewSuggestion()}
+                text="Añadir Suggerencia"
+                size="large"
+              />
+            </div>
           </div>
-          <div className="flex flex-col gap-2">
-            <div className="uppercase">Título</div>
-            <Input value={title} onChange={(e) => setTitle(e.target.value)} />
-          </div>
-          <div className="flex flex-col gap-2">
-            <div className="uppercase">Descripción</div>
-            <InputTextArea
-              value={desc}
-              onChange={(e) => setDesc(e.target.value)}
-              rows="5"
-            />
-          </div>
-          <div className="w-full flex justify-center">
+        ) : (
+          <div className="my-10 mx-8 flex flex-col items-center gap-10">
+            <div>
+              Gracias por tu sugerencia, revisaremos tu solicitud y la
+              procesaremos.
+            </div>
             <ActionButton
-              buttonAction={() => addNewSuggestion()}
-              text="Añadir Suggerencia"
+              buttonAction={() => handleCloseModal()}
+              text="Cerrar Ventana"
               size="large"
             />
           </div>
-        </div>
+        )}
       </div>
     </ReactModal>
   );

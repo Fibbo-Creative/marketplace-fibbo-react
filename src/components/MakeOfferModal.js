@@ -1,7 +1,6 @@
 import { Icon } from "@iconify/react";
 import React, { useState } from "react";
 import ReactModal from "react-modal";
-import { useContractsContext } from "../context/contracts/ContractProvider";
 import { useNavigate } from "react-router-dom";
 
 export default function MakeOfferModal({

@@ -1,34 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { FeatureItem } from "./components/FeatureItem";
-import { useContractsContext } from "../../context/contracts/ContractProvider";
-import { formatEther } from "ethers/lib/utils";
 import ActionButton from "../../components/ActionButton";
 import NewFeatureModal from "./components/NewFeatureModal";
-
-const formatSuggestion = (suggestions) => {
-  return suggestions.map((sugg) => {
-    return {
-      suggestionId: sugg.suggestionId.toNumber(),
-      title: sugg.title,
-      description: sugg.description,
-      totalAmount: formatEther(sugg.totalAmount),
-      progress: formatEther(sugg.progress),
-    };
-  });
-};
+import { useCommunity } from "../../contracts/community";
 
 export default function FeaturesContainer() {
+  const { getSuggestionsInProgress } = useCommunity();
   const [suggestionsInProgress, setSuggestionsInProgress] = useState([]);
   const [showNewSuggestion, setShowNewSuggestion] = useState(false);
-  const [{ suggestionsContract }, dispatch] = useContractsContext();
 
   useEffect(() => {
     const fetchSuggestions = async () => {
-      let _suggInProg = await suggestionsContract.getInProgressSuggestions();
-      setSuggestionsInProgress(formatSuggestion(_suggInProg));
+      let _suggInProg = await getSuggestionsInProgress();
+      setSuggestionsInProgress(_suggInProg);
     };
     fetchSuggestions();
-  }, [suggestionsContract]);
+  }, []);
   return (
     <div className="mt-[90px] " style={{ height: "94vh" }}>
       <div className="w-full flex flex-col justify-center items-center gap-4">
@@ -51,13 +38,7 @@ export default function FeaturesContainer() {
       </div>
       <div className="mt-10 flex flex-col justify-center items-center gap-2 mx-20">
         {suggestionsInProgress.map((item) => {
-          return (
-            <FeatureItem
-              suggestionsContract={suggestionsContract}
-              key={Math.random(999) * 100}
-              suggestion={item}
-            />
-          );
+          return <FeatureItem key={Math.random(999) * 100} suggestion={item} />;
         })}
       </div>
       <NewFeatureModal

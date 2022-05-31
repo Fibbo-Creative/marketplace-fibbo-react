@@ -2,19 +2,20 @@ import { parseEther } from "ethers/lib/utils";
 import React, { useState } from "react";
 import tw from "tailwind-styled-components";
 import ActionButton from "../../../components/ActionButton";
-import { useContractsContext } from "../../../context/contracts/ContractProvider";
+import { useCommunity } from "../../../contracts/community";
 
 export const FeatureItem = ({ suggestion, suggestionsContract }) => {
+  const { addTokensToSuggestion } = useCommunity();
   const [depositValue, setDepositValue] = useState(0.01);
 
   const { suggestionId, title, description, totalAmount, progress } =
     suggestion;
 
   const depositToSuggestion = async () => {
-    let tx = await suggestionsContract.addTokensToSuggestion(suggestionId, {
-      value: parseEther(depositValue.toString()),
-    });
-    tx.wait(1);
+    await addTokensToSuggestion(
+      suggestionId,
+      parseEther(depositValue.toString())
+    );
 
     window.location.reload();
   };
