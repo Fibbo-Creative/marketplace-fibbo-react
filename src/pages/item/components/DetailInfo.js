@@ -1,6 +1,6 @@
 import React from "react";
 import DropDown from "../../../components/DropDown";
-import { truncateWallet } from "../../../context/utils";
+import { truncateWallet } from "../../../utils/wallet";
 
 export default function DetailInfo({ properties, chainInfo }) {
   return (

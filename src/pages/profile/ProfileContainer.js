@@ -1,16 +1,23 @@
 import { Icon } from "@iconify/react";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useApi } from "../../api";
 import NftCard from "../../components/NftCard";
 import NftCardSmall from "../../components/NftCardSmall";
-import marketplaceApi from "../../context/axios";
 import { useStateContext } from "../../context/StateProvider";
-import { truncateWallet } from "../../context/utils";
+import { truncateWallet } from "../../utils/wallet";
 import useAccount from "../../hooks/useAccount";
 import useRespnsive from "../../hooks/useResponsive";
 
 export default function ProfileContainer() {
   const { wallet } = useAccount();
+  const {
+    getProfileInfo,
+    setUsername,
+    setProfileBanner,
+    setProfileImg,
+    getNftsFromAddress,
+  } = useApi();
   const { address } = useParams();
   const [userItems, setUserItems] = useState([]);
   const [userSmallview, setSmallViewUser] = useState(true);
@@ -48,43 +55,17 @@ export default function ProfileContainer() {
   const setBannerImg = async (e) => {
     const file = e.target.files[0];
     try {
-      var formData = new FormData();
-      formData.append("image", file);
-      formData.append("wallet", wallet);
-
-      const imgAddedToSanity = await marketplaceApi.post(
-        "users/setBanner",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log(imgAddedToSanity);
+      await setProfileBanner(wallet, file);
       window.location.reload();
     } catch (error) {
       console.log("Error uploading file: ", error);
     }
   };
 
-  const setProfileImg = async (e) => {
+  const setProfileImage = async (e) => {
     const file = e.target.files[0];
     try {
-      var formData = new FormData();
-      formData.append("image", file);
-      formData.append("wallet", wallet);
-
-      const imgAddedToSanity = await marketplaceApi.post(
-        "users/setProfileImg",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log(imgAddedToSanity);
+      await setProfileImg(wallet, file);
       window.location.reload();
     } catch (error) {
       console.log("Error uploading file: ", error);
@@ -92,45 +73,29 @@ export default function ProfileContainer() {
   };
 
   const editProfileUsername = async (e) => {
-    console.log(newUsername);
     e.preventDefault();
     try {
-      const imgAddedToSanity = await marketplaceApi.post("users/setUsername", {
-        wallet: address,
-        username: newUsername,
-      });
-      console.log(imgAddedToSanity);
+      await setUsername(wallet, newUsername);
       window.location.reload();
     } catch (error) {
-      console.log("Error uploading file: ", error);
+      console.log("Error setting username: ", error);
     }
     setShowEditUsername(!showEditUsername);
   };
 
   const toggleEditUsername = async (e) => {
     setShowEditUsername(!showEditUsername);
-    /* try {
-      const imgAddedToSanity = await marketplaceApi.post("uploadUsername", {
-        wallet: wallet,
-        username: "",
-      });
-      console.log(imgAddedToSanity);
-      window.location.reload();
-    } catch (error) {
-      console.log("Error uploading file: ", error);
-    } */
   };
 
   useEffect(() => {
-    setMyprofile(wallet === address);
-    marketplaceApi.get(`users/profile?wallet=${address}`).then((res) => {
-      setProfileData(res.data);
-      marketplaceApi
-        .get(`nfts/nftsByAddress?address=${address}`)
-        .then((nfts) => {
-          setUserItems(nfts.data);
-        });
-    });
+    const fetchData = async () => {
+      setMyprofile(wallet === address);
+      const profileDataResponse = await getProfileInfo(address);
+      setProfileData(profileDataResponse);
+      const userItemsResponse = await getNftsFromAddress(address);
+      setUserItems(userItemsResponse);
+    };
+    fetchData();
   }, [wallet]);
   return (
     <div className="mt-[81px] w-screen h-full">
@@ -178,7 +143,7 @@ export default function ProfileContainer() {
             <input
               id="profileImageInput"
               type="file"
-              onChange={(e) => setProfileImg(e)}
+              onChange={(e) => setProfileImage(e)}
               hidden={true}
             />
             <img

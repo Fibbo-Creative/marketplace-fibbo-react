@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { truncateWallet } from "../context/utils";
+import { truncateWallet } from "../utils/wallet";
 import useRespnsive from "../hooks/useResponsive";
 import DropDown from "./DropDown";
 

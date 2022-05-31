@@ -1,12 +1,13 @@
 import { ethers } from "ethers";
 import { useCallback, useEffect, useState } from "react";
 import { useStateContext } from "../context/StateProvider";
-import marketplaceApi from "../context/axios";
 import { actionTypes } from "../context/stateReducer";
 import { configData } from "../chainData/configData";
 import { changeChainCorrect } from "../chainData/utils";
+import { useApi } from "../api";
 export default function useAccount() {
   const [loadingConnection, setLoadingConection] = useState(true);
+  const { getProfileInfo, createNewProfile } = useApi();
   const [{ wallet }, stateDispatch] = useStateContext();
   const connectToWallet = useCallback(async () => {
     const prov = new ethers.providers.Web3Provider(window.ethereum);
@@ -20,7 +21,6 @@ export default function useAccount() {
     let chainId = await signer.getChainId();
 
     //Una vez tenemos wallet, creamos o recogemos user en sanity
-    console.log(chainId);
     let correctChain = true;
     if (chainId !== configData.chainInfo.chainId) {
       console.log("change to ftm testnet");
@@ -29,32 +29,22 @@ export default function useAccount() {
     if (!correctChain) {
       await changeChainCorrect();
     }
-    const userProfileRequest = await marketplaceApi.get(
-      `users/profile?wallet=${_wallet}`
-    );
-    console.log("KEKE");
-    const status = userProfileRequest.status;
-    if (status === 200) {
-      const _userProfile = userProfileRequest.data;
+    const userProfileRequest = await getProfileInfo(_wallet);
+    console.log(userProfileRequest);
+    if (userProfileRequest) {
       stateDispatch({
         type: actionTypes.SET_USER_PROFILE,
-        userProfile: _userProfile,
+        userProfile: userProfileRequest,
         wallet: _wallet,
       });
-    } else if (status === 205) {
+    } else {
       //Create profile
-      const createdProfileReq = await marketplaceApi.post("users/newProfile", {
+      const createdProfile = await createNewProfile(_wallet);
+      stateDispatch({
+        type: actionTypes.SET_USER_PROFILE,
+        userProfile: createdProfile,
         wallet: _wallet,
       });
-
-      if (createdProfileReq.status === 200) {
-        const _newProfile = createdProfileReq.data;
-        stateDispatch({
-          type: actionTypes.SET_USER_PROFILE,
-          userProfile: _newProfile,
-          wallet: _wallet,
-        });
-      }
     }
   }, []);
 

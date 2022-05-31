@@ -2,9 +2,9 @@ import { Icon } from "@iconify/react";
 import React, { useState } from "react";
 import ReactModal from "react-modal";
 import { parseEther } from "ethers/lib/utils";
-import marketplaceApi from "../context/axios";
 import ActionButton from "./ActionButton";
 import { useMarketplace } from "../contracts/market";
+import { useApi } from "../api";
 
 export default function ChangePriceModal({
   children,
@@ -14,6 +14,7 @@ export default function ChangePriceModal({
   collectionAddress,
   wallet,
 }) {
+  const { saveChangePrice } = useApi();
   const { updateListing } = useMarketplace();
   const [priceFor, setPriceFor] = useState(0);
   const [completedAction, setCompletedAction] = useState(false);
@@ -25,12 +26,12 @@ export default function ChangePriceModal({
 
       await updateListing(collectionAddress, tokenId, priceFormatted);
 
-      await marketplaceApi.post("nfts/changePrice", {
-        tokenId: parseInt(tokenId),
-        owner: wallet,
-        newPrice: parseFloat(priceFor),
-        collectionAddress: collectionAddress,
-      });
+      await saveChangePrice(
+        parseInt(tokenId),
+        wallet,
+        parseFloat(priceFor),
+        collectionAddress
+      );
 
       setCompletedAction(true);
     }

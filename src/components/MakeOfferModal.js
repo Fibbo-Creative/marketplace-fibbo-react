@@ -16,16 +16,6 @@ export default function MakeOfferModal({
 
   const makeOffer = async () => {
     if (offerPrice > 0) {
-      //en el contrato del marketplace -> createMarketItem
-
-      //Si todo va bien, guardar en sanity item en venta
-
-      //   await marketplaceApi.post("putForSale", {
-      //     itemId: parseInt(itemId),
-      //     owner: wallet,
-      //     price: parseFloat(priceFor),
-      //   });
-
       navigate("/explore");
     }
   };

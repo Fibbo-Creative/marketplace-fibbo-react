@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import NftCard from "../../components/NftCard";
-import marketplaceApi from "../../context/axios";
 import { Icon } from "@iconify/react";
 import NftCardSmall from "../../components/NftCardSmall";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { useApi } from "../../api";
 
 export default function ExploreContainer() {
+  const { getNftsForSale } = useApi();
   const [allMarketItems, setAllMarketItems] = useState([]);
   const [visibleMarketItems, setVisibleMarketItems] = useState([]);
   const [visibleItemsCount, setVisibleItemsCount] = useState(12);
@@ -13,20 +14,12 @@ export default function ExploreContainer() {
   const [openedSidebar, setOpenedSidebar] = useState(false);
 
   useEffect(() => {
-    //Cuando carge pagina consultar /getNftsForSale
-    marketplaceApi
-      .get("nfts/nftsForSale")
-      .then((res) => {
-        console.log(res.data);
-        const items = res.data;
-
-        console.log(items.length);
-        setAllMarketItems(items);
-        setVisibleMarketItems(res.data.slice(0, 12));
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    const fetchData = async () => {
+      const forSaleItems = await getNftsForSale();
+      setAllMarketItems(forSaleItems);
+      setVisibleMarketItems(forSaleItems.slice(0, 12));
+    };
+    fetchData();
   }, []);
 
   const addMoreItems = () => {

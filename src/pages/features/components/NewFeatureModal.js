@@ -2,8 +2,8 @@ import { Icon } from "@iconify/react";
 import React, { useState } from "react";
 import ReactModal from "react-modal";
 import tw from "tailwind-styled-components";
+import { useApi } from "../../../api";
 import ActionButton from "../../../components/ActionButton";
-import marketplaceApi from "../../../context/axios";
 import useAccount from "../../../hooks/useAccount";
 
 export default function NewFeatureModal({
@@ -11,6 +11,7 @@ export default function NewFeatureModal({
   showModal,
   handleCloseModal,
 }) {
+  const { createNewSuggestion } = useApi();
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [completedAction, setCompletedAction] = useState(false);
@@ -19,11 +20,7 @@ export default function NewFeatureModal({
     //Añadir la sugerencia en el Backend
     console.log(title, desc, wallet);
 
-    const newSuggestionRequest = await marketplaceApi.post("suggestions/new", {
-      wallet: wallet,
-      title: title,
-      description: desc,
-    });
+    await createNewSuggestion(wallet, title, desc);
 
     setCompletedAction(true);
   };

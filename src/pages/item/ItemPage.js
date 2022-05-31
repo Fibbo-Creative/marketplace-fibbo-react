@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { configData } from "../../chainData/configData";
-import marketplaceApi from "../../context/axios";
 import useAccount from "../../hooks/useAccount";
 
 import ItemHistory from "../../components/ItemHistory";
 import DetailImage from "./components/DetailImage";
 import DetailProductInfo from "./components/DetailProductInfo";
 import DetailInfo from "./components/DetailInfo";
+import { useApi } from "../../api";
 
 export default function ItemPage() {
+  let { collection, tokenId } = useParams();
+  const { wallet } = useAccount();
+  const { getProfileInfo, getNftInfo, getNftHistory, getCollectionInfo } =
+    useApi();
   const [tokenInfo, setTokenInfo] = useState(null);
   const [tokenHistoryInfo, setTokenHistoryInfo] = useState([]);
   const [chainInfo, setChainInfo] = useState({});
@@ -18,58 +22,40 @@ export default function ItemPage() {
   const [isOwner, setIsOwner] = useState(false);
   const [isForSale, setIsForSale] = useState(false);
 
-  let { collection, tokenId } = useParams();
-  const { wallet } = useAccount();
-
   useEffect(() => {
-    //Cuando carge pagina consultar /getNftsForSale
-    marketplaceApi
-      .get(`nfts/nftInfo?collection=${collection}&nftId=${tokenId}`)
-      .then(async (res) => {
-        if (res.status === 205) {
-          window.location.replace("/notFound");
-        }
-        const tokenInfoResponse = res.data;
+    const fetchData = async () => {
+      const tokenInfoResponse = await getNftInfo(collection, tokenId);
+      if (!tokenInfoResponse) {
+        window.location.replace("/notFound");
+      }
+      setIsForSale(tokenInfoResponse.forSale);
+      setIsOwner(tokenInfoResponse.owner === wallet);
+      setTokenInfo(tokenInfoResponse);
 
-        setIsForSale(tokenInfoResponse.forSale);
-        setIsOwner(tokenInfoResponse.owner === wallet);
+      const tokenHistoryResponse = await getNftHistory(collection, tokenId);
+      setTokenHistoryInfo(tokenHistoryResponse);
 
-        setTokenInfo(tokenInfoResponse);
-        const tokenHistoryRequest = await marketplaceApi.get(
-          `nfts/itemHistory?tokenId=${tokenId}&collection=${collection}`
-        );
-
-        setTokenHistoryInfo(tokenHistoryRequest.data);
-
-        setChainInfo({
-          collection: collection,
-          tokenId: tokenId,
-          network: configData.chainInfo.name,
-          chainId: configData.chainInfo.chainId,
-        });
-
-        const collectionRequest = await marketplaceApi.get(
-          `collections/collectionData?collection=${collection}`
-        );
-
-        const collectionData = collectionRequest.data;
-
-        setProperties({
-          royalty: res.data.royalty,
-          recipient: res.data.creator,
-          collection: collectionData.name,
-          totalItems: collectionData.numberOfItems,
-        });
-
-        const profileOwnerReq = await marketplaceApi.get(
-          `users/profile?wallet=${tokenInfoResponse.owner}`
-        );
-
-        setProfileOwnerData(profileOwnerReq.data);
-      })
-      .catch((e) => {
-        console.log(e);
+      setChainInfo({
+        collection: collection,
+        tokenId: tokenId,
+        network: configData.chainInfo.name,
+        chainId: configData.chainInfo.chainId,
       });
+
+      const collectionResponse = await getCollectionInfo(collection);
+
+      setProperties({
+        royalty: tokenInfoResponse.royalty,
+        recipient: tokenInfoResponse.creator,
+        collection: collectionResponse.name,
+        totalItems: collectionResponse.numberOfItems,
+      });
+
+      const profileOwnerData = await getProfileInfo(tokenInfoResponse.owner);
+
+      setProfileOwnerData(profileOwnerData);
+    };
+    fetchData();
   }, [collection, tokenId, wallet]);
 
   return (

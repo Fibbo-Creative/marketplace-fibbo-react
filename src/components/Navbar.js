@@ -10,8 +10,10 @@ import { useStateContext } from "../context/StateProvider";
 import useRespnsive from "../hooks/useResponsive";
 import marketplaceApi from "../context/axios";
 import SearchResult from "./SearchResult";
+import { useApi } from "../api";
 
 export default function Navbar() {
+  const { searchItemsAndProfiles } = useApi();
   const [searchText, setSearchText] = useState("");
   const { wallet, connectToWallet, disconnectWallet } = useAccount();
   const [openModal, setOpenModal] = useState(false);
@@ -29,36 +31,29 @@ export default function Navbar() {
   const searchItems = async (queryText) => {
     setSearchText(queryText);
     if (queryText.length >= 4) {
-      const searchResult = await marketplaceApi.get(
-        `api/search?query=${queryText}`
-      );
-      if (searchResult.status === 200) {
-        const resultData = searchResult.data;
-        const resultItems = resultData.items;
-        const resultProfiles = resultData.profiles;
-        if (resultItems.length === 0) {
-          setSearchItemsData([
-            {
-              name: "No items found...",
-              image:
-                "https://cdn2.iconfinder.com/data/icons/documents-and-files-v-2/100/doc-03-512.png",
-            },
-          ]);
-        } else {
-          setSearchItemsData(resultItems);
-        }
+      const { items, profiles } = await searchItemsAndProfiles(queryText);
+      if (items.length === 0) {
+        setSearchItemsData([
+          {
+            name: "No items found...",
+            image:
+              "https://cdn2.iconfinder.com/data/icons/documents-and-files-v-2/100/doc-03-512.png",
+          },
+        ]);
+      } else {
+        setSearchItemsData(items);
+      }
 
-        if (resultProfiles.length === 0) {
-          setSearchProfilesData([
-            {
-              username: "No profiles found",
-              profileImg:
-                "https://cdn2.iconfinder.com/data/icons/documents-and-files-v-2/100/doc-03-512.png",
-            },
-          ]);
-        } else {
-          setSearchProfilesData(resultProfiles);
-        }
+      if (profiles.length === 0) {
+        setSearchProfilesData([
+          {
+            username: "No profiles found",
+            profileImg:
+              "https://cdn2.iconfinder.com/data/icons/documents-and-files-v-2/100/doc-03-512.png",
+          },
+        ]);
+      } else {
+        setSearchProfilesData(profiles);
       }
     } else {
       setSearchItemsData([]);

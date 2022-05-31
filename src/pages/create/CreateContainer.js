@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import ActionButton from "../../components/ActionButton";
 import { useStateContext } from "../../context/StateProvider";
 import { useDefaultCollection } from "../../contracts/collection";
+import { useApi } from "../../api";
+import { addImgToIpfs, addJsonToIpfs } from "../../utils/ipfs";
 
 const ipfsClient = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
 
@@ -19,6 +21,7 @@ const validateDesc = (desc) => {
   else return false;
 };
 export default function CreateContainer() {
+  const { saveMintedItem, uploadImgToCDN } = useApi();
   const navigate = useNavigate();
   const [ipfsImageUrl, setIpfsImageUrl] = useState("");
   const [sanityImgUrl, setSanityImgUrl] = useState("");
@@ -44,28 +47,15 @@ export default function CreateContainer() {
     const file = e.target.files[0];
 
     try {
-      var formData = new FormData();
-      formData.append("image", file);
-      const imgAddedToIPFS = await ipfsClient.add(file, {
-        progress: (prog) => console.log(`received: ${prog}`),
-      });
+      const imgAddedToIPFS = await addImgToIpfs(file);
 
       document.getElementById("divTextImgNFT").style.visibility = "hidden";
       document.getElementById("divImgNFT").style.padding = "0";
 
       setIpfsImageUrl(`https://ipfs.infura.io/ipfs/${imgAddedToIPFS.path}`);
 
-      const imgAddedToSanity = await marketplaceApi.post(
-        "api/uploadImg",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log(imgAddedToSanity);
-      setSanityImgUrl(imgAddedToSanity.data);
+      const imgAddedToSanity = await uploadImgToCDN(file);
+      setSanityImgUrl(imgAddedToSanity);
       setImageError(false);
     } catch (error) {
       console.log("Error uploading file: ", error);
@@ -102,21 +92,21 @@ export default function CreateContainer() {
     }
     if (!error) {
       try {
-        const ipfsCID = await ipfsClient.add(data);
+        const ipfsCID = await addJsonToIpfs(data);
         const ipfsFileURL = `https://ipfs.infura.io/ipfs/${ipfsCID.path}`;
 
         let newTokenId = await createToken(ipfsFileURL);
         const address = await getContractAddress();
         //Si todo va bien, crear a sanity
-        await marketplaceApi.post("nfts/newItem", {
-          name: name,
-          description: desc,
-          creator: wallet,
-          tokenId: newTokenId,
-          royalty: royalty ? royalty : 0,
-          sanityImgUrl: sanityImgUrl,
-          collection: address,
-        });
+        await saveMintedItem(
+          name,
+          desc,
+          wallet,
+          newTokenId,
+          royalty ? royalty : 0,
+          sanityImgUrl,
+          address
+        );
         navigate(`/explore/${address}/${newTokenId}`);
       } catch (e) {
         console.log(e);

@@ -4,7 +4,7 @@ import ActionButton from "../../../components/ActionButton";
 import BuyItemModal from "../../../components/BuyItemModal";
 import MakeOfferModal from "../../../components/MakeOfferModal";
 import PutForSaleModal from "../../../components/PutForSaleModal";
-import { truncateWallet } from "../../../context/utils";
+import { truncateWallet } from "../../../utils/wallet";
 import useAccount from "../../../hooks/useAccount";
 import CoinGecko from "coingecko-api";
 import ChangePriceModal from "../../../components/ChangePriceModal";

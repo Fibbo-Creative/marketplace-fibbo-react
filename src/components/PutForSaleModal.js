@@ -5,6 +5,7 @@ import { parseEther } from "ethers/lib/utils";
 import marketplaceApi from "../context/axios";
 import ActionButton from "./ActionButton";
 import { useMarketplace } from "../contracts/market";
+import { useApi } from "../api";
 
 export default function PutForSaleModal({
   children,
@@ -14,6 +15,7 @@ export default function PutForSaleModal({
   collectionAddress,
   wallet,
 }) {
+  const { saveListedItem } = useApi();
   const { listItem } = useMarketplace();
   const [priceFor, setPriceFor] = useState(0);
   const [completedAction, setCompletedAction] = useState(false);
@@ -25,12 +27,12 @@ export default function PutForSaleModal({
 
       await listItem(collectionAddress, tokenId, priceFormatted);
 
-      await marketplaceApi.post("nfts/putForSale", {
-        tokenId: parseInt(tokenId),
-        owner: wallet,
-        price: parseFloat(priceFor),
-        collectionAddress: collectionAddress,
-      });
+      await saveListedItem(
+        parseInt(tokenId),
+        wallet,
+        parseFloat(priceFor),
+        collectionAddress
+      );
 
       setCompletedAction(true);
     }

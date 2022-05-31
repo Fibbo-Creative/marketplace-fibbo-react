@@ -4,6 +4,7 @@ import ReactModal from "react-modal";
 import marketplaceApi from "../context/axios";
 import ActionButton from "./ActionButton";
 import { useMarketplace } from "../contracts/market";
+import { useApi } from "../api";
 
 export default function UnlistItemModal({
   children,
@@ -14,6 +15,7 @@ export default function UnlistItemModal({
   tokenInfo,
   wallet,
 }) {
+  const { saveUnlistedItem } = useApi();
   const { cancelListing } = useMarketplace();
 
   const [completedAction, setCompletedAction] = useState(false);
@@ -25,11 +27,11 @@ export default function UnlistItemModal({
 
       //Si todo va bien, eliminar item en bd
 
-      await marketplaceApi.post("nfts/unlistItem", {
-        owner: tokenInfo.owner,
-        tokenId: tokenInfo.tokenId,
-        collectionAddress: collectionAddress,
-      });
+      await saveUnlistedItem(
+        tokenInfo.owner,
+        tokenInfo.tokenId,
+        collectionAddress
+      );
 
       setCompletedAction(true);
     } catch (e) {

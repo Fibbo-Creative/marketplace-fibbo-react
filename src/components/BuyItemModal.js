@@ -6,6 +6,7 @@ import marketplaceApi from "../context/axios";
 import ActionButton from "./ActionButton";
 import { useMarketplace } from "../contracts/market";
 import useProvider from "../hooks/useProvider";
+import { useApi } from "../api";
 
 export default function BuyItemModal({
   children,
@@ -18,6 +19,7 @@ export default function BuyItemModal({
 }) {
   const [walletBalance, setWalletBalance] = useState(0);
   const [completedAction, setCompletedAction] = useState(false);
+  const { saveNftBought } = useApi();
   const { buyItem } = useMarketplace();
   const { getBalance } = useProvider();
 
@@ -37,13 +39,13 @@ export default function BuyItemModal({
       );
       //Si todo va bien, guardar en sanity item en venta
 
-      await marketplaceApi.post("nfts/nftBought", {
-        prevOwner: tokenInfo.owner,
-        newOwner: wallet,
-        boughtFor: tokenInfo.price,
-        tokenId: tokenInfo.tokenId,
-        collectionAddress: collectionAddress,
-      });
+      await saveNftBought(
+        tokenInfo.owner,
+        wallet,
+        tokenInfo.price,
+        tokenInfo.tokenId,
+        collectionAddress
+      );
 
       setCompletedAction(true);
     } catch (e) {
