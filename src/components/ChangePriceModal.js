@@ -14,7 +14,7 @@ export default function ChangePriceModal({
   collectionAddress,
   wallet,
 }) {
-  const { saveChangePrice } = useApi();
+  const { savePriceChanged } = useApi();
   const { updateListing } = useMarketplace();
   const [priceFor, setPriceFor] = useState(0);
   const [completedAction, setCompletedAction] = useState(false);
@@ -26,7 +26,7 @@ export default function ChangePriceModal({
 
       await updateListing(collectionAddress, tokenId, priceFormatted);
 
-      await saveChangePrice(
+      await savePriceChanged(
         parseInt(tokenId),
         wallet,
         parseFloat(priceFor),

@@ -16,8 +16,6 @@ export default function FiltersSidebar({
   const [max_state, setMaxState] = useState(100);
 
   const applyRangeFilter = () => {
-    console.log(allMarketItems);
-
     let visiblefilterArray = allMarketItems.filter((item) => {
       let price = item.price;
       if (price <= max_state && price >= min_state) {
@@ -26,7 +24,6 @@ export default function FiltersSidebar({
     });
 
     setVisibleMarketItems(visiblefilterArray);
-    console.log(min_state, max_state, visiblefilterArray);
   };
 
   const handleShowSidebar = (show) => {

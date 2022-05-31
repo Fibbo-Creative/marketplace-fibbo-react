@@ -18,8 +18,6 @@ export default function NewFeatureModal({
   const { wallet } = useAccount();
   const addNewSuggestion = async () => {
     //Añadir la sugerencia en el Backend
-    console.log(title, desc, wallet);
-
     await createNewSuggestion(wallet, title, desc);
 
     setCompletedAction(true);

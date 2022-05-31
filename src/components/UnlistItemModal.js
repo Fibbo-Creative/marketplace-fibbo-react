@@ -26,10 +26,10 @@ export default function UnlistItemModal({
       await cancelListing(collectionAddress, itemId);
 
       //Si todo va bien, eliminar item en bd
-
+      console.log(tokenInfo);
       await saveUnlistedItem(
-        tokenInfo.owner,
         tokenInfo.tokenId,
+        tokenInfo.owner,
         collectionAddress
       );
 

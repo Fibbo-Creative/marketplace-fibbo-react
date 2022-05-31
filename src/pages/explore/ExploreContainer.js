@@ -82,7 +82,6 @@ export default function ExploreContainer() {
   };
 
   const sortItems = (value) => {
-    console.log(value);
     if (value === "2") {
       //recentyl created
 
@@ -99,7 +98,6 @@ export default function ExploreContainer() {
       const visibledsortedArray = visibleMarketItems.sort(orderByOldest);
       setAllMarketItems(sortedArray);
       setVisibleMarketItems(visibledsortedArray.slice(0, visibleItemsCount));
-      console.log(sortedArray);
     }
     if (value === "4") {
       //highest price
@@ -107,7 +105,6 @@ export default function ExploreContainer() {
       const visibledsortedArray = visibleMarketItems.sort(orderByHighestP);
       setAllMarketItems(sortedArray);
       setVisibleMarketItems(visibledsortedArray.slice(0, visibleItemsCount));
-      console.log(sortedArray);
     }
     if (value === "5") {
       //Lowest price
@@ -115,7 +112,6 @@ export default function ExploreContainer() {
       const visibledsortedArray = visibleMarketItems.sort(orderByLowestP);
       setAllMarketItems(sortedArray);
       setVisibleMarketItems(visibledsortedArray.slice(0, visibleItemsCount));
-      console.log(sortedArray);
     }
   };
 

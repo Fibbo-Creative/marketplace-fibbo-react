@@ -30,7 +30,7 @@ export default function useAccount() {
       await changeChainCorrect();
     }
     const userProfileRequest = await getProfileInfo(_wallet);
-    console.log(userProfileRequest);
+
     if (userProfileRequest) {
       stateDispatch({
         type: actionTypes.SET_USER_PROFILE,
