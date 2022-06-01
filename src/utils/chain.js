@@ -1,4 +1,4 @@
-import { configData } from "./configData";
+import { configData } from "../chainData/configData";
 
 export const changeChainCorrect = async () => {
   let { chainId, name, rpcUrl, coinCurrency, coinIcon } = configData.chainInfo;

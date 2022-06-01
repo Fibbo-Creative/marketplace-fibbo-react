@@ -10,6 +10,7 @@ import ReactModal from "react-modal";
 import ProfileContainer from "./pages/profile/ProfileContainer";
 import NotFoundContainer from "./pages/notFound/NotFoundContainer";
 import FeaturesContainer from "./pages/features/FeaturesContainer";
+import useChain from "./hooks/useChain";
 
 ReactModal.defaultStyles.overlay.backgroundColor = "rgba(73, 77, 91, 0.5)";
 ReactModal.defaultStyles.content.width = "max-content";
@@ -20,6 +21,7 @@ ReactModal.defaultStyles.content.borderRadius = 50;
 
 function App() {
   const { wallet, connectToWallet } = useAccount();
+  const chain = useChain();
 
   return (
     <div className={`App`} id="App">

@@ -1,12 +1,8 @@
-import { useEffect, useState } from "react";
-import { useContractsContext } from "../context/contracts/ContractProvider";
-import { configData } from "../chainData/configData";
+import { changeChainCorrect } from "../utils/chain";
 
 let currentAccount = null;
 
 export default function useChain(loadingConnection) {
-  const [correctChain, setCorrectChain] = useState(true);
-  const [{ signer, wallet }] = useContractsContext();
   const handleAccountsChanged = (accounts) => {
     if (accounts.length === 0) {
       // MetaMask is locked or the user has not connected any accounts
@@ -18,23 +14,11 @@ export default function useChain(loadingConnection) {
   };
   window.ethereum.on("accountsChanged", handleAccountsChanged);
 
-  const handleChainChanged = (_chainId) => {
+  const handleChainChanged = async (_chainId) => {
     // We recommend reloading the page, unless you must do otherwise
+    await changeChainCorrect();
     window.location.reload();
   };
 
   window.ethereum.on("chainChanged", handleChainChanged);
-
-  useEffect(() => {
-    if (signer !== {} && wallet !== "" && !loadingConnection) {
-      const check = async () => {
-        let _chainIdUser = await signer.getChainId();
-        setCorrectChain(_chainIdUser === configData.chainInfo.chainId);
-      };
-      check();
-    }
-    return () => {};
-  }, [loadingConnection, signer, wallet]);
-
-  return { correctChain };
 }

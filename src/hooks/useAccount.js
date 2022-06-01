@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useStateContext } from "../context/StateProvider";
 import { actionTypes } from "../context/stateReducer";
 import { configData } from "../chainData/configData";
-import { changeChainCorrect } from "../chainData/utils";
+import { changeChainCorrect } from "../utils/chain";
 import { useApi } from "../api";
 export default function useAccount() {
   const [loadingConnection, setLoadingConection] = useState(true);
