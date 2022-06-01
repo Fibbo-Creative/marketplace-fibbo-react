@@ -1,4 +1,3 @@
-import { useCallback } from "react";
 import { ethers } from "ethers";
 import { formatEther } from "ethers/lib/utils";
 
