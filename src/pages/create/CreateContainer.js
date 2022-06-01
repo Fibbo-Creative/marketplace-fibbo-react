@@ -129,9 +129,9 @@ export default function CreateContainer() {
     setRoyalty(value);
   };
 
-  function isVerified() {
+  const isVerified = () => {
     return userProfile.verified ? true : false;
-  }
+  };
 
   useEffect(() => {
     connectToWallet();

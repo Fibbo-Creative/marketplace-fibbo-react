@@ -65,17 +65,17 @@ export default function Navbar() {
     navigate("/");
   };
 
-  function openBurguer() {
+  const openBurguer = () => {
     setOpenedMenu(true);
-  }
+  };
 
-  function closeBurguer() {
+  const closeBurguer = () => {
     setOpenedMenu(false);
-  }
+  };
 
-  function isVerified() {
+  const isVerified = () => {
     return userProfile.verified ? true : false;
-  }
+  };
 
   useEffect(() => {
     if (_width >= 1024) {
