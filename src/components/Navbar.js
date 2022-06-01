@@ -8,7 +8,6 @@ import WalletButton from "./WalletButton";
 import ConnectionModal from "./ConnectionModal";
 import { useStateContext } from "../context/StateProvider";
 import useRespnsive from "../hooks/useResponsive";
-import marketplaceApi from "../context/axios";
 import SearchResult from "./SearchResult";
 import { useApi } from "../api";
 

@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { create as ipfsHttpClient } from "ipfs-http-client";
-import marketplaceApi from "../../context/axios";
 import useAccount from "../../hooks/useAccount";
 import { useNavigate } from "react-router-dom";
 import ActionButton from "../../components/ActionButton";
@@ -8,8 +6,6 @@ import { useStateContext } from "../../context/StateProvider";
 import { useDefaultCollection } from "../../contracts/collection";
 import { useApi } from "../../api";
 import { addImgToIpfs, addJsonToIpfs } from "../../utils/ipfs";
-
-const ipfsClient = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
 
 const validateName = (name) => {
   if (name.length > 4 && name.length < 30) return true;
@@ -163,6 +159,7 @@ export default function CreateContainer() {
                     className="hidden"
                   />
                   {ipfsImageUrl !== "" && (
+                    // eslint-disable-next-line jsx-a11y/alt-text
                     <img
                       className="h-full w-full object-contain p-1"
                       src={sanityImgUrl}
