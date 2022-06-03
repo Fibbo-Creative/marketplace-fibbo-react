@@ -17,7 +17,7 @@ export default function Navbar() {
   const { wallet, connectToWallet, disconnectWallet } = useAccount();
   const [openModal, setOpenModal] = useState(false);
   const [openedMenu, setOpenedMenu] = useState(false);
-  const [{ userProfile }] = useStateContext();
+  const [{ userProfile, verifiedAddress }] = useStateContext();
   const [searchItemsData, setSearchItemsData] = useState([]);
   const [searchProfilesData, setSearchProfilesData] = useState([]);
   const { _width } = useRespnsive();
@@ -70,10 +70,6 @@ export default function Navbar() {
 
   const closeBurguer = () => {
     setOpenedMenu(false);
-  };
-
-  const isVerified = () => {
-    return userProfile.verified ? true : false;
   };
 
   useEffect(() => {
@@ -129,7 +125,7 @@ export default function Navbar() {
               >
                 Explore
               </a>
-              {isVerified() && (
+              {verifiedAddress && (
                 <a
                   className={` ml-5  hover:font-bold ${
                     location.pathname === "/create"

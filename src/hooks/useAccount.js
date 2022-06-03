@@ -5,10 +5,12 @@ import { actionTypes } from "../context/stateReducer";
 import { configData } from "../chainData/configData";
 import { changeChainCorrect } from "../utils/chain";
 import { useApi } from "../api";
+import { useVerification } from "../contracts/verification";
 export default function useAccount() {
   const [loadingConnection, setLoadingConection] = useState(true);
   const { getProfileInfo, createNewProfile } = useApi();
   const [{ wallet }, stateDispatch] = useStateContext();
+  const { checkWalletVerified } = useVerification();
   const connectToWallet = useCallback(async () => {
     const prov = new ethers.providers.Web3Provider(window.ethereum);
 
@@ -31,11 +33,14 @@ export default function useAccount() {
     }
     const userProfileRequest = await getProfileInfo(_wallet);
 
+    const isVerifiedAddress = await checkWalletVerified(_wallet);
+
     if (userProfileRequest) {
       stateDispatch({
         type: actionTypes.SET_USER_PROFILE,
         userProfile: userProfileRequest,
         wallet: _wallet,
+        verifiedAddress: isVerifiedAddress,
       });
     } else {
       //Create profile
@@ -44,6 +49,7 @@ export default function useAccount() {
         type: actionTypes.SET_USER_PROFILE,
         userProfile: createdProfile,
         wallet: _wallet,
+        verifiedAddress: isVerifiedAddress,
       });
     }
   }, []);
@@ -53,6 +59,7 @@ export default function useAccount() {
       type: actionTypes.SET_USER_PROFILE,
       userProfile: {},
       wallet: "",
+      verifiedAddress: false,
     });
   }, []);
 

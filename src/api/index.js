@@ -209,6 +209,15 @@ export const useApi = () => {
   };
   //#endregion
 
+  //#region Verification
+
+  const getVerificatedArtists = async () => {
+    const verified = await marketplaceApi.get("users/verified");
+    return verified.data;
+  };
+
+  //#endregion
+
   return {
     getProfileInfo,
     createNewProfile,
@@ -228,5 +237,6 @@ export const useApi = () => {
     searchItemsAndProfiles,
     uploadImgToCDN,
     createNewSuggestion,
+    getVerificatedArtists,
   };
 };

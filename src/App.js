@@ -11,6 +11,8 @@ import ProfileContainer from "./pages/profile/ProfileContainer";
 import NotFoundContainer from "./pages/notFound/NotFoundContainer";
 import FeaturesContainer from "./pages/features/FeaturesContainer";
 import useChain from "./hooks/useChain";
+import { VerificationContainer } from "./pages/verficiation/VerificationContainer";
+import { VerificationFormContainer } from "./pages/verficiation/VerificationFormContainer";
 
 ReactModal.defaultStyles.overlay.backgroundColor = "rgba(73, 77, 91, 0.5)";
 ReactModal.defaultStyles.content.width = "max-content";
@@ -33,6 +35,12 @@ function App() {
             <Route path="*" element={<NotFoundContainer />} />
             <Route path="/create" element={<CreateContainer />} />
             <Route path="/features" element={<FeaturesContainer />} />
+            <Route path="/verificate" element={<VerificationContainer />} />
+            <Route
+              path="/verificate/request"
+              element={<VerificationFormContainer />}
+            />
+
             <Route path="/create" element={<CreateContainer />} />
             <Route path="/explore" element={<ExploreContainer />} />
             <Route

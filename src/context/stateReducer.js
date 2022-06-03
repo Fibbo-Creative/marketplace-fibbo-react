@@ -1,6 +1,7 @@
 export const initialState = {
   userProfile: {},
   wallet: "",
+  verifiedAddress: false,
   balance: 0,
   correctChain: true,
 };
@@ -16,6 +17,7 @@ const stateReducer = (state, action) => {
         ...state,
         userProfile: action.userProfile,
         wallet: action.wallet,
+        verifiedAddress: action.verifiedAddress,
       };
 
     default:

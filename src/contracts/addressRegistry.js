@@ -25,9 +25,9 @@ export const useAddressRegistry = () => {
     return await addressRegistryContract.community();
   };
 
-  const getValidationAddress = async () => {
+  const getVerificationAddress = async () => {
     const addressRegistryContract = await getAddressRegistryContract();
-    return await addressRegistryContract.validation();
+    return await addressRegistryContract.verification();
   };
 
   return {
@@ -35,6 +35,6 @@ export const useAddressRegistry = () => {
     getFibboCollectionAddress,
     getMarketplaceAddress,
     getCommunityAddress,
-    getValidationAddress,
+    getVerificationAddress,
   };
 };

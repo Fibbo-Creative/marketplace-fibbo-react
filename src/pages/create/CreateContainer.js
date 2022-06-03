@@ -25,7 +25,7 @@ export default function CreateContainer() {
   const [desc, setDesc] = useState("");
   const [royalty, setRoyalty] = useState("");
   const { connectToWallet, wallet } = useAccount();
-  const [{ userProfile }] = useStateContext();
+  const [{ userProfile, verifiedAddress }] = useStateContext();
 
   const { createToken, getContractAddress } = useDefaultCollection();
 
@@ -125,17 +125,13 @@ export default function CreateContainer() {
     setRoyalty(value);
   };
 
-  const isVerified = () => {
-    return userProfile.verified ? true : false;
-  };
-
   useEffect(() => {
     connectToWallet();
   }, [wallet, connectToWallet]);
   return (
     <div>
       <div className=" flex mt-[90px] justify-center "></div>
-      {isVerified() ? (
+      {verifiedAddress ? (
         <div className=" flex-col h-full w-full justify-center items-center ">
           <form className="">
             <div className="flex lg:flex-row flex-col gap-10 block p-8 items-center justify-center ">
