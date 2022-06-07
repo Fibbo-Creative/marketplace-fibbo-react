@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import React from "react";
-import ReactModal from "react-modal";
+
 import { BasicModal } from "./BasicModal";
 
 export default function ConnectionModal({

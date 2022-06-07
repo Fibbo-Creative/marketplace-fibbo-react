@@ -1,8 +1,6 @@
 import { Icon } from "@iconify/react";
 import React, { useEffect, useState } from "react";
-import ReactModal from "react-modal";
-import { formatEther, parseEther } from "ethers/lib/utils";
-import marketplaceApi from "../../context/axios";
+import { parseEther } from "ethers/lib/utils";
 import ActionButton from "../ActionButton";
 import { useMarketplace } from "../../contracts/market";
 import useProvider from "../../hooks/useProvider";
@@ -70,54 +68,64 @@ export default function BuyItemModal({
         <div className="my-10 mx-8 flex flex-col gap-10">
           <div className="w-full flex-col items-center justify-center">
             {!completedAction ? (
-              <div className="flex flex-col md:flex-row items-center gap-3 justify-between">
-                <div>
-                  <img
-                    src={tokenInfo?.image}
-                    width={"128px"}
-                    alt={`tokenImage-${tokenInfo?.name}`}
-                  />
-                </div>
-                <div className="flex flex-col gap-3">
-                  <div className="flex gap-2">
-                    <b>Nombre:</b>
-                    <p>{tokenInfo?.name}</p>
-                  </div>
-                  <div className="flex gap-2">
-                    <b>Royalties:</b>
-                    <p>{tokenInfo?.royalty}</p>
-                    <Icon
-                      data-for="test"
-                      data-tip={`Un ${tokenInfo?.royalty} del precio de compra <br> será enviado al creador del item <br/>`}
-                      className="text-gray-500"
-                      data-iscapture="true"
-                      icon="ci:help-circle-outline"
+              <div className="flex flex-col">
+                <div className="flex flex-col md:flex-row items-center gap-3 justify-between">
+                  <div>
+                    <img
+                      src={tokenInfo?.image}
+                      width={"182px"}
+                      alt={`tokenImage-${tokenInfo?.name}`}
                     />
                   </div>
-                  <ReactTooltip
-                    id="test"
-                    place="right"
-                    type="dark"
-                    effect="solid"
-                    multiline={true}
-                  />
-                  <div className="flex gap-2">
-                    <b>Precio:</b>
-                    <p>{tokenInfo?.price}</p>
-                    <p>FTM</p>
-                  </div>
-                  <ActionButton
-                    disabled={walletBalance < tokenInfo.price}
-                    size="large"
-                    variant={"contained"}
-                    text="Comprar Ítem"
-                    buttonAction={(e) => buyItemAction()}
-                  />
-                  {walletBalance < tokenInfo.price && (
-                    <div className="text-xs text-red-700">
-                      Insuficientes FTM para comprar!
+                  <div className="flex flex-col gap-4">
+                    <div className="flex gap-2">
+                      <b>Nombre:</b>
+                      <p>{tokenInfo?.name}</p>
                     </div>
-                  )}
+                    <div className="flex gap-2">
+                      <b>Royalties:</b>
+                      <p>{tokenInfo?.royalty}</p>
+                      <div
+                        data-for="royalty-info"
+                        data-tip={`Un ${tokenInfo?.royalty} del precio de compra <br/> será enviado al creador del item <br/>`}
+                      >
+                        <Icon
+                          className="text-gray-500"
+                          icon="ci:help-circle-outline"
+                        />
+                      </div>
+                      <ReactTooltip
+                        id="royalty-info"
+                        place="right"
+                        type="dark"
+                        effect="solid"
+                        multiline={true}
+                      />
+                    </div>
+
+                    <div className="flex gap-2">
+                      <b>Precio:</b>
+                      <p>{tokenInfo?.price}</p>
+                      <p>FTM</p>
+                    </div>
+
+                    <ActionButton
+                      disabled={walletBalance < tokenInfo.price}
+                      size="large"
+                      variant={"contained"}
+                      text="Comprar Ítem"
+                      buttonAction={(e) => buyItemAction()}
+                    />
+
+                    {walletBalance < tokenInfo.price && (
+                      <div className="text-xs text-red-700">
+                        Insuficientes FTM para comprar!
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="text-xs text-center mt-5">
+                  Fibbo recoge un 2% de comisiones en cada venta de item
                 </div>
               </div>
             ) : (

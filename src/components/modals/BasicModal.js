@@ -17,7 +17,7 @@ export const BasicModal = ({
     >
       <div
         className={`flex flex-col w-full h-full p-2 ${
-          size === "large" ? "w-[600px]" : "w-[400px]"
+          size === "large" ? " lg:w-[600px]" : "md:w-[400px]"
         }`}
       >
         <div

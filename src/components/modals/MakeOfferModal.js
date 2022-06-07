@@ -1,6 +1,4 @@
-import { Icon } from "@iconify/react";
 import React, { useState } from "react";
-import ReactModal from "react-modal";
 import { useNavigate } from "react-router-dom";
 import { BasicModal } from "./BasicModal";
 

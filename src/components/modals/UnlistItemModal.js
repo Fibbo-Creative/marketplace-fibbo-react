@@ -1,6 +1,5 @@
 import { Icon } from "@iconify/react";
 import React, { useState } from "react";
-import ReactModal from "react-modal";
 import ActionButton from "../ActionButton";
 import { useMarketplace } from "../../contracts/market";
 import { useApi } from "../../api";

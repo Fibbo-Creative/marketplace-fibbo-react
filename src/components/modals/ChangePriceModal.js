@@ -1,6 +1,5 @@
 import { Icon } from "@iconify/react";
 import React, { useState } from "react";
-import ReactModal from "react-modal";
 import { parseEther } from "ethers/lib/utils";
 import ActionButton from "../ActionButton";
 import { useMarketplace } from "../../contracts/market";

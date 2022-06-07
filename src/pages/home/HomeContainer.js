@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import FiboIMG from "../../assets/logoNavbarSmall.png";
+import FiboIMG from "../../assets/logoHome.png";
 import ActionButton from "../../components/ActionButton";
 import MobileDetect from "mobile-detect";
 

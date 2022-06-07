@@ -15,7 +15,7 @@ import { VerificationContainer } from "./pages/verficiation/VerificationContaine
 import { VerificationFormContainer } from "./pages/verficiation/VerificationFormContainer";
 
 ReactModal.defaultStyles.overlay.backgroundColor = "rgba(73, 77, 91, 0.5)";
-ReactModal.defaultStyles.content.width = "max-content";
+ReactModal.defaultStyles.content.width = "fit-content";
 ReactModal.defaultStyles.content.height = "max-content";
 ReactModal.defaultStyles.content.margin = "auto";
 ReactModal.defaultStyles.content.maxHeight = "";
