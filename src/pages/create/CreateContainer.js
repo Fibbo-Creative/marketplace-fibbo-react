@@ -30,6 +30,7 @@ export default function CreateContainer() {
 
   const { createToken, getContractAddress } = useDefaultCollection();
 
+  const [loadingImage, setLoadingImage] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [showHiddenContent, setShowHiddenContent] = useState(false);
@@ -48,7 +49,8 @@ export default function CreateContainer() {
 
   const onFileSelected = async (e) => {
     const file = e.target.files[0];
-
+    setImageError(false);
+    setLoadingImage(true);
     try {
       const imgAddedToIPFS = await addImgToIpfs(file);
 
@@ -67,6 +69,7 @@ export default function CreateContainer() {
         setSanityImgUrl(imgAddedToSanity);
         setImageError(false);
       }
+      setLoadingImage(false);
     } catch (error) {
       console.log("Error uploading file: ", error);
     }
@@ -152,6 +155,7 @@ export default function CreateContainer() {
                       autoComplete="off"
                       className="hidden"
                     />
+
                     {!imageError && sanityImgUrl !== "" && (
                       // eslint-disable-next-line jsx-a11y/alt-text
                       <img
@@ -165,13 +169,25 @@ export default function CreateContainer() {
                         imageError && "text-red-400"
                       }`}
                     >
-                      {imageError ? (
-                        <div className="text-red-600">{imageMessageError}</div>
-                      ) : (
-                        <div>
-                          Drop files here or browse <br></br> JPG, PNG, BMP,
-                          GIF, SVG...
+                      {loadingImage ? (
+                        <div className="flex items-center justify-center space-x-2 animate-pulse">
+                          <div className="w-8 h-8 bg-primary-1 rounded-full"></div>
+                          <div className="w-8 h-8 bg-primary-2 rounded-full"></div>
+                          <div className="w-8 h-8 bg-primary-3 rounded-full"></div>
                         </div>
+                      ) : (
+                        <>
+                          {!loadingImage && imageError ? (
+                            <div className="text-red-600">
+                              {imageMessageError}
+                            </div>
+                          ) : (
+                            <div>
+                              Arrastra o selecciona ficheros de imágen <br></br>{" "}
+                              JPG, PNG, BMP, GIF, SVG, WEBP ...
+                            </div>
+                          )}
+                        </>
                       )}
                     </div>
                   </div>
@@ -203,7 +219,6 @@ export default function CreateContainer() {
                       type="text"
                       value={name}
                       onChange={(e) => handleChangeName(e.target.value)}
-                      id="imageInput"
                       className={`w-full px-3 py-1.5 text-base font-normal text-gray-700 
               bg-white bg-clip-padding border border-solid border-black rounded transition ease-in-out m-0
               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
@@ -223,7 +238,7 @@ export default function CreateContainer() {
                     </div>
                     <div className="text-sm">De 50 a 300 carácteres</div>
                     <textarea
-                      className={`form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding 
+                      className={`block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding 
             border border-solid border-black rounded transition ease-in-out m-0
             focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none ${
               descError && "border-red-400"
@@ -231,7 +246,6 @@ export default function CreateContainer() {
                       rows="3"
                       value={desc}
                       onChange={(e) => handleChangeDescription(e.target.value)}
-                      id="imageInput"
                       type="text"
                     />
                     {descError && (
@@ -250,14 +264,13 @@ export default function CreateContainer() {
                       que originalmente creaste
                     </div>
                     <input
-                      className={`form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700
+                      className={`block w-full px-3 py-1.5 text-base font-normal text-gray-700
               bg-white bg-clip-padding border border-solid border-black rounded transition ease-in-out m-0
               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none ${
                 royaltyError && "border-red-400"
               }`}
                       value={royalty}
                       onChange={(e) => handleChangeRoyalty(e.target.value)}
-                      id="imageInput"
                       placeholder="e.j. 2.5"
                       type="number"
                     />
@@ -274,8 +287,6 @@ export default function CreateContainer() {
                       <label className="">
                         <input
                           type="checkbox"
-                          id="ixwZk4_Gf5Hmhsd4d"
-                          name="unlockContentToogle"
                           className=""
                           value=""
                           onChange={() =>
@@ -293,7 +304,7 @@ export default function CreateContainer() {
                             propietario podrá ver
                           </div>
                           <textarea
-                            className={`form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding 
+                            className={`block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding 
                         border border-solid border-black rounded transition ease-in-out m-0
                         focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none ${
                           descError && "border-red-400"
