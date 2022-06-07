@@ -49,9 +49,13 @@ export default function ActionButton({
   const [loading, setLoading] = useState(false);
 
   const executeAction = async (e) => {
-    setLoading(true);
-    await buttonAction(e);
-    setLoading(false);
+    try {
+      setLoading(true);
+      await buttonAction(e);
+      setLoading(false);
+    } catch (e) {
+      setLoading(false);
+    }
   };
   return (
     <button

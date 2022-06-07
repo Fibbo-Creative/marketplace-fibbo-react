@@ -215,12 +215,13 @@ export const useApi = () => {
     return verified.data;
   };
 
-  const newVerifyRequest = async (proposer, name, lastName, descr) => {
+  const newVerifyRequest = async (proposer, name, lastName, descr, email) => {
     const newRequest = await marketplaceApi.post("verify/sendRequest", {
       name: name,
       lastName: lastName,
       proposer: proposer,
       description: descr,
+      email: email,
     });
 
     return newRequest.data;
