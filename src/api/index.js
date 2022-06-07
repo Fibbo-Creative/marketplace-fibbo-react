@@ -194,7 +194,6 @@ export const useApi = () => {
         },
       }
     );
-
     return imgAddedToSanity.data;
   };
   //#endregion
@@ -214,6 +213,17 @@ export const useApi = () => {
   const getVerificatedArtists = async () => {
     const verified = await marketplaceApi.get("users/verified");
     return verified.data;
+  };
+
+  const newVerifyRequest = async (proposer, name, lastName, descr) => {
+    const newRequest = await marketplaceApi.post("verify/sendRequest", {
+      name: name,
+      lastName: lastName,
+      proposer: proposer,
+      description: descr,
+    });
+
+    return newRequest.data;
   };
 
   //#endregion
@@ -238,5 +248,6 @@ export const useApi = () => {
     uploadImgToCDN,
     createNewSuggestion,
     getVerificatedArtists,
+    newVerifyRequest,
   };
 };

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ActionButton from "../../../components/ActionButton";
-import BuyItemModal from "../../../components/BuyItemModal";
-import MakeOfferModal from "../../../components/MakeOfferModal";
-import PutForSaleModal from "../../../components/PutForSaleModal";
+import BuyItemModal from "../../../components/modals/BuyItemModal";
+import MakeOfferModal from "../../../components/modals/MakeOfferModal";
+import PutForSaleModal from "../../../components/modals/PutForSaleModal";
 import { truncateWallet } from "../../../utils/wallet";
 import useAccount from "../../../hooks/useAccount";
 import CoinGecko from "coingecko-api";
-import ChangePriceModal from "../../../components/ChangePriceModal";
-import UnlistItemModal from "../../../components/UnlistItemModal";
+import ChangePriceModal from "../../../components/modals/ChangePriceModal";
+import UnlistItemModal from "../../../components/modals/UnlistItemModal";
 
 const formatPriceInUsd = (price) => {
   let priceStr = price.toString().split(".");

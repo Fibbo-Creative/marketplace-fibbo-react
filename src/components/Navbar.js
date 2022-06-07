@@ -5,7 +5,7 @@ import logo from "../assets/logoNavbar.png";
 import logoSmall from "../assets/logoNavbarSmall.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import WalletButton from "./WalletButton";
-import ConnectionModal from "./ConnectionModal";
+import ConnectionModal from "./modals/ConnectionModal";
 import { useStateContext } from "../context/StateProvider";
 import useRespnsive from "../hooks/useResponsive";
 import SearchResult from "./SearchResult";
