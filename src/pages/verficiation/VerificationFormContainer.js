@@ -5,6 +5,9 @@ import ActionButton from "../../components/ActionButton";
 import { VerifiedCard } from "../../components/VerifiedCard";
 import { useStateContext } from "../../context/StateProvider";
 import useAccount from "../../hooks/useAccount";
+import emailjs from "@emailjs/browser";
+
+emailjs.init("A9IZio99Pk7PWQVes");
 
 export const VerificationFormContainer = () => {
   const { newVerifyRequest } = useApi();
@@ -14,12 +17,36 @@ export const VerificationFormContainer = () => {
   const [lastName, setLastName] = useState("");
   const [description, setDescription] = useState("");
   const [email, setEmail] = useState("");
+  const [sendedCode, setSendedCode] = useState(null);
+  const [verificationCode, setVerificationCode] = useState(0);
+  const [verificatedEmail, setVerificatedEmail] = useState(false);
 
   const [completedAction, setCompletedAction] = useState(false);
   const sendNewVerifyRequest = async () => {
     if (name !== "" && lastName !== "" && description !== "") {
       await newVerifyRequest(wallet, name, lastName, description);
       setCompletedAction(true);
+    }
+  };
+
+  const sendVerificationCode = () => {
+    const _code = parseInt(Math.random(999999) * 10000000);
+    setSendedCode(_code);
+    console.log(_code);
+    emailjs.send("service_20e5sep", "template_vmnwyr6", {
+      to: email,
+      verificationCode: _code,
+    });
+  };
+
+  const checkVerifyCode = (code) => {
+    setVerificationCode(code);
+    console.log(sendedCode, parseInt(code));
+
+    if (sendedCode === parseInt(code)) {
+      setVerificatedEmail(true);
+    } else {
+      setVerificationCode(false);
     }
   };
   return (
@@ -56,15 +83,36 @@ export const VerificationFormContainer = () => {
             <div className="">Correo </div>
             <Input
               placeholder="example@gmail.com"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              value={email}
+              type="email"
+              onChange={(e) => setEmail(e.target.value)}
             />
+          </div>
+          <div className="text-sm">
+            Te enviaremos un correo con un código de verificación para confirmar
+            que tu correo existe. <br></br>Pulsa "Enviar Correo" para recibir
+            este código e insertalo a continuacion
+          </div>
+          <div className="flex flex items-center gap-5 w-full">
+            <div className="">Verificación</div>
+            <div className="flex items-center justify-between w-full gap-3">
+              <Input
+                type="number"
+                value={verificationCode}
+                onChange={(e) => checkVerifyCode(e.target.value)}
+              ></Input>
+              <ActionButton
+                size="small"
+                text="Enviar Correo"
+                buttonAction={sendVerificationCode}
+              />
+            </div>
           </div>
           <div>
             Te enviaremos un correo con noticias acerca de la verificación
           </div>
           <ActionButton
-            disabled={completedAction}
+            disabled={completedAction || !verificatedEmail}
             size="large"
             text="Enviar solicitud"
             buttonAction={sendNewVerifyRequest}

@@ -82,7 +82,7 @@ export default function Navbar() {
       <div className="h-[79px] bg-white flex flex-row justify-between w-full items-center px-5">
         <div className=" flex items-center cursor-pointer">
           <img
-            src={_width < 700 ? logoSmall : logo}
+            src={_width < 775 ? logoSmall : logo}
             href="/"
             onClick={gotoHomepage}
             alt="FibboLogo"

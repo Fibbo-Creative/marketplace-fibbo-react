@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import useAccount from "../../hooks/useAccount";
-import { useNavigate } from "react-router-dom";
 import ActionButton from "../../components/ActionButton";
 import { useStateContext } from "../../context/StateProvider";
-import { useDefaultCollection } from "../../contracts/collection";
 import { useApi } from "../../api";
-import { addImgToIpfs, addJsonToIpfs } from "../../utils/ipfs";
+import { addImgToIpfs } from "../../utils/ipfs";
 import { ConfirmCreateModal } from "../../components/modals/ConfirmCreateModal";
 
 const validateName = (name) => {
@@ -18,17 +16,14 @@ const validateDesc = (desc) => {
   else return false;
 };
 export default function CreateContainer() {
-  const { saveMintedItem, uploadImgToCDN } = useApi();
-  const navigate = useNavigate();
+  const { uploadImgToCDN } = useApi();
   const [ipfsImageUrl, setIpfsImageUrl] = useState("");
   const [sanityImgUrl, setSanityImgUrl] = useState("");
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
   const [royalty, setRoyalty] = useState("");
   const { connectToWallet, wallet } = useAccount();
-  const [{ userProfile, verifiedAddress }] = useStateContext();
-
-  const { createToken, getContractAddress } = useDefaultCollection();
+  const [{ verifiedAddress }] = useStateContext();
 
   const [loadingImage, setLoadingImage] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -144,7 +139,7 @@ export default function CreateContainer() {
                     onClick={selectNFTImg}
                     className={`outline-dashed ${
                       imageError && "outline-red-400"
-                    } w-[300px] h-[300px] md:w-[500px] md:h-[500px] items-center justify-center cursor-pointer`}
+                    } w-[300px] h-[300px] md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px] items-center justify-center cursor-pointer`}
                   >
                     <input
                       id="inputNFT"
@@ -182,7 +177,7 @@ export default function CreateContainer() {
                               {imageMessageError}
                             </div>
                           ) : (
-                            <div>
+                            <div className="text-center">
                               Arrastra o selecciona ficheros de imágen <br></br>{" "}
                               JPG, PNG, BMP, GIF, SVG, WEBP ...
                             </div>
