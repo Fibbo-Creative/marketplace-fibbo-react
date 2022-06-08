@@ -188,7 +188,7 @@ export default function ProfileContainer() {
         </div>
       </div>
 
-      <div className="h-[10px] w-sceen bg-gray-300 mt-10"></div>
+      <div className="h-[10px] w-sceen bg-gradient-to-r from-[#7E29F1] to-[#8BC3FD] mt-10 mb-10"></div>
       <div className="flex flex-row items-center justify-center gap-2 md:gap-5 ">
         <button onClick={changeSmallDisplay} className="hover:-translate-y-1">
           <Icon
