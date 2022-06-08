@@ -1,5 +1,7 @@
 import { ChainId } from "@sushiswap/sdk";
 
+export const ADDRESS_ZERO = "0x0000000000000000000000000000000000000000";
+
 export const Contracts = {
   [ChainId.FANTOM]: {
     addressRegistry: "0x260ceD9e586082227Ec4513898CEc60E474063C5",

@@ -2,6 +2,7 @@ import React from "react";
 import { truncateWallet } from "../utils/wallet";
 import useRespnsive from "../hooks/useResponsive";
 import DropDown from "./DropDown";
+import { ADDRESS_ZERO } from "../constants/networks";
 
 export default function ItemHistory({ historyItems }) {
   const { _width } = useRespnsive();
@@ -36,8 +37,53 @@ export default function ItemHistory({ historyItems }) {
                   <td className="px-6 py-4">
                     {item.price !== 0 ? `${item.price} FTM` : ""}
                   </td>
-                  <td className="px-6 py-4">{truncateWallet(item.from)}</td>
-                  <td className="px-6 py-4">{truncateWallet(item.to)}</td>
+                  <td className="px-6 py-4">
+                    {item.from === ADDRESS_ZERO ? (
+                      truncateWallet(item.from, 4)
+                    ) : (
+                      <div className="flex gap-2 items-center">
+                        <img
+                          className="rounded-full"
+                          width={32}
+                          src={item.from.profileImg}
+                          alt={`from-${item.from._id}-img`}
+                        />
+                        <p
+                          className="text-primary-2 underline cursor-pointer"
+                          onClick={() =>
+                            window.open(
+                              `/profile/${item.from.wallet}`,
+                              "_blank"
+                            )
+                          }
+                        >
+                          {item.from.username}
+                        </p>
+                      </div>
+                    )}
+                  </td>
+                  <td className="px-6 py-4">
+                    {item.to === ADDRESS_ZERO ? (
+                      truncateWallet(item.to, 4)
+                    ) : (
+                      <div className="flex gap-2 items-center">
+                        <img
+                          className="rounded-full"
+                          width={32}
+                          src={item.to.profileImg}
+                          alt={`from-${item.to._id}-img`}
+                        />
+                        <p
+                          className="text-primary-2 underline cursor-pointer"
+                          onClick={() =>
+                            window.open(`/profile/${item.to.wallet}`, "_blank")
+                          }
+                        >
+                          {item.to.username}
+                        </p>
+                      </div>
+                    )}
+                  </td>
                   <td className="px-6 py-4">
                     {new Date(item.timestamp).toLocaleString()}
                   </td>
@@ -70,13 +116,58 @@ export default function ItemHistory({ historyItems }) {
                   <div>
                     <b>De</b>
                   </div>
-                  <div>{truncateWallet(item.from)}</div>
+                  <div>
+                    {item.from === ADDRESS_ZERO ? (
+                      truncateWallet(item.from, 4)
+                    ) : (
+                      <div className="flex gap-2 items-center">
+                        <img
+                          className="rounded-full"
+                          width={32}
+                          src={item.from.profileImg}
+                          alt={`from-${item.from._id}-img`}
+                        />
+                        <p
+                          className="text-primary-2 underline cursor-pointer"
+                          onClick={() =>
+                            window.open(
+                              `/profile/${item.from.wallet}`,
+                              "_blank"
+                            )
+                          }
+                        >
+                          {item.from.username}
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div className="flex justify-between">
                   <div>
                     <b>A</b>
                   </div>
-                  <div>{truncateWallet(item.to)}</div>
+                  <div>
+                    {item.to === ADDRESS_ZERO ? (
+                      truncateWallet(item.to, 4)
+                    ) : (
+                      <div className="flex gap-2 items-center">
+                        <img
+                          className="rounded-full"
+                          width={32}
+                          src={item.to.profileImg}
+                          alt={`from-${item.to._id}-img`}
+                        />
+                        <p
+                          className="text-primary-2 underline cursor-pointer"
+                          onClick={() =>
+                            window.open(`/profile/${item.to.wallet}`, "_blank")
+                          }
+                        >
+                          {item.to.username}
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div className="flex justify-between">
                   <div>

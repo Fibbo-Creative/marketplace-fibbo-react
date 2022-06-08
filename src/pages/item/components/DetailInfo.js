@@ -12,7 +12,17 @@ export default function DetailInfo({ properties, chainInfo }) {
               <div>
                 <b>Colección</b>
               </div>
-              <div>{truncateWallet(chainInfo.collection)}</div>
+              <p
+                onClick={() =>
+                  window.open(
+                    `https://testnet.ftmscan.com/address/${chainInfo.collection}`,
+                    "_blank"
+                  )
+                }
+                className="text-primary-2 underline cursor-pointer"
+              >
+                {truncateWallet(chainInfo.collection)}
+              </p>
             </div>
             <div className="flex justify-between">
               <div>
@@ -50,7 +60,19 @@ export default function DetailInfo({ properties, chainInfo }) {
               <div>
                 <b>Recipiente</b>
               </div>
-              <div>{truncateWallet(properties.recipient)}</div>
+              <div className="flex gap-3">
+                <img
+                  src={properties.recipient.profileImg}
+                  alt="recipient-img"
+                  className="rounded-full"
+                  width={32}
+                />
+                <div>
+                  {properties.recipient.username !== "Fibbo Artist"
+                    ? properties.recipient.username
+                    : truncateWallet(properties.recipient.wallet)}
+                </div>
+              </div>
             </div>
             <div className="flex justify-between">
               <div>

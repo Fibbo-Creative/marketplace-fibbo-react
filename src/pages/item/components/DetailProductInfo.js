@@ -152,9 +152,7 @@ export default function DetailProductInfo({
         </div>
       </div>
       <div className="">{/*  <ItemPriceHistory /> */}</div>
-      <div className="">
-        <ItemListings listings={listings} />
-      </div>
+      <div className="">{/* <ItemListings listings={listings} /> */}</div>
       {isOwner && !isForSale && (
         <PutForSaleModal
           collectionAddress={collection}

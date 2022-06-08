@@ -11,6 +11,8 @@ import { useApi } from "../../api";
 import { useMarketplace } from "../../contracts/market";
 import { formatEther } from "ethers/lib/utils";
 
+const formatHistory = async () => {};
+
 export default function ItemPage() {
   let { collection, tokenId } = useParams();
   const { wallet } = useAccount();
@@ -48,9 +50,11 @@ export default function ItemPage() {
 
       const collectionResponse = await getCollectionInfo(collection);
 
+      const recipientInfo = await getProfileInfo(tokenInfoResponse.creator);
+
       setProperties({
         royalty: tokenInfoResponse.royalty,
-        recipient: tokenInfoResponse.creator,
+        recipient: recipientInfo,
         collection: collectionResponse.name,
         totalItems: collectionResponse.numberOfItems,
       });
@@ -63,8 +67,6 @@ export default function ItemPage() {
         parseInt(tokenId),
         tokenInfoResponse.owner
       );
-
-      console.log(listingInfo);
 
       if (listingInfo) {
         setListings([
