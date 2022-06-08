@@ -27,6 +27,7 @@ export default function ItemPage() {
   const [isOwner, setIsOwner] = useState(false);
   const [isForSale, setIsForSale] = useState(false);
 
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
       const tokenInfoResponse = await getNftInfo(collection, tokenId);
@@ -76,7 +77,7 @@ export default function ItemPage() {
           },
         ]);
       }
-
+      setLoading(false);
       //Get Listing info
     };
     fetchData();
@@ -84,32 +85,29 @@ export default function ItemPage() {
 
   return (
     <>
-      {tokenInfo &&
-        profileOwnerData &&
-        tokenHistoryInfo.length > 0 &&
-        chainInfo.chainId && (
-          <div className=" mt-[120px] mb-[50px] mx-[50px] grid grid-cols-1  md:grid-cols-[400px_minmax(300px,_0.9fr)] md:grid-rows-[auto_auto] gap-7">
-            <DetailImage
-              tokenImage={tokenInfo.image}
-              tokenName={tokenInfo.name}
-            />
-            <DetailProductInfo
-              isOwner={isOwner}
-              isForSale={isForSale}
-              tokenInfo={tokenInfo}
-              tokenOwnerData={profileOwnerData}
-              tokenId={tokenId}
-              collection={collection}
-              listings={listings}
-            />
+      <div className=" mt-[120px] mb-[50px] mx-[50px] grid grid-cols-1  md:grid-cols-[400px_minmax(300px,_0.9fr)] md:grid-rows-[auto_auto] gap-7">
+        <DetailImage
+          tokenImage={tokenInfo?.image}
+          tokenName={tokenInfo?.name}
+          loading={loading}
+        />
+        <DetailProductInfo
+          isOwner={isOwner}
+          isForSale={isForSale}
+          tokenInfo={tokenInfo}
+          tokenOwnerData={profileOwnerData}
+          tokenId={tokenId}
+          collection={collection}
+          listings={listings}
+          loading={loading}
+        />
 
-            <DetailInfo properties={properties} chainInfo={chainInfo} />
+        <DetailInfo properties={properties} chainInfo={chainInfo} />
 
-            <div className="col-span-1 md:col-span-2 row-span-3 ">
-              <ItemHistory historyItems={tokenHistoryInfo} />
-            </div>
-          </div>
-        )}
+        <div className="col-span-1 md:col-span-2 row-span-3 ">
+          <ItemHistory historyItems={tokenHistoryInfo} />
+        </div>
+      </div>
     </>
   );
 }

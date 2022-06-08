@@ -2,11 +2,13 @@ import React from "react";
 import DropDown from "../../../components/DropDown";
 import { truncateWallet } from "../../../utils/wallet";
 
-export default function DetailInfo({ properties, chainInfo }) {
+export default function DetailInfo({ properties, chainInfo, loading }) {
   return (
     <div className="col-span-1 flex flex-col rounded-md border-2 ">
-      {chainInfo.chainId && (
-        <DropDown icon="bxs:info-square" title={"Chain Data"}>
+      <DropDown icon="bxs:info-square" title={"Chain Data"}>
+        {loading ? (
+          <div className="w-full h-full animate-pulse bg-gray-300"></div>
+        ) : (
           <div className="flex flex-col gap-2">
             <div className="flex justify-between">
               <div>
@@ -15,46 +17,49 @@ export default function DetailInfo({ properties, chainInfo }) {
               <p
                 onClick={() =>
                   window.open(
-                    `https://testnet.ftmscan.com/address/${chainInfo.collection}`,
+                    `https://testnet.ftmscan.com/address/${chainInfo?.collection}`,
                     "_blank"
                   )
                 }
                 className="text-primary-2 underline cursor-pointer"
               >
-                {truncateWallet(chainInfo.collection)}
+                {chainInfo?.collection && truncateWallet(chainInfo?.collection)}
               </p>
             </div>
             <div className="flex justify-between">
               <div>
                 <b>Cadena</b>
               </div>
-              <div>{chainInfo.network}</div>
+              <div>{chainInfo?.network}</div>
             </div>
             <div className="flex justify-between">
               <div>
                 <b>Id Cadena</b>
               </div>
-              <div>{chainInfo.chainId}</div>
+              <div>{chainInfo?.chainId}</div>
             </div>
             <div className="flex justify-between">
               <div>
                 <b>Id Token</b>
               </div>
               <div>
-                {chainInfo.tokenId} / {properties.totalItems}
+                {chainInfo?.tokenId} / {properties?.totalItems}
               </div>
             </div>
           </div>
-        </DropDown>
-      )}
-      {properties.recipient && (
-        <DropDown icon="dashicons:tag" title={"Propiedades"}>
+        )}
+      </DropDown>
+
+      <DropDown icon="dashicons:tag" title={"Propiedades"}>
+        {loading ? (
+          <div className="w-full h-full animate-pulse bg-gray-300"></div>
+        ) : (
           <div className="flex flex-col gap-2">
             <div className="flex justify-between">
               <div>
                 <b>Royalties</b>
               </div>
-              <div>{properties.royalty}%</div>
+              <div>{properties?.royalty}%</div>
             </div>
             <div className="flex justify-between">
               <div>
@@ -62,15 +67,18 @@ export default function DetailInfo({ properties, chainInfo }) {
               </div>
               <div className="flex gap-3">
                 <img
-                  src={properties.recipient.profileImg}
+                  src={properties?.recipient?.profileImg}
                   alt="recipient-img"
                   className="rounded-full"
                   width={32}
                 />
-                <div>
-                  {properties.recipient.username !== "Fibbo Artist"
-                    ? properties.recipient.username
-                    : truncateWallet(properties.recipient.wallet)}
+                <div
+                  onClick={() =>
+                    window.open(`/profile/${properties?.recipient?.wallet}`)
+                  }
+                  className="text-primary-2 underline cursor-pointer"
+                >
+                  {properties?.recipient?.username}
                 </div>
               </div>
             </div>
@@ -78,11 +86,11 @@ export default function DetailInfo({ properties, chainInfo }) {
               <div>
                 <b>Colección</b>
               </div>
-              <div>{properties.collection}</div>
+              <div>{properties?.collection}</div>
             </div>
           </div>
-        </DropDown>
-      )}
+        )}
+      </DropDown>
     </div>
   );
 }

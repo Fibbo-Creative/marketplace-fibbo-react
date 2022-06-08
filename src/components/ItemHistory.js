@@ -30,7 +30,7 @@ export default function ItemHistory({ historyItems }) {
             </tr>
           </thead>
           <tbody>
-            {historyItems.map((item) => {
+            {historyItems?.map((item) => {
               return (
                 <tr key={Math.random(9999) * 1000}>
                   <td className="px-6 py-4">{item.eventType}</td>
@@ -94,7 +94,7 @@ export default function ItemHistory({ historyItems }) {
         </table>
       ) : (
         <div className="flex flex-col gap-10">
-          {historyItems.map((item) => {
+          {historyItems?.map((item) => {
             return (
               <div
                 key={Math.random(9999) * 100}

@@ -33,16 +33,16 @@ export default function BuyItemModal({
       await buyItem(
         collectionAddress,
         itemId,
-        tokenInfo.owner,
-        parseEther(tokenInfo.price.toString())
+        tokenInfo?.owner,
+        parseEther(tokenInfo?.price.toString())
       );
       //Si todo va bien, guardar en sanity item en venta
 
       await saveNftBought(
-        tokenInfo.owner,
+        tokenInfo?.owner,
         wallet,
-        tokenInfo.price,
-        tokenInfo.tokenId,
+        tokenInfo?.price,
+        tokenInfo?.tokenId,
         collectionAddress
       );
 
@@ -110,14 +110,14 @@ export default function BuyItemModal({
                     </div>
 
                     <ActionButton
-                      disabled={walletBalance < tokenInfo.price}
+                      disabled={walletBalance < tokenInfo?.price}
                       size="large"
                       variant={"contained"}
                       text="Comprar Ítem"
                       buttonAction={(e) => buyItemAction()}
                     />
 
-                    {walletBalance < tokenInfo.price && (
+                    {walletBalance < tokenInfo?.price && (
                       <div className="text-xs text-red-700">
                         Insuficientes FTM para comprar!
                       </div>

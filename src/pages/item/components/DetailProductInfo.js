@@ -9,7 +9,6 @@ import useAccount from "../../../hooks/useAccount";
 import CoinGecko from "coingecko-api";
 import ChangePriceModal from "../../../components/modals/ChangePriceModal";
 import UnlistItemModal from "../../../components/modals/UnlistItemModal";
-import DropDown from "../../../components/DropDown";
 import { ItemListings } from "../../../components/ItemListings";
 import { ItemPriceHistory } from "../../../components/ItemPriceHistory";
 
@@ -27,6 +26,7 @@ export default function DetailProductInfo({
   isOwner,
   isForSale,
   listings,
+  loading,
 }) {
   const { wallet, connectToWallet } = useAccount();
 
@@ -58,98 +58,122 @@ export default function DetailProductInfo({
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    console.log(loading);
+  }, [loading]);
   return (
     <div className="col-span-1 row-span-3  flex flex-col gap-5">
-      <p className="text-3xl">
-        <b>{tokenInfo.name}</b>
-      </p>
-      <p>{tokenInfo.description}</p>
+      {loading ? (
+        <div className="w-full h-full animate-pulse bg-gray-300"></div>
+      ) : (
+        <p className="text-3xl">
+          <b>{tokenInfo?.name}</b>
+        </p>
+      )}
+      {loading ? (
+        <div className="w-full h-full animate-pulse bg-gray-300"></div>
+      ) : (
+        <p>{tokenInfo?.description}</p>
+      )}
       <div className="flex-row justify-center items-center ">
-        <div className="flex items-center gap-4">
-          <b> Pertenece a: </b>
-          <div
-            onClick={() => redirectToProfile()}
-            className="flex items-center gap-2 border border-gray-200 p-2 rounded-full cursor-pointer hover:bg-gray-200 transition duration-150 ease-in-out"
-          >
-            <img
-              className="rounded-full"
-              width={32}
-              src={tokenOwnerData.profileImg}
-              alt=""
-            />
-            <p className="text-md">
-              {isOwner ? (
-                `You (${tokenOwnerData.username})`
-              ) : (
-                <>
-                  {tokenOwnerData.username === "Fibbo Artist"
-                    ? truncateWallet(tokenOwnerData.wallet, 5)
-                    : tokenOwnerData.username}
-                </>
-              )}
-            </p>
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-col justify-center flex-wrap border-grey border-2 p-3 rounded-md gap-3">
-        {isForSale && (
-          <div>
-            <p>Precio Actual</p>
-            <div className="flex flex-row items-center gap-3 ">
+        {loading ? (
+          <div className="w-full h-full animate-pulse bg-gray-300"></div>
+        ) : (
+          <div className="flex items-center gap-4">
+            <b> Pertenece a: </b>
+            <div
+              onClick={() => redirectToProfile()}
+              className="flex items-center gap-2 border border-gray-200 p-2 rounded-full cursor-pointer hover:bg-gray-200 transition duration-150 ease-in-out"
+            >
               <img
+                className="rounded-full"
                 width={32}
-                src="https://assets.trustwalletapp.com/blockchains/fantom/info/logo.png"
-                alt="Fantom coin"
+                src={tokenOwnerData?.profileImg}
+                alt=""
               />
-              <p>{tokenInfo.price} FTM </p>
-              <p className="text-gray-600 text-xs">
-                ($
-                {formatPriceInUsd(
-                  parseFloat(tokenInfo.price * coinPrice).toFixed(3)
+              <p className="text-md">
+                {isOwner ? (
+                  `You (${tokenOwnerData?.username})`
+                ) : (
+                  <>
+                    {tokenOwnerData?.username === "Fibbo Artist"
+                      ? truncateWallet(tokenOwnerData?.wallet, 5)
+                      : tokenOwnerData?.username}
+                  </>
                 )}
-                )
               </p>
             </div>
           </div>
         )}
-        <div className="flex flex-row gap-5">
-          {isForSale && !isOwner && (
-            <ActionButton
-              size="small"
-              buttonAction={() => handleOpenBuyModal(true)}
-              text="Comprar NFT"
-            />
-          )}
-          {!isForSale && !isOwner && (
-            <ActionButton
-              disabled
-              size="small"
-              buttonAction={() => setOpenOfferModal(true)}
-              text="Realizar Oferta"
-            />
-          )}
-          {isOwner && !isForSale && (
-            <ActionButton
-              size="small"
-              buttonAction={() => setOpenSellModal(true)}
-              text="Poner en Venta"
-            />
-          )}
-          {isOwner && isForSale && (
-            <div className="flex flex-col md:flex-row gap-3">
+      </div>
+      <div className="flex flex-col justify-center flex-wrap border-grey border-2 p-3 rounded-md gap-3">
+        {isForSale && (
+          <>
+            {loading ? (
+              <div className="w-full h-full animate-pulse bg-gray-300"></div>
+            ) : (
+              <div>
+                <p>Precio Actual</p>
+                <div className="flex flex-row items-center gap-3 ">
+                  <img
+                    width={32}
+                    src="https://assets.trustwalletapp.com/blockchains/fantom/info/logo.png"
+                    alt="Fantom coin"
+                  />
+                  <p>{tokenInfo?.price} FTM </p>
+                  <p className="text-gray-600 text-xs">
+                    ($
+                    {formatPriceInUsd(
+                      parseFloat(tokenInfo?.price * coinPrice).toFixed(3)
+                    )}
+                    )
+                  </p>
+                </div>
+              </div>
+            )}
+          </>
+        )}
+        {!loading && (
+          <div className="flex flex-row gap-5">
+            {isForSale && !isOwner && (
               <ActionButton
                 size="small"
-                buttonAction={() => setOpenChangePriceModal(true)}
-                text="Cambiar Precio"
+                buttonAction={() => handleOpenBuyModal(true)}
+                text="Comprar NFT"
               />
+            )}
+            {!isForSale && !isOwner && (
+              <ActionButton
+                disabled
+                size="small"
+                buttonAction={() => setOpenOfferModal(true)}
+                text="Realizar Oferta"
+              />
+            )}
+            {isOwner && !isForSale && (
               <ActionButton
                 size="small"
-                buttonAction={() => setOpenUnlistItemModal(true)}
-                text="Quitar en venta"
+                buttonAction={() => setOpenSellModal(true)}
+                text="Poner en Venta"
               />
-            </div>
-          )}
-        </div>
+            )}
+            {isOwner && isForSale && (
+              <div className="flex flex-col md:flex-row gap-3">
+                <ActionButton
+                  size="small"
+                  buttonAction={() => setOpenChangePriceModal(true)}
+                  text="Cambiar Precio"
+                />
+                <ActionButton
+                  size="small"
+                  buttonAction={() => setOpenUnlistItemModal(true)}
+                  text="Quitar en venta"
+                />
+              </div>
+            )}
+          </div>
+        )}
       </div>
       <div className="">{/*  <ItemPriceHistory /> */}</div>
       <div className="">{/* <ItemListings listings={listings} /> */}</div>
