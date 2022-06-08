@@ -216,33 +216,40 @@ export default function Navbar() {
                   </div>
                 </div>
               </div>
-              <div className="flex items-center justify-center">
-                <a
+              <div
+                className="flex items-center justify-center"
+                onClick={() => navigate("/explore")}
+              >
+                <p
                   className={` ml-5 hover:text-blue-400 hover:font-bold ${
                     location.pathname === "/explore"
                       ? "text-primary-b font-bold"
                       : "text-primary-1 "
                   } hover:text-primary-3 `}
-                  href="/explore"
                 >
                   Explore
-                </a>
+                </p>
               </div>
-              <div className="flex items-center justify-center">
-                <a
+              <div
+                className="flex items-center justify-center"
+                onClick={() => navigate("/create")}
+              >
+                <p
                   className={` ml-5 hover:text-blue-400 hover:font-bold ${
                     location.pathname === "/create"
                       ? "text-primary-b font-bold"
                       : "text-primary-1 "
                   } hover:text-primary-3`}
-                  href="/create"
                 >
                   Create
-                </a>
+                </p>
               </div>
-              <div className="flex items-center justify-center">
+              <div
+                className="flex items-center justify-center"
+                onClick={() => navigate(`/explore/${wallet}`)}
+              >
                 {wallet !== "" && (
-                  <a
+                  <p
                     className={` ml-5  hover:font-bold ${
                       location.pathname === "/profile"
                         ? "text-primary-b font-bold"
@@ -251,7 +258,7 @@ export default function Navbar() {
                     href={`/profile/${wallet}`}
                   >
                     Profile
-                  </a>
+                  </p>
                 )}
               </div>
             </div>

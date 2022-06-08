@@ -66,7 +66,7 @@ export const useMarketplace = () => {
 
   const updateListing = async (collection, tokenId, price) => {
     const marketContract = await getMarketContract();
-    const collectionAddress = await await getFibboCollectionAddress();
+    const collectionAddress = await getFibboCollectionAddress();
 
     let updateListingTx = await marketContract.updateListing(
       collectionAddress,
@@ -77,6 +77,21 @@ export const useMarketplace = () => {
     await updateListingTx.wait();
   };
 
+  const getListingInfo = async (tokenId, owner) => {
+    const marketContract = await getMarketContract();
+    const collectionContract = await getFibboCollectionAddress();
+
+    const listingInfo = await marketContract.listings(
+      collectionContract,
+      tokenId,
+      owner
+    );
+
+    console.log(listingInfo);
+
+    return listingInfo;
+  };
+
   return {
     getContractAddress,
     getMarketContract,
@@ -84,5 +99,6 @@ export const useMarketplace = () => {
     buyItem,
     cancelListing,
     updateListing,
+    getListingInfo,
   };
 };

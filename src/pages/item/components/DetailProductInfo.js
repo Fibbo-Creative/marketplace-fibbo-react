@@ -9,6 +9,9 @@ import useAccount from "../../../hooks/useAccount";
 import CoinGecko from "coingecko-api";
 import ChangePriceModal from "../../../components/modals/ChangePriceModal";
 import UnlistItemModal from "../../../components/modals/UnlistItemModal";
+import DropDown from "../../../components/DropDown";
+import { ItemListings } from "../../../components/ItemListings";
+import { ItemPriceHistory } from "../../../components/ItemPriceHistory";
 
 const formatPriceInUsd = (price) => {
   let priceStr = price.toString().split(".");
@@ -23,6 +26,7 @@ export default function DetailProductInfo({
   collection,
   isOwner,
   isForSale,
+  listings,
 }) {
   const { wallet, connectToWallet } = useAccount();
 
@@ -146,6 +150,10 @@ export default function DetailProductInfo({
             </div>
           )}
         </div>
+      </div>
+      <div className="">{/*  <ItemPriceHistory /> */}</div>
+      <div className="">
+        <ItemListings listings={listings} />
       </div>
       {isOwner && !isForSale && (
         <PutForSaleModal

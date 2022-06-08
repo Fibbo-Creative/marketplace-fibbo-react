@@ -4,9 +4,12 @@ import { Icon } from "@iconify/react";
 import NftCardSmall from "../../components/NftCardSmall";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useApi } from "../../api";
+import { useStateContext } from "../../context/StateProvider";
+import useAccount from "../../hooks/useAccount";
 
 export default function ExploreContainer() {
   const { getNftsForSale } = useApi();
+  const { wallet } = useAccount();
   const [allMarketItems, setAllMarketItems] = useState([]);
   const [visibleMarketItems, setVisibleMarketItems] = useState([]);
   const [visibleItemsCount, setVisibleItemsCount] = useState(12);

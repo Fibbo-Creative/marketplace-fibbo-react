@@ -6,7 +6,7 @@ import DropDown from "./DropDown";
 export default function ItemHistory({ historyItems }) {
   const { _width } = useRespnsive();
   return (
-    <DropDown title="Item Activity">
+    <DropDown icon="bytesize:activity" title="Actividad">
       {_width > 1024 ? (
         <table className="w-full text-left table-auto">
           <thead className="bg-gray-200 p-2">

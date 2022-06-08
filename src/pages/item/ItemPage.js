@@ -8,16 +8,20 @@ import DetailImage from "./components/DetailImage";
 import DetailProductInfo from "./components/DetailProductInfo";
 import DetailInfo from "./components/DetailInfo";
 import { useApi } from "../../api";
+import { useMarketplace } from "../../contracts/market";
+import { formatEther } from "ethers/lib/utils";
 
 export default function ItemPage() {
   let { collection, tokenId } = useParams();
   const { wallet } = useAccount();
   const { getProfileInfo, getNftInfo, getNftHistory, getCollectionInfo } =
     useApi();
+  const { getListingInfo } = useMarketplace();
   const [tokenInfo, setTokenInfo] = useState(null);
   const [tokenHistoryInfo, setTokenHistoryInfo] = useState([]);
   const [chainInfo, setChainInfo] = useState({});
   const [properties, setProperties] = useState({});
+  const [listings, setListings] = useState([]);
   const [profileOwnerData, setProfileOwnerData] = useState(null);
   const [isOwner, setIsOwner] = useState(false);
   const [isForSale, setIsForSale] = useState(false);
@@ -54,6 +58,25 @@ export default function ItemPage() {
       const profileOwnerData = await getProfileInfo(tokenInfoResponse.owner);
 
       setProfileOwnerData(profileOwnerData);
+
+      const listingInfo = await getListingInfo(
+        parseInt(tokenId),
+        tokenInfoResponse.owner
+      );
+
+      console.log(listingInfo);
+
+      if (listingInfo) {
+        setListings([
+          {
+            from: tokenInfoResponse.owner,
+            price: formatEther(listingInfo),
+            status: "",
+          },
+        ]);
+      }
+
+      //Get Listing info
     };
     fetchData();
   }, [collection, tokenId, wallet]);
@@ -76,6 +99,7 @@ export default function ItemPage() {
               tokenOwnerData={profileOwnerData}
               tokenId={tokenId}
               collection={collection}
+              listings={listings}
             />
 
             <DetailInfo properties={properties} chainInfo={chainInfo} />

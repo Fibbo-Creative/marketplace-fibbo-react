@@ -6,7 +6,7 @@ const styles = {
   disabledStyle:
     "bg-gray-300 text-gray-600 cursor-not-allowed text-sm uppercase rounded shadow-md  leading-tight ",
   small: "w-[150px] h-[35px]  ",
-  smaller: "py-1.5 px-1",
+  smaller: "w-[75px] h-[35px]",
   large: "w-[225px] h-[40px]   ",
   contained:
     "border text-white  text-sm uppercase rounded shadow-md  leading-tight hover:bg-white hover:text-primary-4 hover:border hover:border-primary-4 transition duration-150 ease-in-out",
