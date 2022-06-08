@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useAccount from "../hooks/useAccount";
 import { Icon } from "@iconify/react";
 import logo from "../assets/logoNavbar.png";
@@ -20,6 +20,9 @@ export default function Navbar() {
   const [{ userProfile, verifiedAddress }] = useStateContext();
   const [searchItemsData, setSearchItemsData] = useState([]);
   const [searchProfilesData, setSearchProfilesData] = useState([]);
+
+  const searchInputRef = useRef(null);
+
   const { _width } = useRespnsive();
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -77,6 +80,10 @@ export default function Navbar() {
       setOpenedMenu(false);
     }
   }, [_width]);
+
+  useEffect(() => {
+    setOpenedMenu(false);
+  }, [location.pathname]);
   return (
     <header className=" fixed top-0 w-full h-[81px] bg-gradient-to-r from-[#7E29F1] z-10 to-[#b9dafe] ">
       <div className="h-[79px] bg-white flex flex-row justify-between w-full items-center px-5">
@@ -98,6 +105,7 @@ export default function Navbar() {
                     <Icon icon="ant-design:search-outlined" />
                   </div>
                   <input
+                    ref={searchInputRef}
                     type="text"
                     className="px-4 py-2 w-[350px] outline-none"
                     placeholder="Buscar Items..."
@@ -109,45 +117,21 @@ export default function Navbar() {
               {(searchItemsData.length > 0 ||
                 searchProfilesData.length > 0) && (
                 <SearchResult
+                  setInputValue={setSearchText}
+                  setSearchResult={{
+                    items: setSearchItemsData,
+                    profiles: setSearchProfilesData,
+                  }}
                   itemsResult={searchItemsData}
                   profilesResult={searchProfilesData}
                 />
               )}
             </div>
-            <div className="">
-              <a
-                className={` ml-5  hover:font-bold ${
-                  location.pathname === "/explore"
-                    ? "text-primary-1 font-bold border-b-2 border-[#733ADA]"
-                    : "text-primary-1 "
-                } `}
-                href="/explore"
-              >
-                Explore
-              </a>
-              {verifiedAddress && (
-                <a
-                  className={` ml-5  hover:font-bold ${
-                    location.pathname === "/create"
-                      ? "text-primary-1 font-bold border-b-2 border-[#733ADA]"
-                      : "text-primary-1 "
-                  } `}
-                  href="/create"
-                >
-                  Create
-                </a>
-              )}
+            <div className="flex ">
+              <NavbarItem text="Explore" to="/explore" />
+              {verifiedAddress && <NavbarItem text="Create" to="/create" />}
               {wallet !== "" && (
-                <a
-                  className={` ml-5  hover:font-bold ${
-                    location.pathname === `/profile/${wallet}`
-                      ? "text-primary-1 font-bold border-b-2 border-[#733ADA]"
-                      : "text-primary-1 "
-                  } `}
-                  href={`/profile/${wallet}`}
-                >
-                  Profile
-                </a>
+                <NavbarItem text="Profile" to={`/profile/${wallet}`} />
               )}
             </div>
           </div>
@@ -216,51 +200,13 @@ export default function Navbar() {
                   </div>
                 </div>
               </div>
-              <div
-                className="flex items-center justify-center"
-                onClick={() => navigate("/explore")}
-              >
-                <p
-                  className={` ml-5 hover:text-blue-400 hover:font-bold ${
-                    location.pathname === "/explore"
-                      ? "text-primary-b font-bold"
-                      : "text-primary-1 "
-                  } hover:text-primary-3 `}
-                >
-                  Explore
-                </p>
-              </div>
-              <div
-                className="flex items-center justify-center"
-                onClick={() => navigate("/create")}
-              >
-                <p
-                  className={` ml-5 hover:text-blue-400 hover:font-bold ${
-                    location.pathname === "/create"
-                      ? "text-primary-b font-bold"
-                      : "text-primary-1 "
-                  } hover:text-primary-3`}
-                >
-                  Create
-                </p>
-              </div>
-              <div
-                className="flex items-center justify-center"
-                onClick={() => navigate(`/explore/${wallet}`)}
-              >
-                {wallet !== "" && (
-                  <p
-                    className={` ml-5  hover:font-bold ${
-                      location.pathname === "/profile"
-                        ? "text-primary-b font-bold"
-                        : "text-primary-1 "
-                    } hover:text-primary-3`}
-                    href={`/profile/${wallet}`}
-                  >
-                    Profile
-                  </p>
-                )}
-              </div>
+              <NavbarItemMobile text="Explore" to="/explore" />
+              {verifiedAddress && (
+                <NavbarItemMobile text="Create" to="/create" />
+              )}
+              {wallet !== "" && (
+                <NavbarItemMobile text="Profile" to={`/profile/${wallet}`} />
+              )}
             </div>
           </div>
         )}
@@ -268,3 +214,41 @@ export default function Navbar() {
     </header>
   );
 }
+
+const NavbarItem = ({ text, to }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  return (
+    <div
+      onClick={() => navigate(to)}
+      className={` ml-5  hover:font-bold cursor-pointer ${
+        location.pathname === to
+          ? "text-primary-1 font-bold border-b-2 border-[#733ADA]"
+          : "text-primary-1 "
+      } `}
+    >
+      {text}
+    </div>
+  );
+};
+
+const NavbarItemMobile = ({ text, to }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  return (
+    <div
+      className="flex items-center justify-center"
+      onClick={() => navigate(to)}
+    >
+      <p
+        className={` ml-5 hover:text-blue-400 hover:font-bold ${
+          location.pathname === to
+            ? "text-primary-b font-bold"
+            : "text-primary-1 "
+        } hover:text-primary-3 `}
+      >
+        {text}
+      </p>
+    </div>
+  );
+};

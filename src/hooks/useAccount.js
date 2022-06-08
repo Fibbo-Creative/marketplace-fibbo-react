@@ -9,7 +9,7 @@ import { useVerification } from "../contracts/verification";
 export default function useAccount() {
   const [loadingConnection, setLoadingConection] = useState(true);
   const { getProfileInfo, createNewProfile } = useApi();
-  const [{ wallet }, stateDispatch] = useStateContext();
+  const [{ wallet, userProfile }, stateDispatch] = useStateContext();
   const { checkWalletVerified } = useVerification();
   const connectToWallet = useCallback(async () => {
     const prov = new ethers.providers.Web3Provider(window.ethereum);
@@ -64,8 +64,11 @@ export default function useAccount() {
   }, []);
 
   useEffect(() => {
-    if (!window.ethereum.isConnected()) {
-      connectToWallet().then((res) => {});
+    if (userProfile.wallet && wallet) {
+    } else {
+      if (!window.ethereum.isConnected()) {
+        connectToWallet().then((res) => {});
+      }
     }
 
     return () => {

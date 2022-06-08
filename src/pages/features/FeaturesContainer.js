@@ -4,8 +4,10 @@ import ActionButton from "../../components/ActionButton";
 import NewFeatureModal from "./components/NewFeatureModal";
 import { useCommunity } from "../../contracts/community";
 import { useStateContext } from "../../context/StateProvider";
+import { useNavigate } from "react-router-dom";
 
 export default function FeaturesContainer() {
+  const navigate = useNavigate();
   const { getSuggestionsInProgress } = useCommunity();
   const [{ verifiedAddress }] = useStateContext();
 
@@ -67,7 +69,7 @@ export default function FeaturesContainer() {
                 <ActionButton
                   size="large"
                   text={"Go to Homepage"}
-                  buttonAction={() => window.location.replace("/")}
+                  buttonAction={() => navigate("/")}
                 />
               </div>
             </div>

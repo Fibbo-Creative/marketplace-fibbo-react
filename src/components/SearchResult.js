@@ -1,15 +1,26 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import SearchResultItem from "./SearchResultItem";
 
-export default function SearchResult({ itemsResult, profilesResult }) {
+export default function SearchResult({
+  itemsResult,
+  profilesResult,
+  setInputValue,
+  setSearchResult,
+}) {
+  const navigate = useNavigate();
   const goToItemDetail = (item) => {
-    window.location.replace(
-      `/explore/${item.collectionAddress}/${item.tokenId}`
-    );
+    navigate(`/explore/${item.collectionAddress}/${item.tokenId}`);
+    setInputValue("");
+    setSearchResult.items([]);
+    setSearchResult.profiles([]);
   };
 
   const goToProfileDetail = (item) => {
-    window.location.replace(`/profile/${item.wallet}`);
+    navigate(`/profile/${item.wallet}`);
+    setInputValue("");
+    setSearchResult.items([]);
+    setSearchResult.profiles([]);
   };
 
   return (

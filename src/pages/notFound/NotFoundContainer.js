@@ -1,8 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import ActionButton from "../../components/ActionButton";
 import NotFoundSvg from "./components/NotFoundSvg";
 
 export default function NotFoundContainer() {
+  const navigate = useNavigate();
   return (
     <div className="mt-[90px] h-screen w-screen" style={{ height: "94vh" }}>
       <div className="flex flex-col gap-10 md:flex-row justify-center items-center mx-[50px]  w-full h-full ">
@@ -17,7 +19,7 @@ export default function NotFoundContainer() {
             Homepage de la página
           </div>
           <ActionButton
-            buttonAction={() => window.location.replace("/")}
+            buttonAction={() => navigate("/")}
             text="Ir al homepage"
             size="large"
           />

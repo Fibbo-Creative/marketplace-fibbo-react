@@ -6,8 +6,10 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useApi } from "../../api";
 import { useStateContext } from "../../context/StateProvider";
 import useAccount from "../../hooks/useAccount";
+import { useNavigate } from "react-router-dom";
 
 export default function ExploreContainer() {
+  const navigate = useNavigate();
   const { getNftsForSale } = useApi();
   const { wallet } = useAccount();
   const [allMarketItems, setAllMarketItems] = useState([]);
@@ -35,9 +37,7 @@ export default function ExploreContainer() {
   };
 
   const goToNftDetail = (item) => {
-    window.location.replace(
-      `/explore/${item.collectionAddress}/${item.tokenId}`
-    );
+    navigate(`/explore/${item.collectionAddress}/${item.tokenId}`);
   };
 
   const changeSmallDisplay = () => {

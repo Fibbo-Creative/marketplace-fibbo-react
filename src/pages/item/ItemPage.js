@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { configData } from "../../chainData/configData";
 import useAccount from "../../hooks/useAccount";
 
@@ -11,9 +11,8 @@ import { useApi } from "../../api";
 import { useMarketplace } from "../../contracts/market";
 import { formatEther } from "ethers/lib/utils";
 
-const formatHistory = async () => {};
-
 export default function ItemPage() {
+  const navigate = useNavigate();
   let { collection, tokenId } = useParams();
   const { wallet } = useAccount();
   const { getProfileInfo, getNftInfo, getNftHistory, getCollectionInfo } =
@@ -32,7 +31,7 @@ export default function ItemPage() {
     const fetchData = async () => {
       const tokenInfoResponse = await getNftInfo(collection, tokenId);
       if (!tokenInfoResponse) {
-        window.location.replace("/notFound");
+        navigate("/notFound");
       }
       setIsForSale(tokenInfoResponse.forSale);
       setIsOwner(tokenInfoResponse.owner === wallet);

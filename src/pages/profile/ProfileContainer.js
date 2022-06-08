@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useApi } from "../../api";
 import NftCard from "../../components/NftCard";
 import NftCardSmall from "../../components/NftCardSmall";
@@ -8,6 +8,8 @@ import { useStateContext } from "../../context/StateProvider";
 import { truncateWallet } from "../../utils/wallet";
 import useAccount from "../../hooks/useAccount";
 import useRespnsive from "../../hooks/useResponsive";
+import ReactTooltip from "react-tooltip";
+import ActionButton from "../../components/ActionButton";
 
 export default function ProfileContainer() {
   const { wallet } = useAccount();
@@ -18,10 +20,11 @@ export default function ProfileContainer() {
     setProfileImg,
     getNftsFromAddress,
   } = useApi();
+  const navigate = useNavigate();
   const { address } = useParams();
   const [userItems, setUserItems] = useState([]);
   const [userSmallview, setSmallViewUser] = useState(true);
-  const [{ userProfile }, stateDispatch] = useStateContext();
+  const [{ userProfile, verifiedAddress }, stateDispatch] = useStateContext();
 
   const [myProfile, setMyprofile] = useState(false);
   const [profileData, setProfileData] = useState({});
@@ -37,9 +40,7 @@ export default function ProfileContainer() {
   };
 
   const goToNftDetail = (item) => {
-    window.location.replace(
-      `/explore/${item.collectionAddress}/${item.tokenId}`
-    );
+    navigate(`/explore/${item.collectionAddress}/${item.tokenId}`);
   };
 
   const selectBannerImg = () => {
@@ -91,6 +92,7 @@ export default function ProfileContainer() {
     const fetchData = async () => {
       setMyprofile(wallet === address);
       const profileDataResponse = await getProfileInfo(address);
+      console.log(profileDataResponse);
       setProfileData(profileDataResponse);
       const userItemsResponse = await getNftsFromAddress(address);
       setUserItems(userItemsResponse);
@@ -154,12 +156,13 @@ export default function ProfileContainer() {
           </button>
         ) : (
           <div
-            className={`flex justify-center items-center rounded-full  m-4 w-[112px] h-[112px] -mt-20`}
+            className={`flex justify-center items-center   m-4 w-[112px] h-[112px] -mt-20`}
           >
             <img
               src={profileData.profileImg}
-              className="rounded-full"
+              className=" rounded-full object-contain"
               alt="ProfileImage"
+              width={114}
             />
           </div>
         )}
@@ -175,7 +178,33 @@ export default function ProfileContainer() {
               />
             </form>
           ) : (
-            <b>{profileData.username}</b>
+            <div
+              data-for={profileData.verified && "verify-info"}
+              data-tip={
+                profileData.verified &&
+                "Artista verificado por <br/> el equipo de FIBOO"
+              }
+              className={`flex cursorPointer ${
+                profileData.verified && "gap-5 items-center"
+              }`}
+            >
+              {profileData.verified && (
+                <div>
+                  <Icon
+                    icon="teenyicons:shield-tick-solid"
+                    className="text-primary-2"
+                  />
+                  <ReactTooltip
+                    id="verify-info"
+                    place="left"
+                    type="dark"
+                    effect="solid"
+                    multiline={true}
+                  />
+                </div>
+              )}
+              <b>{profileData.username}</b>
+            </div>
           )}
           {myProfile && (
             <button onClick={() => toggleEditUsername()}>
@@ -186,6 +215,15 @@ export default function ProfileContainer() {
         <div>
           <i>{_width < 500 ? truncateWallet(address) : address}</i>
         </div>
+        {myProfile && !verifiedAddress && (
+          <div className="absolute top-[300px] right-10">
+            <ActionButton
+              buttonAction={() => navigate("/verificate/request")}
+              text="Verificate"
+              size="small"
+            />
+          </div>
+        )}
       </div>
 
       <div className="h-[10px] w-sceen bg-gradient-to-r from-[#7E29F1] to-[#8BC3FD] mt-10 mb-10"></div>

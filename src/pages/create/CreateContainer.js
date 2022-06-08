@@ -5,6 +5,7 @@ import { useStateContext } from "../../context/StateProvider";
 import { useApi } from "../../api";
 import { addImgToIpfs } from "../../utils/ipfs";
 import { ConfirmCreateModal } from "../../components/modals/ConfirmCreateModal";
+import { useNavigate } from "react-router-dom";
 
 const validateName = (name) => {
   if (name.length > 4 && name.length < 30) return true;
@@ -16,6 +17,7 @@ const validateDesc = (desc) => {
   else return false;
 };
 export default function CreateContainer() {
+  const navigate = useNavigate();
   const { uploadImgToCDN } = useApi();
   const [ipfsImageUrl, setIpfsImageUrl] = useState("");
   const [sanityImgUrl, setSanityImgUrl] = useState("");
@@ -349,7 +351,7 @@ export default function CreateContainer() {
                 <ActionButton
                   size="large"
                   text={"Go to Homepage"}
-                  buttonAction={() => window.location.replace("/")}
+                  buttonAction={() => navigate("/")}
                 />
               </div>
             </div>
