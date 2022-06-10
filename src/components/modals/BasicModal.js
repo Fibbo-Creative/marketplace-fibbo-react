@@ -16,7 +16,7 @@ export const BasicModal = ({
       contentLabel={`${title} Modal`}
     >
       <div
-        className={`flex flex-col w-full h-full p-2 ${
+        className={`flex flex-col w-full h-full p-2 w-[300px]${
           size === "large" ? " lg:w-[600px]" : "md:w-[400px]"
         }`}
       >
