@@ -40,12 +40,13 @@ export const VerificationFormContainer = () => {
   };
 
   const checkVerifyCode = (code) => {
+    console.log(code);
     setVerificationCode(code);
 
     if (sendedCode === parseInt(code)) {
       setVerificatedEmail(true);
     } else {
-      setVerificationCode(false);
+      setVerificatedEmail(false);
     }
   };
   return (
@@ -101,7 +102,7 @@ export const VerificationFormContainer = () => {
                 type="number"
                 value={verificationCode}
                 onChange={(e) => checkVerifyCode(e.target.value)}
-              ></Input>
+              />
               <ActionButton
                 size="small"
                 text="Enviar Correo"
