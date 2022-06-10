@@ -4,6 +4,7 @@ import ReactModal from "react-modal";
 import tw from "tailwind-styled-components";
 import { useApi } from "../../../api";
 import ActionButton from "../../../components/ActionButton";
+import { BasicModal } from "../../../components/modals/BasicModal";
 import useAccount from "../../../hooks/useAccount";
 
 export default function NewFeatureModal({
@@ -23,64 +24,53 @@ export default function NewFeatureModal({
     setCompletedAction(true);
   };
   return (
-    <ReactModal
-      appElement={document.getElementsByClassName("App")}
-      isOpen={showModal}
-      contentLabel="Minimal Modal Example"
+    <BasicModal
+      showModal={showModal}
+      handleCloseModal={handleCloseModal}
+      size="large"
+      title="Nueva suggerencia"
     >
-      <div className="flex flex-col w-full h-full p-2 w-[700px]">
-        <div
-          className="absolute right-10 top-5 cursor-pointer"
-          onClick={() => handleCloseModal()}
-        >
-          <Icon className="text-2xl" icon="ant-design:close-outlined" />
-        </div>
-        <div className="flex items-center justify-center w-full border-b border-gray-300">
-          <div className="text-center">Nueva Suggerencia</div>
-        </div>
-
-        {!completedAction ? (
-          <div className="my-10 mx-8 flex flex-col gap-10">
-            <div>
-              Tu suggerencia será revisada y se le asignará un valor por parte
-              del equipo técnico, una vez sea acceptada y valorada se mostrará
-              en la lista!
-            </div>
-            <div className="flex flex-col gap-2">
-              <div className="uppercase">Título</div>
-              <Input value={title} onChange={(e) => setTitle(e.target.value)} />
-            </div>
-            <div className="flex flex-col gap-2">
-              <div className="uppercase">Descripción</div>
-              <InputTextArea
-                value={desc}
-                onChange={(e) => setDesc(e.target.value)}
-                rows="5"
-              />
-            </div>
-            <div className="w-full flex justify-center">
-              <ActionButton
-                buttonAction={() => addNewSuggestion()}
-                text="Añadir Suggerencia"
-                size="large"
-              />
-            </div>
+      {!completedAction ? (
+        <div className="my-10 mx-8 flex flex-col gap-10">
+          <div className="hidden md:flex">
+            Tu suggerencia será revisada y se le asignará un valor por parte del
+            equipo técnico, una vez sea acceptada y valorada se mostrará en la
+            lista!
           </div>
-        ) : (
-          <div className="my-10 mx-8 flex flex-col items-center gap-10">
-            <div>
-              Gracias por tu sugerencia, revisaremos tu solicitud y la
-              procesaremos.
-            </div>
+          <div className="flex flex-col gap-2">
+            <div className="uppercase">Título</div>
+            <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+          </div>
+          <div className="flex flex-col gap-2">
+            <div className="uppercase">Descripción</div>
+            <InputTextArea
+              value={desc}
+              onChange={(e) => setDesc(e.target.value)}
+              rows="5"
+            />
+          </div>
+          <div className="w-full flex justify-center">
             <ActionButton
-              buttonAction={() => handleCloseModal()}
-              text="Cerrar Ventana"
+              buttonAction={() => addNewSuggestion()}
+              text="Añadir Suggerencia"
               size="large"
             />
           </div>
-        )}
-      </div>
-    </ReactModal>
+        </div>
+      ) : (
+        <div className="my-10 mx-8 flex flex-col items-center gap-10">
+          <div>
+            Gracias por tu sugerencia, revisaremos tu solicitud y la
+            procesaremos.
+          </div>
+          <ActionButton
+            buttonAction={() => handleCloseModal()}
+            text="Cerrar Ventana"
+            size="large"
+          />
+        </div>
+      )}
+    </BasicModal>
   );
 }
 
