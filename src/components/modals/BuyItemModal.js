@@ -65,7 +65,7 @@ export default function BuyItemModal({
       size="large"
     >
       {wallet !== "" && (
-        <div className="my-10 mx-8 flex flex-col gap-10">
+        <div className="my-5 mx-8 flex flex-col gap-10">
           <div className="w-full flex-col items-center justify-center">
             {!completedAction ? (
               <div className="flex flex-col">
@@ -73,11 +73,11 @@ export default function BuyItemModal({
                   <div>
                     <img
                       src={tokenInfo?.image}
-                      width={"182px"}
+                      className="w-[112px] md:w-[168px]"
                       alt={`tokenImage-${tokenInfo?.name}`}
                     />
                   </div>
-                  <div className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-2">
                     <div className="flex gap-2">
                       <b>Nombre:</b>
                       <p>{tokenInfo?.name}</p>

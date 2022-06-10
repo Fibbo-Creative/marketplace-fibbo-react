@@ -20,12 +20,12 @@ ReactModal.defaultStyles.content.height = "max-content";
 ReactModal.defaultStyles.content.margin = "auto";
 ReactModal.defaultStyles.content.maxHeight = "";
 ReactModal.defaultStyles.content.borderRadius = 50;
-ReactModal.defaultStyles.overlay.height = "100vh";
+ReactModal.defaultStyles.overlay.height = "100%";
 ReactModal.defaultStyles.overlay.width = "100vw";
 ReactModal.defaultStyles.overlay.display = "flex";
 ReactModal.defaultStyles.overlay.justifyContent = "center";
 ReactModal.defaultStyles.overlay.alignItems = "center";
-ReactModal.defaultStyles.content.marginTop = "45px";
+
 function App() {
   const { wallet, connectToWallet } = useAccount();
   const chain = useChain();
