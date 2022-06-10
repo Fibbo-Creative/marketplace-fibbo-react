@@ -24,7 +24,7 @@ export default function FeaturesContainer() {
     fetchSuggestions();
   }, []);
   return (
-    <div className="mt-[90px] " style={{ height: "94vh" }}>
+    <div className="mt-[90px] w-screen">
       {!loading && (
         <>
           {verifiedAddress ? (
@@ -33,7 +33,7 @@ export default function FeaturesContainer() {
                 <div className="uppercase font-bold text-4xl mt-10">
                   Suggerencias
                 </div>
-                <div className=" w-2/3 text-center">
+                <div className=" w-5/6 text-sm md:text-lg md:w-2/3 text-center">
                   Vota y contribuye a decidir la evolución del marketplace de
                   FIBBO, la comunidad es la desencadenante de los próximos pasos
                   a añadir para conseguir el producto de todos
@@ -49,7 +49,7 @@ export default function FeaturesContainer() {
                   size="large"
                 />
               </div>
-              <div className="mt-10 flex flex-col justify-center items-center gap-2 mx-20">
+              <div className="mt-10 flex flex-col justify-center items-center gap-2 mx-2 md:mx-20">
                 {suggestionsInProgress.map((item) => {
                   return (
                     <FeatureItem

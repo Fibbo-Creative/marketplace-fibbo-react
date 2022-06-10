@@ -24,7 +24,7 @@ export const FeatureItem = ({ suggestion, suggestionsContract }) => {
       <TitleContainer>{title}</TitleContainer>
       <DescriptionContainer>{description}</DescriptionContainer>
       <ProgressContainer>
-        <div>Progress</div>
+        <div>Progreso</div>
         <div>
           {progress} / {totalAmount} FTM
         </div>
@@ -38,8 +38,8 @@ export const FeatureItem = ({ suggestion, suggestionsContract }) => {
         />
         <ActionButton
           buttonAction={depositToSuggestion}
-          text={"Deposit"}
-          size={"small"}
+          text={"Votar"}
+          size={"smaller"}
         />
       </DepositContainer>
     </Container>
@@ -55,7 +55,7 @@ const TitleContainer = tw.div`
 `;
 
 const DescriptionContainer = tw.div`
-
+  text-sm md:text-lg
 `;
 
 const ProgressContainer = tw.div`
