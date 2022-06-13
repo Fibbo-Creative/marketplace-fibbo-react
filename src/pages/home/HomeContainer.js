@@ -11,6 +11,11 @@ export default function HomeContainer() {
   const goToExplore = () => {
     navigate("/explore");
   };
+
+  const goToCommunity = () => {
+    navigate("/features");
+  };
+
   const goToCreate = () => {
     navigate("/create");
   };
@@ -25,7 +30,7 @@ export default function HomeContainer() {
             Marketplace enfocado con especial énfasis en artistas y creadores de
             contenido.
           </p>
-          <div className="flex felx-wrap gap-10 p-10">
+          <div className="flex flex-wrap gap-10 p-10 items-center justify-center">
             <ActionButton
               gradient
               size="small"
@@ -43,6 +48,33 @@ export default function HomeContainer() {
           </div>
         </div>
         <div className="flex items-center w-full justify-center  ">
+          <img
+            src={FiboIMG}
+            alt="FibboLogo"
+            className="w-[600px]  h-[375px] md:h-[700px] object-contain flex p-10 xl:p-0"
+          ></img>
+        </div>
+      </section>
+      <section className="flex flex-col-reverse lg:flex-row-reverse items-center justify-center w-full h-full gap-10 py-20 px-10">
+        <div className="flex flex-col items-center justify-center w-full h-auto ">
+          <h1 className="flex text-2xl leading-normal sm:text-4xl pb-4 md:pb-7 xl:text-6xl xl:p-10 ">
+            <b>Ayudanos a crear tu producto ideal</b>
+          </h1>
+          <p className="text-sm sm:text-lg md:text-xl p-0  xl:p-10 text-justify">
+            Suggiere cambios a realizar en el Marketplace y recibe recompensas
+            por tu ayuda
+          </p>
+          <div className="flex felx-wrap gap-10 p-10">
+            <ActionButton
+              gradient
+              size="large"
+              variant="contained"
+              text="Suggerir Cambios"
+              buttonAction={(e) => goToCommunity()}
+            />
+          </div>
+        </div>
+        <div className="hidden sm:flex items-center w-full justify-center  ">
           <img
             src={FiboIMG}
             alt="FibboLogo"
