@@ -31,7 +31,7 @@ export default function FeaturesContainer() {
             <>
               <div className="w-full flex flex-col justify-center items-center gap-4">
                 <div className="uppercase font-bold text-4xl mt-10">
-                  Suggerencias
+                  Sugerencias
                 </div>
                 <div className=" w-5/6 text-sm md:text-lg md:w-2/3 text-center">
                   Vota y contribuye a decidir la evolución del marketplace de
@@ -41,11 +41,11 @@ export default function FeaturesContainer() {
               </div>
               <div className="w-full flex flex-col justify-center items-center gap-4">
                 <div className="uppercase font-bold text-xl mt-10">
-                  Suguiere algun cambio
+                  Sugiere algun cambio
                 </div>
                 <ActionButton
                   buttonAction={() => setShowNewSuggestion(true)}
-                  text="Añadir Suggerencia"
+                  text="Añadir Sugerencia"
                   size="large"
                 />
               </div>

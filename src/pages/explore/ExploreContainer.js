@@ -21,6 +21,7 @@ export default function ExploreContainer() {
   useEffect(() => {
     const fetchData = async () => {
       const forSaleItems = await getNftsForSale();
+      console.log(forSaleItems);
       setAllMarketItems(forSaleItems);
       setVisibleMarketItems(forSaleItems.slice(0, 12));
     };
@@ -48,6 +49,25 @@ export default function ExploreContainer() {
   };
 
   const orderByRecently = (a, b) => {
+    if (a.createdAt > b.createdAt) {
+      return -1;
+    }
+    if (a.createdAt < b.createdAt) {
+      return 1;
+    }
+    return 0;
+  };
+
+  const orderByOldest = (a, b) => {
+    if (a.createdAt < b.createdAt) {
+      return -1;
+    }
+    if (a.createdAt > b.createdAt) {
+      return 1;
+    }
+    return 0;
+  };
+  const orderByRecentlyListed = (a, b) => {
     if (a.forSaleAt > b.forSaleAt) {
       return -1;
     }
@@ -56,7 +76,7 @@ export default function ExploreContainer() {
     }
     return 0;
   };
-  const orderByOldest = (a, b) => {
+  const orderByOldestListed = (a, b) => {
     if (a.forSaleAt < b.forSaleAt) {
       return -1;
     }
@@ -104,12 +124,28 @@ export default function ExploreContainer() {
     }
     if (value === "4") {
       //highest price
+      const sortedArray = allMarketItems.sort(orderByRecentlyListed);
+      const visibledsortedArray = visibleMarketItems.sort(
+        orderByRecentlyListed
+      );
+      setAllMarketItems(sortedArray);
+      setVisibleMarketItems(visibledsortedArray.slice(0, visibleItemsCount));
+    }
+    if (value === "5") {
+      //Lowest price
+      const sortedArray = allMarketItems.sort(orderByOldestListed);
+      const visibledsortedArray = visibleMarketItems.sort(orderByOldestListed);
+      setAllMarketItems(sortedArray);
+      setVisibleMarketItems(visibledsortedArray.slice(0, visibleItemsCount));
+    }
+    if (value === "6") {
+      //highest price
       const sortedArray = allMarketItems.sort(orderByHighestP);
       const visibledsortedArray = visibleMarketItems.sort(orderByHighestP);
       setAllMarketItems(sortedArray);
       setVisibleMarketItems(visibledsortedArray.slice(0, visibleItemsCount));
     }
-    if (value === "5") {
+    if (value === "7") {
       //Lowest price
       const sortedArray = allMarketItems.sort(orderByLowestP);
       const visibledsortedArray = visibleMarketItems.sort(orderByLowestP);
@@ -143,8 +179,10 @@ export default function ExploreContainer() {
                 <option value={1}>Ordenar Por</option>
                 <option value={2}>Creados Recientemente</option>
                 <option value={3}>Mas antiguos</option>
-                <option value={4}>Mas caros</option>
-                <option value={5}>Mas baratos</option>
+                <option value={4}>Listados Recientemiente</option>
+                <option value={5}>Listados mas antiguos</option>
+                <option value={6}>Mas caros</option>
+                <option value={7}>Mas baratos</option>
               </select>
               <div className="flex flex-row items-center justify-center gap-2 md:gap-5 ">
                 <button

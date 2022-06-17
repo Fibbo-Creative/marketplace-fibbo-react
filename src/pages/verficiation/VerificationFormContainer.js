@@ -6,6 +6,7 @@ import { VerifiedCard } from "../../components/VerifiedCard";
 import { useStateContext } from "../../context/StateProvider";
 import useAccount from "../../hooks/useAccount";
 import emailjs from "@emailjs/browser";
+import { InfoCard } from "../../components/InfoCard";
 
 emailjs.init("A9IZio99Pk7PWQVes");
 
@@ -51,81 +52,108 @@ export const VerificationFormContainer = () => {
   };
   return (
     <div className="w-screen mt-[90px] flex flex-col justify-center items-center">
-      {wallet && (
-        <div className="border-2 shadow-lg w-5/6 md:w-3/4 lg:w-1/2 p-5 flex flex-col items-center gap-10">
-          <div className="uppercase text-xl">Solicita tu verificacion</div>
-
-          <VerifiedCard
-            avatar={userProfile.profileImg}
-            username={userProfile.username}
-            wallet={userProfile.wallet}
-          />
-          <div className="flex flex-col md:flex-row items-center w-full gap-4">
-            <div className="flex flex items-center gap-5 w-full">
-              <div className="">Nombre</div>
-              <Input value={name} onChange={(e) => setName(e.target.value)} />
-            </div>
-            <div className="flex flex items-center gap-5 w-full">
-              <div className="">Apellidos</div>
-              <Input
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-              />
-            </div>
+      <div className="flex flex-col items-center justify-center w-full gap-10 py-10 px-10">
+        <div className="flex flex-col items-center gap-10">
+          <div className="text-2xl font-bold">
+            Porqué verificarme cómo Artista?
           </div>
-          <div className="flex flex-col items-center gap-5 w-full">
-            <div className="">¿ Porqué quieres utilizar Fibbo ?</div>
-            <InputTextArea
-              rows="10"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+          <div className="flex flex-wrap gap-5 justify-center">
+            <InfoCard
+              icon="ic:round-build-circle"
+              title="Crear NFTs"
+              content="Podrás mintear y poner a la venta tus obras artísticas, beneficiandote de los royalties"
+            />
+            <InfoCard
+              icon="fluent:people-community-add-28-filled"
+              title="Sugerir cambios"
+              content="Serás capaz de ayudar a escalar el marketplace, siendo recompensado"
+            />
+            <InfoCard
+              icon="icon-park-solid:emotion-happy"
+              title="Fees reducidas"
+              content="Si eres un artista verificado, asumiremos gran parte de las comisiones"
             />
           </div>
-          <div className="flex flex items-center gap-5 w-full">
-            <div className="">Correo </div>
-            <Input
-              placeholder="example@gmail.com"
-              value={email}
-              type="email"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div className="text-sm">
-            Te enviaremos un correo con un código de verificación para confirmar
-            que tu correo existe. <br></br>Pulsa "Enviar Correo" para recibir
-            este código e insertalo a continuacion
-          </div>
-          <div className="flex flex items-start md:items-center gap-5 w-full">
-            <div className="">Verificación</div>
-            <div className="flex flex-col md:flex-row items-center justify-between w-full gap-3">
-              <Input
-                type="number"
-                value={verificationCode}
-                onChange={(e) => checkVerifyCode(e.target.value)}
-              />
-              <ActionButton
-                size="small"
-                text="Enviar Correo"
-                buttonAction={sendVerificationCode}
-              />
-            </div>
-          </div>
-          <div>
-            Te enviaremos un correo con noticias acerca de la verificación
-          </div>
-          <ActionButton
-            disabled={completedAction || !verificatedEmail}
-            size="large"
-            text="Enviar solicitud"
-            buttonAction={sendNewVerifyRequest}
-          />
-          {completedAction && (
-            <div className="text-green-500">
-              Tu solicitud ha sido enviada, la revisaremos y valoraremos tu
-              verificacion.
-            </div>
-          )}
         </div>
+      </div>
+      {wallet && (
+        <>
+          <div className="text-2xl mb-10 font-bold">
+            Solicita tu verificación
+          </div>
+          <div className="border-2 shadow-lg w-5/6 md:w-3/4 lg:w-1/2 p-5 flex flex-col items-center gap-10">
+            <VerifiedCard
+              avatar={userProfile.profileImg}
+              username={userProfile.username}
+              wallet={userProfile.wallet}
+            />
+            <div className="flex flex-col md:flex-row items-center w-full gap-4">
+              <div className="flex flex items-center gap-5 w-full">
+                <div className="">Nombre</div>
+                <Input value={name} onChange={(e) => setName(e.target.value)} />
+              </div>
+              <div className="flex flex items-center gap-5 w-full">
+                <div className="">Apellidos</div>
+                <Input
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="flex flex-col items-center gap-5 w-full">
+              <div className="">¿ Porqué quieres utilizar Fibbo ?</div>
+              <InputTextArea
+                rows="10"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
+            <div className="flex flex items-center gap-5 w-full">
+              <div className="">Correo </div>
+              <Input
+                placeholder="example@gmail.com"
+                value={email}
+                type="email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="text-sm">
+              Te enviaremos un correo con un código de verificación para
+              confirmar que tu correo existe. <br></br>Pulsa "Enviar Correo"
+              para recibir este código e insertalo a continuacion
+            </div>
+            <div className="flex flex items-start md:items-center gap-5 w-full">
+              <div className="">Verificación</div>
+              <div className="flex flex-col md:flex-row items-center justify-between w-full gap-3">
+                <Input
+                  type="number"
+                  value={verificationCode}
+                  onChange={(e) => checkVerifyCode(e.target.value)}
+                />
+                <ActionButton
+                  size="small"
+                  text="Enviar Correo"
+                  buttonAction={sendVerificationCode}
+                />
+              </div>
+            </div>
+            <div>
+              Te enviaremos un correo con noticias acerca de la verificación
+            </div>
+            <ActionButton
+              disabled={completedAction || !verificatedEmail}
+              size="large"
+              text="Enviar solicitud"
+              buttonAction={sendNewVerifyRequest}
+            />
+            {completedAction && (
+              <div className="text-green-500">
+                Tu solicitud ha sido enviada, la revisaremos y valoraremos tu
+                verificacion.
+              </div>
+            )}
+          </div>
+        </>
       )}
     </div>
   );

@@ -58,10 +58,10 @@ export default function HomeContainer() {
       <section className="flex flex-col-reverse lg:flex-row-reverse items-center justify-center w-full h-full gap-10 py-20 px-10">
         <div className="flex flex-col items-center justify-center w-full h-auto ">
           <h1 className="flex text-2xl leading-normal sm:text-4xl pb-4 md:pb-7 xl:text-6xl xl:p-10 ">
-            <b>Ayudanos a crear tu producto ideal</b>
+            <b>Ayúdanos a crear tu producto ideal</b>
           </h1>
           <p className="text-sm sm:text-lg md:text-xl p-0  xl:p-10 text-justify">
-            Suggiere cambios a realizar en el Marketplace y recibe recompensas
+            Sugiere cambios a realizar en el Marketplace y recibe recompensas
             por tu ayuda
           </p>
           <div className="flex felx-wrap gap-10 p-10">
@@ -69,12 +69,12 @@ export default function HomeContainer() {
               gradient
               size="large"
               variant="contained"
-              text="Suggerir Cambios"
+              text="Sugerir Cambios"
               buttonAction={(e) => goToCommunity()}
             />
           </div>
         </div>
-        <div className="hidden sm:flex items-center w-full justify-center  ">
+        <div className="hidden sm:flex items-center w-full justify-center">
           <img
             src={FiboIMG}
             alt="FibboLogo"

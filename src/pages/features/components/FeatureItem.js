@@ -6,7 +6,7 @@ import { useCommunity } from "../../../contracts/community";
 
 export const FeatureItem = ({ suggestion, suggestionsContract }) => {
   const { addTokensToSuggestion } = useCommunity();
-  const [depositValue, setDepositValue] = useState(0.01);
+  const [depositValue, setDepositValue] = useState("");
 
   const { suggestionId, title, description, totalAmount, progress } =
     suggestion;
@@ -34,12 +34,13 @@ export const FeatureItem = ({ suggestion, suggestionsContract }) => {
           onChange={(e) => setDepositValue(e.target.value)}
           value={depositValue}
           type="number"
+          placeholder="Introduce la cantidad a donar..."
           step=".01"
         />
         <ActionButton
           buttonAction={depositToSuggestion}
-          text={"Votar"}
-          size={"smaller"}
+          text={"Contribuye"}
+          size={"small"}
         />
       </DepositContainer>
     </Container>

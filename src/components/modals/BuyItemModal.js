@@ -87,7 +87,7 @@ export default function BuyItemModal({
                       <p>{tokenInfo?.royalty}</p>
                       <div
                         data-for="royalty-info"
-                        data-tip={`Un ${tokenInfo?.royalty} del precio de compra <br/> será enviado al creador del item <br/>`}
+                        data-tip={`Un ${tokenInfo?.royalty}% del precio de compra <br/> será enviado al creador del item <br/>`}
                       >
                         <Icon
                           className="text-gray-500"

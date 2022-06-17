@@ -93,7 +93,7 @@ export default function CreateContainer() {
       setDescError(true);
       error = true;
     }
-    if (royalty < 0 || royalty > 20) {
+    if (royalty < 0 || royalty > 50) {
       setRoyaltyError(true);
       error = true;
     }
@@ -273,7 +273,7 @@ export default function CreateContainer() {
                     />
                     {royaltyError && (
                       <div className="text-xs text-red-400 ">
-                        Los royalties no puede ser mas de un 20% ni un valor
+                        Los royalties no puede ser mas de un 50% ni un valor
                         negativo!
                       </div>
                     )}
@@ -291,14 +291,14 @@ export default function CreateContainer() {
                           }
                         />
                         <span className="font-bold text-lg text-gray-700 border-gray-300 p-3">
-                          Contenido Descargable
+                          Contenido Adicional
                         </span>
                       </label>
                       {showHiddenContent && (
                         <div className="flex flex-col gap-2">
                           <div className="text-sm">
-                            Incluye contenido desbloqueable que sólo el
-                            propietario podrá ver
+                            Incluye contenido adicional que sólo el propietario
+                            podrá ver
                           </div>
                           <textarea
                             className={`block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding 
