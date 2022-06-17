@@ -16,6 +16,10 @@ export default function HomeContainer() {
     navigate("/features");
   };
 
+  const goToVerificate = () => {
+    navigate("/verificate/request");
+  };
+
   const goToCreate = () => {
     navigate("/create");
   };
@@ -55,7 +59,42 @@ export default function HomeContainer() {
           ></img>
         </div>
       </section>
+
       <section className="flex flex-col-reverse lg:flex-row-reverse items-center justify-center w-full h-full gap-10 py-20 px-10">
+        <div className="flex flex-col items-center justify-center w-full h-auto ">
+          <h1 className="flex text-2xl leading-normal sm:text-4xl pb-4 md:pb-7 xl:text-6xl xl:p-10 ">
+            <b>Únete a nuestra comunidad</b>
+          </h1>
+          <p className="text-sm sm:text-lg md:text-xl p-0  xl:p-10 text-justify">
+            Verifícate cómo Artista y aporta tu talento al ecosistema. Disfruta
+            de las ventajas de ser parte de nuestra comunidad activa
+          </p>
+          <div className="flex felx-wrap gap-10 p-10">
+            <ActionButton
+              gradient
+              size="large"
+              variant="contained"
+              text="Veríficate"
+              buttonAction={(e) => goToVerificate()}
+            />
+          </div>
+        </div>
+        <div className="hidden sm:flex items-center w-full justify-center">
+          <img
+            src={FiboIMG}
+            alt="FibboLogo"
+            className="w-[600px]  h-[375px] md:h-[700px] object-contain flex p-10 xl:p-0"
+          ></img>
+        </div>
+      </section>
+      <section className="flex flex-col-reverse lg:flex-row-reverse items-center justify-center w-full h-full gap-10 py-20 px-10">
+        <div className="hidden sm:flex items-center w-full justify-center">
+          <img
+            src={FiboIMG}
+            alt="FibboLogo"
+            className="w-[600px]  h-[375px] md:h-[700px] object-contain flex p-10 xl:p-0"
+          ></img>
+        </div>
         <div className="flex flex-col items-center justify-center w-full h-auto ">
           <h1 className="flex text-2xl leading-normal sm:text-4xl pb-4 md:pb-7 xl:text-6xl xl:p-10 ">
             <b>Ayúdanos a crear tu producto ideal</b>
@@ -73,13 +112,6 @@ export default function HomeContainer() {
               buttonAction={(e) => goToCommunity()}
             />
           </div>
-        </div>
-        <div className="hidden sm:flex items-center w-full justify-center">
-          <img
-            src={FiboIMG}
-            alt="FibboLogo"
-            className="w-[600px]  h-[375px] md:h-[700px] object-contain flex p-10 xl:p-0"
-          ></img>
         </div>
       </section>
     </div>
