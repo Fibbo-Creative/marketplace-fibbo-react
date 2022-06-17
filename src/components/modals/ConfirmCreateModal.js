@@ -41,7 +41,8 @@ export const ConfirmCreateModal = ({
         newTokenId,
         itemData.royalty ? itemData.royalty : 0,
         itemData.image,
-        address
+        address,
+        itemData.hiddenContent
       );
       setNewTokenId(newTokenId);
       setAddress(address);
@@ -93,7 +94,7 @@ export const ConfirmCreateModal = ({
               </div>
               {itemData.hiddenContent && (
                 <div className="flex gap-2 items-center">
-                  <b>Contenido desbloqueable </b>
+                  <b>Contenido adicional </b>
                   <input type="checkbox" checked={true} disabled={true} />
                 </div>
               )}

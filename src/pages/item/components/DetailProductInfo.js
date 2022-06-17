@@ -11,6 +11,8 @@ import ChangePriceModal from "../../../components/modals/ChangePriceModal";
 import UnlistItemModal from "../../../components/modals/UnlistItemModal";
 import { ItemListings } from "../../../components/ItemListings";
 import { ItemPriceHistory } from "../../../components/ItemPriceHistory";
+import { Icon } from "@iconify/react";
+import AdditionalContentModal from "../../../components/modals/AdditionalContentModal";
 
 const formatPriceInUsd = (price) => {
   let priceStr = price.toString().split(".");
@@ -35,6 +37,7 @@ export default function DetailProductInfo({
   const [openOfferModal, setOpenOfferModal] = useState(false);
   const [openChangePriceModal, setOpenChangePriceModal] = useState(false);
   const [openUnlistItemModal, setOpenUnlistItemModal] = useState(false);
+  const [openAdditionalModal, setOpenAdditionalModal] = useState(false);
 
   const [coinPrice, setCoinPrice] = useState(1.2);
   const navigate = useNavigate();
@@ -107,6 +110,15 @@ export default function DetailProductInfo({
           </div>
         )}
       </div>
+      {!loading && tokenInfo.additionalContent && isOwner && (
+        <div
+          onClick={() => setOpenAdditionalModal(true)}
+          className="flex cursor-pointer  items-center text-gray-500 text-lg border-gray border-2 p-3 rounded-md gap-3"
+        >
+          <Icon icon="dashicons:unlock" width={48} />
+          <div>Ver contendido adicional</div>
+        </div>
+      )}
       <div className="flex flex-col justify-center flex-wrap border-grey border-2 p-3 rounded-md gap-3">
         {isForSale && (
           <>
@@ -222,6 +234,15 @@ export default function DetailProductInfo({
             wallet={wallet}
             showModal={openUnlistItemModal}
             handleCloseModal={() => setOpenUnlistItemModal(false)}
+          />
+        </>
+      )}
+      {!loading && tokenInfo.additionalContent && isOwner && (
+        <>
+          <AdditionalContentModal
+            showModal={openAdditionalModal}
+            handleCloseModal={() => setOpenAdditionalModal(false)}
+            additionalContent={tokenInfo.additionalContent}
           />
         </>
       )}

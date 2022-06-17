@@ -104,7 +104,8 @@ export const useApi = () => {
     tokenId,
     royalty,
     image,
-    collection
+    collection,
+    additionalContent
   ) => {
     await marketplaceApi.post("nfts/newItem", {
       name: name,
@@ -114,6 +115,7 @@ export const useApi = () => {
       royalty: royalty,
       sanityImgUrl: image,
       collection: collection,
+      additionalContent: additionalContent,
     });
   };
 
