@@ -4,7 +4,7 @@ let currentAccount = null;
 
 export default function useChain(loadingConnection) {
   const handleAccountsChanged = (accounts) => {
-    if (!isMobile) {
+    if (window.ethereum) {
       if (accounts.length === 0) {
         // MetaMask is locked or the user has not connected any accounts
       } else if (accounts[0] !== currentAccount) {
@@ -14,7 +14,7 @@ export default function useChain(loadingConnection) {
       }
     }
   };
-  if (!isMobile && isBrowser) {
+  if (window.ethereum) {
     window.ethereum.on("accountsChanged", handleAccountsChanged);
 
     const handleChainChanged = async (_chainId) => {

@@ -66,8 +66,7 @@ export default function useAccount() {
   }, []);
 
   useEffect(() => {
-    console.log(isMobile, isChrome);
-    if (!isMobile && (isChrome || isSafari)) {
+    if (window.ethereum) {
       if (userProfile.wallet && wallet) {
       } else {
         if (!window.ethereum.isConnected()) {

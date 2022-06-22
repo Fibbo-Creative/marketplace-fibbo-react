@@ -8,7 +8,7 @@ const isMainnet = false;
 // eslint-disable-next-line import/no-anonymous-default-export
 export default () => {
   const getContract = useCallback(async (address, abi) => {
-    if (!isMobile && (isChrome || isSafari)) {
+    if (window.ethereum) {
       if (window.ethereum.isConnected()) {
         await window.ethereum.enable();
         const provider = new ethers.providers.Web3Provider(window.ethereum);
