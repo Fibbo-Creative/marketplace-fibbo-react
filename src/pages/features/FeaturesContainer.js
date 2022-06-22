@@ -5,11 +5,13 @@ import NewFeatureModal from "./components/NewFeatureModal";
 import { useCommunity } from "../../contracts/community";
 import { useStateContext } from "../../context/StateProvider";
 import { useNavigate } from "react-router-dom";
+import { useApi } from "../../api";
 
 export default function FeaturesContainer() {
   const navigate = useNavigate();
   const { getSuggestionsInProgress } = useCommunity();
   const [{ verifiedAddress }] = useStateContext();
+  const { getProfileInfo } = useApi();
 
   const [loading, setLoading] = useState(true);
   const [suggestionsInProgress, setSuggestionsInProgress] = useState([]);
@@ -18,7 +20,18 @@ export default function FeaturesContainer() {
   useEffect(() => {
     const fetchSuggestions = async () => {
       let _suggInProg = await getSuggestionsInProgress();
-      setSuggestionsInProgress(_suggInProg);
+      let formattedSugestions = await Promise.all(
+        _suggInProg.map(async (item) => {
+          const proposer = item.proposer;
+          const profileInfo = await getProfileInfo(proposer);
+          return {
+            ...item,
+            proposer: profileInfo,
+          };
+        })
+      );
+      console.log(formattedSugestions);
+      setSuggestionsInProgress(formattedSugestions);
       setLoading(false);
     };
     fetchSuggestions();

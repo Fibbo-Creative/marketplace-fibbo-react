@@ -11,6 +11,7 @@ const formatSuggestion = (suggestions) => {
       description: sugg.description,
       totalAmount: formatEther(sugg.totalAmount),
       progress: formatEther(sugg.progress),
+      proposer: sugg.proposer,
     };
   });
 };

@@ -3,14 +3,10 @@ import { useNavigate } from "react-router-dom";
 import FiboIMG from "../../assets/logoHome.png";
 import ActionButton from "../../components/ActionButton";
 import MobileDetect from "mobile-detect";
-import {
-  isMobile,
-  isChrome,
-  isSafari,
-  deviceDetect,
-} from "react-device-detect";
+import { useStateContext } from "../../context/StateProvider";
 
 export default function HomeContainer() {
+  const [{ verifiedAddress }] = useStateContext();
   let type = new MobileDetect(window.navigator.userAgent);
   const [phone, setPhone] = useState(type.phone());
   const navigate = useNavigate();
@@ -48,13 +44,15 @@ export default function HomeContainer() {
               text="Explorar"
               buttonAction={(e) => goToExplore()}
             />
-            <ActionButton
-              size="small"
-              variant="contained"
-              gradient
-              text="Crear"
-              buttonAction={(e) => goToCreate()}
-            />
+            {verifiedAddress && (
+              <ActionButton
+                size="small"
+                variant="contained"
+                gradient
+                text="Crear"
+                buttonAction={(e) => goToCreate()}
+              />
+            )}
           </div>
         </div>
         <div className="flex items-center w-full justify-center  ">

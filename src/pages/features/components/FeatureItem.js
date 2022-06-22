@@ -8,7 +8,7 @@ export const FeatureItem = ({ suggestion, suggestionsContract }) => {
   const { addTokensToSuggestion } = useCommunity();
   const [depositValue, setDepositValue] = useState("");
 
-  const { suggestionId, title, description, totalAmount, progress } =
+  const { suggestionId, title, description, totalAmount, progress, proposer } =
     suggestion;
 
   const depositToSuggestion = async () => {
@@ -23,6 +23,23 @@ export const FeatureItem = ({ suggestion, suggestionsContract }) => {
     <Container>
       <TitleContainer>{title}</TitleContainer>
       <DescriptionContainer>{description}</DescriptionContainer>
+      <div className="flex gap-5 mt-3 items-center">
+        <div>Propuesto por</div>
+        <div className="flex gap-2 items-center border p-2 rounded-xl">
+          <img
+            className="rounded-full"
+            width={32}
+            src={proposer.profileImg}
+            alt={`from-${proposer._id}-img`}
+          />
+          <p
+            className="text-primary-2 underline cursor-pointer"
+            onClick={() => window.open(`/profile/${proposer.wallet}`, "_blank")}
+          >
+            {proposer.username}
+          </p>
+        </div>
+      </div>
       <ProgressContainer>
         <div>Progreso</div>
         <div>
