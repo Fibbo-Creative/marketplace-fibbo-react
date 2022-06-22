@@ -6,6 +6,8 @@ import { configData } from "../chainData/configData";
 import { changeChainCorrect } from "../utils/chain";
 import { useApi } from "../api";
 import { useVerification } from "../contracts/verification";
+import { isMobile, isChrome, isSafari } from "react-device-detect";
+
 export default function useAccount() {
   const [loadingConnection, setLoadingConection] = useState(true);
   const { getProfileInfo, createNewProfile } = useApi();
@@ -64,10 +66,13 @@ export default function useAccount() {
   }, []);
 
   useEffect(() => {
-    if (userProfile.wallet && wallet) {
-    } else {
-      if (!window.ethereum.isConnected()) {
-        connectToWallet().then((res) => {});
+    console.log(isMobile, isChrome);
+    if (!isMobile && (isChrome || isSafari)) {
+      if (userProfile.wallet && wallet) {
+      } else {
+        if (!window.ethereum.isConnected()) {
+          connectToWallet().then((res) => {});
+        }
       }
     }
 

@@ -10,6 +10,7 @@ import { useStateContext } from "../context/StateProvider";
 import useRespnsive from "../hooks/useResponsive";
 import SearchResult from "./SearchResult";
 import { useApi } from "../api";
+import { isMobile, isChrome, isSafari } from "react-device-detect";
 
 export default function Navbar() {
   const { searchItemsAndProfiles } = useApi();

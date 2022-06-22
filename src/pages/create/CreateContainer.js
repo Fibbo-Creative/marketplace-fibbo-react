@@ -6,6 +6,7 @@ import { useApi } from "../../api";
 import { addImgToIpfs } from "../../utils/ipfs";
 import { ConfirmCreateModal } from "../../components/modals/ConfirmCreateModal";
 import { useNavigate } from "react-router-dom";
+import fibboLogo from "../../assets/logoNavbarSmall.png";
 
 const validateName = (name) => {
   if (name.length > 4 && name.length < 30) return true;
@@ -128,7 +129,11 @@ export default function CreateContainer() {
   return (
     <div>
       <div className=" flex mt-[90px] justify-center "></div>
-      {!loading && (
+      {loading ? (
+        <div className="w-screen h-[50vh] animate-pulse flex items-center justify-center">
+          <img src={fibboLogo} className="w-[128px] animate-spin" />
+        </div>
+      ) : (
         <>
           {verifiedAddress ? (
             <div className=" flex-col h-full w-full justify-center items-center ">
@@ -167,11 +172,10 @@ export default function CreateContainer() {
                       }`}
                     >
                       {loadingImage ? (
-                        <div className="flex items-center justify-center space-x-2 animate-pulse">
-                          <div className="w-8 h-8 bg-primary-1 rounded-full"></div>
-                          <div className="w-8 h-8 bg-primary-2 rounded-full"></div>
-                          <div className="w-8 h-8 bg-primary-3 rounded-full"></div>
-                        </div>
+                        <img
+                          src={fibboLogo}
+                          className="w-[128px] animate-pulse"
+                        />
                       ) : (
                         <>
                           {!loadingImage && imageError ? (

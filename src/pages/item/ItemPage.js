@@ -10,6 +10,7 @@ import DetailInfo from "./components/DetailInfo";
 import { useApi } from "../../api";
 import { useMarketplace } from "../../contracts/market";
 import { formatEther } from "ethers/lib/utils";
+import fibboLogo from "../../assets/logoNavbarSmall.png";
 
 export default function ItemPage() {
   const navigate = useNavigate();
@@ -87,27 +88,35 @@ export default function ItemPage() {
   return (
     <>
       <div className=" mt-[120px] mb-[50px] mx-[50px] grid grid-cols-1  md:grid-cols-[400px_minmax(300px,_0.9fr)] md:grid-rows-[auto_auto] gap-7">
-        <DetailImage
-          tokenImage={tokenInfo?.image}
-          tokenName={tokenInfo?.name}
-          loading={loading}
-        />
-        <DetailProductInfo
-          isOwner={isOwner}
-          isForSale={isForSale}
-          tokenInfo={tokenInfo}
-          tokenOwnerData={profileOwnerData}
-          tokenId={tokenId}
-          collection={collection}
-          listings={listings}
-          loading={loading}
-        />
+        {loading ? (
+          <div className="w-screen h-[50vh] animate-pulse flex items-center justify-center">
+            <img src={fibboLogo} className="w-[128px] animate-spin" />
+          </div>
+        ) : (
+          <>
+            <DetailImage
+              tokenImage={tokenInfo?.image}
+              tokenName={tokenInfo?.name}
+              loading={loading}
+            />
+            <DetailProductInfo
+              isOwner={isOwner}
+              isForSale={isForSale}
+              tokenInfo={tokenInfo}
+              tokenOwnerData={profileOwnerData}
+              tokenId={tokenId}
+              collection={collection}
+              listings={listings}
+              loading={loading}
+            />
 
-        <DetailInfo properties={properties} chainInfo={chainInfo} />
+            <DetailInfo properties={properties} chainInfo={chainInfo} />
 
-        <div className="col-span-1 md:col-span-2 row-span-3 ">
-          <ItemHistory historyItems={tokenHistoryInfo} />
-        </div>
+            <div className="col-span-1 md:col-span-2 row-span-3 ">
+              <ItemHistory historyItems={tokenHistoryInfo} />
+            </div>
+          </>
+        )}
       </div>
     </>
   );

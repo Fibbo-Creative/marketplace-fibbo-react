@@ -1,13 +1,14 @@
 import { useCallback } from "react";
 import { ethers } from "ethers";
+import { isMobile, isChrome, isSafari } from "react-device-detect";
 
 // eslint-disable-next-line no-undef
 const isMainnet = false;
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default () => {
-  const getContract = useCallback(
-    async (address, abi) => {
+  const getContract = useCallback(async (address, abi) => {
+    if (!isMobile && (isChrome || isSafari)) {
       if (window.ethereum.isConnected()) {
         await window.ethereum.enable();
         const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -24,9 +25,8 @@ export default () => {
 
         return new ethers.Contract(address, abi, provider);
       }
-    },
-    [window.ethereum.isConnected()]
-  );
+    }
+  }, []);
 
   return { getContract };
 };
