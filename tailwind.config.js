@@ -1,15 +1,17 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
   plugins: [],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
         "primary-1": "#552AEF",
-        "primary-2": "#2E77EA",
-        "primary-3": "#8BC3FD",
-        "primary-4": "#7E29F1",
-        
-        
+        "primary-2": "#5437e1",
+        "primary-3": "#2E77EA",
+        "primary-4": "#8BC3FD",
+        "primary-5": "#7E29F1",
+        "dark-1": "#202225",
       },
     },
   },

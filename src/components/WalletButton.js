@@ -9,7 +9,7 @@ export default function WalletButton({
   return (
     <button
       onClick={!wallet ? openModal : disconnectWallet}
-      className="bg-white  hover:bg-gray-100  border border-gray-400 text-gray-600 rounded shadow w-[150px] md:w-[200px]"
+      className=" hover:bg-gray-100  border border-gray-400 text-gray-600 rounded shadow w-[150px] md:w-[200px]"
     >
       {wallet !== "" ? (
         <div className="flex justify-evenly items-center py-1 px-2">
@@ -21,7 +21,7 @@ export default function WalletButton({
             />
           </div>
           <div>
-            <div className="text-sm">
+            <div className="text-sm dark:text-gray-200">
               <b>{userProfile.username}</b>
             </div>
             <div className="text-xs text-gray-400">

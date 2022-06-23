@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import React from "react";
 import ReactModal from "react-modal";
+import { ThemeContext } from "../../context/ThemeContext";
 
 export const BasicModal = ({
   children,
@@ -9,6 +10,7 @@ export const BasicModal = ({
   handleCloseModal,
   size,
 }) => {
+  const { theme } = React.useContext(ThemeContext);
   return (
     <ReactModal
       appElement={document.getElementsByClassName("App")}
@@ -16,7 +18,7 @@ export const BasicModal = ({
       contentLabel={`${title} Modal`}
     >
       <div
-        className={`flex flex-col w-full h-fit md:h-full p-2 w-[300px]${
+        className={`flex flex-col p-10 dark:bg-dark-1 dark:text-white w-full h-full md:h-full p-2 w-[300px]${
           size === "large" ? " lg:w-[600px]" : "lg:w-[400px]"
         }`}
       >

@@ -17,7 +17,7 @@ ReactModal.defaultStyles.overlay.backgroundColor = "rgba(73, 77, 91, 0.5)";
 ReactModal.defaultStyles.content.width = "fit-content";
 ReactModal.defaultStyles.content.height = "max-content";
 ReactModal.defaultStyles.content.margin = "auto";
-ReactModal.defaultStyles.content.maxHeight = "";
+ReactModal.defaultStyles.content.padding = 0;
 ReactModal.defaultStyles.content.borderRadius = 50;
 ReactModal.defaultStyles.overlay.height = "100%";
 ReactModal.defaultStyles.overlay.width = "100vw";
@@ -30,7 +30,7 @@ function App() {
   const chain = useChain();
 
   return (
-    <div className={`App`} id="App">
+    <div className={`App dark:bg-dark-1 dark:text-white`} id="App">
       <BrowserRouter>
         <>
           <Navbar wallet={wallet} connectToWallet={connectToWallet} />

@@ -10,6 +10,7 @@ import { useStateContext } from "../context/StateProvider";
 import useRespnsive from "../hooks/useResponsive";
 import SearchResult from "./SearchResult";
 import { useApi } from "../api";
+import { ThemeContext } from "../context/ThemeContext";
 
 export default function Navbar() {
   const { searchItemsAndProfiles } = useApi();
@@ -20,6 +21,7 @@ export default function Navbar() {
   const [{ userProfile, verifiedAddress }] = useStateContext();
   const [searchItemsData, setSearchItemsData] = useState([]);
   const [searchProfilesData, setSearchProfilesData] = useState([]);
+  const { theme, setTheme } = React.useContext(ThemeContext);
 
   const searchInputRef = useRef(null);
 
@@ -85,8 +87,8 @@ export default function Navbar() {
     setOpenedMenu(false);
   }, [location.pathname]);
   return (
-    <header className=" fixed top-0 w-full h-[81px] bg-gradient-to-r from-[#7E29F1] z-10 to-[#b9dafe] ">
-      <div className="h-[79px] bg-white flex flex-row justify-between w-full items-center px-5">
+    <header className="fixed top-0 w-full h-[81px] bg-gradient-to-r from-[#7E29F1] z-10 to-[#b9dafe] ">
+      <div className="h-[79px] bg-white dark:bg-dark-1 flex flex-row justify-between w-full items-center px-5">
         <div className=" flex items-center cursor-pointer">
           <img
             src={_width < 775 ? logoSmall : logo}
@@ -107,7 +109,7 @@ export default function Navbar() {
                   <input
                     ref={searchInputRef}
                     type="text"
-                    className="px-4 py-2 w-[350px] outline-none"
+                    className="px-4 py-2 w-[350px] outline-none dark:bg-dark-1"
                     placeholder="Buscar Items..."
                     onChange={(e) => searchItems(e.target.value)}
                     value={searchText}
@@ -132,6 +134,16 @@ export default function Navbar() {
               {verifiedAddress && <NavbarItem text="Create" to="/create" />}
               {wallet !== "" && (
                 <NavbarItem text="Profile" to={`/profile/${wallet}`} />
+              )}
+            </div>
+            <div
+              className="p-3 cursor-pointer"
+              onClick={(e) => setTheme(theme === "dark" ? "light" : "dark")}
+            >
+              {theme === "dark" ? (
+                <Icon width={28} icon="fa-solid:moon" color="grey" />
+              ) : (
+                <Icon width={28} icon="fa-solid:sun" color="black" />
               )}
             </div>
           </div>
@@ -170,20 +182,21 @@ export default function Navbar() {
         {openedMenu && (
           <div
             id="burguerContentMobile"
-            className="bg-white absolute flex  w-screen h-screen top-20 left-0"
+            className="bg-white dark:bg-dark-1 absolute flex  w-screen h-screen top-20 left-0"
           >
             <div className="flex flex-col gap-10 mt-10 w-full">
               <div className=" flex items-center justify-center">
                 <div className="flex border-2 rounded">
-                  <div>
-                    <div className="flex items-center justify-center">
+                  <div className="dark:bg-dark-1">
+                    <div className="flex items-center justify-center dark:bg-dark-1">
                       <div className="flex border-2 rounded">
                         <div className="flex items-center justify-center px-4 border-l">
                           <Icon icon="ant-design:search-outlined" />
                         </div>
                         <input
+                          ref={searchInputRef}
                           type="text"
-                          className="px-4 py-2 w-[275px] outline-none"
+                          className="px-4 py-2 w-[350px] outline-none dark:bg-dark-1"
                           placeholder="Buscar Items..."
                           onChange={(e) => searchItems(e.target.value)}
                           value={searchText}
@@ -207,6 +220,16 @@ export default function Navbar() {
               {wallet !== "" && (
                 <NavbarItemMobile text="Profile" to={`/profile/${wallet}`} />
               )}
+              <div
+                className="p-3 cursor-pointer h-full flex justify-center"
+                onClick={(e) => setTheme(theme === "dark" ? "light" : "dark")}
+              >
+                {theme === "dark" ? (
+                  <Icon width={28} icon="fa-solid:moon" color="grey" />
+                ) : (
+                  <Icon width={28} icon="fa-solid:sun" color="black" />
+                )}
+              </div>
             </div>
           </div>
         )}
@@ -221,10 +244,10 @@ const NavbarItem = ({ text, to }) => {
   return (
     <div
       onClick={() => navigate(to)}
-      className={` ml-5  hover:font-bold cursor-pointer ${
+      className={` ml-5  hover:font-bold cursor-pointer dark:text-primary-2 ${
         location.pathname === to
           ? "text-primary-1 font-bold border-b-2 border-[#733ADA]"
-          : "text-primary-1 "
+          : "text-primary-1 dark:text-primary-2 "
       } `}
     >
       {text}
@@ -245,7 +268,7 @@ const NavbarItemMobile = ({ text, to }) => {
           location.pathname === to
             ? "text-primary-b font-bold"
             : "text-primary-1 "
-        } hover:text-primary-3 `}
+        } hover:text-primary-3 dark:text-primary-4 `}
       >
         {text}
       </p>

@@ -10,7 +10,7 @@ export default function ItemHistory({ historyItems }) {
     <DropDown icon="bytesize:activity" title="Actividad">
       {_width > 1024 ? (
         <table className="w-full text-left table-auto">
-          <thead className="bg-gray-200 p-2">
+          <thead className="bg-gray-200 dark:bg-gray-600 p-2">
             <tr className="p-2">
               <th scope="col" className="px-6 py-3">
                 Evento

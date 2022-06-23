@@ -7,6 +7,9 @@ import { addImgToIpfs } from "../../utils/ipfs";
 import { ConfirmCreateModal } from "../../components/modals/ConfirmCreateModal";
 import { useNavigate } from "react-router-dom";
 import fibboLogo from "../../assets/logoNavbarSmall.png";
+import { TextInput } from "../../components/inputs/TextInput";
+import { TextArea } from "../../components/inputs/TextArea";
+import { NumberInput } from "../../components/inputs/NumberInput";
 
 const validateName = (name) => {
   if (name.length > 4 && name.length < 30) return true;
@@ -127,16 +130,16 @@ export default function CreateContainer() {
     fetchData();
   }, [wallet, connectToWallet]);
   return (
-    <div>
-      <div className=" flex mt-[90px] justify-center "></div>
+    <div className="dark:bg-dark-1 h-screen">
+      <div className=" flex mt-[79px] justify-center "></div>
       {loading ? (
-        <div className="w-screen h-[50vh] animate-pulse flex items-center justify-center">
+        <div className="w-screen h-[70vh] animate-pulse flex items-center justify-center">
           <img src={fibboLogo} className="w-[128px] animate-spin" />
         </div>
       ) : (
         <>
           {verifiedAddress ? (
-            <div className=" flex-col h-full w-full justify-center items-center ">
+            <div className=" flex-col h-screen w-full justify-center items-center dark:bg-dark-1">
               <div className="flex lg:flex-row flex-col gap-10 block p-8 justify-center items-center md:items-start">
                 <div className="flex flex-col gap-20">
                   <div
@@ -144,7 +147,7 @@ export default function CreateContainer() {
                     tabIndex="0"
                     bis_skin_checked="1"
                     onClick={selectNFTImg}
-                    className={`outline-dashed ${
+                    className={`outline-dashed dark:bg-dark-1 ${
                       imageError && "outline-red-400"
                     } w-[300px] h-[300px] md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px] items-center justify-center cursor-pointer`}
                   >
@@ -213,76 +216,38 @@ export default function CreateContainer() {
                     </select>
                   </div>
                   <div className="flex flex-col gap-3  mb-4">
-                    <div className="font-bold text-lg flex ">
-                      Nombre <div className="text-red-700">*</div>
-                    </div>
-                    <input
-                      type="text"
-                      value={name}
+                    <TextInput
+                      label={"Nombre"}
+                      required
+                      error={nameError}
                       onChange={(e) => handleChangeName(e.target.value)}
-                      className={`w-full px-3 py-1.5 text-base font-normal text-gray-700 
-              bg-white bg-clip-padding border border-solid border-black rounded transition ease-in-out m-0
-              focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                   ${nameError && "border-red-400"}`}
+                      errorMessage=" El nombre debe tener entre 4 y 30 carácteres"
                     />
 
-                    {nameError && (
-                      <div className="text-xs text-red-400 ">
-                        El nombre debe tener entre 4 y 30 carácteres
-                      </div>
-                    )}
+                    {nameError && <div className="text-xs text-red-400 "></div>}
                   </div>
-
-                  <div className="flex flex-col gap-1  mb-4">
-                    <div className="font-bold text-lg flex ">
-                      Descripción <div className="text-red-700">*</div>
-                    </div>
-                    <div className="text-sm">De 50 a 300 carácteres</div>
-                    <textarea
-                      className={`block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding 
-            border border-solid border-black rounded transition ease-in-out m-0
-            focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none ${
-              descError && "border-red-400"
-            }`}
-                      rows="3"
-                      value={desc}
-                      onChange={(e) => handleChangeDescription(e.target.value)}
-                      type="text"
-                    />
-                    {descError && (
-                      <div className="text-xs text-red-400 ">
-                        La descripción debe tener entre 50 y 300 carácteres
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="flex flex-col gap-1  mb-4">
-                    <div className="font-bold text-lg flex ">
-                      Royalties {"(%)"}
-                    </div>
-                    <div className="text-sm">
-                      Recoge un porcentage cuando un usuario re-venda el ítem
-                      que originalmente creaste
-                    </div>
-                    <input
-                      className={`block w-full px-3 py-1.5 text-base font-normal text-gray-700
-              bg-white bg-clip-padding border border-solid border-black rounded transition ease-in-out m-0
-              focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none ${
-                royaltyError && "border-red-400"
-              }`}
-                      value={royalty}
-                      onChange={(e) => handleChangeRoyalty(e.target.value)}
-                      placeholder="e.j. 2.5"
-                      type="number"
-                    />
-                    {royaltyError && (
-                      <div className="text-xs text-red-400 ">
-                        Los royalties no puede ser mas de un 50% ni un valor
-                        negativo!
-                      </div>
-                    )}
-                  </div>
-
+                  <TextArea
+                    label="Descripción"
+                    required
+                    error={descError}
+                    value={desc}
+                    errorMessage={
+                      "La descripción debe tener entre 50 y 300 carácteres"
+                    }
+                    onChange={(e) => handleChangeDescription(e.target.value)}
+                  />
+                  <NumberInput
+                    label="Royalties"
+                    placeholder="ej. 2.5%"
+                    value={royalty}
+                    onChange={(e) => handleChangeRoyalty(e.target.value)}
+                    error={royaltyError}
+                    errorMessage="Los royalties no puede ser mas de un 50% ni un valor
+                    negativo!"
+                    info="Recoge un porcentage cuando un usuario re-venda el ítem
+                    que originalmente creaste"
+                  />
+                  {/** Contenido adicional */}
                   <div className="flex flex-col gap-3">
                     <div className="flex flex-col gap-2">
                       <label className="">
@@ -299,25 +264,13 @@ export default function CreateContainer() {
                         </span>
                       </label>
                       {showHiddenContent && (
-                        <div className="flex flex-col gap-2">
-                          <div className="text-sm">
-                            Incluye contenido adicional que sólo el propietario
-                            podrá ver
-                          </div>
-                          <textarea
-                            className={`block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding 
-                        border border-solid border-black rounded transition ease-in-out m-0
-                        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none ${
-                          descError && "border-red-400"
-                        }`}
-                            rows="3"
-                            placeholder="Añade contenido (Clave de acceso, código, enlace a ficheros...)"
-                            value={hiddenContent}
-                            onChange={(e) => setHiddenContent(e.target.value)}
-                            id="imageInput"
-                            type="text"
-                          />
-                        </div>
+                        <TextArea
+                          placeholder="Añade contenido (Clave de acceso, código, enlace a ficheros...)"
+                          info="Incluye contenido adicional que sólo el propietario
+                          podrá ver"
+                          value={hiddenContent}
+                          onChange={(e) => setHiddenContent(e.target.value)}
+                        />
                       )}
                     </div>
                   </div>

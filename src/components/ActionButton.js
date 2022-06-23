@@ -61,7 +61,10 @@ export default function ActionButton({
     <button
       onClick={(e) => executeAction(e)}
       disabled={loading || disabled}
-      className={`${getVariantStyle(size, disabled)} `}
+      className={`${getVariantStyle(
+        size,
+        disabled
+      )} dark:shadow-lg dark:shadow-gray-700 `}
     >
       {loading ? (
         <div className="flex gap-4 items-center justify-center text-xs">

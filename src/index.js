@@ -5,11 +5,14 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import StateProvider from "./context/StateProvider";
 import stateReducer from "./context/stateReducer";
+import { ThemeProvider } from "./context/ThemeContext";
 
 ReactDOM.render(
   <React.StrictMode>
     <StateProvider reducer={stateReducer}>
-      <App />
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>
     </StateProvider>
   </React.StrictMode>,
   document.getElementById("root")

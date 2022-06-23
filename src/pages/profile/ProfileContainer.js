@@ -105,7 +105,7 @@ export default function ProfileContainer() {
     fetchData();
   }, [wallet]);
   return (
-    <div className="mt-[81px] w-screen h-full">
+    <div className="mt-[81px] w-screen h-screen dark:bg-dark-1">
       {loading ? (
         <div className="w-screen h-[50vh] animate-pulse flex items-center justify-center">
           <img src={fibboLogo} className="w-[128px] animate-spin" />
@@ -116,7 +116,7 @@ export default function ProfileContainer() {
           {myProfile ? (
             <button
               onClick={() => selectBannerImg()}
-              className="w-screen h-[200px] bg-gray-300 z-10 object-cover object-center"
+              className="w-screen h-[200px] bg-gray-300 dark:bg-gray-700 z-10 object-cover object-center"
               style={{
                 backgroundImage:
                   profileData.profileBanner !== ""

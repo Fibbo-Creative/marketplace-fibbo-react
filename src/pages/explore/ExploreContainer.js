@@ -158,7 +158,7 @@ export default function ExploreContainer() {
   };
 
   return (
-    <div className="mt-[90px] " style={{ height: "94vh" }}>
+    <div className="mt-[79px] dark:bg-dark-1 h-screen">
       {loading ? (
         <div className="w-screen h-[50vh] animate-pulse flex items-center justify-center">
           <img src={fibboLogo} className="w-[128px] animate-spin" />
@@ -179,10 +179,9 @@ export default function ExploreContainer() {
                   openedSidebar && "ml-[17vw]"
                 }`}
               >
-                <div className="flex flex-row items-center gap-2 md:gap-5  ">
+                <div className="flex flex-row items-center gap-2 md:gap-5 dark:bg-dark-1  ">
                   <select
-                    autoComplete="country"
-                    className="cursor-pointer h-10 flex border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="cursor-pointer h-10 flex border border-gray-300 bg-white dark:bg-dark-1 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     onChange={(e) => sortItems(e.target.value)}
                   >
                     <option value={1}>Ordenar Por</option>
