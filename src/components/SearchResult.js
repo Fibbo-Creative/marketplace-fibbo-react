@@ -24,8 +24,8 @@ export default function SearchResult({
   };
 
   return (
-    <div className="absolute z-99 flex flex-col bg-white w-[300px]  md:w-[400px] border border-gray">
-      <div className=" uppercase cursor-pointer flex items-center px-2 py-1 gap-3 bg-gray-100 border-b ">
+    <div className="dark:bg-gray-700 absolute z-99 flex flex-col bg-white w-[300px]  md:w-[400px] border border-gray">
+      <div className="dark:bg-gray-700 uppercase cursor-pointer flex items-center px-2 py-1 gap-3 bg-gray-100 border-b ">
         <div>Items</div>
       </div>
       {itemsResult.map((item) => {
@@ -38,7 +38,7 @@ export default function SearchResult({
           />
         );
       })}
-      <div className=" uppercase cursor-pointer flex items-center px-2 py-1 gap-3 bg-gray-100 border-b ">
+      <div className="dark:bg-gray-700 uppercase cursor-pointer flex items-center px-2 py-1 gap-3 bg-gray-100 border-b ">
         <div>Profiles</div>
       </div>
       {profilesResult.map((item) => {

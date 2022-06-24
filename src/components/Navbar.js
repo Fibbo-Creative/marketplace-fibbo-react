@@ -136,16 +136,6 @@ export default function Navbar() {
                 <NavbarItem text="Profile" to={`/profile/${wallet}`} />
               )}
             </div>
-            <div
-              className="p-3 cursor-pointer"
-              onClick={(e) => setTheme(theme === "dark" ? "light" : "dark")}
-            >
-              {theme === "dark" ? (
-                <Icon width={28} icon="fa-solid:moon" color="grey" />
-              ) : (
-                <Icon width={28} icon="fa-solid:sun" color="black" />
-              )}
-            </div>
           </div>
           <div className="gap-10 flex flex-row justify-between items-center ">
             <WalletButton
@@ -159,13 +149,13 @@ export default function Navbar() {
               <div id="iconOpenBurguer" className="lg:hidden flex w-auto">
                 {!openedMenu ? (
                   <Icon
-                    className="text-3xl text-gray-600 cursor-pointer"
+                    className="text-3xl text-gray-600 dark:text-gray-300 cursor-pointer"
                     onClick={() => openBurguer()}
                     icon="bx:menu-alt-left"
                   />
                 ) : (
                   <Icon
-                    className="text-3xl text-gray-600 cursor-pointer "
+                    className="text-3xl text-gray-600 dark:text-gray-300  cursor-pointer "
                     onClick={() => closeBurguer()}
                     icon="bx:menu-alt-right"
                   />

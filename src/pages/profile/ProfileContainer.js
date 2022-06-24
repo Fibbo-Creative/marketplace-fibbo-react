@@ -116,7 +116,7 @@ export default function ProfileContainer() {
           {myProfile ? (
             <button
               onClick={() => selectBannerImg()}
-              className="w-screen h-[200px] bg-gray-300 dark:bg-gray-700 z-10 object-cover object-center"
+              className="w-screen h-[200px] bg-gray-300 dark:bg-gray-600 z-10 object-cover object-center"
               style={{
                 backgroundImage:
                   profileData.profileBanner !== ""
@@ -136,7 +136,7 @@ export default function ProfileContainer() {
             </button>
           ) : (
             <div
-              className="w-screen h-[200px] bg-gray-300 z-10"
+              className="w-screen h-[200px] dark:bg-gray-600 bg-gray-300 z-10"
               style={{
                 backgroundImage:
                   profileData.profileBanner !== ""
