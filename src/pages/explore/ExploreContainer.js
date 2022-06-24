@@ -8,6 +8,7 @@ import { useStateContext } from "../../context/StateProvider";
 import useAccount from "../../hooks/useAccount";
 import { useNavigate } from "react-router-dom";
 import fibboLogo from "../../assets/logoNavbarSmall.png";
+import { PageWithLoading } from "../../components/basic/PageWithLoading";
 
 export default function ExploreContainer() {
   const navigate = useNavigate();
@@ -158,94 +159,88 @@ export default function ExploreContainer() {
   };
 
   return (
-    <div className="mt-[79px] dark:bg-dark-1 h-screen">
-      {loading ? (
-        <div className="w-screen h-[50vh] animate-pulse flex items-center justify-center">
-          <img src={fibboLogo} className="w-[128px] animate-spin" />
-        </div>
-      ) : (
-        <>
-          {allMarketItems.length > 0 && (
-            <>
-              {/*  <FiltersSidebar
+    <PageWithLoading loading={loading}>
+      <>
+        {allMarketItems.length > 0 && (
+          <>
+            {/*  <FiltersSidebar
             setOpenedSidebar={setOpenedSidebar}
             allMarketItems={allMarketItems}
             setAllMarketItems={setAllMarketItems}
             visibleMarketItems={visibleMarketItems}
             setVisibleMarketItems={setVisibleMarketItems}
           /> */}
-              <div
-                className={`flex flex-col items-center justify-center ${
-                  openedSidebar && "ml-[17vw]"
-                }`}
-              >
-                <div className="flex flex-row items-center gap-2 md:gap-5 dark:bg-dark-1  ">
-                  <select
-                    className="cursor-pointer h-10 flex border border-gray-300 bg-white dark:bg-dark-1 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    onChange={(e) => sortItems(e.target.value)}
-                  >
-                    <option value={1}>Ordenar Por</option>
-                    <option value={2}>Creados Recientemente</option>
-                    <option value={3}>Mas antiguos</option>
-                    <option value={4}>Listados Recientemiente</option>
-                    <option value={5}>Listados mas antiguos</option>
-                    <option value={6}>Mas caros</option>
-                    <option value={7}>Mas baratos</option>
-                  </select>
-                  <div className="flex flex-row items-center justify-center gap-2 md:gap-5 ">
-                    <button
-                      onClick={changeSmallDisplay}
-                      className="hover:-translate-y-1"
-                    >
-                      <Icon
-                        icon="akar-icons:dot-grid-fill"
-                        width="40"
-                        height="40"
-                        color="grey"
-                      />
-                    </button>
-                    <button
-                      onClick={changeBigDisplay}
-                      className="hover:-translate-y-1"
-                    >
-                      <Icon
-                        icon="ci:grid-big-round"
-                        width="60"
-                        height="60"
-                        color="grey"
-                      />
-                    </button>
-                  </div>
-                </div>
-                <InfiniteScroll
-                  className="flex  mt-2 flex-wrap justify-center"
-                  dataLength={visibleMarketItems.length}
-                  next={addMoreItems}
-                  hasMore={true}
+            <div
+              className={`flex flex-col items-center justify-center ${
+                openedSidebar && "ml-[17vw]"
+              }`}
+            >
+              <div className="flex flex-row items-center gap-2 md:gap-5 dark:bg-dark-1  ">
+                <select
+                  className="cursor-pointer h-10 flex border border-gray-300 bg-white dark:bg-dark-1 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  onChange={(e) => sortItems(e.target.value)}
                 >
-                  {visibleMarketItems.map((item) => {
-                    return (
-                      <div key={Math.random(1, 9999)} className="p-5">
-                        {userSmallview ? (
-                          <NftCardSmall
-                            onClick={() => goToNftDetail(item)}
-                            item={item}
-                          />
-                        ) : (
-                          <NftCard
-                            onClick={() => goToNftDetail(item)}
-                            item={item}
-                          />
-                        )}
-                      </div>
-                    );
-                  })}
-                </InfiniteScroll>
+                  <option value={1}>Ordenar Por</option>
+                  <option value={2}>Creados Recientemente</option>
+                  <option value={3}>Mas antiguos</option>
+                  <option value={4}>Listados Recientemiente</option>
+                  <option value={5}>Listados mas antiguos</option>
+                  <option value={6}>Mas caros</option>
+                  <option value={7}>Mas baratos</option>
+                </select>
+                <div className="flex flex-row items-center justify-center gap-2 md:gap-5 ">
+                  <button
+                    onClick={changeSmallDisplay}
+                    className="hover:-translate-y-1"
+                  >
+                    <Icon
+                      icon="akar-icons:dot-grid-fill"
+                      width="40"
+                      height="40"
+                      color="grey"
+                    />
+                  </button>
+                  <button
+                    onClick={changeBigDisplay}
+                    className="hover:-translate-y-1"
+                  >
+                    <Icon
+                      icon="ci:grid-big-round"
+                      width="60"
+                      height="60"
+                      color="grey"
+                    />
+                  </button>
+                </div>
               </div>
-            </>
-          )}
-        </>
-      )}
-    </div>
+              <InfiniteScroll
+                className="flex  mt-2 flex-wrap justify-center"
+                dataLength={visibleMarketItems.length}
+                next={addMoreItems}
+                hasMore={true}
+              >
+                {visibleMarketItems.map((item) => {
+                  return (
+                    <div key={Math.random(1, 9999)} className="p-5">
+                      {userSmallview ? (
+                        <NftCardSmall
+                          onClick={() => goToNftDetail(item)}
+                          item={item}
+                        />
+                      ) : (
+                        <NftCard
+                          onClick={() => goToNftDetail(item)}
+                          item={item}
+                        />
+                      )}
+                    </div>
+                  );
+                })}
+              </InfiniteScroll>
+            </div>
+          </>
+        )}
+      </>
+    </PageWithLoading>
   );
 }

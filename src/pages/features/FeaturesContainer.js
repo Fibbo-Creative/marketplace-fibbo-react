@@ -6,6 +6,7 @@ import { useCommunity } from "../../contracts/community";
 import { useStateContext } from "../../context/StateProvider";
 import { useNavigate } from "react-router-dom";
 import { useApi } from "../../api";
+import { PageWithLoading } from "../../components/basic/PageWithLoading";
 
 export default function FeaturesContainer() {
   const navigate = useNavigate();
@@ -37,62 +38,55 @@ export default function FeaturesContainer() {
     fetchSuggestions();
   }, []);
   return (
-    <div className="mt-[90px] w-screen">
-      {!loading && (
-        <>
-          {verifiedAddress ? (
-            <>
-              <div className="w-full flex flex-col justify-center items-center gap-4">
-                <div className="uppercase font-bold text-4xl mt-10">
-                  Sugerencias
-                </div>
-                <div className=" w-5/6 text-sm md:text-lg md:w-2/3 text-center">
-                  Vota y contribuye a decidir la evolución del marketplace de
-                  FIBBO, la comunidad es la desencadenante de los próximos pasos
-                  a añadir para conseguir el producto de todos
-                </div>
+    <PageWithLoading loading={loading}>
+      <>
+        {verifiedAddress ? (
+          <>
+            <div className="w-full dark:bg-gray-1 flex flex-col justify-center items-center gap-4">
+              <div className="uppercase font-bold text-4xl mt-10">
+                Sugerencias
               </div>
-              <div className="w-full flex flex-col justify-center items-center gap-4">
-                <div className="uppercase font-bold text-xl mt-10">
-                  Sugiere algun cambio
-                </div>
-                <ActionButton
-                  buttonAction={() => setShowNewSuggestion(true)}
-                  text="Añadir Sugerencia"
-                  size="large"
-                />
-              </div>
-              <div className="mt-10 flex flex-col justify-center items-center gap-2 mx-2 md:mx-20">
-                {suggestionsInProgress.map((item) => {
-                  return (
-                    <FeatureItem
-                      key={Math.random(999) * 100}
-                      suggestion={item}
-                    />
-                  );
-                })}
-              </div>{" "}
-            </>
-          ) : (
-            <div>
-              <div>
-                No eres un artista verificado para poder sugerir cambios
-              </div>
-              <div>
-                <ActionButton
-                  size="large"
-                  text={"Go to Homepage"}
-                  buttonAction={() => navigate("/")}
-                />
+              <div className=" w-5/6 text-sm md:text-lg md:w-2/3 text-center">
+                Vota y contribuye a decidir la evolución del marketplace de
+                FIBBO, la comunidad es la desencadenante de los próximos pasos a
+                añadir para conseguir el producto de todos
               </div>
             </div>
-          )}
-          <NewFeatureModal
-            showModal={showNewSuggestion}
-            handleCloseModal={() => setShowNewSuggestion(false)}
-          />
-        </>
-      )}
-    </div>
+            <div className="w-full flex flex-col justify-center items-center gap-4">
+              <div className="uppercase font-bold text-xl mt-10">
+                Sugiere algun cambio
+              </div>
+              <ActionButton
+                buttonAction={() => setShowNewSuggestion(true)}
+                text="Añadir Sugerencia"
+                size="large"
+              />
+            </div>
+            <div className="mt-10 flex flex-col justify-center items-center gap-2 mx-2 md:mx-20">
+              {suggestionsInProgress.map((item) => {
+                return (
+                  <FeatureItem key={Math.random(999) * 100} suggestion={item} />
+                );
+              })}
+            </div>{" "}
+          </>
+        ) : (
+          <div className="h-screen">
+            <div>No eres un artista verificado para poder sugerir cambios</div>
+            <div>
+              <ActionButton
+                size="large"
+                text={"Go to Homepage"}
+                buttonAction={() => navigate("/")}
+              />
+            </div>
+          </div>
+        )}
+        <NewFeatureModal
+          showModal={showNewSuggestion}
+          handleCloseModal={() => setShowNewSuggestion(false)}
+        />
+      </>
+    </PageWithLoading>
   );
 }

@@ -38,7 +38,7 @@ function App() {
           <Routes>
             <Route path="*" element={<NotFoundContainer />} />
             <Route path="/create" element={<CreateContainer />} />
-            <Route path="/features" element={<FeaturesContainer />} />
+            <Route path="/community" element={<FeaturesContainer />} />
             <Route
               path="/verificate/request"
               element={<VerificationFormContainer />}

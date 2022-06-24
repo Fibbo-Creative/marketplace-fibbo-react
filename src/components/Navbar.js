@@ -10,7 +10,6 @@ import { useStateContext } from "../context/StateProvider";
 import useRespnsive from "../hooks/useResponsive";
 import SearchResult from "./SearchResult";
 import { useApi } from "../api";
-import { ThemeContext } from "../context/ThemeContext";
 
 export default function Navbar() {
   const { searchItemsAndProfiles } = useApi();
@@ -21,7 +20,6 @@ export default function Navbar() {
   const [{ userProfile, verifiedAddress }] = useStateContext();
   const [searchItemsData, setSearchItemsData] = useState([]);
   const [searchProfilesData, setSearchProfilesData] = useState([]);
-  const { theme, setTheme } = React.useContext(ThemeContext);
 
   const searchInputRef = useRef(null);
 
@@ -130,10 +128,15 @@ export default function Navbar() {
               )}
             </div>
             <div className="flex ">
-              <NavbarItem text="Explore" to="/explore" />
-              {verifiedAddress && <NavbarItem text="Create" to="/create" />}
-              {wallet !== "" && (
-                <NavbarItem text="Profile" to={`/profile/${wallet}`} />
+              <NavbarItemMobile text="Marketplace" to="/explore" />
+              {!verifiedAddress && (
+                <NavbarItemMobile text="Verifícate!" to="/verificate/request" />
+              )}
+              {verifiedAddress && (
+                <NavbarItemMobile text="Creación" to="/create" />
+              )}
+              {verifiedAddress && (
+                <NavbarItemMobile text="Creación" to="/create" />
               )}
             </div>
           </div>
@@ -203,23 +206,16 @@ export default function Navbar() {
                   </div>
                 </div>
               </div>
-              <NavbarItemMobile text="Explore" to="/explore" />
+              <NavbarItemMobile text="Marketplace" to="/explore" />
+              {!verifiedAddress && (
+                <NavbarItemMobile text="Verifícate!" to="/verificate/request" />
+              )}
               {verifiedAddress && (
-                <NavbarItemMobile text="Create" to="/create" />
+                <NavbarItemMobile text="Comunidad" to="/community" />
               )}
-              {wallet !== "" && (
-                <NavbarItemMobile text="Profile" to={`/profile/${wallet}`} />
+              {verifiedAddress && (
+                <NavbarItemMobile text="Creación" to="/create" />
               )}
-              <div
-                className="p-3 cursor-pointer h-full flex justify-center"
-                onClick={(e) => setTheme(theme === "dark" ? "light" : "dark")}
-              >
-                {theme === "dark" ? (
-                  <Icon width={28} icon="fa-solid:moon" color="grey" />
-                ) : (
-                  <Icon width={28} icon="fa-solid:sun" color="black" />
-                )}
-              </div>
             </div>
           </div>
         )}

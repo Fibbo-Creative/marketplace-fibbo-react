@@ -51,7 +51,7 @@ export const VerificationFormContainer = () => {
     }
   };
   return (
-    <div className="w-screen mt-[90px] flex flex-col justify-center items-center">
+    <div className="w-screen mt-[79px] flex flex-col justify-center items-center">
       <div className="flex flex-col items-center justify-center w-full gap-10 py-10 px-10">
         <div className="flex flex-col items-center gap-10">
           <div className="text-2xl font-bold">
@@ -160,9 +160,9 @@ export const VerificationFormContainer = () => {
 };
 
 const Input = tw.input`
-    text-black flex-1 outline-none py-2 px-2 bg-gray-300 font-bold rounded-md w-full
+    text-black flex-1 outline-none py-2 px-2 bg-gray-300 dark:bg-gray-600 dark:text-white font-bold rounded-md w-full
 `;
 
 const InputTextArea = tw.textarea`
-    h-[200px] text-black flex-1 outline-none p-2 bg-gray-300 font-bold rounded-md w-full resize-y
+    h-[200px] text-black flex-1 outline-none p-2 bg-gray-300 dark:bg-gray-600 dark:text-white font-bold rounded-md w-full resize-y
 `;
