@@ -66,7 +66,7 @@ export default function DetailProductInfo({
     console.log(loading);
   }, [loading]);
   return (
-    <div className="col-span-1 row-span-3  flex flex-col gap-5">
+    <div className="col-span-1 row-span-3  flex flex-col gap-5 dark:">
       {loading ? (
         <div className="w-full h-full animate-pulse bg-gray-300"></div>
       ) : (
@@ -79,7 +79,7 @@ export default function DetailProductInfo({
       ) : (
         <p>{tokenInfo?.description}</p>
       )}
-      <div className="flex-row justify-center items-center ">
+      <div className="flex-row justify-center items-center  ">
         {loading ? (
           <div className="w-full h-full animate-pulse bg-gray-300"></div>
         ) : (
@@ -113,13 +113,13 @@ export default function DetailProductInfo({
       {!loading && tokenInfo.additionalContent && isOwner && (
         <div
           onClick={() => setOpenAdditionalModal(true)}
-          className="flex cursor-pointer  items-center text-gray-500 text-lg border-gray border-2 p-3 rounded-md gap-3"
+          className="flex bg-gray-800 cursor-pointer  items-center text-gray-500 text-lg border-gray border-2 p-3 rounded-md gap-3"
         >
           <Icon icon="dashicons:unlock" width={48} />
           <div>Ver contendido adicional</div>
         </div>
       )}
-      <div className="flex flex-col justify-center flex-wrap border-grey border-2 p-3 rounded-md gap-3">
+      <div className="flex dark:bg-gray-800 flex-col justify-center flex-wrap border-grey border-2 p-3 rounded-md gap-3">
         {isForSale && (
           <>
             {loading ? (

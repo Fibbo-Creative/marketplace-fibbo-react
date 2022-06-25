@@ -10,7 +10,11 @@ export default function ItemHistory({ historyItems }) {
   const { _width } = useRespnsive();
   const navigate = useNavigate();
   return (
-    <DropDown className={`mb-5`} icon="bytesize:activity" title="Actividad">
+    <DropDown
+      className={`mb-5 bg-gray-800`}
+      icon="bytesize:activity"
+      title="Actividad"
+    >
       {_width > 1024 ? (
         <table className="w-full text-left table-auto ">
           <thead className="bg-gray-200 dark:bg-gray-600 p-2">

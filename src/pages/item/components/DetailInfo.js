@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 export default function DetailInfo({ properties, chainInfo, loading }) {
   const navigate = useNavigate();
   return (
-    <div className="col-span-1 flex flex-col rounded-md border-2 ">
+    <div className="col-span-1 flex flex-col rounded-md border-2 dark:bg-gray-800 ">
       <DropDown icon="bxs:info-square" title={"Chain Data"}>
         {loading ? (
           <div className="w-full h-full animate-pulse bg-gray-300"></div>

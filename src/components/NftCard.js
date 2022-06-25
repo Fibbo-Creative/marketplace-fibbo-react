@@ -4,9 +4,9 @@ export default function NftCard({ item, onClick }) {
   return (
     <div
       onClick={onClick}
-      className="flex flex-col gap-3 shadow-lg bg-gray-200 dark:border-gray-700 dark:bg-gray-800 border-gray-300  shadow-gray-300 dark:shadow-gray-500   border-2 p-3 rounded-md cursor-pointer hover:shadow-lg hover:border-3 hover:-translate-y-1"
+      className="flex flex-col gap-3 shadow-lg bg-gray-200 dark:border-gray-700 dark:bg-gray-800 border-gray-30  shadow-gray-300 dark:shadow-gray-500   border-2 p-3 rounded-md cursor-pointer hover:shadow-lg hover:border-3 hover:-translate-y-1"
     >
-      <div className="h-[322px] w-[322px] flex pb-3 border-b-2 ">
+      <div className="h-[322px] w-[322px] flex pb-3 border-b-2 border-gray-700 dark:border-gray-300 ">
         <img
           className="object-contain w-full h-full"
           src={item.nft ? item.nft.image : item.image}
