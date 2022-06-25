@@ -28,12 +28,12 @@ export default function NewFeatureModal({
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       size="large"
-      title="Nueva suggerencia"
+      title="Nueva sugerencia"
     >
       {!completedAction ? (
         <div className="my-10 mx-8 flex flex-col gap-10">
           <div className="hidden md:flex">
-            Tu suggerencia será revisada y se le asignará un valor por parte del
+            Tu sugerencia será revisada y se le asignará un valor por parte del
             equipo técnico, una vez sea acceptada y valorada se mostrará en la
             lista!
           </div>

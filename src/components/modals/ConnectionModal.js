@@ -39,7 +39,7 @@ export default function ConnectionModal({
       <div className="my-10 mx-3 md:mx-8 flex flex-col gap-10">
         <button
           onClick={() => metamaskConnect()}
-          className="flex w-full justify-between items-center hover:bg-gray-300 p-5 border-2 shadow-lg rounded-xl"
+          className="flex w-full gap-5 justify-between bg-gray-300 hover:bg-gray-400 dark:bg-gray-700 hover:dark:bg-gray-600 items-center hover:bg-gray-300 p-5 border-2 shadow-lg rounded-xl"
         >
           <div>Connectar con Metamask</div>
           <div>

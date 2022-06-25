@@ -96,7 +96,7 @@ export default function Navbar() {
             className="w-[64px] md:w-[128px] object-contain"
           ></img>
         </div>
-        <div className="flex gap-5 items-center">
+        <div className="flex gap-5 items-center  ">
           <div className="hidden lg:flex  items-center p-0 m-0 align-baseline">
             <div>
               <div className="flex items-center justify-center">
@@ -130,19 +130,17 @@ export default function Navbar() {
               )}
             </div>
             <div className="flex ">
-              <NavbarItemMobile text="Marketplace" to="/explore" />
+              <NavbarItem text="Marketplace" to="/explore" />
               {!verifiedAddress && (
-                <NavbarItemMobile text="Verifícate!" to="/verificate/request" />
+                <NavbarItem text="Verifícate!" to="/verificate/request" />
               )}
               {verifiedAddress && (
-                <NavbarItemMobile text="Comunidad" to="/community" />
+                <NavbarItem text="Comunidad" to="/community" />
               )}
-              {verifiedAddress && (
-                <NavbarItemMobile text="Creación" to="/create" />
-              )}
+              {verifiedAddress && <NavbarItem text="Creación" to="/create" />}
             </div>
           </div>
-          <div className="gap-10 flex flex-row justify-between items-center ">
+          <div className=" gap-10 flex flex-row justify-between items-center ">
             <WalletButton
               userProfile={userProfile}
               openModal={handleOpenModal}
