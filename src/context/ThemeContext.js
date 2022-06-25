@@ -19,7 +19,7 @@ const getInitialTheme = () => {
 export const ThemeContext = React.createContext();
 
 export const ThemeProvider = ({ initialTheme, children }) => {
-  const [theme, setTheme] = React.useState("dark");
+  const [theme, setTheme] = React.useState(getInitialTheme());
 
   const rawSetTheme = (rawTheme) => {
     const root = window.document.documentElement;
@@ -29,6 +29,7 @@ export const ThemeProvider = ({ initialTheme, children }) => {
     root.classList.add(rawTheme);
 
     localStorage.setItem("color-theme", rawTheme);
+    document.body.style.backgroundColor = isDark ? "#202225" : "white";
   };
 
   if (initialTheme) {

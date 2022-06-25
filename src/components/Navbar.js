@@ -86,7 +86,7 @@ export default function Navbar() {
   }, [location.pathname]);
   return (
     <header className="fixed top-0 w-full h-[81px] bg-gradient-to-r from-[#7E29F1] z-10 to-[#b9dafe] ">
-      <div className="h-[79px] bg-white dark:bg-dark-1 flex flex-row justify-between w-full items-center px-5">
+      <div className="h-[79px] bg-white dark:bg-dark-1 flex flex-row justify-between w-full items-center px-2">
         <div className=" flex items-center cursor-pointer">
           <img
             src={_width < 775 ? logoSmall : logo}
@@ -107,7 +107,9 @@ export default function Navbar() {
                   <input
                     ref={searchInputRef}
                     type="text"
-                    className="px-4 py-2 w-[350px] outline-none dark:bg-dark-1"
+                    className={`px-4 py-2 ${
+                      _width < 1200 ? "w-[200px]" : "w-[350px]"
+                    }  outline-none dark:bg-dark-1`}
                     placeholder="Buscar Items..."
                     onChange={(e) => searchItems(e.target.value)}
                     value={searchText}
@@ -133,7 +135,7 @@ export default function Navbar() {
                 <NavbarItemMobile text="Verifícate!" to="/verificate/request" />
               )}
               {verifiedAddress && (
-                <NavbarItemMobile text="Creación" to="/create" />
+                <NavbarItemMobile text="Comunidad" to="/community" />
               )}
               {verifiedAddress && (
                 <NavbarItemMobile text="Creación" to="/create" />
@@ -189,7 +191,9 @@ export default function Navbar() {
                         <input
                           ref={searchInputRef}
                           type="text"
-                          className="px-4 py-2 w-[350px] outline-none dark:bg-dark-1"
+                          className={` px-4 py-2 ${
+                            _width < 1200 ? "w-[200px]" : "w-[350px]"
+                          } outline-none dark:bg-dark-1`}
                           placeholder="Buscar Items..."
                           onChange={(e) => searchItems(e.target.value)}
                           value={searchText}

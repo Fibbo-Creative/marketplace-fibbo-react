@@ -17,12 +17,6 @@ body {
   overflow-x: hidden;
 }
 
-@media (prefers-color-scheme: dark) {
-  .ReactModal__Content--after-open {
-    background-color: #202225;
-  }
-}
-
 summary {
   cursor: pointer;
 }

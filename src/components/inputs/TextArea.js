@@ -4,6 +4,7 @@ export const TextArea = ({
   label,
   required,
   error,
+  info,
   value,
   onChange,
   placeholder,
@@ -14,7 +15,7 @@ export const TextArea = ({
       <div className="font-bold text-lg flex ">
         {label} {required && <div className="text-red-700">*</div>}
       </div>
-      <div className="text-sm">De 50 a 300 carácteres</div>
+      <div className="text-sm">{info}</div>
       <textarea
         className={`block dark:bg-dark-1 w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding 
             border border-solid border-black rounded transition ease-in-out m-0

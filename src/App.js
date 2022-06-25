@@ -12,6 +12,8 @@ import NotFoundContainer from "./pages/notFound/NotFoundContainer";
 import FeaturesContainer from "./pages/features/FeaturesContainer";
 import useChain from "./hooks/useChain";
 import { VerificationFormContainer } from "./pages/verficiation/VerificationFormContainer";
+import { useContext } from "react";
+import { ThemeContext } from "./context/ThemeContext";
 
 ReactModal.defaultStyles.overlay.backgroundColor = "rgba(73, 77, 91, 0.5)";
 ReactModal.defaultStyles.content.width = "fit-content";
@@ -26,11 +28,15 @@ ReactModal.defaultStyles.overlay.justifyContent = "center";
 ReactModal.defaultStyles.overlay.alignItems = "center";
 
 function App() {
+  const { theme } = useContext(ThemeContext);
   const { wallet, connectToWallet } = useAccount();
   const chain = useChain();
 
   return (
-    <div className={`App dark:bg-dark-1 dark:text-white`} id="App">
+    <div
+      className={`App h-fit dark:bg-dark-1 dark:text-white`}
+      data-theme={theme}
+    >
       <BrowserRouter>
         <>
           <Navbar wallet={wallet} connectToWallet={connectToWallet} />

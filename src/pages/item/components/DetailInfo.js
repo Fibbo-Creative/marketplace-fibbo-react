@@ -1,8 +1,10 @@
 import React from "react";
 import DropDown from "../../../components/DropDown";
 import { truncateWallet } from "../../../utils/wallet";
-
+import { isMobile } from "react-device-detect";
+import { useNavigate } from "react-router-dom";
 export default function DetailInfo({ properties, chainInfo, loading }) {
+  const navigate = useNavigate();
   return (
     <div className="col-span-1 flex flex-col rounded-md border-2 ">
       <DropDown icon="bxs:info-square" title={"Chain Data"}>
@@ -16,10 +18,14 @@ export default function DetailInfo({ properties, chainInfo, loading }) {
               </div>
               <p
                 onClick={() =>
-                  window.open(
-                    `https://testnet.ftmscan.com/address/${chainInfo?.collection}`,
-                    "_blank"
-                  )
+                  isMobile
+                    ? navigate(
+                        `https://testnet.ftmscan.com/address/${chainInfo?.collection}`
+                      )
+                    : window.open(
+                        `https://testnet.ftmscan.com/address/${chainInfo?.collection}`,
+                        "_blank"
+                      )
                 }
                 className="text-primary-2 underline cursor-pointer"
               >
@@ -74,7 +80,9 @@ export default function DetailInfo({ properties, chainInfo, loading }) {
                 />
                 <div
                   onClick={() =>
-                    window.open(`/profile/${properties?.recipient?.wallet}`)
+                    isMobile
+                      ? navigate(`/profile/${properties?.recipient?.wallet}`)
+                      : window.open(`/profile/${properties?.recipient?.wallet}`)
                   }
                   className="text-primary-2 underline cursor-pointer"
                 >

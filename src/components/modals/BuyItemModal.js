@@ -25,6 +25,7 @@ export default function BuyItemModal({
 
   const checkBalance = async () => {
     let balance = await getWalletBalance(wallet);
+    console.log(balance);
     setWalletBalance(balance);
   };
   const buyItemAction = async () => {

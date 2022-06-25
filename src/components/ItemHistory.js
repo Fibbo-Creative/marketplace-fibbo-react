@@ -3,13 +3,16 @@ import { truncateWallet } from "../utils/wallet";
 import useRespnsive from "../hooks/useResponsive";
 import DropDown from "./DropDown";
 import { ADDRESS_ZERO } from "../constants/networks";
+import { isMobile } from "react-device-detect";
+import { useNavigate } from "react-router-dom";
 
 export default function ItemHistory({ historyItems }) {
   const { _width } = useRespnsive();
+  const navigate = useNavigate();
   return (
-    <DropDown icon="bytesize:activity" title="Actividad">
+    <DropDown className={`mb-5`} icon="bytesize:activity" title="Actividad">
       {_width > 1024 ? (
-        <table className="w-full text-left table-auto">
+        <table className="w-full text-left table-auto ">
           <thead className="bg-gray-200 dark:bg-gray-600 p-2">
             <tr className="p-2">
               <th scope="col" className="px-6 py-3">
@@ -51,10 +54,12 @@ export default function ItemHistory({ historyItems }) {
                         <p
                           className="text-primary-2 underline cursor-pointer"
                           onClick={() =>
-                            window.open(
-                              `/profile/${item.from.wallet}`,
-                              "_blank"
-                            )
+                            isMobile
+                              ? navigate(`/profile/${item.from.wallet}`)
+                              : window.open(
+                                  `/profile/${item.from.wallet}`,
+                                  "_blank"
+                                )
                           }
                         >
                           {item.from.username}
@@ -76,7 +81,12 @@ export default function ItemHistory({ historyItems }) {
                         <p
                           className="text-primary-2 underline cursor-pointer"
                           onClick={() =>
-                            window.open(`/profile/${item.to.wallet}`, "_blank")
+                            isMobile
+                              ? navigate(`/profile/${item.from.wallet}`)
+                              : window.open(
+                                  `/profile/${item.to.wallet}`,
+                                  "_blank"
+                                )
                           }
                         >
                           {item.to.username}
@@ -98,7 +108,7 @@ export default function ItemHistory({ historyItems }) {
             return (
               <div
                 key={Math.random(9999) * 100}
-                className="flex flex-col gap-3 bg-gray-100 p-3 hover:bg-gray-300"
+                className="flex flex-col gap-3 bg-gray-100 dark:bg-gray-600 p-3 hover:bg-gray-300"
               >
                 <div className="flex justify-between">
                   <div>

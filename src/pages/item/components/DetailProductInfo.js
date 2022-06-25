@@ -134,7 +134,7 @@ export default function DetailProductInfo({
                     alt="Fantom coin"
                   />
                   <p>{tokenInfo?.price} FTM </p>
-                  <p className="text-gray-600 text-xs">
+                  <p className="text-gray-600 dark:text-gray-400 text-xs">
                     ($
                     {formatPriceInUsd(
                       parseFloat(tokenInfo?.price * coinPrice).toFixed(3)

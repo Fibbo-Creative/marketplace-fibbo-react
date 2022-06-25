@@ -224,6 +224,7 @@ export default function CreateContainer() {
                 <TextArea
                   label="Descripción"
                   required
+                  info={"De 50 a 300 carácteres"}
                   error={descError}
                   value={desc}
                   errorMessage={
@@ -254,7 +255,7 @@ export default function CreateContainer() {
                           setShowHiddenContent(!showHiddenContent)
                         }
                       />
-                      <span className="font-bold text-lg text-gray-700 border-gray-300 p-3">
+                      <span className="font-bold text-lg text-gray-700 dark:text-gray-400 border-gray-300 p-3">
                         Contenido Adicional
                       </span>
                     </label>
