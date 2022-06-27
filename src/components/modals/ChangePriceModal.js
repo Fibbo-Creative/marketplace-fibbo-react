@@ -59,8 +59,8 @@ export default function ChangePriceModal({
               <input
                 value={priceFor}
                 onChange={(e) => setPriceFor(e.target.value)}
-                className="border w-full p-2 text-end"
-                type="number"
+                className="border w-full p-2 text-end dark:bg-dark-4"
+                type="number "
               />
             </div>
           </div>
