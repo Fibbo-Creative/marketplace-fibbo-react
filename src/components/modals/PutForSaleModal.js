@@ -48,7 +48,7 @@ export default function PutForSaleModal({
           <div>
             <div>Precio</div>
             <div className="flex">
-              <div className="flex w-[100px] bg-gray-300 justify-evenly items-center">
+              <div className="flex w-[100px] bg-gray-300  justify-evenly items-center">
                 <img
                   width={32}
                   src="https://assets.trustwalletapp.com/blockchains/fantom/info/logo.png"
@@ -59,7 +59,7 @@ export default function PutForSaleModal({
               <input
                 value={priceFor}
                 onChange={(e) => setPriceFor(e.target.value)}
-                className="border w-full p-2 text-end"
+                className="border w-full p-2 text-end dark:bg-dark-4"
                 type="number"
               />
             </div>
