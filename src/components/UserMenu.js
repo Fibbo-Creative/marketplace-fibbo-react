@@ -36,7 +36,7 @@ export const UserMenu = ({ setOpenMenu, disconnectWallet }) => {
   return (
     <div
       ref={ref}
-      className="w-[175px] md:w-[225px] dark:bg-gray-700 absolute  z-20 flex flex-col bg-white rounded-md"
+      className="w-[175px] md:w-[225px] bg-gray-100 dark:bg-dark-2 absolute  z-20 flex flex-col  rounded-md"
     >
       <UserMenuItem
         text="Perfil"

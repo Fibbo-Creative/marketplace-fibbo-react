@@ -18,6 +18,27 @@ export default function FeaturesContainer() {
   const [suggestionsInProgress, setSuggestionsInProgress] = useState([]);
   const [showNewSuggestion, setShowNewSuggestion] = useState(false);
 
+  const sortByProgress = (suggestionA, suggestionB) => {
+    let progressA = parseFloat(suggestionA.progress);
+    let totalAmountA = parseFloat(suggestionA.totalAmount);
+
+    let progressB = parseFloat(suggestionB.progress);
+    let totalAmountB = parseFloat(suggestionB.totalAmount);
+
+    let progressPercentatgeA = (progressA / totalAmountA) * 100;
+    let progressPercentatgeB = (progressB / totalAmountB) * 100;
+
+    if (progressPercentatgeA > progressPercentatgeB) {
+      return -1;
+    } else {
+      return 1;
+    }
+  };
+
+  const sortSuggestions = (suggestions) => {
+    const sorted = suggestions.sort(sortByProgress);
+    return sorted;
+  };
   useEffect(() => {
     const fetchSuggestions = async () => {
       let _suggInProg = await getSuggestionsInProgress();
@@ -32,7 +53,7 @@ export default function FeaturesContainer() {
         })
       );
       console.log(formattedSugestions);
-      setSuggestionsInProgress(formattedSugestions);
+      setSuggestionsInProgress(sortSuggestions(formattedSugestions));
       setLoading(false);
     };
     fetchSuggestions();

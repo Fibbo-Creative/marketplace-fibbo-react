@@ -65,7 +65,7 @@ export const FeatureItem = ({ suggestion, suggestionsContract }) => {
 };
 
 const Container = tw.div`
-    flex flex-col w-full border border-gray-300 p-2
+    flex flex-col w-full border rounded-md border-gray-300 p-2 dark:bg-dark-2
 `;
 
 const TitleContainer = tw.div`

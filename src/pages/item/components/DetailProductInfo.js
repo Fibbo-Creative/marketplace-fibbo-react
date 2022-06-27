@@ -119,7 +119,7 @@ export default function DetailProductInfo({
           <div>Ver contendido adicional</div>
         </div>
       )}
-      <div className="flex dark:bg-gray-800 flex-col justify-center flex-wrap border-grey border-2 p-3 rounded-md gap-3">
+      <div className="flex dark:bg-dark-2 flex-col justify-center flex-wrap border-grey border-2 p-3 rounded-md gap-3">
         {isForSale && (
           <>
             {loading ? (
