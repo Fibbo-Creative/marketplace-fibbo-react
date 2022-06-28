@@ -7,6 +7,7 @@ import useProvider from "../../hooks/useProvider";
 import { useApi } from "../../api";
 import ReactTooltip from "react-tooltip";
 import { BasicModal } from "./BasicModal";
+import { Check } from "../lottie/Check";
 
 export default function BuyItemModal({
   children,
@@ -140,11 +141,7 @@ export default function BuyItemModal({
                 </div>
                 <div className="flex flex-col gap-5 items-center">
                   <div className="flex gap-5 items-center">
-                    <Icon
-                      fontSize={24}
-                      color="green"
-                      icon="teenyicons:tick-circle-solid"
-                    />
+                    <Check />
                     <p>Item comprado correctamente</p>
                   </div>
 

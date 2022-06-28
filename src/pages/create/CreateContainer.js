@@ -11,6 +11,7 @@ import { TextInput } from "../../components/inputs/TextInput";
 import { TextArea } from "../../components/inputs/TextArea";
 import { NumberInput } from "../../components/inputs/NumberInput";
 import { PageWithLoading } from "../../components/basic/PageWithLoading";
+import { NotVerified } from "../../components/basic/NotVerified";
 
 const validateName = (name) => {
   if (name.length > 4 && name.length < 30) return true;
@@ -295,19 +296,10 @@ export default function CreateContainer() {
             />
           </div>
         ) : (
-          <div>
-            <div>
-              No eres un artista verificado para poder crear NFTs en el
-              marketplace
-            </div>
-            <div>
-              <ActionButton
-                size="large"
-                text={"Go to Homepage"}
-                buttonAction={() => navigate("/")}
-              />
-            </div>
-          </div>
+          <NotVerified
+            text=" No eres un artista verificado para poder crear NFTs en el marketplace,
+          verificate y se parte de la comunidad!"
+          />
         )}
       </>
     </PageWithLoading>

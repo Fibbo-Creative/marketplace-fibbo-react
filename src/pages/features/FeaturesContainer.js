@@ -7,6 +7,7 @@ import { useStateContext } from "../../context/StateProvider";
 import { useNavigate } from "react-router-dom";
 import { useApi } from "../../api";
 import { PageWithLoading } from "../../components/basic/PageWithLoading";
+import { NotVerified } from "../../components/basic/NotVerified";
 
 export default function FeaturesContainer() {
   const navigate = useNavigate();
@@ -92,16 +93,10 @@ export default function FeaturesContainer() {
             </div>{" "}
           </>
         ) : (
-          <div className="h-screen">
-            <div>No eres un artista verificado para poder sugerir cambios</div>
-            <div>
-              <ActionButton
-                size="large"
-                text={"Go to Homepage"}
-                buttonAction={() => navigate("/")}
-              />
-            </div>
-          </div>
+          <NotVerified
+            text=" No eres un artista verificado para poder sugerir cambios,
+          verificate y se parte de la comunidad!"
+          />
         )}
         <NewFeatureModal
           showModal={showNewSuggestion}

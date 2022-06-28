@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useApi } from "../../api";
 import NftCard from "../../components/NftCard";
@@ -11,6 +11,8 @@ import useRespnsive from "../../hooks/useResponsive";
 import ReactTooltip from "react-tooltip";
 import ActionButton from "../../components/ActionButton";
 import fibboLogo from "../../assets/logoNavbarSmall.png";
+import { Verified } from "../../components/lottie/Verified";
+import { ThemeContext } from "../../context/ThemeContext";
 
 export default function ProfileContainer() {
   const { wallet } = useAccount();
@@ -26,6 +28,7 @@ export default function ProfileContainer() {
   const [userItems, setUserItems] = useState([]);
   const [userSmallview, setSmallViewUser] = useState(true);
   const [{ userProfile, verifiedAddress }, stateDispatch] = useStateContext();
+  const { theme } = useContext(ThemeContext);
 
   const [myProfile, setMyprofile] = useState(false);
   const [profileData, setProfileData] = useState({});
@@ -201,14 +204,11 @@ export default function ProfileContainer() {
                 >
                   {profileData.verified && (
                     <div>
-                      <Icon
-                        icon="teenyicons:shield-tick-solid"
-                        className="text-primary-2"
-                      />
+                      <Verified />
                       <ReactTooltip
                         id="verify-info"
                         place="left"
-                        type="dark"
+                        type={theme === "dark" ? "light" : "dark"}
                         effect="solid"
                         multiline={true}
                       />

@@ -1,15 +1,25 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import ActionButton from "../../components/ActionButton";
-import NotFoundSvg from "./components/NotFoundSvg";
+import Lottie from "react-lottie-player";
+import lottieJson from "../../assets/notFound.json";
 
 export default function NotFoundContainer() {
   const navigate = useNavigate();
   return (
-    <div className="mt-[90px] h-screen w-screen" style={{ height: "94vh" }}>
-      <div className="flex flex-col gap-10 md:flex-row justify-center items-center mx-[50px]  w-full h-full ">
-        <div className="flex flex-col w-1/2">
-          <NotFoundSvg />
+    <div className="mt-[79px]  w-screen  ">
+      <div className="flex flex-col gap-10 md:flex-row justify-center items-center mx-auto h-full w-full">
+        <div className="flex flex-col justify-center items-center w-full my-10">
+          <Lottie
+            loop
+            animationData={lottieJson}
+            play
+            style={{
+              background: "transparent",
+              width: "450px",
+              height: "auto",
+            }}
+          />
         </div>
         <div className="flex flex-col items-center  gap-4">
           <div className="text-6xl">404</div>

@@ -5,12 +5,18 @@ import ActionButton from "../../components/ActionButton";
 import MobileDetect from "mobile-detect";
 import { useStateContext } from "../../context/StateProvider";
 import { PageWithLoading } from "../../components/basic/PageWithLoading";
+import Lottie from "react-lottie-player";
+import communityJson from "../../assets/community.json";
+import artistJson from "../../assets/artists.json";
+import useRespnsive from "../../hooks/useResponsive";
 
 export default function HomeContainer() {
   const [{ verifiedAddress }] = useStateContext();
   let type = new MobileDetect(window.navigator.userAgent);
   const [phone, setPhone] = useState(type.phone());
   const navigate = useNavigate();
+  const { _width } = useRespnsive();
+
   const goToExplore = () => {
     navigate("/explore");
   };
@@ -85,21 +91,31 @@ export default function HomeContainer() {
               />
             </div>
           </div>
-          <div className="hidden sm:flex items-center w-full justify-center">
-            <img
-              src={FiboIMG}
-              alt="FibboLogo"
-              className="w-[600px]  h-[375px] md:h-[700px] object-contain flex p-10 xl:p-0"
-            ></img>
+          <div className="sm:flex items-center w-full justify-center">
+            <Lottie
+              loop
+              animationData={artistJson}
+              play
+              style={{
+                background: "none",
+                width: _width > 700 ? "600px" : "250px",
+                height: "auto",
+              }}
+            />
           </div>
         </section>
-        <section className="flex flex-col-reverse lg:flex-row-reverse items-center justify-center w-full h-full gap-10 py-20 px-10">
-          <div className="hidden sm:flex items-center w-full justify-center">
-            <img
-              src={FiboIMG}
-              alt="FibboLogo"
-              className="w-[600px]  h-[375px] md:h-[700px] object-contain flex p-10 xl:p-0"
-            ></img>
+        <section className="flex flex-col lg:flex-row-reverse items-center justify-center w-full h-full gap-10 py-20 px-10">
+          <div className="sm:flex items-center w-full justify-center">
+            <Lottie
+              loop
+              animationData={communityJson}
+              play
+              style={{
+                background: "none",
+                width: _width > 700 ? "600px" : "250px",
+                height: "auto",
+              }}
+            />
           </div>
           <div className="flex flex-col items-center justify-center w-full h-auto ">
             <h1 className="flex text-2xl leading-normal sm:text-4xl pb-4 md:pb-7 xl:text-6xl xl:p-10 ">
@@ -109,7 +125,7 @@ export default function HomeContainer() {
               Sugiere cambios a realizar en el Marketplace y recibe recompensas
               por tu ayuda
             </p>
-            <div className="flex felx-wrap gap-10 p-10">
+            <div className="flex flex-wrap gap-10 p-10">
               <ActionButton
                 gradient
                 size="large"

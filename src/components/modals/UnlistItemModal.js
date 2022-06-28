@@ -4,6 +4,7 @@ import ActionButton from "../ActionButton";
 import { useMarketplace } from "../../contracts/market";
 import { useApi } from "../../api";
 import { BasicModal } from "./BasicModal";
+import { Check } from "../lottie/Check";
 
 export default function UnlistItemModal({
   children,
@@ -90,11 +91,7 @@ export default function UnlistItemModal({
           <div className="w-full flex-col items-center justify-center">
             <div className="flex flex-col md:flex-row items-center gap-3 justify-evenly">
               <div className="flex gap-5 items-center">
-                <Icon
-                  fontSize={24}
-                  color="green"
-                  icon="teenyicons:tick-circle-solid"
-                />
+                <Check />
                 <p>Item eliminado del mercado correctamente</p>
               </div>
             </div>

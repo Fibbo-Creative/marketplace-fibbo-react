@@ -5,6 +5,7 @@ import { useApi } from "../../api";
 import { useDefaultCollection } from "../../contracts/collection";
 import { addJsonToIpfs } from "../../utils/ipfs";
 import ActionButton from "../ActionButton";
+import { Check } from "../lottie/Check";
 import { BasicModal } from "./BasicModal";
 
 export const ConfirmCreateModal = ({
@@ -110,11 +111,7 @@ export const ConfirmCreateModal = ({
       ) : (
         <div className="my-10 mx-8 flex flex-col gap-10 items-center">
           <div className="flex gap-5 items-center">
-            <Icon
-              fontSize={24}
-              color="green"
-              icon="teenyicons:tick-circle-solid"
-            />
+            <Check />
             <p>Item creado correctamente</p>
           </div>
           <div className="w-full flex items-center justify-center">
