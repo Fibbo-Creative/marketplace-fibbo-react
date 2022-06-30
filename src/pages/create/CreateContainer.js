@@ -52,29 +52,41 @@ export default function CreateContainer() {
 
   const onFileSelected = async (e) => {
     const file = e.target.files[0];
-    setImageError(false);
-    setLoadingImage(true);
-    try {
-      const imgAddedToIPFS = await addImgToIpfs(file);
+    console.log(file.type);
+    if (file.type.includes("image")) {
+      setImageError(false);
+      setLoadingImage(true);
+      try {
+        const imgAddedToIPFS = await addImgToIpfs(file);
 
-      setIpfsImageUrl(`https://ipfs.infura.io/ipfs/${imgAddedToIPFS.path}`);
+        setIpfsImageUrl(`https://ipfs.infura.io/ipfs/${imgAddedToIPFS.path}`);
 
-      const imgAddedToSanity = await uploadImgToCDN(file);
+        const imgAddedToSanity = await uploadImgToCDN(file);
 
-      console.log(imgAddedToSanity);
+        console.log(imgAddedToSanity);
 
-      if (imgAddedToSanity === "INVALID IMG") {
-        setImageError(true);
-        setImageMessageError("Imagen no permitida, contiene contenido NFSW");
-      } else {
-        document.getElementById("divTextImgNFT").style.visibility = "hidden";
-        document.getElementById("divImgNFT").style.padding = "0";
-        setSanityImgUrl(imgAddedToSanity);
-        setImageError(false);
+        if (imgAddedToSanity === "INVALID IMG") {
+          setImageError(true);
+          setImageMessageError("Imagen no permitida, contiene contenido NFSW");
+        } else {
+          document.getElementById("divTextImgNFT").style.visibility = "hidden";
+          document.getElementById("divImgNFT").style.padding = "0";
+          setSanityImgUrl(imgAddedToSanity);
+          setImageError(false);
+        }
+        setLoadingImage(false);
+      } catch (error) {
+        console.log("Error uploading file: ", error);
       }
-      setLoadingImage(false);
-    } catch (error) {
-      console.log("Error uploading file: ", error);
+    } else {
+      setImageError(true);
+      setImageMessageError(
+        <div>
+          Selecciona un archivo de imagen
+          <br />
+          JPG, PNG, JPEG, GIF, SVG o WEBP
+        </div>
+      );
     }
   };
 
@@ -184,7 +196,7 @@ export default function CreateContainer() {
                         ) : (
                           <div className="text-center">
                             Arrastra o selecciona ficheros de imágen <br></br>{" "}
-                            JPG, PNG, BMP, GIF, SVG, WEBP ...
+                            JPG, PNG, JPEG, GIF, SVG o WEBP.
                           </div>
                         )}
                       </>
