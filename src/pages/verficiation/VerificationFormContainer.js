@@ -13,7 +13,7 @@ emailjs.init("A9IZio99Pk7PWQVes");
 export const VerificationFormContainer = () => {
   const { newVerifyRequest } = useApi();
   const { wallet } = useAccount();
-  const [{ userProfile }] = useStateContext();
+  const [{ verifiedAddress, userProfile }] = useStateContext();
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
   const [description, setDescription] = useState("");
@@ -76,7 +76,7 @@ export const VerificationFormContainer = () => {
           </div>
         </div>
       </div>
-      {wallet && (
+      {!verifiedAddress && wallet && (
         <>
           <div className="text-2xl mb-10 font-bold">
             Solicita tu verificación
