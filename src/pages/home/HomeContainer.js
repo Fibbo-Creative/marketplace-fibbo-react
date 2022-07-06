@@ -22,7 +22,7 @@ export default function HomeContainer() {
   };
 
   const goToCommunity = () => {
-    navigate("/features");
+    navigate("/community");
   };
 
   const goToVerificate = () => {
