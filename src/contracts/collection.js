@@ -1,3 +1,4 @@
+import { ethers } from "ethers";
 import useContract from "../hooks/useContract";
 import { COLLECTION_ABI } from "./abi";
 import { useAddressRegistry } from "./addressRegistry";
@@ -35,8 +36,16 @@ export const useDefaultCollection = () => {
     await approveTx.wait();
   };
 
+  const getTotalItems = async () => {
+    const collectionContract = await getDefaultCollectionContract();
+
+    const numberOfTokens = await collectionContract._tokenIds();
+    return numberOfTokens.toNumber();
+  };
+
   return {
     getContractAddress,
+    getTotalItems,
     getDefaultCollectionContract,
     createToken,
     setApproval,

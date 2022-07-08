@@ -53,11 +53,6 @@ export default function BuyItemModal({
     }
   };
 
-  useEffect(() => {
-    if (wallet !== "") {
-      checkBalance();
-    }
-  }, [wallet]);
   return (
     <BasicModal
       title="Comprar NFT"

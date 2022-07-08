@@ -11,6 +11,7 @@ import { useApi } from "../../api";
 import { useMarketplace } from "../../contracts/market";
 import { formatEther } from "ethers/lib/utils";
 import fibboLogo from "../../assets/logoNavbarSmall.png";
+import { useDefaultCollection } from "../../contracts/collection";
 
 export default function ItemPage() {
   const navigate = useNavigate();
@@ -19,6 +20,8 @@ export default function ItemPage() {
   const { getProfileInfo, getNftInfo, getNftHistory, getCollectionInfo } =
     useApi();
   const { getListingInfo } = useMarketplace();
+  const { getTotalItems } = useDefaultCollection();
+
   const [tokenInfo, setTokenInfo] = useState(null);
   const [tokenHistoryInfo, setTokenHistoryInfo] = useState([]);
   const [chainInfo, setChainInfo] = useState({});
@@ -53,11 +56,12 @@ export default function ItemPage() {
 
       const recipientInfo = await getProfileInfo(tokenInfoResponse.creator);
 
+      const numberOfTokens = await getTotalItems();
       setProperties({
         royalty: tokenInfoResponse.royalty,
         recipient: recipientInfo,
         collection: collectionResponse.name,
-        totalItems: collectionResponse.numberOfItems,
+        totalItems: numberOfTokens,
       });
 
       const profileOwnerData = await getProfileInfo(tokenInfoResponse.owner);
