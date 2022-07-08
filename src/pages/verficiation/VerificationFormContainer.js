@@ -33,7 +33,6 @@ export const VerificationFormContainer = () => {
   const sendVerificationCode = () => {
     const _code = parseInt(Math.random(999999) * 10000000);
     setSendedCode(_code);
-    console.log(_code);
     emailjs.send("service_20e5sep", "template_vmnwyr6", {
       to: email,
       verificationCode: _code,
@@ -76,7 +75,7 @@ export const VerificationFormContainer = () => {
           </div>
         </div>
       </div>
-      {!verifiedAddress && wallet && (
+      {!verifiedAddress && userProfile.wallet && wallet && (
         <>
           <div className="text-2xl mb-10 font-bold">
             Solicita tu verificación

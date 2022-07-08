@@ -24,7 +24,6 @@ export default function ExploreContainer() {
     const fetchData = async () => {
       setLoading(true);
       const forSaleItems = await getNftsForSale();
-      console.log(forSaleItems);
       setAllMarketItems(forSaleItems);
       setVisibleMarketItems(forSaleItems.slice(0, 12));
       setLoading(false);
@@ -116,8 +115,6 @@ export default function ExploreContainer() {
       const visibledsortedArray = visibleMarketItems.sort(orderByRecently);
       setAllMarketItems(sortedArray);
       setVisibleMarketItems(visibledsortedArray.slice(0, visibleItemsCount));
-
-      console.log(sortedArray);
     }
     if (value === "3") {
       //oldest created

@@ -99,7 +99,6 @@ export default function ProfileContainer() {
     const fetchData = async () => {
       setMyprofile(wallet === address);
       const profileDataResponse = await getProfileInfo(address);
-      console.log(profileDataResponse);
       setProfileData(profileDataResponse);
       const userItemsResponse = await getNftsFromAddress(address);
       setUserItems(userItemsResponse);

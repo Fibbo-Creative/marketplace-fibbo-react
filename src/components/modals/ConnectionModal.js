@@ -14,7 +14,6 @@ export default function ConnectionModal({
     handleCloseModal();
   };
   const redirectToMetamaskApp = async () => {
-    console.log("redirectToMetamask");
     window.location = `https://metamask.app.link/dapp/${window.location.href}`;
   };
 

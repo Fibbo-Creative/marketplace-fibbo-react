@@ -53,7 +53,6 @@ export default function FeaturesContainer() {
           };
         })
       );
-      console.log(formattedSugestions);
       setSuggestionsInProgress(sortSuggestions(formattedSugestions));
       setLoading(false);
     };

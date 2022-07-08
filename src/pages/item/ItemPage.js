@@ -35,7 +35,6 @@ export default function ItemPage() {
       if (!tokenInfoResponse) {
         navigate("/notFound");
       }
-      console.log(tokenInfoResponse);
       setIsForSale(tokenInfoResponse.forSale);
       setIsOwner(tokenInfoResponse.owner === wallet);
       setTokenInfo(tokenInfoResponse);

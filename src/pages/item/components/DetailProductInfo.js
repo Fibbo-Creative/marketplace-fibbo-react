@@ -62,9 +62,6 @@ export default function DetailProductInfo({
     fetchData();
   }, []);
 
-  useEffect(() => {
-    console.log(loading);
-  }, [loading]);
   return (
     <div className="col-span-1 row-span-3  flex flex-col gap-5 dark:">
       {loading ? (

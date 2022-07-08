@@ -87,8 +87,6 @@ export const useMarketplace = () => {
       owner
     );
 
-    console.log(listingInfo);
-
     return listingInfo;
   };
 

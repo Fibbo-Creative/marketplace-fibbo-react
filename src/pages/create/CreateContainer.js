@@ -52,7 +52,6 @@ export default function CreateContainer() {
 
   const onFileSelected = async (e) => {
     const file = e.target.files[0];
-    console.log(file.type);
     if (file.type.includes("image")) {
       setImageError(false);
       setLoadingImage(true);
@@ -62,8 +61,6 @@ export default function CreateContainer() {
         setIpfsImageUrl(`https://ipfs.infura.io/ipfs/${imgAddedToIPFS.path}`);
 
         const imgAddedToSanity = await uploadImgToCDN(file);
-
-        console.log(imgAddedToSanity);
 
         if (imgAddedToSanity === "INVALID IMG") {
           setImageError(true);
