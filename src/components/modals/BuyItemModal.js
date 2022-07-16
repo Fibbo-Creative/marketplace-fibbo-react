@@ -32,6 +32,7 @@ export default function BuyItemModal({
     try {
       //en el contrato del marketplace -> createMarketItem
       await buyItem(
+        wallet,
         collectionAddress,
         itemId,
         tokenInfo?.owner,
@@ -106,7 +107,7 @@ export default function BuyItemModal({
                     </div>
 
                     <ActionButton
-                      disabled={walletBalance < tokenInfo?.price}
+                      disabled={false}
                       size="large"
                       variant={"contained"}
                       text="Comprar Ítem"

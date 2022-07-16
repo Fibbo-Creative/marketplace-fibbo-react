@@ -30,11 +30,17 @@ export const useAddressRegistry = () => {
     return await addressRegistryContract.verification();
   };
 
+  const getTokenRegistry = async () => {
+    const addressRegistryContract = await getAddressRegistryContract();
+    return await addressRegistryContract.tokenRegistry();
+  };
+
   return {
     getAddressRegistryContract,
     getFibboCollectionAddress,
     getMarketplaceAddress,
     getCommunityAddress,
     getVerificationAddress,
+    getTokenRegistry,
   };
 };

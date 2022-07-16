@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import WrappedFTMModal from "./modals/WrappedFTMModal";
 import { UserMenu } from "./UserMenu";
 
 export default function WalletButton({
@@ -8,7 +9,7 @@ export default function WalletButton({
   openModal,
 }) {
   const [openMenu, setOpenMenu] = useState(false);
-
+  const [openStation, setOpenStation] = useState(false);
   const showMenu = (e) => {
     setOpenMenu(true);
   };
@@ -44,9 +45,14 @@ export default function WalletButton({
       {openMenu && (
         <UserMenu
           setOpenMenu={setOpenMenu}
+          setOpenStation={setOpenStation}
           disconnectWallet={disconnectWallet}
         />
       )}
+      <WrappedFTMModal
+        showModal={openStation}
+        handleCloseModal={() => setOpenStation(false)}
+      />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BasicModal } from "./BasicModal";
-
+import wFTMicon from "../../assets/WFTM.png";
 export default function MakeOfferModal({
   children,
   showModal,
@@ -30,12 +30,8 @@ export default function MakeOfferModal({
           <div>What price you want to offer?</div>
           <div className="flex">
             <div className="flex w-[100px] bg-gray-300 justify-evenly items-center">
-              <img
-                width={32}
-                src="https://assets.trustwalletapp.com/blockchains/fantom/info/logo.png"
-                alt="Fantom coin"
-              />
-              FTM
+              <img width={32} src={wFTMicon} alt="Fantom coin" />
+              wFTM
             </div>
             <input
               value={offerPrice}

@@ -68,20 +68,6 @@ export default function ItemPage() {
 
       setProfileOwnerData(profileOwnerData);
 
-      const listingInfo = await getListingInfo(
-        parseInt(tokenId),
-        tokenInfoResponse.owner
-      );
-
-      if (listingInfo) {
-        setListings([
-          {
-            from: tokenInfoResponse.owner,
-            price: formatEther(listingInfo),
-            status: "",
-          },
-        ]);
-      }
       setLoading(false);
       //Get Listing info
     };

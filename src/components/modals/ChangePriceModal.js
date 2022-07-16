@@ -55,7 +55,7 @@ export default function ChangePriceModal({
                   src="https://assets.trustwalletapp.com/blockchains/fantom/info/logo.png"
                   alt="Fantom coin"
                 />
-                FTM
+                wFTM
               </div>
               <input
                 value={priceFor}

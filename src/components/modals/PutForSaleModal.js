@@ -6,6 +6,7 @@ import { useMarketplace } from "../../contracts/market";
 import { useApi } from "../../api";
 import { BasicModal } from "./BasicModal";
 import { Check } from "../lottie/Check";
+import wFTMicon from "../../assets/WFTM.png";
 
 export default function PutForSaleModal({
   children,
@@ -50,11 +51,7 @@ export default function PutForSaleModal({
             <div>Precio</div>
             <div className="flex">
               <div className="flex w-[100px] bg-gray-300  justify-evenly items-center">
-                <img
-                  width={32}
-                  src="https://assets.trustwalletapp.com/blockchains/fantom/info/logo.png"
-                  alt="Fantom coin"
-                />
+                <img width={32} src={wFTMicon} alt="Fantom coin" />
                 FTM
               </div>
               <input

@@ -13,7 +13,7 @@ import { ItemListings } from "../../../components/ItemListings";
 import { ItemPriceHistory } from "../../../components/ItemPriceHistory";
 import { Icon } from "@iconify/react";
 import AdditionalContentModal from "../../../components/modals/AdditionalContentModal";
-
+import wFTMIcon from "../../../assets/WFTM.png";
 const formatPriceInUsd = (price) => {
   let priceStr = price.toString().split(".");
   let finalPrice = `${priceStr[0]},${priceStr[1]}`;
@@ -125,12 +125,8 @@ export default function DetailProductInfo({
               <div>
                 <p>Precio Actual</p>
                 <div className="flex flex-row items-center gap-3 ">
-                  <img
-                    width={32}
-                    src="https://assets.trustwalletapp.com/blockchains/fantom/info/logo.png"
-                    alt="Fantom coin"
-                  />
-                  <p>{tokenInfo?.price} FTM </p>
+                  <img width={32} src={wFTMIcon} alt="Fantom coin" />
+                  <p>{tokenInfo?.price} wFTM </p>
                   <p className="text-gray-600 dark:text-gray-400 text-xs">
                     ($
                     {formatPriceInUsd(

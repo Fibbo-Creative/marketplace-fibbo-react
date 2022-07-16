@@ -1,5 +1,5 @@
 import React from "react";
-
+import wFTMicon from "../assets/WFTM.png";
 export default function NftCard({ item, onClick }) {
   return (
     <div
@@ -14,7 +14,7 @@ export default function NftCard({ item, onClick }) {
         />
       </div>
       <div className="flex justify-between gap-2 items-center">
-        <div className="flex flex-col justify-center pt-3 pb-1">
+        <div className="flex flex-col justify-center pt-2 pb-1">
           <p className="text-xs">
             <i>{item.collectionName}</i>
           </p>
@@ -23,9 +23,9 @@ export default function NftCard({ item, onClick }) {
           </p>
         </div>
         {item.price && (
-          <div className="flex flex-col items-center">
-            <small>Price</small>
-            <small>{item.price} FTM</small>
+          <div className="pt-2 flex gap-2 px-4 items-center">
+            <img src={wFTMicon} width={32} />
+            <div>{item.price} </div>
           </div>
         )}
       </div>
