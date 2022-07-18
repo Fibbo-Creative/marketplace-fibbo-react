@@ -4,6 +4,7 @@ import { WFTM_ABI } from "./abi";
 import { calculateGasMargin, getHigherGWEI } from "../utils/gas";
 import useContract from "../hooks/useContract";
 import { ethers } from "ethers";
+import { useMarketplace } from "./market";
 
 const WFTM_ADDRESS = {
   [ChainId.FANTOM]: "0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83",
@@ -16,6 +17,7 @@ const isMainnet = false;
 const CHAIN = isMainnet ? ChainId.FANTOM : ChainId.FANTOM_TESTNET;
 export const useWFTMContract = () => {
   const { getContract } = useContract();
+  const { getContractAddress } = useMarketplace();
 
   const wftmAddress = WFTM_ADDRESS[CHAIN];
 
@@ -29,6 +31,7 @@ export const useWFTMContract = () => {
   const wrapFTM = async (value, from) => {
     const contract = await getWFTMContract();
 
+    const marketAddress = await getContractAddress();
     const options = {
       value,
       from,
@@ -38,7 +41,11 @@ export const useWFTMContract = () => {
     const gasEstimate = await contract.estimateGas.deposit(options);
     options.gasLimit = calculateGasMargin(gasEstimate);
 
-    return await contract.deposit(options);
+    let tx = await contract.deposit(options);
+    tx.wait();
+
+    const approveTx = await contract.approve(marketAddress, value);
+    await approveTx.wait();
   };
 
   const unwrapFTM = async (value) => {

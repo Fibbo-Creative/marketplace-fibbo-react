@@ -14,6 +14,7 @@ import { ItemPriceHistory } from "../../../components/ItemPriceHistory";
 import { Icon } from "@iconify/react";
 import AdditionalContentModal from "../../../components/modals/AdditionalContentModal";
 import wFTMIcon from "../../../assets/WFTM.png";
+import { ItemDirectOffers } from "../../../components/ItemDirectOffers";
 const formatPriceInUsd = (price) => {
   let priceStr = price.toString().split(".");
   let finalPrice = `${priceStr[0]},${priceStr[1]}`;
@@ -21,6 +22,7 @@ const formatPriceInUsd = (price) => {
 };
 
 export default function DetailProductInfo({
+  offers,
   tokenInfo,
   tokenOwnerData,
   tokenId,
@@ -150,7 +152,6 @@ export default function DetailProductInfo({
             )}
             {!isForSale && !isOwner && (
               <ActionButton
-                disabled
                 size="small"
                 buttonAction={() => setOpenOfferModal(true)}
                 text="Realizar Oferta"
@@ -180,8 +181,9 @@ export default function DetailProductInfo({
           </div>
         )}
       </div>
-      <div className="">{/*  <ItemPriceHistory /> */}</div>
-      <div className="">{/* <ItemListings listings={listings} /> */}</div>
+      <div className="">
+        <ItemDirectOffers isOwner={isOwner} offers={offers} />
+      </div>
       {isOwner && !isForSale && (
         <PutForSaleModal
           collectionAddress={collection}
@@ -203,8 +205,8 @@ export default function DetailProductInfo({
       )}
       {!isOwner && !isForSale && (
         <MakeOfferModal
-          collectionAddress={collection}
-          itemId={tokenId}
+          collection={collection}
+          tokenId={tokenId}
           tokenInfo={tokenInfo}
           wallet={wallet}
           showModal={openOfferModal}

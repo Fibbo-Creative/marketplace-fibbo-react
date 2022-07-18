@@ -617,6 +617,29 @@ export const MARKETPLACE_ABI = [
         type: "uint256",
       },
       {
+        internalType: "address",
+        name: "_creator",
+        type: "address",
+      },
+    ],
+    name: "cleanOffers",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_nftContract",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "_tokenId",
+        type: "uint256",
+      },
+      {
         internalType: "contract IERC20",
         name: "_payToken",
         type: "address",

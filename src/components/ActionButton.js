@@ -12,6 +12,8 @@ const styles = {
     "border text-white  text-sm uppercase rounded shadow-md  leading-tight hover:bg-white hover:text-primary-4 hover:border hover:border-primary-4 transition duration-150 ease-in-out",
   gradient: "",
   contentDisabled: "",
+  smallerContent:
+    "w-[73px] h-[33px] text-xs py-2 px-3 flex items-center justify-center ",
   smallContent:
     "w-[148px] h-[33px] py-2 px-3 flex items-center justify-center ",
   largeContent:

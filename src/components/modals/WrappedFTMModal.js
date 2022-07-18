@@ -1,13 +1,11 @@
 import { Icon } from "@iconify/react";
 import React, { useState } from "react";
-import { parseEther } from "ethers/lib/utils";
 import ActionButton from "../ActionButton";
-import { useMarketplace } from "../../contracts/market";
-import { useApi } from "../../api";
 import { BasicModal } from "./BasicModal";
 import { Check } from "../lottie/Check";
 import { useWFTMContract } from "../../contracts/wftm";
 import { ethers } from "ethers";
+import { useNavigate } from "react-router-dom";
 
 export default function WrappedFTMModal({
   children,
@@ -16,7 +14,7 @@ export default function WrappedFTMModal({
   wallet,
 }) {
   const { getWFTMBalance, wrapFTM, unwrapFTM } = useWFTMContract();
-
+  const navigate = useNavigate();
   const [ftmAmount, setFtmAmount] = useState(0);
   const [completedAction, setCompletedAction] = useState(false);
   const [fromFTM, setFromFTM] = useState(true);
@@ -25,8 +23,8 @@ export default function WrappedFTMModal({
     try {
       const price = ethers.utils.parseEther(ftmAmount);
       if (fromFTM) {
-        const tx = await wrapFTM(price, wallet);
-        await tx.wait();
+        await wrapFTM(price, wallet);
+        setCompletedAction(true);
       }
     } catch (e) {}
   };
@@ -38,10 +36,18 @@ export default function WrappedFTMModal({
       if (!fromFTM) {
         const tx = await unwrapFTM(price);
         await tx.wait();
+        setCompletedAction(true);
       }
     } catch (e) {
       console.log(e);
     }
+  };
+
+  const handleGoToMarket = () => {
+    setFromFTM(true);
+    setCompletedAction(false);
+    handleCloseModal();
+    navigate("/explore");
   };
   return (
     <BasicModal
@@ -144,14 +150,18 @@ export default function WrappedFTMModal({
           <div className="flex flex-col gap-5 items-center">
             <div className="flex gap-5 items-center">
               <Check />
-              <p>Item Listado correctamente por {ftmAmount} FTM</p>
+              <p>
+                {fromFTM
+                  ? `Transformados correctamente ${ftmAmount} FTM a wFTM`
+                  : `Retirados correctamente ${ftmAmount} wFTM`}{" "}
+              </p>
             </div>
 
             <ActionButton
               size="large"
               variant={"contained"}
-              text="Ver Ítem actualizado"
-              buttonAction={(e) => window.location.reload()}
+              text="Ir al mercado"
+              buttonAction={handleGoToMarket}
             />
           </div>
         </div>

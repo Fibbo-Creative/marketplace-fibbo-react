@@ -186,6 +186,7 @@ export default function ProfileContainer() {
               {myProfile && showEditUsername ? (
                 <form onSubmit={(e) => editProfileUsername(e)}>
                   <input
+                    className="dark:bg-dark-4 px-2 bg-gray-300"
                     value={newUsername}
                     onChange={(e) => setNewUsername(e.target.value)}
                   />

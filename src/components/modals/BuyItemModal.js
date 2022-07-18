@@ -20,7 +20,6 @@ export default function BuyItemModal({
 }) {
   const [walletBalance, setWalletBalance] = useState(0);
   const [completedAction, setCompletedAction] = useState(false);
-  const { saveNftBought } = useApi();
   const { buyItem } = useMarketplace();
   const { getWalletBalance } = useProvider();
 
@@ -37,15 +36,6 @@ export default function BuyItemModal({
         itemId,
         tokenInfo?.owner,
         parseEther(tokenInfo?.price.toString())
-      );
-      //Si todo va bien, guardar en sanity item en venta
-
-      await saveNftBought(
-        tokenInfo?.owner,
-        wallet,
-        tokenInfo?.price,
-        tokenInfo?.tokenId,
-        collectionAddress
       );
 
       setCompletedAction(true);

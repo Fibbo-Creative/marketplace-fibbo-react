@@ -12,19 +12,26 @@ import { useMarketplace } from "../../contracts/market";
 import { formatEther } from "ethers/lib/utils";
 import fibboLogo from "../../assets/logoNavbarSmall.png";
 import { useDefaultCollection } from "../../contracts/collection";
+import { useAuction } from "../../contracts/auction";
 
 export default function ItemPage() {
   const navigate = useNavigate();
   let { collection, tokenId } = useParams();
   const { wallet } = useAccount();
-  const { getProfileInfo, getNftInfo, getNftHistory, getCollectionInfo } =
-    useApi();
+  const {
+    getProfileInfo,
+    getItemOffers,
+    getNftInfo,
+    getNftHistory,
+    getCollectionInfo,
+  } = useApi();
   const { getListingInfo } = useMarketplace();
   const { getTotalItems } = useDefaultCollection();
 
   const [tokenInfo, setTokenInfo] = useState(null);
   const [tokenHistoryInfo, setTokenHistoryInfo] = useState([]);
   const [chainInfo, setChainInfo] = useState({});
+  const [offers, setOffers] = useState([]);
   const [properties, setProperties] = useState({});
   const [listings, setListings] = useState([]);
   const [profileOwnerData, setProfileOwnerData] = useState(null);
@@ -41,6 +48,10 @@ export default function ItemPage() {
       setIsForSale(tokenInfoResponse.forSale);
       setIsOwner(tokenInfoResponse.owner === wallet);
       setTokenInfo(tokenInfoResponse);
+
+      const offers = await getItemOffers(collection, tokenId);
+
+      setOffers(offers);
 
       const tokenHistoryResponse = await getNftHistory(collection, tokenId);
       setTokenHistoryInfo(tokenHistoryResponse);
@@ -97,6 +108,7 @@ export default function ItemPage() {
               collection={collection}
               listings={listings}
               loading={loading}
+              offers={offers}
             />
 
             <DetailInfo properties={properties} chainInfo={chainInfo} />

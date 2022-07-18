@@ -7,16 +7,18 @@ import { useDefaultCollection } from "./collection";
 import { Contracts } from "../constants/networks";
 import { formatEther } from "ethers/lib/utils";
 import { useTokens } from "./token";
+import useAccount from "../hooks/useAccount";
 
 const CHAIN = ChainId.FANTOM_TESTNET;
 const WFTM_ADDRESS = Contracts[CHAIN].wftmAddress;
 
 export const useMarketplace = () => {
   const { getERC20Contract } = useTokens();
+  const { wallet } = useAccount();
   const { getMarketplaceAddress, getFibboCollectionAddress } =
     useAddressRegistry();
 
-  const { getDefaultCollectionContract } = useDefaultCollection();
+  const { setApproval, getDefaultCollectionContract } = useDefaultCollection();
   const { getContract } = useContract();
 
   const getContractAddress = async () => await getMarketplaceAddress();
@@ -28,10 +30,19 @@ export const useMarketplace = () => {
 
   const listItem = async (collection, tokenId, price) => {
     const marketContract = await getMarketContract();
-    let collectionAddress = await getFibboCollectionAddress();
+    let defaultCollection = await getDefaultCollectionContract();
+
+    const isApproved = await defaultCollection.isApprovedForAll(
+      wallet,
+      marketContract.address
+    );
+
+    if (!isApproved) {
+      await setApproval();
+    }
 
     let listItemTx = await marketContract.listItem(
-      collectionAddress,
+      collection,
       tokenId,
       WFTM_ADDRESS,
       price,
@@ -116,6 +127,63 @@ export const useMarketplace = () => {
     return formatted;
   };
 
+  const makeOffer = async (
+    buyer,
+    collection,
+    tokenId,
+    offerPrice,
+    deadline
+  ) => {
+    const marketContract = await getMarketContract();
+    const erc20 = await getERC20Contract(WFTM_ADDRESS);
+
+    const allowance = await erc20.allowance(buyer, marketContract.address);
+    if (allowance.lt(offerPrice)) {
+      console.log("NOTENOUGH ALLOWANCE");
+      const tx = await erc20.approve(marketContract.address, offerPrice);
+      await tx.wait();
+    }
+
+    let makeOfferTx = await marketContract.createOffer(
+      collection,
+      tokenId,
+      WFTM_ADDRESS,
+      offerPrice,
+      deadline
+    );
+
+    await makeOfferTx.wait();
+  };
+
+  const acceptOffer = async (collection, tokenId, creator) => {
+    const marketContract = await getMarketContract();
+    const defaultCollection = await getDefaultCollectionContract();
+
+    const isApproved = await defaultCollection.isApprovedForAll(
+      wallet,
+      marketContract.address
+    );
+
+    if (!isApproved) {
+      await setApproval();
+    }
+
+    let acceptOfferTx = await marketContract.acceptOffer(
+      collection,
+      tokenId,
+      creator
+    );
+
+    await acceptOfferTx.wait();
+  };
+
+  const cancelOffer = async (collection, tokenId) => {
+    const marketContract = await getMarketContract();
+
+    let cancelOfferTx = await marketContract.cancelOffer(collection, tokenId);
+
+    await cancelOfferTx.wait();
+  };
   return {
     getContractAddress,
     getMarketContract,
@@ -124,5 +192,8 @@ export const useMarketplace = () => {
     cancelListing,
     updateListing,
     getListingInfo,
+    makeOffer,
+    cancelOffer,
+    acceptOffer,
   };
 };

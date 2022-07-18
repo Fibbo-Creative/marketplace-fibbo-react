@@ -119,46 +119,16 @@ export const useApi = () => {
     });
   };
 
-  const saveListedItem = async (tokenId, owner, price, collection) => {
-    await marketplaceApi.post("nfts/putForSale", {
-      tokenId: tokenId,
-      owner: owner,
-      price: price,
-      collectionAddress: collection,
-    });
-  };
+  //#endregion
 
-  const saveNftBought = async (
-    prevOwner,
-    newOwner,
-    boughtFor,
-    tokenId,
-    collection
-  ) => {
-    await marketplaceApi.post("nfts/nftBought", {
-      prevOwner: prevOwner,
-      newOwner: newOwner,
-      boughtFor: boughtFor,
-      tokenId: tokenId,
-      collectionAddress: collection,
-    });
-  };
+  //#region Offers
+  const getItemOffers = async (collection, tokenId) => {
+    const offers = await marketplaceApi.get(
+      `/offers/get?collection=${collection}&tokenId=${tokenId}`
+    );
+    const offersResult = offers.data;
 
-  const savePriceChanged = async (tokenId, owner, newPrice, collection) => {
-    await marketplaceApi.post("nfts/changePrice", {
-      tokenId: parseInt(tokenId),
-      owner: owner,
-      newPrice: newPrice,
-      collectionAddress: collection,
-    });
-  };
-
-  const saveUnlistedItem = async (tokenId, owner, collection) => {
-    await marketplaceApi.post("nfts/unlistItem", {
-      owner: owner,
-      tokenId: tokenId,
-      collectionAddress: collection,
-    });
+    return offersResult;
   };
 
   //#endregion
@@ -239,13 +209,10 @@ export const useApi = () => {
     setUsername,
     getNftsForSale,
     getNftInfo,
+    getItemOffers,
     getCollectionInfo,
     getNftsFromAddress,
     getNftHistory,
-    saveNftBought,
-    savePriceChanged,
-    saveUnlistedItem,
-    saveListedItem,
     saveMintedItem,
     searchItemsAndProfiles,
     uploadImgToCDN,

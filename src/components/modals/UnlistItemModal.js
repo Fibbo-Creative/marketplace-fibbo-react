@@ -15,7 +15,6 @@ export default function UnlistItemModal({
   tokenInfo,
   wallet,
 }) {
-  const { saveUnlistedItem } = useApi();
   const { cancelListing } = useMarketplace();
 
   const [completedAction, setCompletedAction] = useState(false);
@@ -24,14 +23,6 @@ export default function UnlistItemModal({
     try {
       //en el contrato del marketplace -> createMarketItem
       await cancelListing(collectionAddress, itemId);
-
-      //Si todo va bien, eliminar item en bd
-      console.log(tokenInfo);
-      await saveUnlistedItem(
-        tokenInfo.tokenId,
-        tokenInfo.owner,
-        collectionAddress
-      );
 
       setCompletedAction(true);
     } catch (e) {

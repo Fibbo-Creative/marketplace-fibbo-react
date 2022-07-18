@@ -16,7 +16,6 @@ export default function PutForSaleModal({
   collectionAddress,
   wallet,
 }) {
-  const { saveListedItem } = useApi();
   const { listItem } = useMarketplace();
   const [priceFor, setPriceFor] = useState(0);
   const [completedAction, setCompletedAction] = useState(false);
@@ -27,13 +26,6 @@ export default function PutForSaleModal({
       const priceFormatted = parseEther(priceFor.toString());
 
       await listItem(collectionAddress, tokenId, priceFormatted);
-
-      await saveListedItem(
-        parseInt(tokenId),
-        wallet,
-        parseFloat(priceFor),
-        collectionAddress
-      );
 
       setCompletedAction(true);
     }

@@ -17,7 +17,7 @@ export default function ItemHistory({ historyItems }) {
     >
       {_width > 1024 ? (
         <table className="w-full text-left table-auto ">
-          <thead className="bg-gray-200 dark:bg-dark-2 p-2">
+          <thead className="bg-gray-200 dark:bg-dark-3 p-2">
             <tr className="p-2">
               <th scope="col" className="px-6 py-3">
                 Evento
