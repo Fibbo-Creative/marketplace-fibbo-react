@@ -14,18 +14,35 @@ export default function NftCard({ item, onClick }) {
         />
       </div>
       <div className="flex justify-between gap-2 items-center">
-        <div className="flex flex-col justify-center pt-2 pb-1">
-          <p className="text-xs">
-            <i>{item.collectionName}</i>
+        <div className="flex flex-col justify-center pt-2 gap-1 pb-1">
+          <p className="text-xs text-gray-400">
+            <i>{item.collection.name}</i>
           </p>
           <p>
             <b>{item.name}</b>
           </p>
         </div>
         {item.price && (
-          <div className="pt-2 flex gap-2 px-4 items-center">
-            <img src={wFTMicon} width={32} />
-            <div>{item.price} </div>
+          <div className="pt-2 pb-1 flex flex-col gap-1 items-end">
+            <p className="text-xs text-gray-400">
+              <i>Precio</i>
+            </p>
+            <div className="flex gap-2 flex gap-2 items-center">
+              <img src={wFTMicon} width={22} />
+              <div>{item.price} </div>
+            </div>
+          </div>
+        )}
+        {item.offer && !item.price && (
+          <div className="pt-2 pb-1 flex flex-col gap-1 items-end">
+            <p className="text-xs text-gray-400">
+              <i>Precio</i>
+            </p>
+            <div className="flex gap-2 flex gap-2 items-center">
+              <div className="text-sm text-gray-300">Ofertado por </div>
+              <img src={wFTMicon} width={22} />
+              <div>{item.offer.price} </div>
+            </div>
           </div>
         )}
       </div>

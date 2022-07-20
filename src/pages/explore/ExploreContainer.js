@@ -12,7 +12,7 @@ import { PageWithLoading } from "../../components/basic/PageWithLoading";
 
 export default function ExploreContainer() {
   const navigate = useNavigate();
-  const { getNftsForSale } = useApi();
+  const { getNftsForSale, getAllTokens } = useApi();
   const { wallet } = useAccount();
   const [allMarketItems, setAllMarketItems] = useState([]);
   const [visibleMarketItems, setVisibleMarketItems] = useState([]);
@@ -23,7 +23,7 @@ export default function ExploreContainer() {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const forSaleItems = await getNftsForSale();
+      const forSaleItems = await getAllTokens();
       setAllMarketItems(forSaleItems);
       setVisibleMarketItems(forSaleItems.slice(0, 12));
       setLoading(false);

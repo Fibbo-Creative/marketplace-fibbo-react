@@ -15,6 +15,7 @@ import { Icon } from "@iconify/react";
 import AdditionalContentModal from "../../../components/modals/AdditionalContentModal";
 import wFTMIcon from "../../../assets/WFTM.png";
 import { ItemDirectOffers } from "../../../components/ItemDirectOffers";
+import RemoveOfferModal from "../../../components/modals/RemoveOfferModal";
 const formatPriceInUsd = (price) => {
   let priceStr = price.toString().split(".");
   let finalPrice = `${priceStr[0]},${priceStr[1]}`;
@@ -33,13 +34,14 @@ export default function DetailProductInfo({
   loading,
 }) {
   const { wallet, connectToWallet } = useAccount();
-
+  const [myOffer, setMyOffer] = useState(null);
   const [openSellModal, setOpenSellModal] = useState(false);
   const [openBuyModal, setOpenBuyModal] = useState(false);
   const [openOfferModal, setOpenOfferModal] = useState(false);
   const [openChangePriceModal, setOpenChangePriceModal] = useState(false);
   const [openUnlistItemModal, setOpenUnlistItemModal] = useState(false);
   const [openAdditionalModal, setOpenAdditionalModal] = useState(false);
+  const [openCancelOfferModal, setOpenCancelOfferModal] = useState(false);
 
   const [coinPrice, setCoinPrice] = useState(1.2);
   const navigate = useNavigate();
@@ -55,11 +57,22 @@ export default function DetailProductInfo({
     setOpenBuyModal(true);
   };
 
+  const hasAnOffer = async () => {
+    console.log(offers);
+    let hasMyOffer = offers.find((offer) => offer.creator.wallet === wallet);
+    console.log(hasMyOffer);
+    if (hasMyOffer) {
+      setMyOffer(hasMyOffer);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       const CoinGeckoClient = new CoinGecko();
       let data = await CoinGeckoClient.simple.price({ ids: ["fantom"] });
       setCoinPrice(data.data.fantom.usd);
+
+      hasAnOffer();
     };
     fetchData();
   }, []);
@@ -144,18 +157,43 @@ export default function DetailProductInfo({
         {!loading && (
           <div className="flex flex-row gap-5">
             {isForSale && !isOwner && (
-              <ActionButton
-                size="small"
-                buttonAction={() => handleOpenBuyModal(true)}
-                text="Comprar NFT"
-              />
+              <>
+                <ActionButton
+                  size="small"
+                  buttonAction={() => handleOpenBuyModal(true)}
+                  text="Comprar NFT"
+                />
+                {!myOffer ? (
+                  <ActionButton
+                    size="small"
+                    buttonAction={() => setOpenOfferModal(true)}
+                    text="Realizar Oferta"
+                  />
+                ) : (
+                  <ActionButton
+                    size="small"
+                    buttonAction={() => setOpenCancelOfferModal(true)}
+                    text="Cancelar Oferta"
+                  />
+                )}
+              </>
             )}
             {!isForSale && !isOwner && (
-              <ActionButton
-                size="small"
-                buttonAction={() => setOpenOfferModal(true)}
-                text="Realizar Oferta"
-              />
+              <>
+                {!myOffer ? (
+                  <ActionButton
+                    size="small"
+                    buttonAction={() => setOpenOfferModal(true)}
+                    text="Realizar Oferta"
+                  />
+                ) : (
+                  <ActionButton
+                    size="small"
+                    buttonAction={() => setOpenCancelOfferModal(true)}
+                    text="Cancelar Oferta"
+                  />
+                )}
+              </>
             )}
             {isOwner && !isForSale && (
               <ActionButton
@@ -194,24 +232,54 @@ export default function DetailProductInfo({
         />
       )}
       {!isOwner && isForSale && (
-        <BuyItemModal
-          collectionAddress={collection}
-          itemId={tokenId}
-          tokenInfo={tokenInfo}
-          wallet={wallet}
-          showModal={openBuyModal}
-          handleCloseModal={() => setOpenBuyModal(false)}
-        />
+        <>
+          <BuyItemModal
+            collectionAddress={collection}
+            itemId={tokenId}
+            tokenInfo={tokenInfo}
+            wallet={wallet}
+            showModal={openBuyModal}
+            handleCloseModal={() => setOpenBuyModal(false)}
+          />
+          {!myOffer ? (
+            <MakeOfferModal
+              collection={collection}
+              tokenId={tokenId}
+              tokenInfo={tokenInfo}
+              wallet={wallet}
+              showModal={openOfferModal}
+              handleCloseModal={() => setOpenOfferModal(false)}
+            />
+          ) : (
+            <RemoveOfferModal
+              showModal={openCancelOfferModal}
+              handleCloseModal={() => setOpenCancelOfferModal(false)}
+              offer={myOffer}
+              wallet={wallet}
+            />
+          )}
+        </>
       )}
       {!isOwner && !isForSale && (
-        <MakeOfferModal
-          collection={collection}
-          tokenId={tokenId}
-          tokenInfo={tokenInfo}
-          wallet={wallet}
-          showModal={openOfferModal}
-          handleCloseModal={() => setOpenOfferModal(false)}
-        />
+        <>
+          {!myOffer ? (
+            <MakeOfferModal
+              collection={collection}
+              tokenId={tokenId}
+              tokenInfo={tokenInfo}
+              wallet={wallet}
+              showModal={openOfferModal}
+              handleCloseModal={() => setOpenOfferModal(false)}
+            />
+          ) : (
+            <RemoveOfferModal
+              showModal={openCancelOfferModal}
+              handleCloseModal={() => setOpenCancelOfferModal(false)}
+              offer={myOffer}
+              wallet={wallet}
+            />
+          )}
+        </>
       )}
       {isOwner && isForSale && (
         <>

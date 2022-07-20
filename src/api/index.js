@@ -71,6 +71,12 @@ export const useApi = () => {
 
   //#region Nfts
 
+  const getAllTokens = async () => {
+    const res = await marketplaceApi.get("nfts/allNfts");
+    console.log(res.data);
+    return res.data;
+  };
+
   const getNftsForSale = async () => {
     const res = await marketplaceApi.get("nfts/nftsForSale");
     return res.data;
@@ -208,6 +214,7 @@ export const useApi = () => {
     setProfileImg,
     setUsername,
     getNftsForSale,
+    getAllTokens,
     getNftInfo,
     getItemOffers,
     getCollectionInfo,

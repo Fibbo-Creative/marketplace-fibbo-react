@@ -15,7 +15,7 @@ const styles = {
   smallerContent:
     "w-[73px] h-[33px] text-xs py-2 px-3 flex items-center justify-center ",
   smallContent:
-    "w-[148px] h-[33px] py-2 px-3 flex items-center justify-center ",
+    "w-[148px] h-[33px] py-2 px-2 flex items-center justify-center ",
   largeContent:
     "w-[223px]  h-[38px] py-2.5 px-4  flex items-center justify-center",
 };
