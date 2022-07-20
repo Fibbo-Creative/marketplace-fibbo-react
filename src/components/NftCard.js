@@ -1,6 +1,15 @@
 import React from "react";
 import wFTMicon from "../assets/WFTM.png";
+
 export default function NftCard({ item, onClick }) {
+  const formatDate = () => {
+    const auctionInfo = item.auction;
+    const startTimeStamp = auctionInfo.startTime;
+    const endTimestamp = auctionInfo.endTime;
+    const period = endTimestamp - startTimeStamp;
+
+    return period / 3600 / 24;
+  };
   return (
     <div
       onClick={onClick}
@@ -42,6 +51,22 @@ export default function NftCard({ item, onClick }) {
               <div className="text-sm text-gray-300">Ofertado por </div>
               <img src={wFTMicon} width={22} />
               <div>{item.offer.price} </div>
+            </div>
+          </div>
+        )}
+        {item.auction && (
+          <div className="pt-2 pb-1 flex flex-col gap-1 items-end">
+            <p className="text-xs text-gray-400">
+              {item.auction.topBid ? <i>Puja maxima</i> : <i>Puja mínima</i>}
+            </p>
+            <div className="flex gap-2 flex gap-2 items-center">
+              <img src={wFTMicon} width={22} />
+              <div>
+                {item.auction.topBid ? item.auction.topBid : item.auction.bid}
+              </div>
+            </div>
+            <div className="text-xs text-gray-400">
+              Quedan {formatDate()} días
             </div>
           </div>
         )}

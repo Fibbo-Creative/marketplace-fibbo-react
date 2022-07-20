@@ -16,6 +16,7 @@ import AdditionalContentModal from "../../../components/modals/AdditionalContent
 import wFTMIcon from "../../../assets/WFTM.png";
 import { ItemDirectOffers } from "../../../components/ItemDirectOffers";
 import RemoveOfferModal from "../../../components/modals/RemoveOfferModal";
+import CreateAuctionModal from "../../../components/modals/CreateAuctionModal";
 const formatPriceInUsd = (price) => {
   let priceStr = price.toString().split(".");
   let finalPrice = `${priceStr[0]},${priceStr[1]}`;
@@ -31,7 +32,11 @@ export default function DetailProductInfo({
   isOwner,
   isForSale,
   listings,
+  isOnAuction,
+  auction,
   loading,
+  auctionInfo,
+  highestBid,
 }) {
   const { wallet, connectToWallet } = useAccount();
   const [myOffer, setMyOffer] = useState(null);
@@ -42,6 +47,7 @@ export default function DetailProductInfo({
   const [openUnlistItemModal, setOpenUnlistItemModal] = useState(false);
   const [openAdditionalModal, setOpenAdditionalModal] = useState(false);
   const [openCancelOfferModal, setOpenCancelOfferModal] = useState(false);
+  const [openCreateAuction, setOpenCreateAuction] = useState(false);
 
   const [coinPrice, setCoinPrice] = useState(1.2);
   const navigate = useNavigate();
@@ -129,105 +135,243 @@ export default function DetailProductInfo({
           <div>Ver contendido adicional</div>
         </div>
       )}
-      <div className="flex dark:bg-dark-2 flex-col justify-center flex-wrap border-grey border-2 p-3 rounded-md gap-3">
-        {isForSale && (
+      {isOnAuction ? (
+        <div className="flex dark:bg-dark-2 flex-col justify-center flex-wrap border-grey border-2 p-3 rounded-md gap-3">
           <>
             {loading ? (
               <div className="w-full h-full animate-pulse bg-gray-300"></div>
             ) : (
-              <div>
-                <p>Precio Actual</p>
+              <div className="flex flex-col gap-4">
                 <div className="flex flex-row items-center gap-3 ">
+                  <p>Precio Reservado</p>
                   <img width={32} src={wFTMIcon} alt="Fantom coin" />
-                  <p>{tokenInfo?.price} wFTM </p>
+                  <p>{auctionInfo?.reservePrice} wFTM </p>
                   <p className="text-gray-600 dark:text-gray-400 text-xs">
                     ($
                     {formatPriceInUsd(
-                      parseFloat(tokenInfo?.price * coinPrice).toFixed(3)
+                      parseFloat(auctionInfo?.reservePrice * coinPrice).toFixed(
+                        3
+                      )
                     )}
                     )
                   </p>
                 </div>
+                <div className="flex flex-row gap-6">
+                  <div>Puja mas alta: </div>
+                  <div>{highestBid ? highestBid.bid : "-"}</div>
+                </div>
+                {highestBid && (
+                  <div className="flex flex-row gap-6">
+                    <div>Realizada Por: </div>
+                    <div>{highestBid.bidder}</div>
+                  </div>
+                )}
               </div>
             )}
           </>
-        )}
-        {!loading && (
-          <div className="flex flex-row gap-5">
-            {isForSale && !isOwner && (
-              <>
-                <ActionButton
-                  size="small"
-                  buttonAction={() => handleOpenBuyModal(true)}
-                  text="Comprar NFT"
-                />
-                {!myOffer ? (
+
+          {!loading && (
+            <div className="flex flex-row gap-5">
+              {isForSale && !isOwner && (
+                <>
                   <ActionButton
                     size="small"
-                    buttonAction={() => setOpenOfferModal(true)}
-                    text="Realizar Oferta"
+                    buttonAction={() => handleOpenBuyModal(true)}
+                    text="Comprar NFT"
                   />
-                ) : (
+                  {!myOffer ? (
+                    <ActionButton
+                      size="small"
+                      buttonAction={() => setOpenOfferModal(true)}
+                      text="Realizar Oferta"
+                    />
+                  ) : (
+                    <ActionButton
+                      size="small"
+                      buttonAction={() => setOpenCancelOfferModal(true)}
+                      text="Cancelar Oferta"
+                    />
+                  )}
+                </>
+              )}
+              {!isForSale && !isOwner && (
+                <>
+                  {!myOffer ? (
+                    <>
+                      {isOnAuction ? (
+                        <ActionButton
+                          disabled={true}
+                          size="small"
+                          buttonAction={() => setOpenOfferModal(true)}
+                          text="Realizar Puja"
+                        />
+                      ) : (
+                        <ActionButton
+                          size="small"
+                          buttonAction={() => setOpenOfferModal(true)}
+                          text="Realizar Oferta"
+                        />
+                      )}
+                    </>
+                  ) : (
+                    <ActionButton
+                      size="small"
+                      buttonAction={() => setOpenCancelOfferModal(true)}
+                      text="Cancelar Oferta"
+                    />
+                  )}
+                </>
+              )}
+              {isOwner && !isForSale && !isOnAuction && (
+                <>
                   <ActionButton
                     size="small"
-                    buttonAction={() => setOpenCancelOfferModal(true)}
-                    text="Cancelar Oferta"
+                    buttonAction={() => setOpenSellModal(true)}
+                    text="Poner en Venta"
                   />
-                )}
-              </>
-            )}
-            {!isForSale && !isOwner && (
-              <>
-                {!myOffer ? (
                   <ActionButton
                     size="small"
-                    buttonAction={() => setOpenOfferModal(true)}
-                    text="Realizar Oferta"
+                    buttonAction={() => setOpenCreateAuction(true)}
+                    text="Subastar Item"
                   />
-                ) : (
+                </>
+              )}
+              {isOwner && isForSale && (
+                <div className="flex flex-col md:flex-row gap-3">
                   <ActionButton
                     size="small"
-                    buttonAction={() => setOpenCancelOfferModal(true)}
-                    text="Cancelar Oferta"
+                    buttonAction={() => setOpenChangePriceModal(true)}
+                    text="Cambiar Precio"
                   />
-                )}
-              </>
-            )}
-            {isOwner && !isForSale && (
-              <ActionButton
-                size="small"
-                buttonAction={() => setOpenSellModal(true)}
-                text="Poner en Venta"
-              />
-            )}
-            {isOwner && isForSale && (
-              <div className="flex flex-col md:flex-row gap-3">
-                <ActionButton
-                  size="small"
-                  buttonAction={() => setOpenChangePriceModal(true)}
-                  text="Cambiar Precio"
-                />
-                <ActionButton
-                  size="small"
-                  buttonAction={() => setOpenUnlistItemModal(true)}
-                  text="Quitar en venta"
-                />
-              </div>
-            )}
-          </div>
-        )}
-      </div>
+                  <ActionButton
+                    size="small"
+                    buttonAction={() => setOpenUnlistItemModal(true)}
+                    text="Quitar en venta"
+                  />
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="flex dark:bg-dark-2 flex-col justify-center flex-wrap border-grey border-2 p-3 rounded-md gap-3">
+          {isForSale && (
+            <>
+              {loading ? (
+                <div className="w-full h-full animate-pulse bg-gray-300"></div>
+              ) : (
+                <div>
+                  <p>Precio Actual</p>
+                  <div className="flex flex-row items-center gap-3 ">
+                    <img width={32} src={wFTMIcon} alt="Fantom coin" />
+                    <p>{tokenInfo?.price} wFTM </p>
+                    <p className="text-gray-600 dark:text-gray-400 text-xs">
+                      ($
+                      {formatPriceInUsd(
+                        parseFloat(tokenInfo?.price * coinPrice).toFixed(3)
+                      )}
+                      )
+                    </p>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+          {!loading && (
+            <div className="flex flex-row gap-5">
+              {isForSale && !isOwner && (
+                <>
+                  <ActionButton
+                    size="small"
+                    buttonAction={() => handleOpenBuyModal(true)}
+                    text="Comprar NFT"
+                  />
+                  {!myOffer ? (
+                    <ActionButton
+                      size="small"
+                      buttonAction={() => setOpenOfferModal(true)}
+                      text="Realizar Oferta"
+                    />
+                  ) : (
+                    <ActionButton
+                      size="small"
+                      buttonAction={() => setOpenCancelOfferModal(true)}
+                      text="Cancelar Oferta"
+                    />
+                  )}
+                </>
+              )}
+              {!isForSale && !isOwner && (
+                <>
+                  {!myOffer ? (
+                    <ActionButton
+                      size="small"
+                      buttonAction={() => setOpenOfferModal(true)}
+                      text="Realizar Oferta"
+                    />
+                  ) : (
+                    <ActionButton
+                      size="small"
+                      buttonAction={() => setOpenCancelOfferModal(true)}
+                      text="Cancelar Oferta"
+                    />
+                  )}
+                </>
+              )}
+              {isOwner && !isForSale && (
+                <>
+                  <ActionButton
+                    size="small"
+                    buttonAction={() => setOpenSellModal(true)}
+                    text="Poner en Venta"
+                  />
+                  <ActionButton
+                    size="small"
+                    buttonAction={() => setOpenCreateAuction(true)}
+                    text="Subastar Item"
+                  />
+                </>
+              )}
+              {isOwner && isForSale && (
+                <div className="flex flex-col md:flex-row gap-3">
+                  <ActionButton
+                    size="small"
+                    buttonAction={() => setOpenChangePriceModal(true)}
+                    text="Cambiar Precio"
+                  />
+                  <ActionButton
+                    size="small"
+                    buttonAction={() => setOpenUnlistItemModal(true)}
+                    text="Quitar en venta"
+                  />
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
       <div className="">
         <ItemDirectOffers isOwner={isOwner} offers={offers} />
       </div>
       {isOwner && !isForSale && (
-        <PutForSaleModal
-          collectionAddress={collection}
-          tokenId={tokenId}
-          wallet={wallet}
-          showModal={openSellModal}
-          handleCloseModal={() => setOpenSellModal(false)}
-        />
+        <>
+          <PutForSaleModal
+            collectionAddress={collection}
+            tokenId={tokenId}
+            wallet={wallet}
+            showModal={openSellModal}
+            handleCloseModal={() => setOpenSellModal(false)}
+          />
+          <CreateAuctionModal
+            collection={collection}
+            tokenId={tokenId}
+            wallet={wallet}
+            tokenInfo={tokenInfo}
+            showModal={openCreateAuction}
+            handleCloseModal={() => setOpenCreateAuction(false)}
+          />
+        </>
       )}
       {!isOwner && isForSale && (
         <>

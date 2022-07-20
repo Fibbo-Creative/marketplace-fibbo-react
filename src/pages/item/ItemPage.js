@@ -13,6 +13,7 @@ import { formatEther } from "ethers/lib/utils";
 import fibboLogo from "../../assets/logoNavbarSmall.png";
 import { useDefaultCollection } from "../../contracts/collection";
 import { useAuction } from "../../contracts/auction";
+import { ADDRESS_ZERO } from "../../constants/networks";
 
 export default function ItemPage() {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ export default function ItemPage() {
   } = useApi();
   const { getListingInfo } = useMarketplace();
   const { getTotalItems } = useDefaultCollection();
-
+  const { getAuctions, getHighestBid } = useAuction();
   const [tokenInfo, setTokenInfo] = useState(null);
   const [tokenHistoryInfo, setTokenHistoryInfo] = useState([]);
   const [chainInfo, setChainInfo] = useState({});
@@ -37,6 +38,9 @@ export default function ItemPage() {
   const [profileOwnerData, setProfileOwnerData] = useState(null);
   const [isOwner, setIsOwner] = useState(false);
   const [isForSale, setIsForSale] = useState(false);
+  const [isOnAuction, setIsOnAuction] = useState(false);
+  const [auctionInfo, setAuctionInfo] = useState(null);
+  const [highestBid, setHighestBid] = useState(null);
 
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -52,6 +56,19 @@ export default function ItemPage() {
       const offers = await getItemOffers(collection, tokenId);
 
       setOffers(offers);
+
+      const auction = await getAuctions(collection, tokenId);
+
+      const isOnAuction = auction[0] !== ADDRESS_ZERO;
+
+      setIsOnAuction(isOnAuction);
+      if (isOnAuction) {
+        setAuctionInfo(auction);
+        const _highestBid = await getHighestBid(collection, tokenId);
+        if (_highestBid.bidder !== ADDRESS_ZERO) {
+          setHighestBid(_highestBid);
+        }
+      }
 
       const tokenHistoryResponse = await getNftHistory(collection, tokenId);
       setTokenHistoryInfo(tokenHistoryResponse);
@@ -109,6 +126,9 @@ export default function ItemPage() {
               listings={listings}
               loading={loading}
               offers={offers}
+              isOnAuction={isOnAuction}
+              auctionInfo={auctionInfo}
+              highestBid={highestBid}
             />
 
             <DetailInfo properties={properties} chainInfo={chainInfo} />
