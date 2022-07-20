@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import React, { useEffect, useState } from "react";
-import { parseEther } from "ethers/lib/utils";
+import { formatEther, parseEther } from "ethers/lib/utils";
 import ActionButton from "../ActionButton";
 import { useMarketplace } from "../../contracts/market";
 import useProvider from "../../hooks/useProvider";
@@ -8,6 +8,7 @@ import { useApi } from "../../api";
 import ReactTooltip from "react-tooltip";
 import { BasicModal } from "./BasicModal";
 import { Check } from "../lottie/Check";
+import { useWFTMContract } from "../../contracts/wftm";
 
 export default function BuyItemModal({
   children,
@@ -18,15 +19,12 @@ export default function BuyItemModal({
   tokenInfo,
   wallet,
 }) {
-  const [walletBalance, setWalletBalance] = useState(0);
   const [completedAction, setCompletedAction] = useState(false);
-  const { buyItem } = useMarketplace();
-  const { getWalletBalance } = useProvider();
+  const [wftmBalance, setWftmBalance] = useState(0);
 
-  const checkBalance = async () => {
-    let balance = await getWalletBalance(wallet);
-    setWalletBalance(balance);
-  };
+  const { buyItem } = useMarketplace();
+  const { getWFTMBalance } = useWFTMContract();
+
   const buyItemAction = async () => {
     try {
       //en el contrato del marketplace -> createMarketItem
@@ -44,6 +42,15 @@ export default function BuyItemModal({
     }
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      if (wallet) {
+        const walletBalanceWFTM = await getWFTMBalance(wallet);
+        setWftmBalance(formatEther(walletBalanceWFTM));
+      }
+    };
+    fetchData();
+  });
   return (
     <BasicModal
       title="Comprar NFT"
@@ -97,16 +104,16 @@ export default function BuyItemModal({
                     </div>
 
                     <ActionButton
-                      disabled={false}
+                      disabled={tokenInfo?.price > wftmBalance}
                       size="large"
                       variant={"contained"}
                       text="Comprar Ítem"
                       buttonAction={(e) => buyItemAction()}
                     />
 
-                    {walletBalance < tokenInfo?.price && (
+                    {wftmBalance < tokenInfo?.price && (
                       <div className="text-xs text-red-700">
-                        Insuficientes FTM para comprar!
+                        Insuficientes WFTM para comprar!
                       </div>
                     )}
                   </div>

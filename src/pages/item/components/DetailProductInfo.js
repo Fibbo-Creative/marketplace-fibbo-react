@@ -58,9 +58,7 @@ export default function DetailProductInfo({
   };
 
   const hasAnOffer = async () => {
-    console.log(offers);
     let hasMyOffer = offers.find((offer) => offer.creator.wallet === wallet);
-    console.log(hasMyOffer);
     if (hasMyOffer) {
       setMyOffer(hasMyOffer);
     }

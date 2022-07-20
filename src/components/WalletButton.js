@@ -51,6 +51,7 @@ export default function WalletButton({
       )}
       <WrappedFTMModal
         showModal={openStation}
+        wallet={wallet}
         handleCloseModal={() => setOpenStation(false)}
       />
     </div>

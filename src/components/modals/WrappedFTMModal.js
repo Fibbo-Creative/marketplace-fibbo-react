@@ -1,11 +1,14 @@
 import { Icon } from "@iconify/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ActionButton from "../ActionButton";
 import { BasicModal } from "./BasicModal";
 import { Check } from "../lottie/Check";
 import { useWFTMContract } from "../../contracts/wftm";
 import { ethers } from "ethers";
 import { useNavigate } from "react-router-dom";
+import useProvider from "../../hooks/useProvider";
+import { formatEther, parseEther, _fetchData } from "ethers/lib/utils";
+import CoinGecko from "coingecko-api";
 
 export default function WrappedFTMModal({
   children,
@@ -18,6 +21,33 @@ export default function WrappedFTMModal({
   const [ftmAmount, setFtmAmount] = useState(0);
   const [completedAction, setCompletedAction] = useState(false);
   const [fromFTM, setFromFTM] = useState(true);
+  const [ftmBalance, setFtmBalance] = useState(0);
+  const [WftmBalance, setWFtmBalance] = useState(0);
+  const [coinPrice, setCoinPrice] = useState(0);
+
+  const { getWalletBalance } = useProvider();
+
+  const handleInputChange = (value) => {
+    setFtmAmount(parseFloat(value));
+  };
+
+  const handleChangeFromFTM = (value) => {
+    setFtmAmount(0);
+    setFromFTM(!fromFTM);
+  };
+
+  const formatPrice = () => {
+    let price = ftmAmount * coinPrice;
+    if (!ftmAmount) {
+      return "$0.00";
+    }
+    console.log(price);
+    return "$" + price.toFixed(3).toString();
+  };
+
+  const formatBalance = () => {
+    return parseFloat(ftmBalance).toFixed(3);
+  };
 
   const handleWrapFTM = async () => {
     try {
@@ -49,6 +79,24 @@ export default function WrappedFTMModal({
     handleCloseModal();
     navigate("/explore");
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (wallet) {
+        const walletBalanceFTM = await getWalletBalance(wallet);
+        setFtmBalance(walletBalanceFTM);
+
+        const walletBalanceWFTM = await getWFTMBalance(wallet);
+        setWFtmBalance(formatEther(walletBalanceWFTM));
+
+        const CoinGeckoClient = new CoinGecko();
+        let data = await CoinGeckoClient.simple.price({ ids: ["fantom"] });
+        setCoinPrice(data.data.fantom.usd);
+      }
+    };
+    fetchData();
+  }, [showModal]);
+
   return (
     <BasicModal
       title="Esatación FTM / WFTM"
@@ -61,22 +109,34 @@ export default function WrappedFTMModal({
           {fromFTM ? (
             <div className="my-10 mx-8 flex flex-col gap-10">
               <div>
-                <div>FTM</div>
+                <div className="flex gap-10">FTM</div>
                 <div className="flex">
                   <input
                     value={ftmAmount}
-                    onChange={(e) => setFtmAmount(e.target.value)}
-                    className="border w-full p-2 text-end dark:bg-dark-4"
+                    onChange={(e) => handleInputChange(e.target.value)}
+                    className={` border ${
+                      ftmAmount > ftmBalance && "border-red-600"
+                    } w-full p-2 text-end bg-transparent  outline-0`}
                     type="number"
                   />
-                  <div className="border w-24 dark:bg-dark-4 text-gray-400 flex items-center justify-center">
-                    <span>$0.00</span>
+                  <div
+                    className={`border ${
+                      ftmAmount > ftmBalance && "border-red-600"
+                    }
+                     w-24 dark:bg-dark-4 text-gray-400 flex items-center justify-center`}
+                  >
+                    <span>{formatPrice()}</span>
                   </div>
                 </div>
+                {ftmAmount > ftmBalance && (
+                  <div className="text-red-600 text-sm">
+                    No tienes suficientes FTM para convertir
+                  </div>
+                )}
               </div>
               <div className="h-8 flex justify-center">
                 <div
-                  onClick={() => setFromFTM(!fromFTM)}
+                  onClick={() => handleChangeFromFTM()}
                   className="border h-fit text-gray-400 border-gray-400 p-2 rounded-full"
                 >
                   <Icon icon="charm:swap-vertical" width={"24px"} />
@@ -87,11 +147,15 @@ export default function WrappedFTMModal({
                 <div className="flex">
                   <input
                     value={ftmAmount}
-                    onChange={(e) => setFtmAmount(e.target.value)}
-                    className="border w-full p-2 text-end dark:bg-dark-4"
+                    onChange={(e) => handleInputChange(e.target.value)}
+                    className={`border 
+                     w-full p-2 text-end dark:bg-dark-4`}
                     type="number"
                   />
-                  <div className="border w-24 dark:bg-dark-4 text-gray-400  flex items-center justify-center">
+                  <div
+                    className={`border w-24
+                     dark:bg-dark-4 text-gray-400  flex items-center justify-center`}
+                  >
                     <span>$0.00</span>
                   </div>
                 </div>
@@ -104,18 +168,29 @@ export default function WrappedFTMModal({
                 <div className="flex">
                   <input
                     value={ftmAmount}
-                    onChange={(e) => setFtmAmount(e.target.value)}
-                    className="border w-full p-2 text-end dark:bg-dark-4"
+                    onChange={(e) => handleInputChange(e.target.value)}
+                    className={`border ${
+                      ftmAmount > WftmBalance && "border-red-600"
+                    } w-full p-2 text-end dark:bg-dark-4 outline-0`}
                     type="number"
                   />
-                  <div className="border w-24 dark:bg-dark-4 text-gray-400  flex items-center justify-center">
+                  <div
+                    className={`border  ${
+                      ftmAmount > WftmBalance && "border-red-600"
+                    } w-24 dark:bg-dark-4 text-gray-400  flex items-center justify-center`}
+                  >
                     <span>$0.00</span>
                   </div>
                 </div>
+                {ftmAmount > WftmBalance && (
+                  <div className="text-red-600 text-sm">
+                    No tienes suficientes WFTM para retirar
+                  </div>
+                )}
               </div>
               <div className="h-8 flex justify-center">
                 <div
-                  onClick={() => setFromFTM(!fromFTM)}
+                  onClick={() => handleChangeFromFTM()}
                   className="border h-fit text-gray-400 border-gray-400 p-2 rounded-full"
                 >
                   <Icon icon="charm:swap-vertical" width={"24px"} />
@@ -126,8 +201,8 @@ export default function WrappedFTMModal({
                 <div className="flex">
                   <input
                     value={ftmAmount}
-                    onChange={(e) => setFtmAmount(e.target.value)}
-                    className="border w-full p-2 text-end dark:bg-dark-4"
+                    onChange={(e) => handleInputChange(e.target.value)}
+                    className="border w-full p-2 justify-end dark:bg-dark-4 outline-0"
                     type="number"
                   />
                   <div className="border w-24 dark:bg-dark-4 text-gray-400 flex items-center justify-center">
@@ -139,6 +214,9 @@ export default function WrappedFTMModal({
           )}
           <div className="w-full flex items-center justify-center ">
             <ActionButton
+              disabled={
+                fromFTM ? ftmAmount > ftmBalance : ftmAmount > WftmBalance
+              }
               buttonAction={fromFTM ? handleWrapFTM : handleUnwrapFTM}
               text={fromFTM ? "Cambiar a wFTM" : "Retirar FTM"}
               size="large"
