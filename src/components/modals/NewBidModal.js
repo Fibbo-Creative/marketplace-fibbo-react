@@ -10,6 +10,7 @@ import { Check } from "../lottie/Check";
 import { useWFTMContract } from "../../contracts/wftm";
 import { useAuction } from "../../contracts/auction";
 import { isMobile } from "react-device-detect";
+import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
 
 export default function MakeBidModal({
   collection,
@@ -106,35 +107,20 @@ export default function MakeBidModal({
                 </div>
               )}
             </div>
-            <div>Que precio quieres pujar?</div>
-            <div
-              className={`flex border ${
-                bidAmmount > wftmBalance && "border-red-600"
+            <Erc20AmountInput
+              label={"Que precio quieres pujar?"}
+              value={bidAmmount}
+              onChange={(e) => setBidAmmount(e.target.value)}
+              error={
+                bidAmmount > wftmBalance ||
+                (highestBid && bidAmmount < highestBid.bid)
+              }
+              errorMessage={`${
+                highestBid && bidAmmount < highestBid.bid
+                  ? "La puja debe ser mayor a la actual"
+                  : "No tienes suficientes WFTM"
               }`}
-            >
-              <div className="flex w-[100px] bg-gray-300 justify-evenly items-center">
-                <img width={32} src={wFTMicon} alt="Fantom coin" />
-                wFTM
-              </div>
-              <input
-                value={bidAmmount}
-                onChange={(e) => handleChange(e.target.value)}
-                className={`w-full p-2 text-end dark:bg-dark-4 outline-0 ${
-                  bidAmmount > wftmBalance && "text-red-600"
-                }`}
-                type="number"
-              />
-            </div>
-            {bidAmmount > wftmBalance && (
-              <div className="text-red-600 text-sm">
-                No tienes suficientes WFTM para realizar la oferta
-              </div>
-            )}
-            {highestBid && bidAmmount < highestBid.bid && (
-              <div className="text-red-600 text-sm">
-                La puja debe ser mayor a la actual
-              </div>
-            )}
+            />
           </div>
           <div className="w-full flex items-center justify-center">
             <ActionButton

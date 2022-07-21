@@ -9,6 +9,8 @@ import { formatEther, parseEther } from "ethers/lib/utils";
 import { Check } from "../lottie/Check";
 import { useWFTMContract } from "../../contracts/wftm";
 import { useAuction } from "../../contracts/auction";
+import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
+import { DateTimeInput } from "../inputs/DateTimeInput";
 
 export default function CreateAuctionModal({
   collection,
@@ -82,55 +84,26 @@ export default function CreateAuctionModal({
     >
       {!completedAction ? (
         <div className="my-10 mx-8 flex flex-col gap-10">
-          <div className="flex flex-col gap-4">
-            <div>Que precio quieres asegurar?</div>
-            <div className={`flex border `}>
-              <div className="flex w-[100px] bg-gray-300 justify-evenly items-center">
-                <img width={32} src={wFTMicon} alt="Fantom coin" />
-                wFTM
-              </div>
-              <input
-                value={reservePrice}
-                onChange={(e) => setReservePrice(e.target.value)}
-                className={`w-full p-2 text-end dark:bg-dark-4 outline-0`}
-                type="number"
-              />
-            </div>
-          </div>
-          <div>
-            <div>Fecha de Inicio</div>
-            <div className={`flex justify-between border dark:bg-dark-4 `}>
-              <input
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                className={`w-30 p-2 text-end dark:bg-dark-4 outline-0 `}
-                type="date"
-              />
-              <input
-                value={startHour}
-                onChange={(e) => setStartHour(e.target.value)}
-                className={`w-30 p-2 text-end dark:bg-dark-4 outline-0`}
-                type="time"
-              />
-            </div>
-          </div>
-          <div>
-            <div>Fecha de Fin</div>
-            <div className={`flex justify-between border dark:bg-dark-4 `}>
-              <input
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                className={`w-30 p-2 text-end dark:bg-dark-4 outline-0 `}
-                type="date"
-              />
-              <input
-                value={endHour}
-                onChange={(e) => setEndHour(e.target.value)}
-                className={`w-30 p-2 text-end dark:bg-dark-4 outline-0`}
-                type="time"
-              />
-            </div>
-          </div>
+          <Erc20AmountInput
+            label={"Que precio quieres asegurar?"}
+            value={reservePrice}
+            onChange={(e) => setReservePrice(e.target.value)}
+          />
+          <DateTimeInput
+            label={"Fecha de Inicio"}
+            valueDate={startDate}
+            valueHour={startHour}
+            onChangeDate={(e) => setStartDate(e.target.value)}
+            onChange={(e) => setStartHour(e.target.value)}
+          />
+          <DateTimeInput
+            label={"Fecha de Inicio"}
+            valueDate={endDate}
+            valueHour={endHour}
+            onChangeDate={(e) => setEndDate(e.target.value)}
+            onChange={(e) => setEndHour(e.target.value)}
+          />
+
           <div className="w-full flex items-center justify-center">
             <ActionButton
               text="Poner en subasta"

@@ -8,6 +8,8 @@ import { ethers } from "ethers";
 import { formatEther, parseEther } from "ethers/lib/utils";
 import { Check } from "../lottie/Check";
 import { useWFTMContract } from "../../contracts/wftm";
+import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
+import { DateTimeInput } from "../inputs/DateTimeInput";
 export default function MakeOfferModal({
   collection,
   showModal,
@@ -79,53 +81,20 @@ export default function MakeOfferModal({
       {!completedAction ? (
         <div className="my-10 mx-8 flex flex-col gap-10">
           <div className="flex flex-col gap-4">
-            <div>Que precio quieres ofertar?</div>
-            <div
-              className={`flex border ${
-                offerPrice > wftmBalance && "border-red-600"
-              }`}
-            >
-              <div className="flex w-[100px] bg-gray-300 justify-evenly items-center">
-                <img width={32} src={wFTMicon} alt="Fantom coin" />
-                wFTM
-              </div>
-              <input
-                value={offerPrice}
-                onChange={(e) => setOfferPrice(e.target.value)}
-                className={`w-full p-2 text-end dark:bg-dark-4 outline-0 ${
-                  offerPrice > wftmBalance && "text-red-600"
-                }`}
-                type="number"
-              />
-            </div>
-            <div>Fecha de expiración</div>
-            <div
-              className={`flex justify-between border dark:bg-dark-4 ${
-                offerPrice > wftmBalance && "border-red-600"
-              }`}
-            >
-              <input
-                value={expireDate}
-                onChange={(e) => handleDatePicked(e.target.value)}
-                className={`w-30 p-2 text-end dark:bg-dark-4 outline-0 ${
-                  offerPrice > wftmBalance && "text-red-600"
-                }`}
-                type="date"
-              />
-              <input
-                value={expireHour}
-                onChange={(e) => handleHourPicked(e.target.value)}
-                className={`w-30 p-2 text-end dark:bg-dark-4 outline-0 ${
-                  offerPrice > wftmBalance && "text-red-600"
-                }`}
-                type="time"
-              />
-            </div>
-            {offerPrice > wftmBalance && (
-              <div className="text-red-600 text-sm">
-                No tienes suficientes WFTM para realizar la oferta
-              </div>
-            )}
+            <Erc20AmountInput
+              label={"Que precio quieres ofertar?"}
+              value={offerPrice}
+              onChange={(e) => setOfferPrice(e.target.value)}
+              error={offerPrice > wftmBalance}
+              errorMessage={"No tienes suficientes WFTM"}
+            />
+            <DateTimeInput
+              label={"Fecha de Inicio"}
+              valueDate={expireDate}
+              valueHour={expireHour}
+              onChangeDate={(e) => setExpireDate(e.target.value)}
+              onChange={(e) => setExpireHour(e.target.value)}
+            />
           </div>
           <div className="w-full flex items-center justify-center">
             <ActionButton

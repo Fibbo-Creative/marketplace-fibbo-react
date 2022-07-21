@@ -7,6 +7,7 @@ import { useApi } from "../../api";
 import { BasicModal } from "./BasicModal";
 import { Check } from "../lottie/Check";
 import wFTMicon from "../../assets/WFTM.png";
+import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
 
 export default function PutForSaleModal({
   children,
@@ -39,21 +40,11 @@ export default function PutForSaleModal({
     >
       {!completedAction ? (
         <div className="my-10 mx-8 flex flex-col gap-10">
-          <div>
-            <div>Precio</div>
-            <div className="flex">
-              <div className="flex w-[100px] bg-gray-300  justify-evenly items-center">
-                <img width={32} src={wFTMicon} alt="Fantom coin" />
-                FTM
-              </div>
-              <input
-                value={priceFor}
-                onChange={(e) => setPriceFor(e.target.value)}
-                className="border w-full p-2 text-end dark:bg-dark-4"
-                type="number"
-              />
-            </div>
-          </div>
+          <Erc20AmountInput
+            label={"Precio"}
+            value={priceFor}
+            onChange={(e) => setPriceFor(e.target.value)}
+          />
           <div className="w-full flex items-center justify-center">
             <ActionButton
               variant="contained"
