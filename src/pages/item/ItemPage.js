@@ -54,18 +54,22 @@ export default function ItemPage() {
       setTokenInfo(tokenInfoResponse);
 
       const offers = await getItemOffers(collection, tokenId);
-
+      console.log(offers);
       setOffers(offers);
 
       const auction = await getAuctions(collection, tokenId);
 
-      const isOnAuction = auction[0] !== ADDRESS_ZERO;
-
+      const isOnAuction = auction.owner !== ADDRESS_ZERO;
       setIsOnAuction(isOnAuction);
       if (isOnAuction) {
         setAuctionInfo(auction);
-        const _highestBid = await getHighestBid(collection, tokenId);
+        let _highestBid = await getHighestBid(collection, tokenId);
         if (_highestBid.bidder !== ADDRESS_ZERO) {
+          const bidderProfile = await getProfileInfo(_highestBid.bidder);
+          _highestBid = {
+            ..._highestBid,
+            bidder: bidderProfile,
+          };
           setHighestBid(_highestBid);
         }
       }

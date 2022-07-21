@@ -8,7 +8,7 @@ export default function NftCard({ item, onClick }) {
     const endTimestamp = auctionInfo.endTime;
     const period = endTimestamp - startTimeStamp;
 
-    return period / 3600 / 24;
+    return parseInt(period / 3600 / 24);
   };
   return (
     <div

@@ -59,7 +59,6 @@ export const useMarketplace = () => {
     const allowance = await erc20.allowance(buyer, marketContract.address);
 
     if (allowance.lt(price)) {
-      console.log("NOTENOUGH ALLOWANCE");
       const tx = await erc20.approve(marketContract.address, price);
       await tx.wait();
     }
@@ -117,7 +116,6 @@ export const useMarketplace = () => {
       tokenId,
       owner
     );
-    console.log(listingInfo);
 
     const formatted = {
       payToken: listingInfo[0],
@@ -139,7 +137,6 @@ export const useMarketplace = () => {
 
     const allowance = await erc20.allowance(buyer, marketContract.address);
     if (allowance.lt(offerPrice)) {
-      console.log("NOTENOUGH ALLOWANCE");
       const tx = await erc20.approve(marketContract.address, offerPrice);
       await tx.wait();
     }

@@ -41,7 +41,6 @@ export default function WrappedFTMModal({
     if (!ftmAmount) {
       return "$0.00";
     }
-    console.log(price);
     return "$" + price.toFixed(3).toString();
   };
 
@@ -51,12 +50,14 @@ export default function WrappedFTMModal({
 
   const handleWrapFTM = async () => {
     try {
-      const price = ethers.utils.parseEther(ftmAmount);
+      const price = ethers.utils.parseEther(ftmAmount.toString());
       if (fromFTM) {
         await wrapFTM(price, wallet);
         setCompletedAction(true);
       }
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const handleUnwrapFTM = async () => {

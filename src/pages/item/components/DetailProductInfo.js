@@ -17,6 +17,8 @@ import wFTMIcon from "../../../assets/WFTM.png";
 import { ItemDirectOffers } from "../../../components/ItemDirectOffers";
 import RemoveOfferModal from "../../../components/modals/RemoveOfferModal";
 import CreateAuctionModal from "../../../components/modals/CreateAuctionModal";
+import MakeBidModal from "../../../components/modals/NewBidModal";
+import { isMobile } from "web3modal";
 const formatPriceInUsd = (price) => {
   let priceStr = price.toString().split(".");
   let finalPrice = `${priceStr[0]},${priceStr[1]}`;
@@ -48,9 +50,29 @@ export default function DetailProductInfo({
   const [openAdditionalModal, setOpenAdditionalModal] = useState(false);
   const [openCancelOfferModal, setOpenCancelOfferModal] = useState(false);
   const [openCreateAuction, setOpenCreateAuction] = useState(false);
+  const [openBidModal, setOpenBidModal] = useState(false);
 
   const [coinPrice, setCoinPrice] = useState(1.2);
   const navigate = useNavigate();
+
+  const formatDate = () => {
+    const startTimeStamp = auctionInfo.startTime;
+    const endTimestamp = auctionInfo.endTime;
+    const period = endTimestamp - startTimeStamp;
+
+    return Math.round(period / 3600 / 24);
+  };
+
+  const getEndDate = () => {
+    var date = new Date(auctionInfo.endTime * 1000);
+    let _date = date.toLocaleDateString();
+    let _hours = date.toLocaleTimeString();
+    console.log(_date, _hours);
+
+    var formattedTime = _date + ", " + _hours.substring(0, _hours.length - 3);
+
+    return formattedTime;
+  };
 
   const redirectToProfile = () => {
     navigate(`/profile/${tokenInfo.owner}`);
@@ -141,31 +163,56 @@ export default function DetailProductInfo({
             {loading ? (
               <div className="w-full h-full animate-pulse bg-gray-300"></div>
             ) : (
-              <div className="flex flex-col gap-4">
-                <div className="flex flex-row items-center gap-3 ">
-                  <p>Precio Reservado</p>
-                  <img width={32} src={wFTMIcon} alt="Fantom coin" />
-                  <p>{auctionInfo?.reservePrice} wFTM </p>
-                  <p className="text-gray-600 dark:text-gray-400 text-xs">
-                    ($
-                    {formatPriceInUsd(
-                      parseFloat(auctionInfo?.reservePrice * coinPrice).toFixed(
-                        3
+              <div className="">
+                <div className="pt-2">
+                  La subasta termina en {formatDate()} días ({getEndDate()})
+                </div>
+                <div className="flex flex-col gap-4 border-t mt-2 pt-5 border-b pb-5 ">
+                  <div className="flex flex-row items-center gap-3 ">
+                    <p>Precio Reservado</p>
+                    <img width={32} src={wFTMIcon} alt="Fantom coin" />
+                    <p>{auctionInfo?.reservePrice} wFTM </p>
+                    <p className="text-gray-600 dark:text-gray-400 text-xs">
+                      ($
+                      {formatPriceInUsd(
+                        parseFloat(
+                          auctionInfo?.reservePrice * coinPrice
+                        ).toFixed(3)
+                      )}
                       )
-                    )}
-                    )
-                  </p>
-                </div>
-                <div className="flex flex-row gap-6">
-                  <div>Puja mas alta: </div>
-                  <div>{highestBid ? highestBid.bid : "-"}</div>
-                </div>
-                {highestBid && (
-                  <div className="flex flex-row gap-6">
-                    <div>Realizada Por: </div>
-                    <div>{highestBid.bidder}</div>
+                    </p>
                   </div>
-                )}
+                  <div className="flex flex-row gap-6">
+                    <div>Puja mas alta: </div>
+                    <div>{highestBid ? highestBid.bid : "-"}</div>
+                  </div>
+                  {highestBid && (
+                    <div className="flex flex-row gap-6 items-center">
+                      <div>Realizada Por: </div>
+                      <div className="flex gap-2 items-center">
+                        <img
+                          className="rounded-full"
+                          width={32}
+                          src={highestBid.bidder.profileImg}
+                          alt={`from-${highestBid.bidder._id}-img`}
+                        />
+                        <p
+                          className="text-primary-2 underline cursor-pointer"
+                          onClick={() =>
+                            isMobile
+                              ? navigate(`/profile/${highestBid.bidder.wallet}`)
+                              : window.open(
+                                  `/profile/${highestBid.bidder.wallet}`,
+                                  "_blank"
+                                )
+                          }
+                        >
+                          {highestBid.bidder.username}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </>
@@ -200,9 +247,8 @@ export default function DetailProductInfo({
                     <>
                       {isOnAuction ? (
                         <ActionButton
-                          disabled={true}
                           size="small"
-                          buttonAction={() => setOpenOfferModal(true)}
+                          buttonAction={() => setOpenBidModal(true)}
                           text="Realizar Puja"
                         />
                       ) : (
@@ -422,6 +468,17 @@ export default function DetailProductInfo({
             />
           )}
         </>
+      )}
+      {!isOwner && isOnAuction && (
+        <MakeBidModal
+          collection={collection}
+          tokenId={tokenId}
+          showModal={openBidModal}
+          handleCloseModal={(e) => setOpenBidModal(false)}
+          highestBid={highestBid}
+          auctionInfo={auctionInfo}
+          wallet={wallet}
+        />
       )}
       {isOwner && isForSale && (
         <>

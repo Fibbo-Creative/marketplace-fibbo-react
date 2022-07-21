@@ -73,7 +73,6 @@ export const useApi = () => {
 
   const getAllTokens = async () => {
     const res = await marketplaceApi.get("nfts/allNfts");
-    console.log(res.data);
     return res.data;
   };
 

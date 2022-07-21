@@ -28,6 +28,16 @@ export const ItemDirectOffers = ({ offers, isOwner }) => {
     setShowRemoveOffer(true);
   };
 
+  const formatDate = (offer) => {
+    const deadline = offer.deadline;
+
+    const date = new Date(deadline * 1000).toLocaleString();
+
+    console.log(date);
+
+    return date;
+  };
+
   return (
     <DropDown
       opened={true}
@@ -82,7 +92,7 @@ export const ItemDirectOffers = ({ offers, isOwner }) => {
                       </div>
                     </td>
                     <td className="px-6 py-4">{offer.price} FTM</td>
-                    <td className="px-6 py-4">NEVER</td>
+                    <td className="px-6 py-4">{formatDate(offer)}</td>
                     {isOwner && (
                       <td className="px-6 py-4 flex flex-col gap-2 text-xs">
                         <ActionButton

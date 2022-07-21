@@ -13,6 +13,7 @@ const WFTM_ADDRESS = Contracts[CHAIN].wftmAddress;
 
 const formatAuction = (auctionData) => {
   return {
+    owner: auctionData.owner,
     reservePrice: formatEther(auctionData.reservePrice),
     payToken: auctionData.payToken,
     startTime: auctionData.startTime.toNumber(),
@@ -111,11 +112,32 @@ export const useAuction = () => {
     await createAuctionTx.wait();
   };
 
+  const makeBid = async (bidder, collection, tokenId, bidAmount) => {
+    const auctionContract = await getAuctionContract();
+    const erc20 = await getERC20Contract(WFTM_ADDRESS);
+
+    const allowance = await erc20.allowance(bidder, auctionContract.address);
+
+    if (allowance.lt(bidAmount)) {
+      const tx = await erc20.approve(auctionContract.address, bidAmount);
+      await tx.wait();
+    }
+
+    const bidTx = await auctionContract.placeBid(
+      collection,
+      tokenId,
+      bidAmount
+    );
+
+    await bidTx.wait();
+  };
+
   return {
     getContractAddress,
     getAuctionContract,
     getAuctions,
     createAuction,
     getHighestBid,
+    makeBid,
   };
 };

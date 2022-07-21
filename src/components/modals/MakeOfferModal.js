@@ -21,14 +21,15 @@ export default function MakeOfferModal({
   const [offerPrice, setOfferPrice] = useState(0);
   const [completedAction, setCompletedAction] = useState(false);
   const [wftmBalance, setWftmBalance] = useState(0);
+  const [expireDate, setExpireDate] = useState(0);
+  const [expireHour, setExpireHour] = useState(0);
+
   const { getWFTMBalance } = useWFTMContract();
   const handleMakeOffer = async () => {
-    var firstDay = new Date();
-    var endTime = new Date(firstDay.getTime() + 7 * 24 * 60 * 60 * 1000);
-
-    const deadline = Math.floor(endTime.getTime() / 1000);
-
     try {
+      var endTime = new Date(`${expireDate}T${expireHour}`);
+      const deadline = Math.floor(endTime.getTime() / 1000);
+
       await makeOffer(
         wallet,
         collection,
@@ -36,14 +37,31 @@ export default function MakeOfferModal({
         parseEther(offerPrice.toString()),
         ethers.BigNumber.from(deadline)
       );
+
       setCompletedAction(true);
     } catch (e) {
       console.log(e);
     }
   };
 
+  const handleDatePicked = (value) => {
+    console.log(value);
+    setExpireDate(value);
+  };
+
+  const handleHourPicked = (value) => {
+    console.log(value);
+    setExpireHour(value);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
+      const today = new Date();
+      const date = today.setDate(today.getDate() + 1);
+      let valueDate = new Date(date);
+      setExpireDate(valueDate.toISOString().split("T")[0]);
+      setExpireHour("23:59");
+
       if (wallet) {
         const walletBalanceWFTM = await getWFTMBalance(wallet);
         setWftmBalance(formatEther(walletBalanceWFTM));
@@ -78,6 +96,29 @@ export default function MakeOfferModal({
                   offerPrice > wftmBalance && "text-red-600"
                 }`}
                 type="number"
+              />
+            </div>
+            <div>Fecha de expiración</div>
+            <div
+              className={`flex justify-between border dark:bg-dark-4 ${
+                offerPrice > wftmBalance && "border-red-600"
+              }`}
+            >
+              <input
+                value={expireDate}
+                onChange={(e) => handleDatePicked(e.target.value)}
+                className={`w-30 p-2 text-end dark:bg-dark-4 outline-0 ${
+                  offerPrice > wftmBalance && "text-red-600"
+                }`}
+                type="date"
+              />
+              <input
+                value={expireHour}
+                onChange={(e) => handleHourPicked(e.target.value)}
+                className={`w-30 p-2 text-end dark:bg-dark-4 outline-0 ${
+                  offerPrice > wftmBalance && "text-red-600"
+                }`}
+                type="time"
               />
             </div>
             {offerPrice > wftmBalance && (

@@ -23,18 +23,21 @@ export default function CreateAuctionModal({
   const [reservePrice, setReservePrice] = useState(0);
   const [completedAction, setCompletedAction] = useState(false);
   const [wftmBalance, setWftmBalance] = useState(0);
+  const [startDate, setStartDate] = useState(0);
+  const [startHour, setStartHour] = useState(0);
+  const [endDate, setEndDate] = useState(0);
+  const [endHour, setEndHour] = useState(0);
+
   const { getWFTMBalance } = useWFTMContract();
 
   const handleCreateAuction = async () => {
-    var firstDay = new Date();
-
-    var _startTime = new Date(firstDay.getTime() + 1 * 24 * 60 * 60 * 1000);
-    var _endTime = new Date(firstDay.getTime() + 7 * 24 * 60 * 60 * 1000);
-
-    const startTime = Math.floor(_startTime.getTime() / 1000);
-    const endTime = Math.floor(_endTime.getTime() / 1000);
-
     try {
+      var startTime = new Date(`${startDate}T${startHour}`);
+      var endTime = new Date(`${endDate}T${endHour}`);
+
+      startTime = Math.floor(startTime.getTime() / 1000);
+      endTime = Math.floor(endTime.getTime() / 1000);
+
       await createAuction(
         wallet,
         collection,
@@ -52,6 +55,17 @@ export default function CreateAuctionModal({
 
   useEffect(() => {
     const fetchData = async () => {
+      const today = new Date();
+      const startDate = today.setDate(today.getDate() + 1);
+      let valueDate = new Date(startDate);
+      setStartDate(valueDate.toISOString().split("T")[0]);
+      setStartHour("10:00");
+
+      const endDate = today.setDate(today.getDate() + 7);
+      let valueEndDate = new Date(endDate);
+      setEndDate(valueEndDate.toISOString().split("T")[0]);
+      setEndHour("21:00");
+
       if (wallet) {
         const walletBalanceWFTM = await getWFTMBalance(wallet);
         setWftmBalance(formatEther(walletBalanceWFTM));
@@ -80,6 +94,40 @@ export default function CreateAuctionModal({
                 onChange={(e) => setReservePrice(e.target.value)}
                 className={`w-full p-2 text-end dark:bg-dark-4 outline-0`}
                 type="number"
+              />
+            </div>
+          </div>
+          <div>
+            <div>Fecha de Inicio</div>
+            <div className={`flex justify-between border dark:bg-dark-4 `}>
+              <input
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                className={`w-30 p-2 text-end dark:bg-dark-4 outline-0 `}
+                type="date"
+              />
+              <input
+                value={startHour}
+                onChange={(e) => setStartHour(e.target.value)}
+                className={`w-30 p-2 text-end dark:bg-dark-4 outline-0`}
+                type="time"
+              />
+            </div>
+          </div>
+          <div>
+            <div>Fecha de Fin</div>
+            <div className={`flex justify-between border dark:bg-dark-4 `}>
+              <input
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                className={`w-30 p-2 text-end dark:bg-dark-4 outline-0 `}
+                type="date"
+              />
+              <input
+                value={endHour}
+                onChange={(e) => setEndHour(e.target.value)}
+                className={`w-30 p-2 text-end dark:bg-dark-4 outline-0`}
+                type="time"
               />
             </div>
           </div>
