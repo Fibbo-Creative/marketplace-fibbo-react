@@ -219,17 +219,11 @@ export default function ExploreContainer() {
                 {visibleMarketItems.map((item) => {
                   return (
                     <div key={Math.random(1, 9999)} className="p-5">
-                      {userSmallview ? (
-                        <NftCardSmall
-                          onClick={() => goToNftDetail(item)}
-                          item={item}
-                        />
-                      ) : (
-                        <NftCard
-                          onClick={() => goToNftDetail(item)}
-                          item={item}
-                        />
-                      )}
+                      <NftCard
+                        onClick={() => goToNftDetail(item)}
+                        isSmall={userSmallview}
+                        item={item}
+                      />
                     </div>
                   );
                 })}

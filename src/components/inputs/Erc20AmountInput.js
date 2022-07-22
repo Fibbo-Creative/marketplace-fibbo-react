@@ -8,10 +8,12 @@ export const Erc20AmountInput = ({
   errorMessage,
 }) => {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 ">
       <div>{label}</div>
-      <div className={`flex border ${error && "border-red-600"} `}>
-        <div className="flex w-[100px] bg-gray-300 justify-evenly items-center">
+      <div
+        className={`flex border-2 rounded-md ${error && "border-red-600"}  `}
+      >
+        <div className="flex rounded px-2 w-[100px] bg-gray-300 justify-evenly items-center">
           <img width={32} src={wFTMicon} alt="Fantom coin" />
           wFTM
         </div>

@@ -37,6 +37,8 @@ export default function CreateAuctionModal({
       var startTime = new Date(`${startDate}T${startHour}`);
       var endTime = new Date(`${endDate}T${endHour}`);
 
+      console.log(startTime, endTime);
+
       startTime = Math.floor(startTime.getTime() / 1000);
       endTime = Math.floor(endTime.getTime() / 1000);
 
@@ -93,15 +95,15 @@ export default function CreateAuctionModal({
             label={"Fecha de Inicio"}
             valueDate={startDate}
             valueHour={startHour}
-            onChangeDate={(e) => setStartDate(e.target.value)}
-            onChange={(e) => setStartHour(e.target.value)}
+            onChangeDate={setStartDate}
+            onChangeHour={setStartHour}
           />
           <DateTimeInput
             label={"Fecha de Inicio"}
             valueDate={endDate}
             valueHour={endHour}
-            onChangeDate={(e) => setEndDate(e.target.value)}
-            onChange={(e) => setEndHour(e.target.value)}
+            onChangeDate={setEndDate}
+            onChangeHour={setEndHour}
           />
 
           <div className="w-full flex items-center justify-center">

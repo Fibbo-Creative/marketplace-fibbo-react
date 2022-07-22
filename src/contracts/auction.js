@@ -112,6 +112,53 @@ export const useAuction = () => {
     await createAuctionTx.wait();
   };
 
+  const updateReservePrice = async (collection, tokenId, reservePrice) => {
+    const auctionContract = await getAuctionContract();
+
+    const updateTx = await auctionContract.updateAuctionReservePrice(
+      collection,
+      tokenId,
+      reservePrice
+    );
+
+    await updateTx.wait();
+  };
+
+  const updateStartTime = async (collection, tokenId, startTime) => {
+    const auctionContract = await getAuctionContract();
+
+    const updateTx = await auctionContract.updateAuctionStartTime(
+      collection,
+      tokenId,
+      startTime
+    );
+
+    await updateTx.wait();
+  };
+
+  const updateEndTime = async (collection, tokenId, endTime) => {
+    const auctionContract = await getAuctionContract();
+
+    const updateTx = await auctionContract.updateAuctionEndTime(
+      collection,
+      tokenId,
+      endTime
+    );
+
+    await updateTx.wait();
+  };
+
+  const cancelAuction = async (collection, tokenId) => {
+    const auctionContract = await getAuctionContract();
+
+    const cancelAuctionTx = await auctionContract.cancelAuction(
+      collection,
+      tokenId
+    );
+
+    await cancelAuctionTx.wait();
+  };
+
   const makeBid = async (bidder, collection, tokenId, bidAmount) => {
     const auctionContract = await getAuctionContract();
     const erc20 = await getERC20Contract(WFTM_ADDRESS);
@@ -139,5 +186,9 @@ export const useAuction = () => {
     createAuction,
     getHighestBid,
     makeBid,
+    cancelAuction,
+    updateEndTime,
+    updateReservePrice,
+    updateStartTime,
   };
 };

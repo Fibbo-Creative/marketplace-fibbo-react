@@ -19,6 +19,8 @@ import RemoveOfferModal from "../../../components/modals/RemoveOfferModal";
 import CreateAuctionModal from "../../../components/modals/CreateAuctionModal";
 import MakeBidModal from "../../../components/modals/NewBidModal";
 import { isMobile } from "web3modal";
+import CancelAuctionModal from "../../../components/modals/CancelAuctionModal";
+import UpdateAuctionModal from "../../../components/modals/UpdateAuctionModal";
 const formatPriceInUsd = (price) => {
   let priceStr = price.toString().split(".");
   let finalPrice = `${priceStr[0]},${priceStr[1]}`;
@@ -42,6 +44,7 @@ export default function DetailProductInfo({
 }) {
   const { wallet, connectToWallet } = useAccount();
   const [myOffer, setMyOffer] = useState(null);
+
   const [openSellModal, setOpenSellModal] = useState(false);
   const [openBuyModal, setOpenBuyModal] = useState(false);
   const [openOfferModal, setOpenOfferModal] = useState(false);
@@ -51,16 +54,23 @@ export default function DetailProductInfo({
   const [openCancelOfferModal, setOpenCancelOfferModal] = useState(false);
   const [openCreateAuction, setOpenCreateAuction] = useState(false);
   const [openBidModal, setOpenBidModal] = useState(false);
+  const [openCancelAuctionModal, setOpenCancelAuctionModal] = useState(false);
+  const [openUpdateAuctionModal, setOpenUpdateAuctionModal] = useState(false);
+
+  const [now, setNow] = useState(new Date());
 
   const [coinPrice, setCoinPrice] = useState(1.2);
   const navigate = useNavigate();
 
-  const formatDate = () => {
-    const startTimeStamp = auctionInfo.startTime;
-    const endTimestamp = auctionInfo.endTime;
-    const period = endTimestamp - startTimeStamp;
+  const auctionStarted = now.getTime() / 1000 >= auctionInfo?.startTime;
 
-    return Math.round(period / 3600 / 24);
+  const formatDate = (datetime) => {
+    const nowTimestamp = Math.floor(now.getTime() / 1000);
+    const period = datetime - nowTimestamp;
+
+    const days = Math.round(period / 3600 / 24);
+
+    return `${days} ${days > 1 ? "días" : "día"}`;
   };
 
   const getEndDate = () => {
@@ -165,7 +175,17 @@ export default function DetailProductInfo({
             ) : (
               <div className="">
                 <div className="pt-2">
-                  La subasta termina en {formatDate()} días ({getEndDate()})
+                  {auctionStarted
+                    ? `La subasta termina en ${formatDate(
+                        auctionInfo.endTime
+                      )}(${new Date(
+                        auctionInfo.endTime * 1000
+                      ).toLocaleString()})`
+                    : `La subasta empieza en en ${formatDate(
+                        auctionInfo.startTime
+                      )} (${new Date(
+                        auctionInfo.startTime * 1000
+                      ).toLocaleString()})`}
                 </div>
                 <div className="flex flex-col gap-4 border-t mt-2 pt-5 border-b pb-5 ">
                   <div className="flex flex-row items-center gap-3 ">
@@ -247,6 +267,7 @@ export default function DetailProductInfo({
                     <>
                       {isOnAuction ? (
                         <ActionButton
+                          disabled={!auctionStarted}
                           size="small"
                           buttonAction={() => setOpenBidModal(true)}
                           text="Realizar Puja"
@@ -268,18 +289,35 @@ export default function DetailProductInfo({
                   )}
                 </>
               )}
-              {isOwner && !isForSale && !isOnAuction && (
+              {isOwner && !isForSale && (
                 <>
-                  <ActionButton
-                    size="small"
-                    buttonAction={() => setOpenSellModal(true)}
-                    text="Poner en Venta"
-                  />
-                  <ActionButton
-                    size="small"
-                    buttonAction={() => setOpenCreateAuction(true)}
-                    text="Subastar Item"
-                  />
+                  {!isOnAuction ? (
+                    <>
+                      <ActionButton
+                        size="small"
+                        buttonAction={() => setOpenSellModal(true)}
+                        text="Poner en Venta"
+                      />
+                      <ActionButton
+                        size="small"
+                        buttonAction={() => setOpenCreateAuction(true)}
+                        text="Subastar Item"
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <ActionButton
+                        size="small"
+                        buttonAction={() => setOpenUpdateAuctionModal(true)}
+                        text="Actualizar"
+                      />
+                      <ActionButton
+                        size="small"
+                        buttonAction={() => setOpenCancelAuctionModal(true)}
+                        text="Cancelar"
+                      />
+                    </>
+                  )}
                 </>
               )}
               {isOwner && isForSale && (
@@ -480,6 +518,29 @@ export default function DetailProductInfo({
           wallet={wallet}
         />
       )}
+      {isOwner && isOnAuction && (
+        <>
+          <CancelAuctionModal
+            collection={collection}
+            tokenId={tokenId}
+            showModal={openCancelAuctionModal}
+            handleCloseModal={(e) => setOpenCancelAuctionModal(false)}
+            highestBid={highestBid}
+            auctionInfo={auctionInfo}
+            wallet={wallet}
+          />
+          <UpdateAuctionModal
+            collection={collection}
+            tokenId={tokenId}
+            showModal={openUpdateAuctionModal}
+            handleCloseModal={(e) => setOpenUpdateAuctionModal(false)}
+            highestBid={highestBid}
+            auctionInfo={auctionInfo}
+            wallet={wallet}
+          />
+        </>
+      )}
+
       {isOwner && isForSale && (
         <>
           <ChangePriceModal
