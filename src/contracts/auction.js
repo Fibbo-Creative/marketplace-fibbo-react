@@ -189,9 +189,9 @@ export const useAuction = () => {
     const allowance = await erc20.allowance(buyer, auctionContract.address);
     console.log(formatEther(allowance));
     if (allowance.lt(buyNowPrice)) {
+      const tx = await erc20.approve(auctionContract.address, buyNowPrice);
+      await tx.wait();
     }
-    const tx = await erc20.approve(auctionContract.address, buyNowPrice);
-    await tx.wait();
 
     const buyNowTx = await auctionContract.buyNow(collection, tokenId);
 
