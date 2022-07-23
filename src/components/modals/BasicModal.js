@@ -1,7 +1,6 @@
 import { Icon } from "@iconify/react";
-import React from "react";
+import React, { useState } from "react";
 import ReactModal from "react-modal";
-import { ThemeContext } from "../../context/ThemeContext";
 
 export const BasicModal = ({
   children,
@@ -10,7 +9,6 @@ export const BasicModal = ({
   handleCloseModal,
   size,
 }) => {
-  const { theme } = React.useContext(ThemeContext);
   return (
     <ReactModal
       appElement={document.getElementsByClassName("App")}

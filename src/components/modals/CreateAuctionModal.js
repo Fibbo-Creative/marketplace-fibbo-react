@@ -31,6 +31,7 @@ export default function CreateAuctionModal({
   const [startHour, setStartHour] = useState(0);
   const [endDate, setEndDate] = useState(0);
   const [endHour, setEndHour] = useState(0);
+  const [actionError, setActionError] = useState(false);
 
   const { getWFTMBalance } = useWFTMContract();
 
@@ -109,13 +110,29 @@ export default function CreateAuctionModal({
             valueHour={startHour}
             onChangeDate={setStartDate}
             onChangeHour={setStartHour}
+            errorType={{
+              type: "BEFORE",
+              params: {
+                to: new Date(`${endDate}T${endHour}`),
+              },
+            }}
+            setActionError={setActionError}
           />
           <DateTimeInput
-            label={"Fecha de Inicio"}
+            label={"Fecha de Fin"}
             valueDate={endDate}
             valueHour={endHour}
             onChangeDate={setEndDate}
             onChangeHour={setEndHour}
+            errorType={{
+              type: "AFTER",
+              params: {
+                to: new Date(`${startDate}T${startHour}`),
+                diff: 5,
+                as: "min",
+              },
+            }}
+            setActionError={setActionError}
           />
 
           <div className="w-full flex items-center justify-center">

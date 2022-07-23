@@ -25,6 +25,7 @@ export default function MakeOfferModal({
   const [wftmBalance, setWftmBalance] = useState(0);
   const [expireDate, setExpireDate] = useState(0);
   const [expireHour, setExpireHour] = useState(0);
+  const [actionError, setActionError] = useState(false);
 
   const { getWFTMBalance } = useWFTMContract();
   const handleMakeOffer = async () => {
@@ -92,13 +93,20 @@ export default function MakeOfferModal({
               label={"Fecha de Inicio"}
               valueDate={expireDate}
               valueHour={expireHour}
-              onChangeDate={(e) => setExpireDate(e.target.value)}
-              onChange={(e) => setExpireHour(e.target.value)}
+              onChangeDate={setExpireDate}
+              onChange={setExpireHour}
+              errorType={{
+                type: "AFTER",
+                params: {
+                  to: new Date(),
+                },
+              }}
+              setActionError={setActionError}
             />
           </div>
           <div className="w-full flex items-center justify-center">
             <ActionButton
-              disabled={offerPrice > wftmBalance}
+              disabled={offerPrice > wftmBalance || actionError}
               text="Realizar Oferta"
               size="large"
               buttonAction={() => handleMakeOffer()}
