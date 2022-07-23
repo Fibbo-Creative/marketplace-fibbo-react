@@ -21,6 +21,7 @@ import MakeBidModal from "../../../components/modals/NewBidModal";
 import { isMobile } from "web3modal";
 import CancelAuctionModal from "../../../components/modals/CancelAuctionModal";
 import UpdateAuctionModal from "../../../components/modals/UpdateAuctionModal";
+import BuyNowModal from "../../../components/modals/BuyNowModal";
 const formatPriceInUsd = (price) => {
   let priceStr = price.toString().split(".");
   let finalPrice = `${priceStr[0]},${priceStr[1]}`;
@@ -56,6 +57,7 @@ export default function DetailProductInfo({
   const [openBidModal, setOpenBidModal] = useState(false);
   const [openCancelAuctionModal, setOpenCancelAuctionModal] = useState(false);
   const [openUpdateAuctionModal, setOpenUpdateAuctionModal] = useState(false);
+  const [openBuyNowModal, setOpenBuyNowModal] = useState(false);
 
   const [now, setNow] = useState(new Date());
 
@@ -69,8 +71,17 @@ export default function DetailProductInfo({
     const period = datetime - nowTimestamp;
 
     const days = Math.round(period / 3600 / 24);
-
-    return `${days} ${days > 1 ? "días" : "día"}`;
+    if (days === 0) {
+      const hours = Math.round(period / 3600);
+      if (hours === 0) {
+        const minutes = Math.round(period / 60);
+        return `${minutes} ${minutes > 1 ? "minutos " : "minuto"}`;
+      } else {
+        return `${hours} ${hours > 1 ? "horas" : "hora"}`;
+      }
+    } else {
+      return `${days} ${days > 1 ? "días" : "día"}`;
+    }
   };
 
   const getEndDate = () => {
@@ -188,26 +199,60 @@ export default function DetailProductInfo({
                       ).toLocaleString()})`}
                 </div>
                 <div className="flex flex-col gap-4 border-t mt-2 pt-5 border-b pb-5 ">
-                  <div className="flex flex-row items-center gap-3 ">
+                  <div className="flex flex-row items-center justify-between gap-3 ">
                     <p>Precio Reservado</p>
-                    <img width={32} src={wFTMIcon} alt="Fantom coin" />
-                    <p>{auctionInfo?.reservePrice} wFTM </p>
-                    <p className="text-gray-600 dark:text-gray-400 text-xs">
-                      ($
-                      {formatPriceInUsd(
-                        parseFloat(
-                          auctionInfo?.reservePrice * coinPrice
-                        ).toFixed(3)
-                      )}
-                      )
-                    </p>
+                    <div className="flex items-center  gap-2">
+                      <img width={32} src={wFTMIcon} alt="Fantom coin" />
+                      <p>{auctionInfo?.reservePrice} wFTM </p>
+                      <p className="text-gray-600 dark:text-gray-400 text-xs">
+                        ($
+                        {formatPriceInUsd(
+                          parseFloat(
+                            auctionInfo?.reservePrice * coinPrice
+                          ).toFixed(3)
+                        )}
+                        )
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex flex-row gap-6">
+                  <div className="flex flex-row items-center justify-between  gap-3 ">
+                    <p>Precio Compra ya</p>
+                    <div className="flex items-center  gap-2">
+                      <img width={32} src={wFTMIcon} alt="Fantom coin" />
+                      <p>{auctionInfo?.buyNowPrice} wFTM </p>
+                      <p className="text-gray-600 dark:text-gray-400 text-xs">
+                        ($
+                        {formatPriceInUsd(
+                          parseFloat(
+                            auctionInfo?.buyNowPrice * coinPrice
+                          ).toFixed(3)
+                        )}
+                        )
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex flex-row justify-between border-t mt-2 pt-4 gap-6">
                     <div>Puja mas alta: </div>
-                    <div>{highestBid ? highestBid.bid : "-"}</div>
+                    <div className="flex items-center  gap-2">
+                      {highestBid ? (
+                        <>
+                          <img width={32} src={wFTMIcon} alt="Fantom coin" />
+                          <p>{highestBid?.bid} wFTM </p>
+                          <p className="text-gray-600 dark:text-gray-400 text-xs">
+                            ($
+                            {formatPriceInUsd(
+                              parseFloat(highestBid?.bid * coinPrice).toFixed(3)
+                            )}
+                            )
+                          </p>
+                        </>
+                      ) : (
+                        <p> -- </p>
+                      )}
+                    </div>
                   </div>
                   {highestBid && (
-                    <div className="flex flex-row gap-6 items-center">
+                    <div className="flex flex-row gap-6 items-center justify-between">
                       <div>Realizada Por: </div>
                       <div className="flex gap-2 items-center">
                         <img
@@ -266,12 +311,20 @@ export default function DetailProductInfo({
                   {!myOffer ? (
                     <>
                       {isOnAuction ? (
-                        <ActionButton
-                          disabled={!auctionStarted}
-                          size="small"
-                          buttonAction={() => setOpenBidModal(true)}
-                          text="Realizar Puja"
-                        />
+                        <>
+                          <ActionButton
+                            disabled={!auctionStarted}
+                            size="small"
+                            buttonAction={() => setOpenBidModal(true)}
+                            text="Realizar Puja"
+                          />
+                          <ActionButton
+                            disabled={!auctionStarted}
+                            size="small"
+                            buttonAction={() => setOpenBuyNowModal(true)}
+                            text="Comprar ya"
+                          />
+                        </>
                       ) : (
                         <ActionButton
                           size="small"
@@ -508,15 +561,26 @@ export default function DetailProductInfo({
         </>
       )}
       {!isOwner && isOnAuction && (
-        <MakeBidModal
-          collection={collection}
-          tokenId={tokenId}
-          showModal={openBidModal}
-          handleCloseModal={(e) => setOpenBidModal(false)}
-          highestBid={highestBid}
-          auctionInfo={auctionInfo}
-          wallet={wallet}
-        />
+        <>
+          <MakeBidModal
+            collection={collection}
+            tokenId={tokenId}
+            showModal={openBidModal}
+            handleCloseModal={(e) => setOpenBidModal(false)}
+            highestBid={highestBid}
+            auctionInfo={auctionInfo}
+            wallet={wallet}
+          />
+          <BuyNowModal
+            collection={collection}
+            tokenId={tokenId}
+            showModal={openBuyNowModal}
+            handleCloseModal={(e) => setOpenBuyNowModal(false)}
+            highestBid={highestBid}
+            auctionInfo={auctionInfo}
+            wallet={wallet}
+          />
+        </>
       )}
       {isOwner && isOnAuction && (
         <>

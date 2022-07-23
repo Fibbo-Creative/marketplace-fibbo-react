@@ -59,7 +59,7 @@ export default function MakeBidModal({
       }
     };
     fetchData();
-  }, []);
+  }, [wallet]);
   return (
     <BasicModal
       title={"Realizar puja"}

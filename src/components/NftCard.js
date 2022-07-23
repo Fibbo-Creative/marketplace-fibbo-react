@@ -9,7 +9,18 @@ export default function NftCard({ item, onClick, isSmall }) {
     const endTimestamp = auctionInfo.endTime;
     const period = endTimestamp - startTimeStamp;
 
-    return parseInt(period / 3600 / 24);
+    const days = Math.round(period / 3600 / 24);
+    if (days === 0) {
+      const hours = Math.round(period / 3600);
+      if (hours === 0) {
+        const minutes = Math.round(period / 60);
+        return `${minutes} ${minutes > 1 ? "minutos " : "minuto"}`;
+      } else {
+        return `${hours} ${hours > 1 ? "horas" : "hora"}`;
+      }
+    } else {
+      return `${days} ${days > 1 ? "días" : "día"}`;
+    }
   };
   return (
     <div
@@ -70,9 +81,7 @@ export default function NftCard({ item, onClick, isSmall }) {
                 {item.auction.topBid ? item.auction.topBid : item.auction.bid}
               </div>
             </div>
-            <div className="text-xs text-gray-400">
-              Quedan {formatDate()} días
-            </div>
+            <div className="text-xs text-gray-400">Quedan {formatDate()}</div>
           </div>
         )}
       </div>

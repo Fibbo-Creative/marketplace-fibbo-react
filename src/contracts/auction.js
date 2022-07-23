@@ -15,6 +15,7 @@ const formatAuction = (auctionData) => {
   return {
     owner: auctionData.owner,
     reservePrice: formatEther(auctionData.reservePrice),
+    buyNowPrice: formatEther(auctionData.buyNowPrice),
     payToken: auctionData.payToken,
     startTime: auctionData.startTime.toNumber(),
     endTime: auctionData.endTime.toNumber(),
@@ -82,6 +83,7 @@ export const useAuction = () => {
     collection,
     tokenId,
     reservePrice,
+    buyNowPrice,
     minBidReserve,
     startTime,
     endTime
@@ -104,6 +106,7 @@ export const useAuction = () => {
       tokenId,
       WFTM_ADDRESS,
       reservePrice,
+      buyNowPrice,
       startTime,
       minBidReserve,
       endTime
@@ -179,6 +182,22 @@ export const useAuction = () => {
     await bidTx.wait();
   };
 
+  const buyNow = async (buyer, collection, tokenId, buyNowPrice) => {
+    const auctionContract = await getAuctionContract();
+    const erc20 = await getERC20Contract(WFTM_ADDRESS);
+
+    const allowance = await erc20.allowance(buyer, auctionContract.address);
+    console.log(formatEther(allowance));
+    if (allowance.lt(buyNowPrice)) {
+    }
+    const tx = await erc20.approve(auctionContract.address, buyNowPrice);
+    await tx.wait();
+
+    const buyNowTx = await auctionContract.buyNow(collection, tokenId);
+
+    await buyNowTx.wait();
+  };
+
   return {
     getContractAddress,
     getAuctionContract,
@@ -190,5 +209,6 @@ export const useAuction = () => {
     updateEndTime,
     updateReservePrice,
     updateStartTime,
+    buyNow,
   };
 };

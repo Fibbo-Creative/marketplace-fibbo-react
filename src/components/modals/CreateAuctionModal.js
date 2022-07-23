@@ -23,6 +23,8 @@ export default function CreateAuctionModal({
   const navigate = useNavigate();
   const { createAuction } = useAuction();
   const [reservePrice, setReservePrice] = useState(0);
+  const [buyNowPrice, setBuyNowPrice] = useState(0);
+
   const [completedAction, setCompletedAction] = useState(false);
   const [wftmBalance, setWftmBalance] = useState(0);
   const [startDate, setStartDate] = useState(0);
@@ -47,6 +49,7 @@ export default function CreateAuctionModal({
         collection,
         ethers.BigNumber.from(tokenId),
         parseEther(reservePrice.toString()),
+        parseEther(buyNowPrice.toString()),
         true,
         ethers.BigNumber.from(startTime),
         ethers.BigNumber.from(endTime)
@@ -90,6 +93,15 @@ export default function CreateAuctionModal({
             label={"Que precio quieres asegurar?"}
             value={reservePrice}
             onChange={(e) => setReservePrice(e.target.value)}
+          />
+          <Erc20AmountInput
+            label={"Que precio de compra ahora?"}
+            value={buyNowPrice}
+            onChange={(e) => setBuyNowPrice(e.target.value)}
+            error={buyNowPrice < reservePrice * 2}
+            errorMessage={
+              "El precio de compra tiene que ser mínimo el doble de reserva"
+            }
           />
           <DateTimeInput
             label={"Fecha de Inicio"}
