@@ -7,19 +7,35 @@ export default function NftCard({ item, onClick, isSmall }) {
     const auctionInfo = item.auction;
     const startTimeStamp = Math.floor(now.getTime() / 1000);
     const endTimestamp = auctionInfo.endTime;
-    const period = endTimestamp - startTimeStamp;
+    let period = endTimestamp - startTimeStamp;
+    if (now.getTime() / 1000 <= auctionInfo?.startTime) {
+      period = auctionInfo?.startTime - Math.floor(now.getTime() / 1000);
 
-    const days = Math.round(period / 3600 / 24);
-    if (days === 0) {
-      const hours = Math.round(period / 3600);
-      if (hours === 0) {
-        const minutes = Math.round(period / 60);
-        return `${minutes} ${minutes > 1 ? "minutos " : "minuto"}`;
+      const days = Math.round(period / 3600 / 24);
+      if (days === 0) {
+        const hours = Math.round(period / 3600);
+        if (hours === 0) {
+          const minutes = Math.round(period / 60);
+          return `Empieza en ${minutes} ${minutes > 1 ? "minutos " : "minuto"}`;
+        } else {
+          return `Empieza en ${hours} ${hours > 1 ? "horas" : "hora"}`;
+        }
       } else {
-        return `${hours} ${hours > 1 ? "horas" : "hora"}`;
+        return `Empieza en ${days} ${days > 1 ? "días" : "día"}`;
       }
     } else {
-      return `${days} ${days > 1 ? "días" : "día"}`;
+      const days = Math.round(period / 3600 / 24);
+      if (days === 0) {
+        const hours = Math.round(period / 3600);
+        if (hours === 0) {
+          const minutes = Math.round(period / 60);
+          return `Quedan ${minutes} ${minutes > 1 ? "minutos " : "minuto"}`;
+        } else {
+          return `Quedan ${hours} ${hours > 1 ? "horas" : "hora"}`;
+        }
+      } else {
+        return `Quedan ${days} ${days > 1 ? "días" : "día"}`;
+      }
     }
   };
   return (
@@ -81,7 +97,7 @@ export default function NftCard({ item, onClick, isSmall }) {
                 {item.auction.topBid ? item.auction.topBid : item.auction.bid}
               </div>
             </div>
-            <div className="text-xs text-gray-400">Quedan {formatDate()}</div>
+            <div className="text-xs text-gray-400">{formatDate()}</div>
           </div>
         )}
       </div>

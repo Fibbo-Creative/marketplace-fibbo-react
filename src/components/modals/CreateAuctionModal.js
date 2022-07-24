@@ -23,6 +23,8 @@ export default function CreateAuctionModal({
   const navigate = useNavigate();
   const { createAuction } = useAuction();
   const [reservePrice, setReservePrice] = useState(0);
+  const [minimumBid, setMinimumBid] = useState(true);
+
   const [buyNowPrice, setBuyNowPrice] = useState(0);
 
   const [completedAction, setCompletedAction] = useState(false);
@@ -40,8 +42,6 @@ export default function CreateAuctionModal({
       var startTime = new Date(`${startDate}T${startHour}`);
       var endTime = new Date(`${endDate}T${endHour}`);
 
-      console.log(startTime, endTime);
-
       startTime = Math.floor(startTime.getTime() / 1000);
       endTime = Math.floor(endTime.getTime() / 1000);
 
@@ -51,7 +51,7 @@ export default function CreateAuctionModal({
         ethers.BigNumber.from(tokenId),
         parseEther(reservePrice.toString()),
         parseEther(buyNowPrice.toString()),
-        true,
+        minimumBid,
         ethers.BigNumber.from(startTime),
         ethers.BigNumber.from(endTime)
       );
@@ -95,6 +95,18 @@ export default function CreateAuctionModal({
             value={reservePrice}
             onChange={(e) => setReservePrice(e.target.value)}
           />
+          <div className="flex items-center gap-2">
+            <span className="font-bold text-sm text-gray-700 dark:text-gray-400 border-gray-300 p-3">
+              Quieres que la puja mínima sea el precio reservado?
+            </span>
+            <label className="">
+              <input
+                type="checkbox"
+                checked={minimumBid}
+                onChange={() => setMinimumBid(!minimumBid)}
+              />
+            </label>
+          </div>
           <Erc20AmountInput
             label={"Que precio de compra ahora?"}
             value={buyNowPrice}
