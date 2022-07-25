@@ -185,12 +185,22 @@ export const useAuction = () => {
   const buyNow = async (buyer, collection, tokenId, buyNowPrice) => {
     const auctionContract = await getAuctionContract();
     const erc20 = await getERC20Contract(WFTM_ADDRESS);
+    const collectionContract = await getDefaultCollectionContract();
 
     const allowance = await erc20.allowance(buyer, auctionContract.address);
-    console.log(formatEther(allowance));
+
     if (allowance.lt(buyNowPrice)) {
       const tx = await erc20.approve(auctionContract.address, buyNowPrice);
       await tx.wait();
+    }
+
+    const isApprovedForAll = await collectionContract.isApprovedForAll(
+      buyer,
+      auctionContract.address
+    );
+
+    if (!isApprovedForAll) {
+      await setApproval();
     }
 
     const buyNowTx = await auctionContract.buyNow(collection, tokenId);

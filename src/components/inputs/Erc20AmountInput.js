@@ -18,6 +18,24 @@ export const Erc20AmountInput = ({
     return "$" + price.toFixed(2).toString();
   };
 
+  const handleChange = (value) => {
+    if (value.includes(".") || value.includes(",")) {
+      let numberOfDecimals = 0;
+      if (value.includes(".")) {
+        numberOfDecimals = value.split(".")[1].length;
+      } else if (value.includes(",")) {
+        numberOfDecimals = value.split(",")[1].length;
+      }
+      if (numberOfDecimals > 2) {
+        onChange(parseFloat(value).toFixed(2));
+      } else {
+        onChange(value);
+      }
+    } else {
+      onChange(value);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       const CoinGeckoClient = new CoinGecko();
@@ -41,7 +59,7 @@ export const Erc20AmountInput = ({
         </div>
         <input
           value={value}
-          onChange={onChange}
+          onChange={(e) => handleChange(e.target.value)}
           className={`w-full p-2 text-end dark:bg-dark-4 outline-0 ${
             error && "text-red-600"
           }`}

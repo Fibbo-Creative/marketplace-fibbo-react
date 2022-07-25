@@ -107,7 +107,7 @@ export default function UpdateAuctionModal({
           <div className="flex flex-col gap-4">
             <Erc20AmountInput
               value={newReservePrice}
-              onChange={(e) => setNewReservePrice(e.target.value)}
+              onChange={setNewReservePrice}
               label={"Precio Reservado"}
               error={
                 parseFloat(newReservePrice) ===

@@ -8,8 +8,8 @@ export default function NftCard({ item, onClick, isSmall }) {
     const startTimeStamp = Math.floor(now.getTime() / 1000);
     const endTimestamp = auctionInfo.endTime;
     let period = endTimestamp - startTimeStamp;
-    if (now.getTime() / 1000 <= auctionInfo?.startTime) {
-      period = auctionInfo?.startTime - Math.floor(now.getTime() / 1000);
+    if (now.getTime() <= auctionInfo?.startTime) {
+      period = auctionInfo?.startTime * 1000 - Math.floor(now.getTime());
 
       const days = Math.round(period / 3600 / 24);
       if (days === 0) {

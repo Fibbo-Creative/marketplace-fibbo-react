@@ -43,7 +43,7 @@ export default function PutForSaleModal({
           <Erc20AmountInput
             label={"Precio"}
             value={priceFor}
-            onChange={(e) => setPriceFor(e.target.value)}
+            onChange={setPriceFor}
           />
           <div className="w-full flex items-center justify-center">
             <ActionButton

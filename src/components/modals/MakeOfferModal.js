@@ -85,7 +85,7 @@ export default function MakeOfferModal({
             <Erc20AmountInput
               label={"Que precio quieres ofertar?"}
               value={offerPrice}
-              onChange={(e) => setOfferPrice(e.target.value)}
+              onChange={setOfferPrice}
               error={offerPrice > wftmBalance}
               errorMessage={"No tienes suficientes WFTM"}
             />

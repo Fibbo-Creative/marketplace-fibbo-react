@@ -33,9 +33,16 @@ export const ItemDirectOffers = ({ offers, isOwner }) => {
 
     const date = new Date(deadline * 1000).toLocaleString();
 
-    console.log(date);
-
     return date;
+  };
+
+  const hasExpired = (offer) => {
+    const deadline = offer.deadline;
+
+    const deadLineDate = new Date(deadline * 1000).getTime();
+    const nowDate = new Date().getTime();
+
+    return nowDate > deadLineDate;
   };
 
   return (
@@ -133,18 +140,92 @@ export const ItemDirectOffers = ({ offers, isOwner }) => {
         </>
       ) : (
         <div className="flex flex-col gap-10">
-          {/*   {listings.map((listing) => {
+          {offers.map((offer) => {
             return (
-              <tr key={Math.random(9999) * 1000}>
-                <td className="px-6 py-4">{truncateWallet(listing.from, 5)}</td>
-                <td className="px-6 py-4">{listing.price} FTM</td>
-                <td className="px-6 py-4">{listing.status}</td>
-                <td className="px-6 py-4">
-                  <ActionButton text="Buy" size="small" />
-                </td>
-              </tr>
+              <div
+                key={Math.random(9999) * 100}
+                className="flex flex-col gap-3 bg-gray-100 dark:bg-dark-3 p-3 hover:bg-gray-300"
+              >
+                <div className="flex justify-between">
+                  <div>
+                    <b>Oferta de</b>
+                  </div>
+                  <div>
+                    <div className="flex gap-2 items-center">
+                      <img
+                        className="rounded-full"
+                        width={32}
+                        src={offer.creator.profileImg}
+                        alt={`from-${offer._id}-img`}
+                      />
+                      <p
+                        className="text-primary-2 underline cursor-pointer"
+                        onClick={() =>
+                          isMobile
+                            ? navigate(`/profile/${offer.creator.wallet}`)
+                            : window.open(
+                                `/profile/${offer.creator.wallet}`,
+                                "_blank"
+                              )
+                        }
+                      >
+                        {offer.creator.username}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex justify-between">
+                  <div>
+                    <b>Precio</b>
+                  </div>
+                  <div>{offer.price} FTM</div>
+                </div>
+                <div className="flex justify-between">
+                  <div>
+                    <b>Expira en</b>
+                  </div>
+                  <div>{formatDate(offer)}</div>
+                </div>
+                <div className="flex items-center justify-center">
+                  {!hasExpired(offer) && (
+                    <div>
+                      {isOwner && (
+                        <ActionButton
+                          text="Acceptar"
+                          size="smaller"
+                          buttonAction={() => handleShowAcceptOffer(offer)}
+                        />
+                      )}
+                      {wallet === offer.creator.wallet && (
+                        <>
+                          <ActionButton
+                            text="Cancelar"
+                            size="smaller"
+                            buttonAction={() => handleShowRemoveOffer(offer)}
+                          />
+                          <RemoveOfferModal
+                            showModal={showRemoveOffer}
+                            handleCloseModal={() => setShowRemoveOffer(false)}
+                            offer={detailOffer}
+                            wallet={wallet}
+                          />
+                        </>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
             );
-          })} */}
+          })}
+
+          {isOwner && (
+            <AcceptOfferModal
+              showModal={showAcceptOffer}
+              handleCloseModal={() => setShowAcceptOffer(false)}
+              offer={detailOffer}
+              wallet={wallet}
+            />
+          )}
         </div>
       )}
     </DropDown>

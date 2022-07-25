@@ -1,9 +1,7 @@
-import { Icon } from "@iconify/react";
 import React, { useState } from "react";
 import { parseEther } from "ethers/lib/utils";
 import ActionButton from "../ActionButton";
 import { useMarketplace } from "../../contracts/market";
-import { useApi } from "../../api";
 import { BasicModal } from "./BasicModal";
 import { Check } from "../lottie/Check";
 import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
@@ -42,7 +40,7 @@ export default function ChangePriceModal({
           <Erc20AmountInput
             label={"Precio"}
             value={priceFor}
-            onChange={(e) => setPriceFor(e.target.value)}
+            onChange={setPriceFor}
           />
 
           <div className="w-full flex items-center justify-center">

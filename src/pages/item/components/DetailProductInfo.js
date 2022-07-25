@@ -115,6 +115,7 @@ export default function DetailProductInfo({
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!wallet) connectToWallet();
       const CoinGeckoClient = new CoinGecko();
       let data = await CoinGeckoClient.simple.price({ ids: ["fantom"] });
       setCoinPrice(data.data.fantom.usd);

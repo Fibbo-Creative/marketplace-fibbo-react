@@ -55,7 +55,13 @@ export default function MakeBidModal({
       if (wallet) {
         const walletBalanceWFTM = await getWFTMBalance(wallet);
         setWftmBalance(parseFloat(formatEther(walletBalanceWFTM)));
-        setBidAmmount(highestBid ? parseInt(highestBid.bid) : 0);
+        if (highestBid) {
+          setBidAmmount(highestBid ? parseFloat(highestBid.bid) + 1 : 0);
+        } else {
+          if (auctionInfo.minBid === auctionInfo.reservePrice) {
+            setBidAmmount(auctionInfo.reservePrice);
+          }
+        }
       }
     };
     fetchData();
@@ -110,21 +116,34 @@ export default function MakeBidModal({
             <Erc20AmountInput
               label={"Que precio quieres pujar?"}
               value={bidAmmount}
-              onChange={(e) => setBidAmmount(e.target.value)}
+              onChange={setBidAmmount}
               error={
                 bidAmmount > wftmBalance ||
-                (highestBid && bidAmmount < highestBid.bid)
+                (highestBid && bidAmmount < highestBid.bid) ||
+                auctionInfo.minBid > bidAmmount ||
+                (highestBid && bidAmmount < parseFloat(highestBid.bid) + 1)
               }
               errorMessage={`${
-                highestBid && bidAmmount < highestBid.bid
-                  ? "La puja debe ser mayor a la actual"
+                highestBid
+                  ? bidAmmount < highestBid.bid
+                    ? "La puja debe ser mayor a la actual"
+                    : bidAmmount < parseFloat(highestBid.bid) + 1
+                    ? "La diferencia con la puja actual debe ser 1 o mayor"
+                    : "No tienes suficientes WFTM"
+                  : auctionInfo.minBid > bidAmmount
+                  ? "La puja debe ser mayor o igual que el precio reservado"
                   : "No tienes suficientes WFTM"
               }`}
             />
           </div>
           <div className="w-full flex items-center justify-center">
             <ActionButton
-              disabled={bidAmmount > wftmBalance}
+              disabled={
+                highestBid
+                  ? bidAmmount < parseFloat(highestBid.bid) + 1 ||
+                    (highestBid && bidAmmount < highestBid.bid)
+                  : bidAmmount > wftmBalance
+              }
               text="Realizar Puja"
               size="large"
               buttonAction={() => handleMakeBid()}

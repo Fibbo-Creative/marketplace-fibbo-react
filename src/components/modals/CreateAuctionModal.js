@@ -93,7 +93,7 @@ export default function CreateAuctionModal({
           <Erc20AmountInput
             label={"Que precio quieres asegurar?"}
             value={reservePrice}
-            onChange={(e) => setReservePrice(e.target.value)}
+            onChange={setReservePrice}
           />
           <div className="flex items-center gap-2">
             <span className="font-bold text-sm text-gray-700 dark:text-gray-400 border-gray-300 p-3">
@@ -110,7 +110,7 @@ export default function CreateAuctionModal({
           <Erc20AmountInput
             label={"Que precio de compra ahora?"}
             value={buyNowPrice}
-            onChange={(e) => setBuyNowPrice(e.target.value)}
+            onChange={setBuyNowPrice}
             error={buyNowPrice < reservePrice * 2}
             errorMessage={
               "El precio de compra tiene que ser mínimo el doble de reserva"
@@ -149,6 +149,9 @@ export default function CreateAuctionModal({
 
           <div className="w-full flex items-center justify-center">
             <ActionButton
+              disabled={
+                actionError || buyNowPrice < parseFloat(reservePrice) * 2
+              }
               text="Poner en subasta"
               size="large"
               buttonAction={() => handleCreateAuction()}

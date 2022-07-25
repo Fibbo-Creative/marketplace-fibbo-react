@@ -3,14 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { BasicModal } from "./BasicModal";
 import wFTMicon from "../../assets/WFTM.png";
 import ActionButton from "../ActionButton";
-import { useMarketplace } from "../../contracts/market";
-import { ethers } from "ethers";
+
 import { formatEther, parseEther } from "ethers/lib/utils";
 import { Check } from "../lottie/Check";
 import { useWFTMContract } from "../../contracts/wftm";
 import { useAuction } from "../../contracts/auction";
-import { isMobile } from "react-device-detect";
-import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
 
 export default function BuyNowModal({
   collection,
