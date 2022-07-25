@@ -12,8 +12,6 @@ import useRespnsive from "../../hooks/useResponsive";
 
 export default function HomeContainer() {
   const [{ verifiedAddress }] = useStateContext();
-  let type = new MobileDetect(window.navigator.userAgent);
-  const [phone, setPhone] = useState(type.phone());
   const navigate = useNavigate();
   const { _width } = useRespnsive();
 
