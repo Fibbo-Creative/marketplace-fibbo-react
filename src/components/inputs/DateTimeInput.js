@@ -36,9 +36,6 @@ export const DateTimeInput = ({
       }
 
       if (as === "min") {
-        console.log(new Date(to.getTime() + diff * 60).getTime());
-        console.log(new Date(`${value}T${valueHour}`).getTime());
-
         if (selectedTime <= to.getTime() + diff * 60) {
           setError(true);
         } else {

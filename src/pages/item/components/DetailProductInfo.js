@@ -84,17 +84,6 @@ export default function DetailProductInfo({
     }
   };
 
-  const getEndDate = () => {
-    var date = new Date(auctionInfo.endTime * 1000);
-    let _date = date.toLocaleDateString();
-    let _hours = date.toLocaleTimeString();
-    console.log(_date, _hours);
-
-    var formattedTime = _date + ", " + _hours.substring(0, _hours.length - 3);
-
-    return formattedTime;
-  };
-
   const redirectToProfile = () => {
     navigate(`/profile/${tokenInfo.owner}`);
   };

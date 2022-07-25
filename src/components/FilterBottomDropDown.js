@@ -4,39 +4,36 @@ import useCollapse from "react-collapsed";
 
 export default function FilterBottomDropDown({ name, children }) {
   const [isExpanded, setExpanded] = useState(false);
-  const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });
 
   return (
-    <div className="flex flex-col text-black bg-white-600 z-50 h-50 border border-gray-300">
-      <button
-        className=""
-        {...getToggleProps({
-          onClick: () => setExpanded((prevExpanded) => !prevExpanded),
-        })}
-      >
-        {isExpanded ? (
-          <div className="flex flex-row items-center justify-center gap-32 ">
-            <h3 className="text-2xl text-black p-1">{name}</h3>
-            <button>
+    <div className="flex flex-col dark:text-gray-400 text-black bg-white-600 z-50 border-t border-b border-t-[0.5px] border-gray-300">
+      <button className="" onClick={(e) => setExpanded(!isExpanded)}>
+        <div className="flex flex-row items-center justify-between px-5 py-4 ">
+          <h3 className="text-lg dark:text-white font-extrabold text-black p-1">
+            {name}
+          </h3>
+          <button>
+            {isExpanded ? (
               <Icon
                 icon="ci:play-arrow"
                 rotate={1}
                 width="20"
                 height="20"
-                color="black"
+                className="dark:text-gray-400"
               />
-            </button>
-          </div>
-        ) : (
-          <div className="flex flex-row items-center justify-center gap-32">
-            <h3 className="text-2xl text-black">{name}</h3>
-            <button>
-              <Icon icon="ci:play-arrow" width="20" height="20" color="black" />
-            </button>
-          </div>
-        )}
+            ) : (
+              <Icon
+                icon="ci:play-arrow"
+                rotate={0}
+                width="20"
+                height="20"
+                className="dark:text-gray-400"
+              />
+            )}
+          </button>
+        </div>
       </button>
-      <section {...getCollapseProps()}>{children}</section>
+      {isExpanded && <section>{children}</section>}
     </div>
   );
 }

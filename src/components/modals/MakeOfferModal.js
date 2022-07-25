@@ -47,16 +47,6 @@ export default function MakeOfferModal({
     }
   };
 
-  const handleDatePicked = (value) => {
-    console.log(value);
-    setExpireDate(value);
-  };
-
-  const handleHourPicked = (value) => {
-    console.log(value);
-    setExpireHour(value);
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       const today = new Date();

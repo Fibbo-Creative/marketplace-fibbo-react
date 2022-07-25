@@ -11,6 +11,11 @@ const WFTM_ADDRESS = {
   [ChainId.FANTOM_TESTNET]: "0xf1277d1Ed8AD466beddF92ef448A132661956621",
 };
 
+const tokenSymbol = "WFTM";
+const tokenDecimals = 18;
+const tokenImage =
+  "https://cdn.sanity.io/images/lmw8etck/dev-cdn/c96c66316b7cb8a818dfa7ac7ae1e836ace2067f-128x128.png";
+
 // eslint-disable-next-line no-undef
 const isMainnet = false;
 
@@ -28,7 +33,23 @@ export const useWFTMContract = () => {
     return await contract.balanceOf(address);
   };
 
+  const importWFTM = async () => {
+    await window.ethereum.request({
+      method: "wallet_watchAsset",
+      params: {
+        type: "ERC20", // Initially only supports ERC20, but eventually more!
+        options: {
+          address: wftmAddress, // The address that the token is at.
+          symbol: tokenSymbol, // A ticker symbol or shorthand, up to 5 chars.
+          decimals: tokenDecimals, // The number of decimals in the token
+          image: tokenImage, // A string url of the token logo
+        },
+      },
+    });
+  };
+
   const wrapFTM = async (value, from) => {
+    await importWFTM();
     const contract = await getWFTMContract();
 
     const marketAddress = await getContractAddress();

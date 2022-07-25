@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import NftCard from "../../components/NftCard";
 import { Icon } from "@iconify/react";
-import NftCardSmall from "../../components/NftCardSmall";
+
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useApi } from "../../api";
-import { useStateContext } from "../../context/StateProvider";
+import FiltersSidebar from "../../components/FiltersSidebar";
 import useAccount from "../../hooks/useAccount";
 import { useNavigate } from "react-router-dom";
-import fibboLogo from "../../assets/logoNavbarSmall.png";
+
 import { PageWithLoading } from "../../components/basic/PageWithLoading";
 
 export default function ExploreContainer() {
@@ -18,7 +18,7 @@ export default function ExploreContainer() {
   const [visibleMarketItems, setVisibleMarketItems] = useState([]);
   const [visibleItemsCount, setVisibleItemsCount] = useState(12);
   const [userSmallview, setSmallViewUser] = useState(false);
-  const [openedSidebar, setOpenedSidebar] = useState(false);
+  const [openedSidebar, setOpenedSidebar] = useState(true);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
@@ -160,13 +160,13 @@ export default function ExploreContainer() {
       <>
         {allMarketItems.length > 0 && (
           <>
-            {/*  <FiltersSidebar
-            setOpenedSidebar={setOpenedSidebar}
-            allMarketItems={allMarketItems}
-            setAllMarketItems={setAllMarketItems}
-            visibleMarketItems={visibleMarketItems}
-            setVisibleMarketItems={setVisibleMarketItems}
-          /> */}
+            <FiltersSidebar
+              setOpenedSidebar={setOpenedSidebar}
+              allMarketItems={allMarketItems}
+              setAllMarketItems={setAllMarketItems}
+              visibleMarketItems={visibleMarketItems}
+              setVisibleMarketItems={setVisibleMarketItems}
+            />
             <div
               className={`flex flex-col items-center justify-center ${
                 openedSidebar && "ml-[17vw]"

@@ -54,7 +54,6 @@ export default function ItemPage() {
       setTokenInfo(tokenInfoResponse);
 
       const offers = await getItemOffers(collection, tokenId);
-      console.log(offers);
       setOffers(offers);
 
       const auction = await getAuctions(collection, tokenId);

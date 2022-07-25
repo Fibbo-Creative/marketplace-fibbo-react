@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FiboIMG from "../../assets/logoHome.png";
 import ActionButton from "../../components/ActionButton";
-import MobileDetect from "mobile-detect";
 import { useStateContext } from "../../context/StateProvider";
 import { PageWithLoading } from "../../components/basic/PageWithLoading";
 import Lottie from "react-lottie-player";

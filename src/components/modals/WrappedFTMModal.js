@@ -61,7 +61,6 @@ export default function WrappedFTMModal({
   };
 
   const handleUnwrapFTM = async () => {
-    console.log("KEE");
     try {
       const price = ethers.utils.parseEther(ftmAmount);
       if (!fromFTM) {
