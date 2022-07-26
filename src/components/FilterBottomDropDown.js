@@ -7,12 +7,12 @@ export default function FilterBottomDropDown({ name, children }) {
 
   return (
     <div className="flex flex-col dark:text-gray-400 text-black bg-white-600 z-50 border-t border-b border-t-[0.5px] border-gray-300">
-      <button className="" onClick={(e) => setExpanded(!isExpanded)}>
+      <div className="cursor-pointer" onClick={(e) => setExpanded(!isExpanded)}>
         <div className="flex flex-row items-center justify-between px-5 py-4 ">
           <h3 className="text-lg dark:text-white font-extrabold text-black p-1">
             {name}
           </h3>
-          <button>
+          <div>
             {isExpanded ? (
               <Icon
                 icon="ci:play-arrow"
@@ -30,9 +30,9 @@ export default function FilterBottomDropDown({ name, children }) {
                 className="dark:text-gray-400"
               />
             )}
-          </button>
+          </div>
         </div>
-      </button>
+      </div>
       {isExpanded && <section>{children}</section>}
     </div>
   );

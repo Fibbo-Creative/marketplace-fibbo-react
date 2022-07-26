@@ -16,9 +16,12 @@ export default function ExploreContainer() {
   const { wallet } = useAccount();
   const [allMarketItems, setAllMarketItems] = useState([]);
   const [visibleMarketItems, setVisibleMarketItems] = useState([]);
+  const [filteredMarketItems, setFilteredMarketItems] = useState([]);
+
   const [visibleItemsCount, setVisibleItemsCount] = useState(12);
   const [userSmallview, setSmallViewUser] = useState(false);
   const [openedSidebar, setOpenedSidebar] = useState(true);
+  const [filtersSelected, setFiltersSelected] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
@@ -107,12 +110,23 @@ export default function ExploreContainer() {
     return 0;
   };
 
+  const orderByNearestEnd = (a, b) => {
+    if (a.auction.endTime < b.auction.endTime) {
+      return -1;
+    }
+    if (a.auction.endTime > b.auction.endTime) {
+      return 1;
+    }
+    return 0;
+  };
+
   const sortItems = (value) => {
     if (value === "2") {
       //recentyl created
 
       const sortedArray = allMarketItems.sort(orderByRecently);
       const visibledsortedArray = visibleMarketItems.sort(orderByRecently);
+      console.log(visibledsortedArray);
       setAllMarketItems(sortedArray);
       setVisibleMarketItems(visibledsortedArray.slice(0, visibleItemsCount));
     }
@@ -125,26 +139,78 @@ export default function ExploreContainer() {
     }
     if (value === "4") {
       //highest price
-      const sortedArray = allMarketItems.sort(orderByRecentlyListed);
-      const visibledsortedArray = visibleMarketItems.sort(
-        orderByRecentlyListed
+      const forSaleAll = allMarketItems.filter(
+        (item) => item.price !== undefined
       );
-      setAllMarketItems(sortedArray);
-      setVisibleMarketItems(visibledsortedArray.slice(0, visibleItemsCount));
+      const leftItemsAll = allMarketItems.filter((item) => {
+        return !forSaleAll.find((forSaleItem) => forSaleItem === item);
+      });
+
+      const forSale = visibleMarketItems.filter(
+        (item) => item.price !== undefined
+      );
+      const leftItems = visibleMarketItems.filter((item) => {
+        return !forSale.find((forSaleItem) => forSaleItem === item);
+      });
+
+      const sortedArrayAll = forSaleAll.sort(orderByRecentlyListed);
+      const sortedArray = forSale.sort(orderByRecentlyListed);
+
+      let finalArrayAll = sortedArrayAll.concat(leftItemsAll);
+      let finalArray = sortedArray.concat(leftItems);
+
+      setAllMarketItems(finalArrayAll);
+      setVisibleMarketItems(finalArray.slice(0, visibleItemsCount));
     }
     if (value === "5") {
       //Lowest price
-      const sortedArray = allMarketItems.sort(orderByOldestListed);
-      const visibledsortedArray = visibleMarketItems.sort(orderByOldestListed);
-      setAllMarketItems(sortedArray);
-      setVisibleMarketItems(visibledsortedArray.slice(0, visibleItemsCount));
+      const forSaleAll = allMarketItems.filter(
+        (item) => item.price !== undefined
+      );
+      const leftItemsAll = allMarketItems.filter((item) => {
+        return !forSaleAll.find((forSaleItem) => forSaleItem === item);
+      });
+
+      const forSale = visibleMarketItems.filter(
+        (item) => item.price !== undefined
+      );
+      const leftItems = visibleMarketItems.filter((item) => {
+        return !forSale.find((forSaleItem) => forSaleItem === item);
+      });
+
+      const sortedArrayAll = forSaleAll.sort(orderByOldestListed);
+      const sortedArray = forSale.sort(orderByOldestListed);
+
+      let finalArrayAll = sortedArrayAll.concat(leftItemsAll);
+      let finalArray = sortedArray.concat(leftItems);
+
+      setAllMarketItems(finalArrayAll);
+      setVisibleMarketItems(finalArray.slice(0, visibleItemsCount));
     }
     if (value === "6") {
       //highest price
-      const sortedArray = allMarketItems.sort(orderByHighestP);
-      const visibledsortedArray = visibleMarketItems.sort(orderByHighestP);
-      setAllMarketItems(sortedArray);
-      setVisibleMarketItems(visibledsortedArray.slice(0, visibleItemsCount));
+      const forSaleAll = allMarketItems.filter(
+        (item) => item.price !== undefined
+      );
+      const leftItemsAll = allMarketItems.filter((item) => {
+        return !forSaleAll.find((forSaleItem) => forSaleItem === item);
+      });
+
+      const forSale = visibleMarketItems.filter(
+        (item) => item.price !== undefined
+      );
+      const leftItems = visibleMarketItems.filter((item) => {
+        return !forSale.find((forSaleItem) => forSaleItem === item);
+      });
+
+      const sortedArrayAll = forSaleAll.sort(orderByHighestP);
+      const sortedArray = forSale.sort(orderByHighestP);
+
+      let finalArrayAll = sortedArrayAll.concat(leftItemsAll);
+      let finalArray = sortedArray.concat(leftItems);
+
+      setAllMarketItems(finalArrayAll);
+      setVisibleMarketItems(finalArray.slice(0, visibleItemsCount));
     }
     if (value === "7") {
       //Lowest price
@@ -153,7 +219,139 @@ export default function ExploreContainer() {
       setAllMarketItems(sortedArray);
       setVisibleMarketItems(visibledsortedArray.slice(0, visibleItemsCount));
     }
+    if (value === "8") {
+      const auctionsAll = allMarketItems.filter(
+        (item) => item.auction !== undefined
+      );
+      const leftItemsAll = allMarketItems.filter((item) => {
+        return !auctionsAll.find((auction) => auction === item);
+      });
+
+      const auctions = visibleMarketItems.filter(
+        (item) => item.auction !== undefined
+      );
+      const leftItems = visibleMarketItems.filter((item) => {
+        return !auctions.find((auction) => auction === item);
+      });
+
+      const sortedArrayAll = auctionsAll.sort(orderByNearestEnd);
+      const sortedArray = auctions.sort(orderByNearestEnd);
+
+      let finalArrayAll = sortedArrayAll.concat(leftItemsAll);
+      let finalArray = sortedArray.concat(leftItems);
+
+      setAllMarketItems(finalArrayAll);
+      setVisibleMarketItems(finalArray.slice(0, visibleItemsCount));
+    }
   };
+
+  const filterBySelling = () => {
+    let isSelected = filtersSelected.find((item) => item === "En Venta");
+    if (isSelected) {
+      setVisibleMarketItems(allMarketItems);
+      setFiltersSelected(filtersSelected.filter((item) => item !== "En Venta"));
+    } else {
+      setFiltersSelected([...filtersSelected, "En Venta"]);
+    }
+  };
+
+  const filterByOffered = () => {
+    let isSelected = filtersSelected.find((item) => item === "Ofertado");
+    if (isSelected) {
+      setVisibleMarketItems(allMarketItems);
+      setFiltersSelected(filtersSelected.filter((item) => item !== "Ofertado"));
+    } else {
+      setFiltersSelected([...filtersSelected, "Ofertado"]);
+    }
+  };
+
+  const filterByAuctioned = () => {
+    let isSelected = filtersSelected.find((item) => item === "En Subasta");
+    if (isSelected) {
+      setVisibleMarketItems(allMarketItems);
+      setFiltersSelected(
+        filtersSelected.filter((item) => item !== "En Subasta")
+      );
+    } else {
+      setFiltersSelected([...filtersSelected, "En Subasta"]);
+    }
+  };
+
+  const filterByBidded = () => {
+    let isSelected = filtersSelected.find((item) => item === "Pujado");
+    if (isSelected) {
+      setVisibleMarketItems(allMarketItems);
+      setFiltersSelected(filtersSelected.filter((item) => item !== "Pujado"));
+    } else {
+      setFiltersSelected([...filtersSelected, "Pujado"]);
+    }
+  };
+
+  const removeFilter = (filter) => {
+    switch (filter) {
+      case "En Venta":
+        filterBySelling();
+        break;
+      case "Ofertado":
+        filterByOffered();
+        break;
+      case "En Subasta":
+        filterByAuctioned();
+        break;
+      case "Pujado":
+        filterByBidded();
+        break;
+      default:
+        break;
+    }
+  };
+
+  useEffect(() => {
+    //Status Filter
+    if (filtersSelected.length > 0) {
+      let filtered = [];
+      filtersSelected.forEach((filter) => {
+        if (filter === "En Venta") {
+          let result = allMarketItems.filter(
+            (item) => item.price !== undefined
+          );
+          filtered = [...filtered, ...result];
+        }
+        if (filter === "Ofertado") {
+          let result = allMarketItems.filter(
+            (item) => item.offer !== undefined
+          );
+          filtered = [...filtered, ...result];
+        }
+        if (filter === "En Subasta") {
+          let result = allMarketItems.filter(
+            (item) => item.auction !== undefined
+          );
+          filtered = [...filtered, ...result];
+        }
+        if (filter === "Pujado") {
+          let result = allMarketItems.filter(
+            (item) => item.auction?.topBid !== undefined
+          );
+          filtered = [...filtered, ...result];
+        }
+      });
+      //remove duplicates
+      let ids = [];
+
+      let finalFiltered = filtered.map((filter) => {
+        if (!ids.includes(filter._id)) {
+          ids.push(filter._id);
+          return filter;
+        }
+      });
+      finalFiltered = finalFiltered.filter((item) => item !== undefined);
+
+      setVisibleMarketItems(finalFiltered);
+    } else {
+      setVisibleMarketItems(allMarketItems);
+    }
+  }, [filtersSelected]);
 
   return (
     <PageWithLoading loading={loading}>
@@ -161,55 +359,81 @@ export default function ExploreContainer() {
         {allMarketItems.length > 0 && (
           <>
             <FiltersSidebar
+              filtersSelected={filtersSelected}
+              setFiltersSelected={setFiltersSelected}
               setOpenedSidebar={setOpenedSidebar}
               allMarketItems={allMarketItems}
               setAllMarketItems={setAllMarketItems}
               visibleMarketItems={visibleMarketItems}
               setVisibleMarketItems={setVisibleMarketItems}
+              statusFilters={[
+                { name: "En Venta", filter: filterBySelling },
+                { name: "Ofertado", filter: filterByOffered },
+                { name: "En Subasta", filter: filterByAuctioned },
+                { name: "Pujado", filter: filterByBidded },
+              ]}
             />
-            <div
-              className={`flex flex-col items-center justify-center ${
-                openedSidebar && "ml-[17vw]"
-              }`}
-            >
-              <div className="flex flex-row items-center gap-2 md:gap-5 dark:bg-dark-1  ">
-                <select
-                  className="cursor-pointer h-10 flex border border-gray-300 bg-white dark:bg-dark-1 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  onChange={(e) => sortItems(e.target.value)}
-                >
-                  <option value={1}>Ordenar Por</option>
-                  <option value={2}>Creados Recientemente</option>
-                  <option value={3}>Mas antiguos</option>
-                  <option value={4}>Listados Recientemiente</option>
-                  <option value={5}>Listados mas antiguos</option>
-                  <option value={6}>Mas caros</option>
-                  <option value={7}>Mas baratos</option>
-                </select>
-                <div className="flex flex-row items-center justify-center gap-2 md:gap-5 ">
-                  <button
-                    onClick={changeSmallDisplay}
-                    className="hover:-translate-y-1"
+            <div className={`flex flex-col ${openedSidebar && "ml-[17vw]"}`}>
+              <div
+                className={`flex flex-col ${
+                  openedSidebar ? "items-start " : "ml-20"
+                }`}
+              >
+                <div className="mt-2 ml-5 px-5 flex flex-row justify-start items-center gap-2 md:gap-5 dark:bg-dark-1  ">
+                  <select
+                    className=" cursor-pointer h-10 flex border border-gray-300 bg-white dark:bg-dark-1 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    onChange={(e) => sortItems(e.target.value)}
                   >
-                    <Icon
-                      icon="akar-icons:dot-grid-fill"
-                      width="40"
-                      height="40"
-                      color="grey"
-                    />
-                  </button>
-                  <button
-                    onClick={changeBigDisplay}
-                    className="hover:-translate-y-1"
-                  >
-                    <Icon
-                      icon="ci:grid-big-round"
-                      width="60"
-                      height="60"
-                      color="grey"
-                    />
-                  </button>
+                    <option value={1}>Ordenar Por</option>
+                    <option value={2}>Creados Recientemente</option>
+                    <option value={3}>Mas antiguos</option>
+                    <option value={4}>Listados Recientemiente</option>
+                    <option value={5}>Listados mas antiguos</option>
+                    <option value={6}>Mas caros</option>
+                    <option value={7}>Mas baratos</option>
+                    <option value={8}>Termina antes</option>
+                  </select>
+                  <div className="flex flex-row items-center justify-center gap-2 md:gap-5 ">
+                    <button
+                      onClick={changeSmallDisplay}
+                      className="hover:-translate-y-1"
+                    >
+                      <Icon
+                        icon="akar-icons:dot-grid-fill"
+                        width="40"
+                        height="40"
+                        color="grey"
+                      />
+                    </button>
+                    <button
+                      onClick={changeBigDisplay}
+                      className="hover:-translate-y-1"
+                    >
+                      <Icon
+                        icon="ci:grid-big-round"
+                        width="60"
+                        height="60"
+                        color="grey"
+                      />
+                    </button>
+                  </div>
+                </div>
+                <div className="mt-2 ml-5 px-5 flex gap-2 flex-row justify-start items-center">
+                  {filtersSelected.map((filter) => {
+                    return (
+                      <div
+                        key={filter.name}
+                        onClick={() => removeFilter(filter)}
+                        className="cursor-pointer  flex items-center gap-2 dark:bg-dark-2 hover:dark:bg-dark-4 border border-gray-200 rounded-xl px-8 py-3"
+                      >
+                        {filter}
+                        <Icon icon="ep:close" width={24} />
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
+
               <InfiniteScroll
                 className="flex  mt-2 flex-wrap justify-center"
                 dataLength={visibleMarketItems.length}

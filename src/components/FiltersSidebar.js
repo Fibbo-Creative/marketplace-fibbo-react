@@ -10,6 +10,9 @@ export default function FiltersSidebar({
   visibleMarketItems,
   setOpenedSidebar,
   setVisibleMarketItems,
+  filtersSelected,
+  setFiltersSelected,
+  statusFilters,
 }) {
   const [showSidebar, setShowSidebar] = useState(true);
   const [min_state, setMinState] = useState(0);
@@ -56,12 +59,8 @@ export default function FiltersSidebar({
           <div className="flex flex-col font-medium w-full gap-4">
             <FilterBottomDropDown name="Estado">
               <FilterButtons
-                options={[
-                  { name: "En Venta", filter: null },
-                  { name: "Ofertado", filter: null },
-                  { name: "En Subasta", filter: null },
-                  { name: "Pujado", filter: null },
-                ]}
+                options={statusFilters}
+                filtersSelected={filtersSelected}
               />
             </FilterBottomDropDown>
 
