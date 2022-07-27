@@ -53,6 +53,13 @@ export default function BuyItemModal({
     }
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      await checkBalance();
+    };
+    fetchData();
+  });
+
   return (
     <BasicModal
       title="Comprar NFT"
