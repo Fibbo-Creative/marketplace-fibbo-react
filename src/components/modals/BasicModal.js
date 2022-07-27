@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import React, { useState } from "react";
-import ReactModal from "react-modal";
+import { Dialog } from "@headlessui/react";
 
 export const BasicModal = ({
   children,
@@ -10,27 +10,32 @@ export const BasicModal = ({
   size,
 }) => {
   return (
-    <ReactModal
-      appElement={document.getElementsByClassName("App")}
-      isOpen={showModal}
-      contentLabel={`${title} Modal`}
+    <Dialog
+      as="div"
+      open={showModal}
+      className="fixed inset-0 z-10 overflow-y-auto "
+      onClose={handleCloseModal}
     >
-      <div
-        className={`flex flex-col p-10 dark:bg-dark-3 dark:text-white w-full h-full md:h-full p-2 w-[900px]${
-          size === "large" ? " lg:w-[600px]" : "lg:w-[400px]"
-        }`}
-      >
-        <div
-          className="absolute right-10 top-5 cursor-pointer"
-          onClick={() => handleCloseModal()}
-        >
-          <Icon className="text-2xl" icon="ant-design:close-outlined" />
+      <div className="min-h-screen px-4 text-center">
+        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+        <span className="inline-block h-screen align-middle" aria-hidden="true">
+          &#8203;
+        </span>
+
+        <div className="dark:bg-dark-3 dark:text-white inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl dark:shadow-dark-1 shadow-gray-400  rounded-2xl">
+          <Dialog.Title
+            as="h3"
+            className="dark:text-white text-lg font-medium leading-6 text-gray-900 flex justify-between"
+          >
+            <div>{title}</div>
+            <div className="cursor-pointer" onClick={() => handleCloseModal()}>
+              <Icon className="text-2xl" icon="ant-design:close-outlined" />
+            </div>
+          </Dialog.Title>
+
+          <Dialog.Panel>{children}</Dialog.Panel>
         </div>
-        <div className="flex items-center justify-center w-full border-b border-gray-300">
-          <div className="text-center">{title}</div>
-        </div>
-        {children}
       </div>
-    </ReactModal>
+    </Dialog>
   );
 };
