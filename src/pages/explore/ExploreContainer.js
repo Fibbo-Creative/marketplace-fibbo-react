@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 import { PageWithLoading } from "../../components/basic/PageWithLoading";
 import useResponsive from "../../hooks/useResponsive";
+import { FiltersSidebarModal } from "../../components/modals/FiltersSidebarModal";
 
 export default function ExploreContainer() {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ export default function ExploreContainer() {
   const { _width } = useResponsive();
   const [visibleItemsCount, setVisibleItemsCount] = useState(12);
   const [userSmallview, setSmallViewUser] = useState(false);
-  const [openedSidebar, setOpenedSidebar] = useState(false);
+  const [openedSidebar, setOpenedSidebar] = useState(true);
   const [filtersSelected, setFiltersSelected] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -355,26 +356,37 @@ export default function ExploreContainer() {
     }
   }, [filtersSelected]);
 
+  useEffect(() => {
+    if (_width < 900) {
+      setOpenedSidebar(false);
+    } else {
+      setOpenedSidebar(true);
+    }
+  });
+
   return (
     <PageWithLoading loading={loading}>
       <>
         {allMarketItems.length > 0 && (
           <>
-            <FiltersSidebar
-              filtersSelected={filtersSelected}
-              setFiltersSelected={setFiltersSelected}
-              setOpenedSidebar={setOpenedSidebar}
-              allMarketItems={allMarketItems}
-              setAllMarketItems={setAllMarketItems}
-              visibleMarketItems={visibleMarketItems}
-              setVisibleMarketItems={setVisibleMarketItems}
-              statusFilters={[
-                { name: "En Venta", filter: filterBySelling },
-                { name: "Ofertado", filter: filterByOffered },
-                { name: "En Subasta", filter: filterByAuctioned },
-                { name: "Pujado", filter: filterByBidded },
-              ]}
-            />
+            {_width > 900 && (
+              <FiltersSidebar
+                filtersSelected={filtersSelected}
+                openedSidebar={openedSidebar}
+                setFiltersSelected={setFiltersSelected}
+                setOpenedSidebar={setOpenedSidebar}
+                allMarketItems={allMarketItems}
+                setAllMarketItems={setAllMarketItems}
+                visibleMarketItems={visibleMarketItems}
+                setVisibleMarketItems={setVisibleMarketItems}
+                statusFilters={[
+                  { name: "En Venta", filter: filterBySelling },
+                  { name: "Ofertado", filter: filterByOffered },
+                  { name: "En Subasta", filter: filterByAuctioned },
+                  { name: "Pujado", filter: filterByBidded },
+                ]}
+              />
+            )}
             <div className={`flex flex-col ${openedSidebar && "ml-[17vw]"}`}>
               <div
                 className={`flex flex-col ${
@@ -382,6 +394,21 @@ export default function ExploreContainer() {
                 }`}
               >
                 <div className="mt-2 ml-5 px-5 flex flex-row justify-start items-center gap-2 md:gap-5 dark:bg-dark-1  ">
+                  {_width < 900 && (
+                    <>
+                      <button
+                        onClick={() => setOpenedSidebar(true)}
+                        className="hover:-translate-y-1"
+                      >
+                        <Icon
+                          icon="akar-icons:filter"
+                          width="40"
+                          height="40"
+                          color="grey"
+                        />
+                      </button>
+                    </>
+                  )}
                   <select
                     className=" cursor-pointer h-10 flex border border-gray-300 bg-white dark:bg-dark-1 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     onChange={(e) => sortItems(e.target.value)}
@@ -455,6 +482,12 @@ export default function ExploreContainer() {
                 })}
               </InfiniteScroll>
             </div>
+            {_width < 900 && (
+              <FiltersSidebarModal
+                openSidebar={openedSidebar}
+                setOpenSidebar={setOpenedSidebar}
+              />
+            )}
           </>
         )}
       </>

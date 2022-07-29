@@ -6,6 +6,7 @@ import FilterRange from "./FilterRange";
 
 export default function FiltersSidebar({
   allMarketItems,
+  openedSidebar,
   setAllMarketItems,
   visibleMarketItems,
   setOpenedSidebar,
@@ -14,7 +15,6 @@ export default function FiltersSidebar({
   setFiltersSelected,
   statusFilters,
 }) {
-  const [showSidebar, setShowSidebar] = useState(true);
   const [min_state, setMinState] = useState(0);
   const [max_state, setMaxState] = useState(100);
 
@@ -31,20 +31,19 @@ export default function FiltersSidebar({
 
   const handleShowSidebar = (show) => {
     setOpenedSidebar(show);
-    setShowSidebar(show);
   };
 
   return (
-    <div className="hidden lg:flex ">
-      {showSidebar ? (
+    <div className="hidden md:flex ">
+      {openedSidebar ? (
         <div
           className={`flex dark:text-gray-400 flex-col  w-[17vw] bg-white-600  fixed h-full z-40 border-r border-gray-300 ${
-            showSidebar ? "-translate-x-0 " : "-translate-x-full"
+            openedSidebar ? "-translate-x-0 " : "-translate-x-full"
           }`}
         >
           <div
             className="flex flex-row px-4 py-5  justify-between items-center cursor-pointer"
-            onClick={() => handleShowSidebar(!showSidebar)}
+            onClick={() => handleShowSidebar(!openedSidebar)}
           >
             <div className="text-2xl font-semibold ">Filtros</div>
             <button>
@@ -78,7 +77,7 @@ export default function FiltersSidebar({
       ) : (
         <div className="flex dark:text-gray-400 flex-col px-4  bg-white-600  fixed h-full z-40 border-r border-gray-300">
           <button
-            onClick={() => handleShowSidebar(!showSidebar)}
+            onClick={() => handleShowSidebar(!openedSidebar)}
             className="text-4xl dark:text-gray-400 text-black py-5 cursor-pointer z-50 hover:-translate-y-0.5"
           >
             <Icon

@@ -13,6 +13,7 @@ import ActionButton from "../../components/ActionButton";
 import fibboLogo from "../../assets/logoNavbarSmall.png";
 import { Verified } from "../../components/lottie/Verified";
 import { ThemeContext } from "../../context/ThemeContext";
+import { actionTypes } from "../../context/stateReducer";
 
 export default function ProfileContainer() {
   const { wallet } = useAccount();
@@ -70,6 +71,10 @@ export default function ProfileContainer() {
       let imgUrl = await setProfileBanner(wallet, file);
       console.log(imgUrl);
       profileData.current.profileBanner = imgUrl;
+      stateDispatch({
+        type: actionTypes.SET_PROFILE_BANNER,
+        banner: imgUrl,
+      });
       setLoadingBannerImage(false);
     } catch (error) {
       console.log("Error uploading file: ", error);
@@ -83,6 +88,10 @@ export default function ProfileContainer() {
       let imgUrl = await setProfileImg(wallet, file);
       console.log(imgUrl);
       profileData.current.profileImg = imgUrl;
+      stateDispatch({
+        type: actionTypes.SET_PROFILE_IMAGE,
+        image: imgUrl,
+      });
       setLoadingProfileImage(false);
     } catch (error) {
       console.log("Error uploading file: ", error);
@@ -94,6 +103,10 @@ export default function ProfileContainer() {
     try {
       await setUsername(wallet, newUsername);
       profileData.current.username = newUsername;
+      stateDispatch({
+        type: actionTypes.SET_USERNAME,
+        username: newUsername,
+      });
     } catch (error) {
       console.log("Error setting username: ", error);
     }

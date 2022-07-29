@@ -492,7 +492,7 @@ export default function ItemPage() {
                   <div>Ver contendido adicional</div>
                 </div>
               )}
-              <div className="flex dark:bg-dark-2 flex-col justify-center flex-wrap border-grey border-2 p-3 rounded-md gap-3">
+              <div className="flex dark:bg-dark-2 flex-col justify-center flex-wrap border-grey border-2 p-3 rounded-md ">
                 <>
                   {isOnAuction ? (
                     <div className="">
@@ -623,7 +623,7 @@ export default function ItemPage() {
                 </>
 
                 {!loading && (
-                  <div className="flex flex-col w-full items-center md:flex-row gap-3">
+                  <div className="flex flex-col w-full items-center md:flex-row gap-3 mt-2">
                     {!isForSale && !isOnAuction && !isOwner && (
                       <>
                         {!myOffer ? (

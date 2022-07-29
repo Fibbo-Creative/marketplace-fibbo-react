@@ -6,7 +6,7 @@ export default function FilterBottomDropDown({ name, children }) {
   const [isExpanded, setExpanded] = useState(false);
 
   return (
-    <div className="flex flex-col dark:text-gray-400 text-black bg-white-600 z-50 border-t border-b border-t-[0.5px] border-gray-300">
+    <div className="flex flex-col dark:text-gray-400 text-black bg-white-600 dark:bg-dark-3 z-50 border-t border-b border-t-[0.5px] border-gray-300">
       <div className="cursor-pointer" onClick={(e) => setExpanded(!isExpanded)}>
         <div className="flex flex-row items-center justify-between px-5 py-4 ">
           <h3 className="text-lg dark:text-white font-extrabold text-black p-1">

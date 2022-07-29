@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 export default function FilterButtons({ options, filtersSelected }) {
   return (
-    <div className="flex flex-wrap bg-gray-100 justify-center gap-4 w-full h-30 p-3 border-t border-gray-300   ">
+    <div className="flex flex-wrap bg-gray-100 dark:bg-dark-3 justify-center gap-4 w-full h-30 p-3 border-t border-gray-300   ">
       {options.map((option) => {
         return (
           <FilterButton
