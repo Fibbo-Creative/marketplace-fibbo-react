@@ -299,8 +299,8 @@ export default function CreateContainer() {
 
                       
                     </label>
-                    <abbr className="cursor-pointer" title="Si el contenido és explícito y sensible, como pornografía o contenido 'not safe for work' (NSFW), protegerá a los usuarios de FIBBO que realicen búsquedas seguras y no les mostrará el contenido.">
-                      <Icon className="w-auto h-auto flex m-0" icon="akar-icons:info" /> </abbr>
+                    <abbr className="cursor-pointer " title="Si el contenido és explícito o sensible, como pornografía o contenido 'not safe for work' (NSFW), protegerá a los usuarios de FIBBO que realicen búsquedas seguras y no les mostrará el contenido.">
+                      <Icon className="w-auto h-auto flex m-0" icon="akar-icons:info" />  </abbr>
                     
                   </div>
                 </div>

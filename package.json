@@ -23,6 +23,7 @@
     "ipfs-http-client": "^55.0.0",
     "mobile-detect": "^1.4.5",
     "os-browserify": "^0.3.0",
+    "qrcode": "^1.5.1",
     "react": "^17.0.2",
     "react-app-rewired": "^2.1.11",
     "react-collapse": "^5.1.1",
