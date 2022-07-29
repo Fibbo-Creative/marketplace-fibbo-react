@@ -362,7 +362,7 @@ export default function ExploreContainer() {
     } else {
       setOpenedSidebar(true);
     }
-  });
+  }, []);
 
   return (
     <PageWithLoading loading={loading}>
@@ -390,10 +390,12 @@ export default function ExploreContainer() {
             <div className={`flex flex-col ${openedSidebar && "ml-[17vw]"}`}>
               <div
                 className={`flex flex-col ${
-                  openedSidebar ? "items-start " : `${_width > 900 && "ml-20"}`
+                  openedSidebar
+                    ? "items-start "
+                    : `${_width > 900 && "ml-20"} items-center`
                 }`}
               >
-                <div className="mt-2 ml-5 px-5 flex flex-row justify-start items-center gap-2 md:gap-5 dark:bg-dark-1  ">
+                <div className="mt-2 ml-5 px-5 flex flex-row justify-evenly w-full items-center gap-2 md:gap-5 dark:bg-dark-1  ">
                   {_width < 900 && (
                     <>
                       <button
@@ -410,7 +412,7 @@ export default function ExploreContainer() {
                     </>
                   )}
                   <select
-                    className=" cursor-pointer h-10 flex border border-gray-300 bg-white dark:bg-dark-1 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="cursor-pointer h-10 w-40 md:w-60 flex border border-gray-300 bg-white dark:bg-dark-1 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     onChange={(e) => sortItems(e.target.value)}
                   >
                     <option value={1}>Ordenar Por</option>
@@ -447,13 +449,13 @@ export default function ExploreContainer() {
                     </button>
                   </div>
                 </div>
-                <div className="mt-2 ml-5 px-5 flex gap-2 flex-row justify-start items-center">
+                <div className="mt-2 ml-5 px-5 flex gap-2 flex-wrap md:flex-row justify-start items-center">
                   {filtersSelected.map((filter) => {
                     return (
                       <div
                         key={filter.name}
                         onClick={() => removeFilter(filter)}
-                        className="cursor-pointer  flex items-center gap-2 dark:bg-dark-2 hover:dark:bg-dark-4 border border-gray-200 rounded-xl px-8 py-3"
+                        className="cursor-pointer text-xs md:text-sm  flex  items-center gap-2 dark:bg-dark-2 hover:dark:bg-dark-4 border border-gray-200 rounded-xl px-8 py-3"
                       >
                         {filter}
                         <Icon icon="ep:close" width={24} />
@@ -486,6 +488,13 @@ export default function ExploreContainer() {
               <FiltersSidebarModal
                 openSidebar={openedSidebar}
                 setOpenSidebar={setOpenedSidebar}
+                statusFilters={[
+                  { name: "En Venta", filter: filterBySelling },
+                  { name: "Ofertado", filter: filterByOffered },
+                  { name: "En Subasta", filter: filterByAuctioned },
+                  { name: "Pujado", filter: filterByBidded },
+                ]}
+                filtersSelected={filtersSelected}
               />
             )}
           </>
