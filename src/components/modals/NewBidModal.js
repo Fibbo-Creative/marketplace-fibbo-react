@@ -66,7 +66,8 @@ export default function MakeBidModal({
       submitDisabled={
         highestBid
           ? bidAmmount < parseFloat(highestBid.bid) + 1 ||
-            (highestBid && bidAmmount < highestBid.bid)
+            (highestBid && bidAmmount < highestBid.bid) ||
+            bidAmmount > wftmBalance
           : bidAmmount > wftmBalance
       }
     >

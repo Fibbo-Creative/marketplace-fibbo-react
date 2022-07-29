@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useApi } from "../../api";
 import NftCard from "../../components/NftCard";
@@ -31,7 +31,10 @@ export default function ProfileContainer() {
   const { theme } = useContext(ThemeContext);
 
   const [myProfile, setMyprofile] = useState(false);
-  const [profileData, setProfileData] = useState({});
+  const [loadingBannerImage, setLoadingBannerImage] = useState(false);
+  const [loadingProfileImage, setLoadingProfileImage] = useState(false);
+
+  const profileData = useRef(null);
 
   const [newUsername, setNewUsername] = useState(userProfile.username);
   const [showEditUsername, setShowEditUsername] = useState(false);
@@ -61,20 +64,26 @@ export default function ProfileContainer() {
   };
 
   const setBannerImg = async (e) => {
+    setLoadingBannerImage(true);
     const file = e.target.files[0];
     try {
-      await setProfileBanner(wallet, file);
-      window.location.replace(`/profile/${wallet}`);
+      let imgUrl = await setProfileBanner(wallet, file);
+      console.log(imgUrl);
+      profileData.current.profileBanner = imgUrl;
+      setLoadingBannerImage(false);
     } catch (error) {
       console.log("Error uploading file: ", error);
     }
   };
 
   const setProfileImage = async (e) => {
+    setLoadingProfileImage(true);
     const file = e.target.files[0];
     try {
-      await setProfileImg(wallet, file);
-      window.location.replace(`/profile/${wallet}`);
+      let imgUrl = await setProfileImg(wallet, file);
+      console.log(imgUrl);
+      profileData.current.profileImg = imgUrl;
+      setLoadingProfileImage(false);
     } catch (error) {
       console.log("Error uploading file: ", error);
     }
@@ -84,7 +93,7 @@ export default function ProfileContainer() {
     e.preventDefault();
     try {
       await setUsername(wallet, newUsername);
-      window.location.replace(`/profile/${wallet}`);
+      profileData.current.username = newUsername;
     } catch (error) {
       console.log("Error setting username: ", error);
     }
@@ -97,9 +106,11 @@ export default function ProfileContainer() {
 
   useEffect(() => {
     const fetchData = async () => {
-      setMyprofile(wallet === address);
+      let isMyProfile = wallet === address;
+      setMyprofile(isMyProfile);
       const profileDataResponse = await getProfileInfo(address);
-      setProfileData(profileDataResponse);
+
+      profileData.current = isMyProfile ? userProfile : profileDataResponse;
       const userItemsResponse = await getNftsFromAddress(address);
       setUserItems(userItemsResponse);
       setLoading(false);
@@ -116,33 +127,40 @@ export default function ProfileContainer() {
         <>
           {/*BANNER*/}
           {myProfile ? (
-            <button
-              onClick={() => selectBannerImg()}
-              className="w-screen h-[200px] bg-gray-300 dark:bg-gray-600 z-10 object-cover object-center"
-              style={{
-                backgroundImage:
-                  profileData.profileBanner !== ""
-                    ? `url(${userProfile.profileBanner})`
-                    : "none",
-                backgroundSize: "cover",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center center",
-              }}
-            >
-              <input
-                id="bannerInput"
-                type="file"
-                onChange={(e) => setBannerImg(e)}
-                hidden={true}
-              />
-            </button>
+            <>
+              {loadingBannerImage ? (
+                <div className="w-screen h-[200px] bg-gray-300 dark:bg-gray-600 animate-pulse z-2"></div>
+              ) : (
+                <button
+                  onClick={() => selectBannerImg()}
+                  className="w-screen h-[200px] bg-gray-300 dark:bg-gray-600 z-10 object-cover object-center"
+                  style={{
+                    backgroundImage:
+                      !loadingBannerImage &&
+                      profileData.current?.profileBanner !== ""
+                        ? `url(${profileData.current?.profileBanner})`
+                        : "none",
+                    backgroundSize: "cover",
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "center center",
+                  }}
+                >
+                  <input
+                    id="bannerInput"
+                    type="file"
+                    onChange={(e) => setBannerImg(e)}
+                    hidden={true}
+                  />
+                </button>
+              )}
+            </>
           ) : (
             <div
               className="w-screen h-[200px] dark:bg-gray-600 bg-gray-300 z-10"
               style={{
                 backgroundImage:
-                  profileData.profileBanner !== ""
-                    ? `url(${profileData.profileBanner})`
+                  profileData.current?.profileBanner !== ""
+                    ? `url(${profileData.current?.profileBanner})`
                     : "none",
               }}
             ></div>
@@ -161,18 +179,22 @@ export default function ProfileContainer() {
                   onChange={(e) => setProfileImage(e)}
                   hidden={true}
                 />
-                <img
-                  src={userProfile.profileImg}
-                  className="rounded-full w-[112px] h-[112px] object-cover object-center  "
-                  alt="ProfileImage"
-                />
+                {loadingProfileImage ? (
+                  <div className="rounded-full w-[112px] h-[112px] bg-gray-400 animate-pulse z-10"></div>
+                ) : (
+                  <img
+                    src={profileData.current?.profileImg}
+                    className="rounded-full w-[112px] h-[112px] object-cover  z-10 object-center"
+                    alt=""
+                  />
+                )}
               </button>
             ) : (
               <div
                 className={`flex justify-center items-center   m-4 w-[112px] h-[112px] -mt-20`}
               >
                 <img
-                  src={profileData.profileImg}
+                  src={profileData.current?.profileImg}
                   className=" rounded-full object-contain"
                   alt="ProfileImage"
                   width={114}
@@ -193,16 +215,16 @@ export default function ProfileContainer() {
                 </form>
               ) : (
                 <div
-                  data-for={profileData.verified && "verify-info"}
+                  data-for={profileData.current?.verified && "verify-info"}
                   data-tip={
-                    profileData.verified &&
+                    profileData.current?.verified &&
                     "Artista verificado por <br/> el equipo de FIBOO"
                   }
                   className={`flex cursorPointer ${
-                    profileData.verified && "gap-5 items-center"
+                    profileData.current?.verified && "gap-5 items-center"
                   }`}
                 >
-                  {profileData.verified && (
+                  {profileData.current?.verified && (
                     <div>
                       <Verified />
                       <ReactTooltip
@@ -214,7 +236,7 @@ export default function ProfileContainer() {
                       />
                     </div>
                   )}
-                  <b>{profileData.username}</b>
+                  <b>{profileData.current?.username}</b>
                 </div>
               )}
               {myProfile && (

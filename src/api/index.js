@@ -48,7 +48,7 @@ export const useApi = () => {
       }
     );
 
-    return imgAddedToSanity;
+    return imgAddedToSanity.data;
   };
 
   const setProfileImg = async (address, file) => {
@@ -65,7 +65,7 @@ export const useApi = () => {
         },
       }
     );
-    return imgAddedToSanity;
+    return imgAddedToSanity.data;
   };
 
   //#endregion

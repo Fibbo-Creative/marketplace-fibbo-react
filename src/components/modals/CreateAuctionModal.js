@@ -90,6 +90,7 @@ export default function CreateAuctionModal({
       completedText={`Item puesto en subasta correctamente`}
       completedLabel={`Ver ítem acutalizado`}
       completedAction={handleCloseModal}
+      submitDisabled={actionError || buyNowPrice < reservePrice * 2}
     >
       <div className="my-10 mx-8 flex flex-col gap-10">
         <Erc20AmountInput
