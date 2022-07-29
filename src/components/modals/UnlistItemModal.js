@@ -1,102 +1,64 @@
 import { Icon } from "@iconify/react";
-import React, { useState } from "react";
-import ActionButton from "../ActionButton";
-import { useMarketplace } from "../../contracts/market";
-import { useApi } from "../../api";
-import { BasicModal } from "./BasicModal";
-import { Check } from "../lottie/Check";
+import React from "react";
+import { ActionModal } from "./ActionModal";
 
 export default function UnlistItemModal({
   children,
   showModal,
   handleCloseModal,
-  itemId,
-  collectionAddress,
+  listing,
   tokenInfo,
   wallet,
+  onUnlistItem,
 }) {
-  const { cancelListing } = useMarketplace();
-
-  const [completedAction, setCompletedAction] = useState(false);
-
   const unlistItem = async () => {
     try {
-      //en el contrato del marketplace -> createMarketItem
-      await cancelListing(collectionAddress, itemId);
-
-      setCompletedAction(true);
+      await onUnlistItem();
     } catch (e) {
       console.log(e);
     }
   };
   return (
-    <BasicModal
+    <ActionModal
       title="Quitar item del mercado"
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       size="large"
+      onSubmit={() => unlistItem()}
+      submitLabel={"Eliminar Item"}
+      completedText={`Item eliminado del mercado correctamente`}
+      completedLabel={`Ver ítem acutalizado`}
+      completedAction={handleCloseModal}
     >
-      {!completedAction ? (
-        <div className="my-10 mx-8 flex flex-col items-center gap-10">
-          <div className="w-full flex-col items-center justify-center">
-            <div className="flex flex-col md:flex-row items-center gap-3 justify-evenly">
-              <div className="flex flex-col gap-3">
-                <div className="flex gap-2">
-                  <b>Nombre:</b>
-                  <p>{tokenInfo?.name}</p>
-                </div>
-                <div className="flex gap-2">
-                  <b>Royalties:</b>
-                  <p>{tokenInfo?.royalty}</p>
-                  <Icon
-                    className="text-gray-500"
-                    icon="ci:help-circle-outline"
-                  />
-                </div>
-                <div className="flex gap-2">
-                  <b>Precio:</b>
-                  <p>{tokenInfo?.price}</p>
-                  <p>FTM</p>
-                </div>
+      <div className="my-10 mx-8 flex flex-col items-center gap-10">
+        <div className="w-full flex-col items-center justify-center">
+          <div className="flex flex-col md:flex-row items-center gap-3 justify-evenly">
+            <div className="flex flex-col gap-3">
+              <div className="flex gap-2">
+                <b>Nombre:</b>
+                <p>{tokenInfo?.name}</p>
               </div>
-              <div>
-                <img
-                  src={tokenInfo?.image}
-                  width={"128px"}
-                  alt={`tokenImage-${tokenInfo?.name}`}
-                />
+              <div className="flex gap-2">
+                <b>Royalties:</b>
+                <p>{tokenInfo?.royalty}</p>
+                <Icon className="text-gray-500" icon="ci:help-circle-outline" />
+              </div>
+              <div className="flex gap-2">
+                <b>Precio:</b>
+                <p>{listing?.price}</p>
+                <p>FTM</p>
               </div>
             </div>
-          </div>
-          <div className="flex flex-col">
-            <ActionButton
-              size="large"
-              variant={"contained"}
-              text="Eliminar Item"
-              buttonAction={(e) => unlistItem()}
-            />
-          </div>
-        </div>
-      ) : (
-        <div className="my-10 mx-8 flex flex-col items-center gap-10">
-          <div className="w-full flex-col items-center justify-center">
-            <div className="flex flex-col md:flex-row items-center gap-3 justify-evenly">
-              <div className="flex gap-5 items-center">
-                <Check />
-                <p>Item eliminado del mercado correctamente</p>
-              </div>
+            <div>
+              <img
+                src={tokenInfo?.image}
+                width={"128px"}
+                alt={`tokenImage-${tokenInfo?.name}`}
+              />
             </div>
           </div>
-          <div className="flex flex-col">
-            <ActionButton
-              size="large"
-              variant={"contained"}
-              text="Ver Ítem actualizado"
-              buttonAction={(e) => window.location.reload()}
-            />
-          </div>
         </div>
-      )}
-    </BasicModal>
+      </div>
+    </ActionModal>
   );
 }

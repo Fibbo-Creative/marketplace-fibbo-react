@@ -2,6 +2,7 @@ import axios from "axios";
 
 const herokuURL = "https://fibbo-market-api.herokuapp.com/";
 const localURL = "http://localhost:9000/";
+const herokuDevURL = "https://market-api-dev.herokuapp.com/";
 
 const marketplaceApi = axios.create({ baseURL: localURL });
 const isMainnet = false;

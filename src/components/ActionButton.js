@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const styles = {
   basicStyle:
@@ -49,16 +49,24 @@ export default function ActionButton({
   size,
 }) {
   const [loading, setLoading] = useState(false);
+  const [actionDone, setActionDone] = useState(false);
 
   const executeAction = async (e) => {
     try {
       setLoading(true);
       await buttonAction(e);
       setLoading(false);
+      setActionDone(true);
     } catch (e) {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      setLoading(false);
+    };
+  }, [actionDone]);
   return (
     <button
       onClick={(e) => executeAction(e)}

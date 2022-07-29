@@ -34,7 +34,7 @@ export const useWFTMContract = () => {
   };
 
   const importWFTM = async () => {
-    await window.ethereum.request({
+    const asset = await window.ethereum.request({
       method: "wallet_watchAsset",
       params: {
         type: "ERC20", // Initially only supports ERC20, but eventually more!
@@ -46,6 +46,7 @@ export const useWFTMContract = () => {
         },
       },
     });
+    console.log(asset);
   };
 
   const wrapFTM = async (value, from) => {

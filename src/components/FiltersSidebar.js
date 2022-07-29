@@ -52,7 +52,7 @@ export default function FiltersSidebar({
                 icon="eva:menu-arrow-outline"
                 width="40"
                 height="40"
-                className="dark:text-gray-400 text-black-800"
+                className="dark:text-gray-400 text-gray-400"
               />
             </button>
           </div>
@@ -86,7 +86,7 @@ export default function FiltersSidebar({
               hFlip={true}
               width="40"
               height="40"
-              className="dark:text-gray-400 text-black-800"
+              className="dark:text-gray-400 text-gray-400"
             />
           </button>
         </div>

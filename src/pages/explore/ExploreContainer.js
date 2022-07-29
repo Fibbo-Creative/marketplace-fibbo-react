@@ -9,6 +9,7 @@ import useAccount from "../../hooks/useAccount";
 import { useNavigate } from "react-router-dom";
 
 import { PageWithLoading } from "../../components/basic/PageWithLoading";
+import useResponsive from "../../hooks/useResponsive";
 
 export default function ExploreContainer() {
   const navigate = useNavigate();
@@ -17,16 +18,17 @@ export default function ExploreContainer() {
   const [allMarketItems, setAllMarketItems] = useState([]);
   const [visibleMarketItems, setVisibleMarketItems] = useState([]);
   const [filteredMarketItems, setFilteredMarketItems] = useState([]);
-
+  const { _width } = useResponsive();
   const [visibleItemsCount, setVisibleItemsCount] = useState(12);
   const [userSmallview, setSmallViewUser] = useState(false);
-  const [openedSidebar, setOpenedSidebar] = useState(true);
+  const [openedSidebar, setOpenedSidebar] = useState(false);
   const [filtersSelected, setFiltersSelected] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       const forSaleItems = await getAllTokens();
+      console.log(forSaleItems);
       setAllMarketItems(forSaleItems);
       setVisibleMarketItems(forSaleItems.slice(0, 12));
       setLoading(false);
@@ -376,7 +378,7 @@ export default function ExploreContainer() {
             <div className={`flex flex-col ${openedSidebar && "ml-[17vw]"}`}>
               <div
                 className={`flex flex-col ${
-                  openedSidebar ? "items-start " : "ml-20"
+                  openedSidebar ? "items-start " : `${_width > 900 && "ml-20"}`
                 }`}
               >
                 <div className="mt-2 ml-5 px-5 flex flex-row justify-start items-center gap-2 md:gap-5 dark:bg-dark-1  ">

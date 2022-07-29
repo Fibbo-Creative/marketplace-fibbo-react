@@ -64,7 +64,7 @@ export default function ProfileContainer() {
     const file = e.target.files[0];
     try {
       await setProfileBanner(wallet, file);
-      window.location.reload();
+      window.location.replace(`/profile/${wallet}`);
     } catch (error) {
       console.log("Error uploading file: ", error);
     }
@@ -74,7 +74,7 @@ export default function ProfileContainer() {
     const file = e.target.files[0];
     try {
       await setProfileImg(wallet, file);
-      window.location.reload();
+      window.location.replace(`/profile/${wallet}`);
     } catch (error) {
       console.log("Error uploading file: ", error);
     }
@@ -84,7 +84,7 @@ export default function ProfileContainer() {
     e.preventDefault();
     try {
       await setUsername(wallet, newUsername);
-      window.location.reload();
+      window.location.replace(`/profile/${wallet}`);
     } catch (error) {
       console.log("Error setting username: ", error);
     }

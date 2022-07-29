@@ -5,7 +5,7 @@ import { MARKETPLACE_ABI } from "./abi";
 import { useAddressRegistry } from "./addressRegistry";
 import { useDefaultCollection } from "./collection";
 import { Contracts } from "../constants/networks";
-import { formatEther } from "ethers/lib/utils";
+import { formatEther, parseEther } from "ethers/lib/utils";
 import { useTokens } from "./token";
 import useAccount from "../hooks/useAccount";
 
@@ -45,7 +45,7 @@ export const useMarketplace = () => {
       collection,
       tokenId,
       WFTM_ADDRESS,
-      price,
+      parseEther(price.toString()),
       0
     );
 
@@ -55,7 +55,7 @@ export const useMarketplace = () => {
   const buyItem = async (buyer, collection, tokenId, owner, price) => {
     const marketContract = await getMarketContract();
     const erc20 = await getERC20Contract(WFTM_ADDRESS);
-
+    price = parseEther(price.toString());
     const allowance = await erc20.allowance(buyer, marketContract.address);
 
     if (allowance.lt(price)) {
@@ -65,7 +65,7 @@ export const useMarketplace = () => {
     const defaultCollection = await getDefaultCollectionContract();
 
     let buyItemTx = await marketContract.buyItem(
-      defaultCollection.address,
+      collection,
       tokenId,
       WFTM_ADDRESS,
       owner
@@ -95,24 +95,22 @@ export const useMarketplace = () => {
 
   const updateListing = async (collection, tokenId, price) => {
     const marketContract = await getMarketContract();
-    const collectionAddress = await getFibboCollectionAddress();
 
     let updateListingTx = await marketContract.updateListing(
-      collectionAddress,
+      collection,
       tokenId,
       WFTM_ADDRESS,
-      price
+      parseEther(price.toString())
     );
 
     await updateListingTx.wait();
   };
 
-  const getListingInfo = async (tokenId, owner) => {
+  const getListingInfo = async (collection, tokenId, owner) => {
     const marketContract = await getMarketContract();
-    const collectionContract = await getFibboCollectionAddress();
 
     const listingInfo = await marketContract.listings(
-      collectionContract,
+      collection,
       tokenId,
       owner
     );
@@ -143,10 +141,10 @@ export const useMarketplace = () => {
 
     let makeOfferTx = await marketContract.createOffer(
       collection,
-      tokenId,
+      ethers.BigNumber.from(tokenId),
       WFTM_ADDRESS,
-      offerPrice,
-      deadline
+      parseEther(offerPrice.toString()),
+      ethers.BigNumber.from(deadline)
     );
 
     await makeOfferTx.wait();
@@ -181,6 +179,19 @@ export const useMarketplace = () => {
 
     await cancelOfferTx.wait();
   };
+
+  const getOffer = async (collection, tokenId, wallet) => {
+    const marketContract = await getMarketContract();
+
+    let offer = await marketContract.offers(collection, tokenId, wallet);
+
+    return {
+      payToken: offer.payToken,
+      price: formatEther(offer.price),
+      deadline: offer.deadline,
+      creator: wallet,
+    };
+  };
   return {
     getContractAddress,
     getMarketContract,
@@ -192,5 +203,6 @@ export const useMarketplace = () => {
     makeOffer,
     cancelOffer,
     acceptOffer,
+    getOffer,
   };
 };

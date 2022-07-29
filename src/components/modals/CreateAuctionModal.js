@@ -11,6 +11,7 @@ import { useWFTMContract } from "../../contracts/wftm";
 import { useAuction } from "../../contracts/auction";
 import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
 import { DateTimeInput } from "../inputs/DateTimeInput";
+import { ActionModal } from "./ActionModal";
 
 export default function CreateAuctionModal({
   collection,
@@ -19,6 +20,7 @@ export default function CreateAuctionModal({
   tokenId,
   wallet,
   tokenInfo,
+  onCreateAuction,
 }) {
   const navigate = useNavigate();
   const { createAuction } = useAuction();
@@ -45,17 +47,13 @@ export default function CreateAuctionModal({
       startTime = Math.floor(startTime.getTime() / 1000);
       endTime = Math.floor(endTime.getTime() / 1000);
 
-      await createAuction(
-        wallet,
-        collection,
-        ethers.BigNumber.from(tokenId),
-        parseEther(reservePrice.toString()),
-        parseEther(buyNowPrice.toString()),
+      await onCreateAuction(
+        reservePrice,
+        buyNowPrice,
         minimumBid,
-        ethers.BigNumber.from(startTime),
-        ethers.BigNumber.from(endTime)
+        startTime,
+        endTime
       );
-      setCompletedAction(true);
     } catch (e) {
       console.log(e);
     }
@@ -82,99 +80,75 @@ export default function CreateAuctionModal({
     fetchData();
   }, []);
   return (
-    <BasicModal
+    <ActionModal
       title={"Subastar Item"}
       size="large"
       showModal={showModal}
       handleCloseModal={handleCloseModal}
+      onSubmit={() => handleCreateAuction()}
+      submitLabel={"Poner en subasta"}
+      completedText={`Item puesto en subasta correctamente`}
+      completedLabel={`Ver ítem acutalizado`}
+      completedAction={handleCloseModal}
     >
-      {!completedAction ? (
-        <div className="my-10 mx-8 flex flex-col gap-10">
-          <Erc20AmountInput
-            label={"Que precio quieres asegurar?"}
-            value={reservePrice}
-            onChange={setReservePrice}
-          />
-          <div className="flex items-center gap-2">
-            <span className="font-bold text-sm text-gray-700 dark:text-gray-400 border-gray-300 p-3">
-              Quieres que la puja mínima sea el precio reservado?
-            </span>
-            <label className="">
-              <input
-                type="checkbox"
-                checked={minimumBid}
-                onChange={() => setMinimumBid(!minimumBid)}
-              />
-            </label>
-          </div>
-          <Erc20AmountInput
-            label={"Que precio de compra ahora?"}
-            value={buyNowPrice}
-            onChange={setBuyNowPrice}
-            error={buyNowPrice < reservePrice * 2}
-            errorMessage={
-              "El precio de compra tiene que ser mínimo el doble de reserva"
-            }
-          />
-          <DateTimeInput
-            label={"Fecha de Inicio"}
-            valueDate={startDate}
-            valueHour={startHour}
-            onChangeDate={setStartDate}
-            onChangeHour={setStartHour}
-            errorType={{
-              type: "BEFORE",
-              params: {
-                to: new Date(`${endDate}T${endHour}`),
-              },
-            }}
-            setActionError={setActionError}
-          />
-          <DateTimeInput
-            label={"Fecha de Fin"}
-            valueDate={endDate}
-            valueHour={endHour}
-            onChangeDate={setEndDate}
-            onChangeHour={setEndHour}
-            errorType={{
-              type: "AFTER",
-              params: {
-                to: new Date(`${startDate}T${startHour}`),
-                diff: 5,
-                as: "min",
-              },
-            }}
-            setActionError={setActionError}
-          />
-
-          <div className="w-full flex items-center justify-center">
-            <ActionButton
-              disabled={
-                actionError || buyNowPrice < parseFloat(reservePrice) * 2
-              }
-              text="Poner en subasta"
-              size="large"
-              buttonAction={() => handleCreateAuction()}
+      <div className="my-10 mx-8 flex flex-col gap-10">
+        <Erc20AmountInput
+          label={"Que precio quieres asegurar?"}
+          value={reservePrice}
+          onChange={setReservePrice}
+        />
+        <div className="flex items-center gap-2">
+          <span className="font-bold text-sm text-gray-700 dark:text-gray-400 border-gray-300 p-3">
+            Quieres que la puja mínima sea el precio reservado?
+          </span>
+          <label className="">
+            <input
+              type="checkbox"
+              checked={minimumBid}
+              onChange={() => setMinimumBid(!minimumBid)}
             />
-          </div>
+          </label>
         </div>
-      ) : (
-        <div className="my-10 mx-8 flex flex-col gap-10">
-          <div className="flex flex-col gap-5 items-center">
-            <div className="flex gap-5 items-center">
-              <Check />
-              <p>Item puesto en subasta correctamente</p>
-            </div>
-
-            <ActionButton
-              size="large"
-              variant={"contained"}
-              text="Ver item actualizado"
-              buttonAction={(e) => window.location.reload()}
-            />
-          </div>
-        </div>
-      )}
-    </BasicModal>
+        <Erc20AmountInput
+          label={"Que precio de compra ahora?"}
+          value={buyNowPrice}
+          onChange={setBuyNowPrice}
+          error={buyNowPrice < reservePrice * 2}
+          errorMessage={
+            "El precio de compra tiene que ser mínimo el doble de reserva"
+          }
+        />
+        <DateTimeInput
+          label={"Fecha de Inicio"}
+          valueDate={startDate}
+          valueHour={startHour}
+          onChangeDate={setStartDate}
+          onChangeHour={setStartHour}
+          errorType={{
+            type: "BEFORE",
+            params: {
+              to: new Date(`${endDate}T${endHour}`),
+            },
+          }}
+          setActionError={setActionError}
+        />
+        <DateTimeInput
+          label={"Fecha de Fin"}
+          valueDate={endDate}
+          valueHour={endHour}
+          onChangeDate={setEndDate}
+          onChangeHour={setEndHour}
+          errorType={{
+            type: "AFTER",
+            params: {
+              to: new Date(`${startDate}T${startHour}`),
+              diff: 5,
+              as: "min",
+            },
+          }}
+          setActionError={setActionError}
+        />
+      </div>
+    </ActionModal>
   );
 }

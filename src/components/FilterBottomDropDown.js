@@ -19,7 +19,7 @@ export default function FilterBottomDropDown({ name, children }) {
                 rotate={1}
                 width="20"
                 height="20"
-                className="dark:text-gray-400"
+                className="dark:text-gray-400 text-gray-400"
               />
             ) : (
               <Icon
@@ -27,7 +27,7 @@ export default function FilterBottomDropDown({ name, children }) {
                 rotate={0}
                 width="20"
                 height="20"
-                className="dark:text-gray-400"
+                className="dark:text-gray-400 text-gray-400"
               />
             )}
           </div>

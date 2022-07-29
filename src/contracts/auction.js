@@ -5,7 +5,7 @@ import { AUCTION_ABI } from "./abi";
 import { useAddressRegistry } from "./addressRegistry";
 import { useDefaultCollection } from "./collection";
 import { Contracts } from "../constants/networks";
-import { formatEther } from "ethers/lib/utils";
+import { formatEther, parseEther } from "ethers/lib/utils";
 import { useTokens } from "./token";
 
 const CHAIN = ChainId.FANTOM_TESTNET;
@@ -25,7 +25,7 @@ const formatAuction = (auctionData) => {
 
 const formatHighestBid = (highestBidData) => {
   return {
-    bid: formatEther(highestBidData.bid),
+    bid: parseFloat(formatEther(highestBidData.bid)),
     bidder: highestBidData.bidder,
   };
 };
@@ -44,7 +44,7 @@ export const useAuction = () => {
     return await getContract(address, AUCTION_ABI);
   };
 
-  const getAuctions = async (collection, tokenId) => {
+  const getAuction = async (collection, tokenId) => {
     const auctionContract = await getAuctionContract();
     const erc20 = await getERC20Contract(WFTM_ADDRESS);
 
@@ -103,13 +103,13 @@ export const useAuction = () => {
 
     const createAuctionTx = await auctionContract.createAuction(
       collection,
-      tokenId,
+      ethers.BigNumber.from(tokenId),
       WFTM_ADDRESS,
-      reservePrice,
-      buyNowPrice,
-      startTime,
+      parseEther(reservePrice.toString()),
+      parseEther(buyNowPrice.toString()),
+      ethers.BigNumber.from(startTime),
       minBidReserve,
-      endTime
+      ethers.BigNumber.from(endTime)
     );
 
     await createAuctionTx.wait();
@@ -121,7 +121,7 @@ export const useAuction = () => {
     const updateTx = await auctionContract.updateAuctionReservePrice(
       collection,
       tokenId,
-      reservePrice
+      parseEther(reservePrice.toString())
     );
 
     await updateTx.wait();
@@ -133,7 +133,7 @@ export const useAuction = () => {
     const updateTx = await auctionContract.updateAuctionStartTime(
       collection,
       tokenId,
-      startTime
+      ethers.BigNumber.from(startTime)
     );
 
     await updateTx.wait();
@@ -145,7 +145,7 @@ export const useAuction = () => {
     const updateTx = await auctionContract.updateAuctionEndTime(
       collection,
       tokenId,
-      endTime
+      ethers.BigNumber.from(endTime)
     );
 
     await updateTx.wait();
@@ -169,14 +169,17 @@ export const useAuction = () => {
     const allowance = await erc20.allowance(bidder, auctionContract.address);
 
     if (allowance.lt(bidAmount)) {
-      const tx = await erc20.approve(auctionContract.address, bidAmount);
+      const tx = await erc20.approve(
+        auctionContract.address,
+        parseEther(bidAmount.toString())
+      );
       await tx.wait();
     }
 
     const bidTx = await auctionContract.placeBid(
       collection,
       tokenId,
-      bidAmount
+      parseEther(bidAmount.toString())
     );
 
     await bidTx.wait();
@@ -187,10 +190,11 @@ export const useAuction = () => {
     const erc20 = await getERC20Contract(WFTM_ADDRESS);
     const collectionContract = await getDefaultCollectionContract();
 
+    const formattedPrice = parseEther(buyNowPrice.toString());
     const allowance = await erc20.allowance(buyer, auctionContract.address);
 
-    if (allowance.lt(buyNowPrice)) {
-      const tx = await erc20.approve(auctionContract.address, buyNowPrice);
+    if (allowance.lt(formattedPrice)) {
+      const tx = await erc20.approve(auctionContract.address, formattedPrice);
       await tx.wait();
     }
 
@@ -211,7 +215,7 @@ export const useAuction = () => {
   return {
     getContractAddress,
     getAuctionContract,
-    getAuctions,
+    getAuction,
     createAuction,
     getHighestBid,
     makeBid,

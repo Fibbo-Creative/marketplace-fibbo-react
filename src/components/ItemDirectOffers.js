@@ -9,7 +9,12 @@ import AcceptOfferModal from "./modals/AcceptOfferModal";
 import useAccount from "../hooks/useAccount";
 import RemoveOfferModal from "./modals/RemoveOfferModal";
 
-export const ItemDirectOffers = ({ offers, isOwner }) => {
+export const ItemDirectOffers = ({
+  offers,
+  isOwner,
+  onAcceptOffer,
+  onCancelOffer,
+}) => {
   const { wallet } = useAccount();
   const [showAcceptOffer, setShowAcceptOffer] = useState(false);
   const [showRemoveOffer, setShowRemoveOffer] = useState(false);
@@ -116,17 +121,18 @@ export const ItemDirectOffers = ({ offers, isOwner }) => {
                           size="smaller"
                           buttonAction={() => handleShowRemoveOffer(offer)}
                         />
-                        <RemoveOfferModal
-                          showModal={showRemoveOffer}
-                          handleCloseModal={() => setShowRemoveOffer(false)}
-                          offer={detailOffer}
-                          wallet={wallet}
-                        />
                       </td>
                     )}
                   </tr>
                 );
               })}
+              <RemoveOfferModal
+                showModal={showRemoveOffer}
+                handleCloseModal={() => setShowRemoveOffer(false)}
+                offer={detailOffer}
+                wallet={wallet}
+                onCancelOffer={onCancelOffer}
+              />
             </tbody>
           </table>
           {isOwner && (
@@ -135,6 +141,7 @@ export const ItemDirectOffers = ({ offers, isOwner }) => {
               handleCloseModal={() => setShowAcceptOffer(false)}
               offer={detailOffer}
               wallet={wallet}
+              onAcceptOffer={onAcceptOffer}
             />
           )}
         </>
@@ -208,6 +215,7 @@ export const ItemDirectOffers = ({ offers, isOwner }) => {
                             handleCloseModal={() => setShowRemoveOffer(false)}
                             offer={detailOffer}
                             wallet={wallet}
+                            onCancelOffer={onCancelOffer}
                           />
                         </>
                       )}
@@ -224,6 +232,7 @@ export const ItemDirectOffers = ({ offers, isOwner }) => {
               handleCloseModal={() => setShowAcceptOffer(false)}
               offer={detailOffer}
               wallet={wallet}
+              onAcceptOffer={onAcceptOffer}
             />
           )}
         </div>
