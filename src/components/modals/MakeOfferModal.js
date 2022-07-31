@@ -55,7 +55,9 @@ export default function MakeOfferModal({
       completedText={`Oferta por ${offerPrice} wFTM creada correctamente`}
       completedLabel={`Ver tu oferta`}
       completedAction={handleCloseModal}
-      submitDisabled={wftmBalance < offerPrice || actionError}
+      submitDisabled={
+        wftmBalance < offerPrice || actionError || offerPrice === 0
+      }
     >
       <div className="my-10 mx-8 flex flex-col gap-10">
         <div className="flex flex-col gap-4">
@@ -67,7 +69,7 @@ export default function MakeOfferModal({
             errorMessage={"No tienes suficientes WFTM"}
           />
           <DateTimeInput
-            label={"Fecha de Inicio"}
+            label={"Fecha de Expiración"}
             valueDate={expireDate}
             valueHour={expireHour}
             onChangeDate={setExpireDate}
