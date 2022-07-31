@@ -395,7 +395,7 @@ export default function ExploreContainer() {
                     : `${_width > 900 && "ml-20"} items-center`
                 }`}
               >
-                <div className="mt-2 ml-5 px-5 flex flex-row justify-evenly w-full items-center gap-2 md:gap-5 dark:bg-dark-1  ">
+                <div className="mt-2 ml-5 px-5 flex flex-row justify-evenly md:justify-center w-full items-center gap-2 md:gap-5 dark:bg-dark-1  ">
                   {_width < 900 && (
                     <>
                       <button
@@ -449,13 +449,13 @@ export default function ExploreContainer() {
                     </button>
                   </div>
                 </div>
-                <div className="mt-2 ml-5 px-5 flex gap-2 flex-wrap md:flex-row justify-start items-center">
+                <div className="mt-2 ml-5 px-5 flex gap-2 flex-wrap md:flex-row justify-start items-center ">
                   {filtersSelected.map((filter) => {
                     return (
                       <div
                         key={filter.name}
                         onClick={() => removeFilter(filter)}
-                        className="cursor-pointer text-xs md:text-sm  flex  items-center gap-2 dark:bg-dark-2 hover:dark:bg-dark-4 border border-gray-200 rounded-xl px-8 py-3"
+                        className="cursor-pointer text-xs md:text-sm  flex  items-center gap-2 dark:bg-dark-2 hover:bg-gray-200 hover:dark:bg-dark-4 border border-gray-200 rounded-xl px-8 py-3"
                       >
                         {filter}
                         <Icon icon="ep:close" width={24} />

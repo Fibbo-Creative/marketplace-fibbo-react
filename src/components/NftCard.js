@@ -80,7 +80,9 @@ export default function NftCard({ item, onClick, isSmall }) {
               <i>Precio</i>
             </p>
             <div className="flex gap-2 flex gap-2 items-center">
-              <div className="text-sm text-gray-300">Ofertado por </div>
+              <div className="text-sm text-gray-500 dark:text-gray-300">
+                Ofertado por{" "}
+              </div>
               <img src={wFTMicon} width={22} />
               <div>{item.offer.price} </div>
             </div>
@@ -88,7 +90,7 @@ export default function NftCard({ item, onClick, isSmall }) {
         )}
         {item.auction && (
           <div className="pt-2 pb-1 flex flex-col gap-1 items-end">
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-gray-500 dark:text-gray-400">
               {item.auction.topBid ? <i>Puja maxima</i> : <i>Puja mínima</i>}
             </p>
             <div className="flex gap-2 flex gap-2 items-center">
@@ -97,7 +99,9 @@ export default function NftCard({ item, onClick, isSmall }) {
                 {item.auction.topBid ? item.auction.topBid : item.auction.bid}
               </div>
             </div>
-            <div className="text-xs text-gray-400">{formatDate()}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">
+              {formatDate()}
+            </div>
           </div>
         )}
       </div>

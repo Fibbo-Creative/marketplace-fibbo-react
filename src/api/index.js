@@ -19,6 +19,16 @@ export const useApi = () => {
     return res.data;
   };
 
+  const getWalletHistory = async (address) => {
+    const res = await marketplaceApi.get(`users/history?address=${address}`);
+    return res.data;
+  };
+
+  const getWalletOffers = async (address) => {
+    const res = await marketplaceApi.get(`users/offers?address=${address}`);
+    return res.data;
+  };
+
   const createNewProfile = async (address) => {
     const res = await marketplaceApi.post("users/newProfile", {
       wallet: address,
@@ -100,6 +110,13 @@ export const useApi = () => {
   const getNftsFromAddress = async (address) => {
     const res = await marketplaceApi.get(
       `nfts/nftsByAddress?address=${address}`
+    );
+    return res.data;
+  };
+
+  const getNftsFromCreator = async (address) => {
+    const res = await marketplaceApi.get(
+      `nfts/nftsByCreator?address=${address}`
     );
     return res.data;
   };
@@ -227,5 +244,8 @@ export const useApi = () => {
     createNewSuggestion,
     getVerificatedArtists,
     newVerifyRequest,
+    getNftsFromCreator,
+    getWalletHistory,
+    getWalletOffers,
   };
 };

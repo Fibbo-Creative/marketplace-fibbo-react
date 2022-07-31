@@ -14,6 +14,10 @@ import fibboLogo from "../../assets/logoNavbarSmall.png";
 import { Verified } from "../../components/lottie/Verified";
 import { ThemeContext } from "../../context/ThemeContext";
 import { actionTypes } from "../../context/stateReducer";
+import { ProfileTab } from "./components/ProfileTab";
+import ProfileActivityTable from "./components/ProfileActivityTable";
+import { ProfileOffersTable } from "./components/ProfileOffersTable";
+import { ProfileMyOffersTable } from "./components/ProfileMyOffersTable";
 
 export default function ProfileContainer() {
   const { wallet } = useAccount();
@@ -23,6 +27,9 @@ export default function ProfileContainer() {
     setProfileBanner,
     setProfileImg,
     getNftsFromAddress,
+    getNftsFromCreator,
+    getWalletHistory,
+    getWalletOffers,
   } = useApi();
   const navigate = useNavigate();
   const { address } = useParams();
@@ -34,6 +41,16 @@ export default function ProfileContainer() {
   const [myProfile, setMyprofile] = useState(false);
   const [loadingBannerImage, setLoadingBannerImage] = useState(false);
   const [loadingProfileImage, setLoadingProfileImage] = useState(false);
+  const [itemsType, setItemsType] = useState({
+    type: "Collected",
+    viewAs: "grid",
+  });
+
+  const [collectedItems, setCollectedItems] = useState([]);
+  const [createdItems, setCreatedItems] = useState([]);
+  const [activity, setActivity] = useState([]);
+  const [offers, setOffers] = useState([]);
+  const [myOffers, setMyOffers] = useState([]);
 
   const profileData = useRef(null);
 
@@ -124,12 +141,45 @@ export default function ProfileContainer() {
       const profileDataResponse = await getProfileInfo(address);
 
       profileData.current = isMyProfile ? userProfile : profileDataResponse;
-      const userItemsResponse = await getNftsFromAddress(address);
-      setUserItems(userItemsResponse);
+      const collectedItemsResponse = await getNftsFromAddress(address);
+      setUserItems(collectedItemsResponse);
+      setCollectedItems(collectedItemsResponse);
+
+      const createdItemsResponse = await getNftsFromCreator(address);
+      setCreatedItems(createdItemsResponse);
+
+      const profilehistoryResponse = await getWalletHistory(address);
+      setActivity(profilehistoryResponse);
+
+      const { myOffers, offers } = await getWalletOffers(address);
+      setMyOffers(myOffers);
+      setOffers(offers);
+
+      console.log(profilehistoryResponse);
+
       setLoading(false);
     };
     fetchData();
   }, [wallet]);
+
+  useEffect(() => {
+    switch (itemsType.type) {
+      case "Collected":
+        setUserItems(collectedItems);
+        break;
+      case "Created":
+        setUserItems(createdItems);
+        break;
+      case "Activity":
+        setUserItems(activity);
+        break;
+      case "Offers":
+        setUserItems(offers);
+        break;
+      default:
+        setUserItems(collectedItems);
+    }
+  }, [itemsType]);
   return (
     <div className="mt-[81px] w-screen h-screen dark:bg-dark-1">
       {loading ? (
@@ -169,7 +219,7 @@ export default function ProfileContainer() {
             </>
           ) : (
             <div
-              className="w-screen h-[200px] dark:bg-gray-600 bg-gray-300 z-10"
+              className="w-screen h-[200px] dark:bg-gray-600 bg-gray-300 z-5"
               style={{
                 backgroundImage:
                   profileData.current?.profileBanner !== ""
@@ -197,7 +247,7 @@ export default function ProfileContainer() {
                 ) : (
                   <img
                     src={profileData.current?.profileImg}
-                    className="rounded-full w-[112px] h-[112px] object-cover  z-10 object-center"
+                    className="rounded-full w-[112px] h-[112px] object-cover  z-8 object-center"
                     alt=""
                   />
                 )}
@@ -272,45 +322,123 @@ export default function ProfileContainer() {
             )}
           </div>
 
-          <div className="h-[10px] w-sceen bg-gradient-to-r from-[#7E29F1] to-[#8BC3FD] mt-10 mb-10"></div>
-          <div className="flex flex-row items-center justify-center gap-2 md:gap-5 ">
-            <button
-              onClick={changeSmallDisplay}
-              className="hover:-translate-y-1"
-            >
-              <Icon
-                icon="akar-icons:dot-grid-fill"
-                width="40"
-                height="40"
-                color="grey"
+          <div className="mt-10 mb-10">
+            <div className="flex gap-10 items-center justify-center mb-3">
+              <ProfileTab
+                title={"En posesión"}
+                count={collectedItems.length}
+                type={{
+                  type: "Collected",
+                  viewAs: "grid",
+                }}
+                selectedType={itemsType}
+                onClick={() =>
+                  setItemsType({
+                    type: "Collected",
+                    viewAs: "grid",
+                  })
+                }
               />
-            </button>
-            <button onClick={changeBigDisplay} className="hover:-translate-y-1">
-              <Icon
-                icon="ci:grid-big-round"
-                width="60"
-                height="60"
-                color="grey"
+              <ProfileTab
+                title={"Creados"}
+                count={createdItems.length}
+                type={{ type: "Created", viewAs: "grid" }}
+                selectedType={itemsType}
+                onClick={() =>
+                  setItemsType({ type: "Created", viewAs: "grid" })
+                }
               />
-            </button>
+              <ProfileTab
+                title={"Actividad"}
+                count={activity.length}
+                type={{ type: "Activity", viewAs: "table" }}
+                selectedType={itemsType}
+                onClick={() =>
+                  setItemsType({ type: "Activity", viewAs: "table" })
+                }
+              />
+              <ProfileTab
+                title={"Ofertas"}
+                count={offers.length}
+                type={{ type: "Offers", viewAs: "table" }}
+                selectedType={itemsType}
+                onClick={() =>
+                  setItemsType({ type: "Offers", viewAs: "table" })
+                }
+              />
+              <ProfileTab
+                title={"Mis Ofertas"}
+                count={myOffers.length}
+                type={{ type: "MyOffers", viewAs: "table" }}
+                selectedType={itemsType}
+                onClick={() =>
+                  setItemsType({ type: "MyOffers", viewAs: "table" })
+                }
+              />
+            </div>
+            <div className="h-[10px] w-sceen bg-gradient-to-r from-[#7E29F1] to-[#8BC3FD] "></div>
           </div>
-          {/** ITEMS */}
-          <div className="flex w-full flex-wrap gap-5 items-center justify-center ">
-            {userItems?.map((item) => {
-              return (
-                <div key={Math.random(1, 9999)} className="p-5">
-                  {userSmallview ? (
-                    <NftCardSmall
-                      onClick={() => goToNftDetail(item)}
-                      item={item}
-                    />
+          {itemsType.viewAs === "grid" ? (
+            <>
+              <div className="flex flex-row items-center justify-center gap-2 md:gap-5 ">
+                <button
+                  onClick={changeSmallDisplay}
+                  className="hover:-translate-y-1"
+                >
+                  <Icon
+                    icon="akar-icons:dot-grid-fill"
+                    width="40"
+                    height="40"
+                    color="grey"
+                  />
+                </button>
+                <button
+                  onClick={changeBigDisplay}
+                  className="hover:-translate-y-1"
+                >
+                  <Icon
+                    icon="ci:grid-big-round"
+                    width="60"
+                    height="60"
+                    color="grey"
+                  />
+                </button>
+              </div>
+              <div className="flex w-full flex-wrap gap-5 items-center justify-center ">
+                {userItems?.map((item) => {
+                  return (
+                    <div key={Math.random(1, 9999)} className="p-5">
+                      {userSmallview ? (
+                        <NftCardSmall
+                          onClick={() => goToNftDetail(item)}
+                          item={item}
+                        />
+                      ) : (
+                        <NftCard
+                          onClick={() => goToNftDetail(item)}
+                          item={item}
+                        />
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          ) : (
+            <div className="mx-5">
+              {itemsType.type === "Activity" ? (
+                <ProfileActivityTable historyItems={activity} />
+              ) : (
+                <>
+                  {itemsType.type === "Offers" ? (
+                    <ProfileOffersTable offers={offers} />
                   ) : (
-                    <NftCard onClick={() => goToNftDetail(item)} item={item} />
+                    <ProfileMyOffersTable offers={myOffers} />
                   )}
-                </div>
-              );
-            })}
-          </div>
+                </>
+              )}
+            </div>
+          )}
         </>
       )}
     </div>
