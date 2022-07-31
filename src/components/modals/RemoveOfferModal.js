@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import wFTMicon from "../../assets/WFTM.png";
+
 import { isMobile } from "react-device-detect";
 import { ActionModal } from "./ActionModal";
 export default function RemoveOfferModal({
@@ -54,7 +54,7 @@ export default function RemoveOfferModal({
             <p> ofreces </p>
             <div className="flex gap-3 items-center  p-2 rounded-lg dark:bg-dark-4">
               <p>{offer?.price}</p>
-              <img src={wFTMicon} width={32} />
+              <img src={offer?.payToken?.image} width={32} />
             </div>
           </div>
         </div>

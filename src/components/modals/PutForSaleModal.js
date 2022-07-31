@@ -1,12 +1,4 @@
-import { Icon } from "@iconify/react";
 import React, { useState } from "react";
-import { parseEther } from "ethers/lib/utils";
-import ActionButton from "../ActionButton";
-import { useMarketplace } from "../../contracts/market";
-import { useApi } from "../../api";
-import { BasicModal } from "./BasicModal";
-import { Check } from "../lottie/Check";
-import wFTMicon from "../../assets/WFTM.png";
 import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
 import { ActionModal } from "./ActionModal";
 

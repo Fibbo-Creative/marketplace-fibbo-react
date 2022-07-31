@@ -3,7 +3,6 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useApi } from "../../api";
 import NftCard from "../../components/NftCard";
-import NftCardSmall from "../../components/NftCardSmall";
 import { useStateContext } from "../../context/StateProvider";
 import { truncateWallet } from "../../utils/wallet";
 import useAccount from "../../hooks/useAccount";
@@ -408,17 +407,11 @@ export default function ProfileContainer() {
                 {userItems?.map((item) => {
                   return (
                     <div key={Math.random(1, 9999)} className="p-5">
-                      {userSmallview ? (
-                        <NftCardSmall
-                          onClick={() => goToNftDetail(item)}
-                          item={item}
-                        />
-                      ) : (
-                        <NftCard
-                          onClick={() => goToNftDetail(item)}
-                          item={item}
-                        />
-                      )}
+                      <NftCard
+                        onClick={() => goToNftDetail(item)}
+                        item={item}
+                        isSmall={userSmallview}
+                      />
                     </div>
                   );
                 })}

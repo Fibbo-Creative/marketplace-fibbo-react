@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import wFTMicon from "../../assets/WFTM.png";
+
 import { formatEther } from "ethers/lib/utils";
 import { useWFTMContract } from "../../contracts/wftm";
 import { isMobile } from "react-device-detect";
@@ -76,12 +76,31 @@ export default function MakeBidModal({
           <div className="flex flex-col gap-4">
             <div className="flex flex-row items-center gap-3 ">
               <p>Precio Reservado</p>
-              <img width={32} src={wFTMicon} alt="Fantom coin" />
+              <img
+                width={32}
+                src={auctionInfo?.payToken.image}
+                alt="Fantom coin"
+              />
               <p>{auctionInfo?.reservePrice} wFTM </p>
             </div>
             <div className="flex flex-row gap-6">
               <div>Puja mas alta: </div>
-              <div>{highestBid ? highestBid.bid : "-"}</div>
+              <div>
+                {highestBid ? (
+                  <div className="flex gap-2 items-center">
+                    <img
+                      width={32}
+                      src={auctionInfo?.payToken.image}
+                      alt="Fantom coin"
+                    />
+                    <p>
+                      {highestBid?.bid} {auctionInfo?.payToken.name}
+                    </p>
+                  </div>
+                ) : (
+                  "-"
+                )}
+              </div>
             </div>
             {highestBid && (
               <div className="flex flex-row gap-6">

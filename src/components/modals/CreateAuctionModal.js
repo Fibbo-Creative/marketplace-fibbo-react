@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BasicModal } from "./BasicModal";
-import wFTMicon from "../../assets/WFTM.png";
-import ActionButton from "../ActionButton";
-import { useMarketplace } from "../../contracts/market";
-import { ethers } from "ethers";
-import { formatEther, parseEther } from "ethers/lib/utils";
-import { Check } from "../lottie/Check";
+import { formatEther } from "ethers/lib/utils";
 import { useWFTMContract } from "../../contracts/wftm";
 import { useAuction } from "../../contracts/auction";
 import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
@@ -22,15 +16,11 @@ export default function CreateAuctionModal({
   tokenInfo,
   onCreateAuction,
 }) {
-  const navigate = useNavigate();
-  const { createAuction } = useAuction();
   const [reservePrice, setReservePrice] = useState(0);
   const [minimumBid, setMinimumBid] = useState(true);
 
   const [buyNowPrice, setBuyNowPrice] = useState(0);
 
-  const [completedAction, setCompletedAction] = useState(false);
-  const [wftmBalance, setWftmBalance] = useState(0);
   const [startDate, setStartDate] = useState(0);
   const [startHour, setStartHour] = useState(0);
   const [endDate, setEndDate] = useState(0);
@@ -71,11 +61,6 @@ export default function CreateAuctionModal({
       let valueEndDate = new Date(endDate);
       setEndDate(valueEndDate.toISOString().split("T")[0]);
       setEndHour("21:00");
-
-      if (wallet) {
-        const walletBalanceWFTM = await getWFTMBalance(wallet);
-        setWftmBalance(formatEther(walletBalanceWFTM));
-      }
     };
     fetchData();
   }, []);

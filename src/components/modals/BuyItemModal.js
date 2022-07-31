@@ -86,8 +86,9 @@ export default function BuyItemModal({
 
                   <div className="flex gap-2">
                     <b>Precio:</b>
+                    <img src={listing?.payToken.image} width={26} />
                     <p>{listing?.price}</p>
-                    <p>FTM</p>
+                    <p>{listing?.payToken.name}</p>
                   </div>
                   {wftmBalance < tokenInfo?.price && (
                     <div className="text-xs text-red-700">

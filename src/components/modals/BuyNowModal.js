@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import wFTMicon from "../../assets/WFTM.png";
 
-import { formatEther, parseEther } from "ethers/lib/utils";
+import { formatEther } from "ethers/lib/utils";
 import { useWFTMContract } from "../../contracts/wftm";
-import { useAuction } from "../../contracts/auction";
 import { ActionModal } from "./ActionModal";
 
 export default function BuyNowModal({
@@ -53,10 +51,16 @@ export default function BuyNowModal({
       <div className="my-10 mx-8 flex flex-col gap-10">
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-4">
-            <div className="flex flex-row items-center gap-3 ">
-              <p>Quieres omprar el item por</p>
-              <img width={32} src={wFTMicon} alt="Fantom coin" />
-              <p>{auctionInfo?.buyNowPrice} wFTM </p>
+            <div className="flex flex-row items-center justify-center gap-3 ">
+              <p>Quieres comprar el item por</p>
+              <img
+                width={32}
+                src={auctionInfo?.payToken.image}
+                alt="Fantom coin"
+              />
+              <p>
+                {auctionInfo?.buyNowPrice} {auctionInfo?.payToken.name}
+              </p>
               <p>?</p>
             </div>
           </div>
@@ -64,7 +68,8 @@ export default function BuyNowModal({
         <div className="w-full flex flex-col gap-2 items-center justify-center">
           {auctionInfo?.buyNowPrice > wftmBalance && (
             <p className="text-sm text-red-600">
-              No tienes suficientes tokens para comprar el item
+              No tienes suficientes {auctionInfo?.payToken.name} para comprar el
+              item
             </p>
           )}
         </div>

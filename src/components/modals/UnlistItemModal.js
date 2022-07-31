@@ -45,8 +45,9 @@ export default function UnlistItemModal({
               </div>
               <div className="flex gap-2">
                 <b>Precio:</b>
+                <img src={listing?.payToken.image} width={26} />
                 <p>{listing?.price}</p>
-                <p>FTM</p>
+                <p>{listing?.payToken.name}</p>
               </div>
             </div>
             <div>

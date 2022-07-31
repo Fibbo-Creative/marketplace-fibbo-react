@@ -103,7 +103,12 @@ export const ItemDirectOffers = ({
                         </p>
                       </div>
                     </td>
-                    <td className="px-6 py-4">{offer.price} FTM</td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-2">
+                        <img src={offer.payToken.image} width={24} alt="" />
+                        <div className="text-bold text-lg">{offer.price}</div>
+                      </div>
+                    </td>
                     <td className="px-6 py-4">{formatDate(offer)}</td>
                     {isOwner && (
                       <td className="px-6 py-4 flex flex-col gap-2 text-xs">
@@ -185,7 +190,12 @@ export const ItemDirectOffers = ({
                   <div>
                     <b>Precio</b>
                   </div>
-                  <div>{offer.price} FTM</div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <img src={offer.payToken.image} width={24} alt="" />
+                      <div className="text-bold text-lg">{offer.price}</div>
+                    </div>
+                  </div>
                 </div>
                 <div className="flex justify-between">
                   <div>

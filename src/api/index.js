@@ -81,6 +81,19 @@ export const useApi = () => {
 
   //#endregion
 
+  //#region PayTokens
+  const getAllPayTokens = async () => {
+    const res = await marketplaceApi.get("api/payTokens");
+    return res.data;
+  };
+
+  const getPayTokenInfo = async (address) => {
+    const res = await marketplaceApi.get(`api/payToken?address=${address}`);
+    return res.data;
+  };
+
+  //#endregion
+
   //#region Nfts
 
   const getAllTokens = async () => {
@@ -247,5 +260,7 @@ export const useApi = () => {
     getNftsFromCreator,
     getWalletHistory,
     getWalletOffers,
+    getAllPayTokens,
+    getPayTokenInfo,
   };
 };

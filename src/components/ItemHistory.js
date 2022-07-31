@@ -42,7 +42,14 @@ export default function ItemHistory({ historyItems }) {
                 <tr key={Math.random(9999) * 1000}>
                   <td className="px-6 py-4">{item.eventType}</td>
                   <td className="px-6 py-4">
-                    {item.price !== 0 ? `${item.price} FTM` : ""}
+                    {item.price !== 0 ? (
+                      <div className="flex items-center gap-3">
+                        <img src={item.payToken?.image} width={26} />
+                        <div className="text-lg">{item.price}</div>
+                      </div>
+                    ) : (
+                      ""
+                    )}
                   </td>
                   <td className="px-6 py-4">
                     {item.from === ADDRESS_ZERO ? (
@@ -124,7 +131,17 @@ export default function ItemHistory({ historyItems }) {
                   <div>
                     <b>Precio</b>
                   </div>
-                  <div> {item.price !== 0 ? `${item.price} FTM` : ""}</div>
+                  <div>
+                    {" "}
+                    {item.price !== 0 ? (
+                      <div className="flex items-center gap-3">
+                        <img src={item.payToken?.image} width={26} />
+                        <div className="text-lg">{item.price}</div>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </div>
                 </div>
                 <div className="flex justify-between">
                   <div>

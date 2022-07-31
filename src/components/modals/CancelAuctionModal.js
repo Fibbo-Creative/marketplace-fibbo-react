@@ -1,10 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { BasicModal } from "./BasicModal";
-import wFTMicon from "../../assets/WFTM.png";
-import ActionButton from "../ActionButton";
-import { Check } from "../lottie/Check";
-import { useAuction } from "../../contracts/auction";
+
 import { isMobile } from "react-device-detect";
 import { ActionModal } from "./ActionModal";
 
@@ -42,12 +38,31 @@ export default function CancelAuctionModal({
           <div className="flex flex-col gap-4">
             <div className="flex flex-row items-center gap-3 ">
               <p>Precio Reservado</p>
-              <img width={32} src={wFTMicon} alt="Fantom coin" />
-              <p>{auctionInfo?.reservePrice} wFTM </p>
+              <img
+                width={32}
+                src={auctionInfo?.payToken.image}
+                alt="Fantom coin"
+              />
+              <p>
+                {auctionInfo?.reservePrice} {auctionInfo?.payToken.name}
+              </p>
             </div>
             <div className="flex flex-row gap-6">
               <div>Puja mas alta: </div>
-              <div>{highestBid ? highestBid.bid : "-"}</div>
+              {highestBid ? (
+                <div className="flex gap-2 items-center">
+                  <img
+                    width={32}
+                    src={auctionInfo?.payToken.image}
+                    alt="Fantom coin"
+                  />
+                  <p>
+                    {highestBid?.bid} {auctionInfo?.payToken.name}
+                  </p>
+                </div>
+              ) : (
+                "-"
+              )}
             </div>
             {highestBid && (
               <div className="flex flex-row gap-6">

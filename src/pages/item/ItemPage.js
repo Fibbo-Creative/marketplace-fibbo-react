@@ -3,18 +3,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { configData } from "../../chainData/configData";
 import useAccount from "../../hooks/useAccount";
 
-import wFTMIcon from "../../assets/WFTM.png";
-
 import ItemHistory from "../../components/ItemHistory";
 import DetailImage from "./components/DetailImage";
 import DetailInfo from "./components/DetailInfo";
 import { useApi } from "../../api";
 import { useMarketplace } from "../../contracts/market";
-import { formatEther, parseEther } from "ethers/lib/utils";
 import fibboLogo from "../../assets/logoNavbarSmall.png";
 import { useDefaultCollection } from "../../contracts/collection";
 import { useAuction } from "../../contracts/auction";
-import { ADDRESS_ZERO } from "../../constants/networks";
 import PutForSaleModal from "../../components/modals/PutForSaleModal";
 import CreateAuctionModal from "../../components/modals/CreateAuctionModal";
 import BuyItemModal from "../../components/modals/BuyItemModal";
@@ -67,7 +63,7 @@ export default function ItemPage() {
     getNftInfo,
     getNftHistory,
     getCollectionInfo,
-    getItemOffers,
+    getPayTokenInfo,
   } = useApi();
   const {
     getListingInfo,
@@ -129,7 +125,7 @@ export default function ItemPage() {
     new Date().getTime() / 1000 >= auctionInfo?.current?.startTime;
 
   const redirectToProfile = () => {
-    navigate(`/profile/${tokenInfo.owner}`);
+    navigate(`/profile/${profileOwnerData.current.wallet}`);
   };
 
   const getItemDetails = async () => {
@@ -176,15 +172,22 @@ export default function ItemPage() {
       totalItems: numberOfTokens,
     });
 
+    console.log(history);
     setLoading(false);
   };
 
   const getAuctions = async () => {
     try {
       const _auction = await getAuction(collection, tokenId);
+
       if (_auction.endTime !== 0) {
         setIsOnAuction(true);
-        auctionInfo.current = _auction;
+        const payTokenInfo = await getPayTokenInfo(_auction.payToken);
+        auctionInfo.current = {
+          ..._auction,
+          payToken: payTokenInfo,
+        };
+        console.log(auctionInfo.current);
       }
     } catch (e) {
       console.log(e);
@@ -513,8 +516,15 @@ export default function ItemPage() {
                         <div className="flex flex-col md:flex-row items-center justify-between gap-3 ">
                           <p>Precio Reservado</p>
                           <div className="flex items-center  gap-2">
-                            <img width={32} src={wFTMIcon} alt="Fantom coin" />
-                            <p>{auctionInfo.current?.reservePrice} wFTM </p>
+                            <img
+                              width={32}
+                              src={auctionInfo.current?.payToken.image}
+                              alt="Fantom coin"
+                            />
+                            <p>
+                              {auctionInfo.current?.reservePrice} {""}
+                              {auctionInfo.current?.payToken.name}
+                            </p>
                             <p className="text-gray-600 dark:text-gray-400 text-xs">
                               ($
                               {formatPriceInUsd(
@@ -529,8 +539,15 @@ export default function ItemPage() {
                         <div className="flex flex-col md:flex-row items-center justify-between  gap-3 ">
                           <p>Precio Compra ya</p>
                           <div className="flex items-center  gap-2">
-                            <img width={32} src={wFTMIcon} alt="Fantom coin" />
-                            <p>{auctionInfo.current?.buyNowPrice} wFTM </p>
+                            <img
+                              width={32}
+                              src={auctionInfo.current?.payToken.image}
+                              alt="Fantom coin"
+                            />
+                            <p>
+                              {auctionInfo.current?.buyNowPrice}{" "}
+                              {auctionInfo.current?.payToken.name}{" "}
+                            </p>
                             <p className="text-gray-600 dark:text-gray-400 text-xs">
                               ($
                               {formatPriceInUsd(
@@ -549,10 +566,13 @@ export default function ItemPage() {
                               <>
                                 <img
                                   width={32}
-                                  src={wFTMIcon}
+                                  src={auctionInfo.current?.payToken.image}
                                   alt="Fantom coin"
                                 />
-                                <p>{highestBid?.bid} wFTM </p>
+                                <p>
+                                  {highestBid?.bid}{" "}
+                                  {auctionInfo.current?.payToken.name}{" "}
+                                </p>
                                 <p className="text-gray-600 dark:text-gray-400 text-xs">
                                   ($
                                   {formatPriceInUsd(
@@ -604,8 +624,15 @@ export default function ItemPage() {
                         <>
                           <p>Precio Actual</p>
                           <div className="flex flex-row items-center gap-3 ">
-                            <img width={32} src={wFTMIcon} alt="Fantom coin" />
-                            <p>{listing?.current?.price} wFTM </p>
+                            <img
+                              width={32}
+                              src={listing?.current?.payToken.image}
+                              alt="Fantom coin"
+                            />
+                            <p>
+                              {listing?.current?.price}{" "}
+                              {listing?.current?.payToken.name}{" "}
+                            </p>
                             <p className="text-gray-600 dark:text-gray-400 text-xs">
                               ($
                               {formatPriceInUsd(
@@ -788,13 +815,15 @@ export default function ItemPage() {
           onMakeOffer={handleMakeOffer}
         />
 
-        <RemoveOfferModal
-          showModal={openCancelOfferModal}
-          handleCloseModal={() => setOpenCancelOfferModal(false)}
-          offer={myOffer}
-          wallet={wallet}
-          onCancelOffer={handleCancelOffer}
-        />
+        {myOffer && (
+          <RemoveOfferModal
+            showModal={openCancelOfferModal}
+            handleCloseModal={() => setOpenCancelOfferModal(false)}
+            offer={myOffer}
+            wallet={wallet}
+            onCancelOffer={handleCancelOffer}
+          />
+        )}
       </>
 
       <>

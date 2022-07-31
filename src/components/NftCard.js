@@ -1,5 +1,4 @@
 import React from "react";
-import wFTMicon from "../assets/WFTM.png";
 
 export default function NftCard({ item, onClick, isSmall }) {
   const formatDate = () => {
@@ -57,7 +56,7 @@ export default function NftCard({ item, onClick, isSmall }) {
       <div className="flex justify-between gap-2 items-center">
         <div className="flex flex-col justify-center pt-2 gap-1 pb-1">
           <p className="text-xs text-gray-400">
-            <i>{item.collection.name}</i>
+            <i>{item.collection?.name}</i>
           </p>
           <p>
             <b>{item.name}</b>
@@ -69,7 +68,7 @@ export default function NftCard({ item, onClick, isSmall }) {
               <i>Precio</i>
             </p>
             <div className="flex gap-2 flex gap-2 items-center">
-              <img src={wFTMicon} width={22} />
+              <img src={item.payToken.image} width={22} />
               <div>{item.price} </div>
             </div>
           </div>
@@ -80,10 +79,14 @@ export default function NftCard({ item, onClick, isSmall }) {
               <i>Precio</i>
             </p>
             <div className="flex gap-2 flex gap-2 items-center">
-              <div className="text-sm text-gray-500 dark:text-gray-300">
-                Ofertado por{" "}
+              <div
+                className={`text-sm ${
+                  isSmall && "text-xs"
+                } text-gray-500 dark:text-gray-300`}
+              >
+                {isSmall ? "Oferta" : "Ofertado por"}
               </div>
-              <img src={wFTMicon} width={22} />
+              <img src={item.offer.payToken.image} width={22} />
               <div>{item.offer.price} </div>
             </div>
           </div>
@@ -94,7 +97,7 @@ export default function NftCard({ item, onClick, isSmall }) {
               {item.auction.topBid ? <i>Puja maxima</i> : <i>Puja mínima</i>}
             </p>
             <div className="flex gap-2 flex gap-2 items-center">
-              <img src={wFTMicon} width={22} />
+              <img src={item.auction.payToken.image} width={22} />
               <div>
                 {item.auction.topBid ? item.auction.topBid : item.auction.bid}
               </div>
