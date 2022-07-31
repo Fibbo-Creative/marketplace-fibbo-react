@@ -68,7 +68,7 @@ export default function NftCard({ item, onClick, isSmall }) {
               <i>Precio</i>
             </p>
             <div className="flex gap-2 flex gap-2 items-center">
-              <img src={item.payToken.image} width={22} />
+              <img src={item?.payToken?.image} width={22} />
               <div>{item.price} </div>
             </div>
           </div>
@@ -86,7 +86,7 @@ export default function NftCard({ item, onClick, isSmall }) {
               >
                 {isSmall ? "Oferta" : "Ofertado por"}
               </div>
-              <img src={item.offer.payToken.image} width={22} />
+              <img src={item?.offer?.payToken.image} width={22} />
               <div>{item.offer.price} </div>
             </div>
           </div>
@@ -94,12 +94,14 @@ export default function NftCard({ item, onClick, isSmall }) {
         {item.auction && (
           <div className="pt-2 pb-1 flex flex-col gap-1 items-end">
             <p className="text-xs text-gray-500 dark:text-gray-400">
-              {item.auction.topBid ? <i>Puja maxima</i> : <i>Puja mínima</i>}
+              {item?.auction.topBid ? <i>Puja maxima</i> : <i>Puja mínima</i>}
             </p>
             <div className="flex gap-2 flex gap-2 items-center">
-              <img src={item.auction.payToken.image} width={22} />
+              <img src={item?.auction.payToken.image} width={22} />
               <div>
-                {item.auction.topBid ? item.auction.topBid : item.auction.bid}
+                {item?.auction.topBid
+                  ? item?.auction.topBid
+                  : item?.auction.bid}
               </div>
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-400">

@@ -57,7 +57,7 @@ export default function ProfileContainer() {
   const [showEditUsername, setShowEditUsername] = useState(false);
   const { _width } = useRespnsive();
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const changeSmallDisplay = () => {
     setSmallViewUser(true);
@@ -135,34 +135,35 @@ export default function ProfileContainer() {
 
   useEffect(() => {
     const fetchData = async () => {
-      let isMyProfile = wallet === address;
-      setMyprofile(isMyProfile);
-      const profileDataResponse = await getProfileInfo(address);
+      if (!loading) {
+        setLoading(true);
+        let isMyProfile = wallet === address;
+        setMyprofile(isMyProfile);
+        const profileDataResponse = await getProfileInfo(address);
 
-      profileData.current = isMyProfile ? userProfile : profileDataResponse;
-      const collectedItemsResponse = await getNftsFromAddress(address);
-      setUserItems(collectedItemsResponse);
-      setCollectedItems(collectedItemsResponse);
+        profileData.current = isMyProfile ? userProfile : profileDataResponse;
+        const collectedItemsResponse = await getNftsFromAddress(address);
+        setUserItems(collectedItemsResponse);
+        setCollectedItems(collectedItemsResponse);
 
-      const createdItemsResponse = await getNftsFromCreator(address);
-      setCreatedItems(createdItemsResponse);
+        const createdItemsResponse = await getNftsFromCreator(address);
+        setCreatedItems(createdItemsResponse);
 
-      const profilehistoryResponse = await getWalletHistory(address);
-      setActivity(profilehistoryResponse);
+        const profilehistoryResponse = await getWalletHistory(address);
+        setActivity(profilehistoryResponse);
 
-      const { myOffers, offers } = await getWalletOffers(address);
-      setMyOffers(myOffers);
-      setOffers(offers);
+        const { myOffers, offers } = await getWalletOffers(address);
+        setMyOffers(myOffers);
+        setOffers(offers);
 
-      console.log(profilehistoryResponse);
-
-      setLoading(false);
+        setLoading(false);
+      }
     };
     fetchData();
   }, [wallet]);
 
-  useEffect(() => {
-    switch (itemsType.type) {
+  const handleSetItemsType = (newType) => {
+    switch (newType.type) {
       case "Collected":
         setUserItems(collectedItems);
         break;
@@ -178,7 +179,9 @@ export default function ProfileContainer() {
       default:
         setUserItems(collectedItems);
     }
-  }, [itemsType]);
+    setItemsType(newType);
+  };
+
   return (
     <div className="mt-[81px] w-screen h-screen dark:bg-dark-1">
       {loading ? (
@@ -321,8 +324,10 @@ export default function ProfileContainer() {
             )}
           </div>
 
-          <div className="mt-10 mb-10">
-            <div className="flex gap-10 items-center justify-center mb-3">
+          <div className="mt-10 mb-10 ">
+            <div
+              className={`flex flex-wrap sm:flex-row gap-2 sm:gap-10  overflow-x-scroll sm:overflow-hidden items-center justify-center mb-3`}
+            >
               <ProfileTab
                 title={"En posesión"}
                 count={collectedItems.length}
@@ -332,7 +337,7 @@ export default function ProfileContainer() {
                 }}
                 selectedType={itemsType}
                 onClick={() =>
-                  setItemsType({
+                  handleSetItemsType({
                     type: "Collected",
                     viewAs: "grid",
                   })
@@ -344,7 +349,7 @@ export default function ProfileContainer() {
                 type={{ type: "Created", viewAs: "grid" }}
                 selectedType={itemsType}
                 onClick={() =>
-                  setItemsType({ type: "Created", viewAs: "grid" })
+                  handleSetItemsType({ type: "Created", viewAs: "grid" })
                 }
               />
               <ProfileTab
@@ -353,7 +358,7 @@ export default function ProfileContainer() {
                 type={{ type: "Activity", viewAs: "table" }}
                 selectedType={itemsType}
                 onClick={() =>
-                  setItemsType({ type: "Activity", viewAs: "table" })
+                  handleSetItemsType({ type: "Activity", viewAs: "table" })
                 }
               />
               <ProfileTab
@@ -362,7 +367,7 @@ export default function ProfileContainer() {
                 type={{ type: "Offers", viewAs: "table" }}
                 selectedType={itemsType}
                 onClick={() =>
-                  setItemsType({ type: "Offers", viewAs: "table" })
+                  handleSetItemsType({ type: "Offers", viewAs: "table" })
                 }
               />
               <ProfileTab
@@ -371,7 +376,7 @@ export default function ProfileContainer() {
                 type={{ type: "MyOffers", viewAs: "table" }}
                 selectedType={itemsType}
                 onClick={() =>
-                  setItemsType({ type: "MyOffers", viewAs: "table" })
+                  handleSetItemsType({ type: "MyOffers", viewAs: "table" })
                 }
               />
             </div>
