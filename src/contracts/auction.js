@@ -58,7 +58,6 @@ export const useAuction = () => {
 
   const getHighestBid = async (collection, tokenId) => {
     const auctionContract = await getAuctionContract();
-    const erc20 = await getERC20Contract(WFTM_ADDRESS);
 
     let highestBid = await auctionContract.highestBids(
       collection,
@@ -86,7 +85,8 @@ export const useAuction = () => {
     buyNowPrice,
     minBidReserve,
     startTime,
-    endTime
+    endTime,
+    payToken
   ) => {
     const auctionContract = await getAuctionContract();
 
@@ -104,7 +104,7 @@ export const useAuction = () => {
     const createAuctionTx = await auctionContract.createAuction(
       collection,
       ethers.BigNumber.from(tokenId),
-      WFTM_ADDRESS,
+      payToken.contractAddress,
       parseEther(reservePrice.toString()),
       parseEther(buyNowPrice.toString()),
       ethers.BigNumber.from(startTime),

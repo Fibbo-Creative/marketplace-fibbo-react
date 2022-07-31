@@ -10,11 +10,12 @@ export default function ChangePriceModal({
   wallet,
 }) {
   const [priceFor, setPriceFor] = useState(0);
+  const [payTokenSelected, setPayTokenSelected] = useState(null);
 
   const changeListingPrice = async () => {
     if (priceFor > 0) {
       //en el contrato del marketplace -> createMarketItem
-      await onUpdatePrice(priceFor);
+      await onUpdatePrice(priceFor, payTokenSelected);
     }
   };
   return (
@@ -34,6 +35,8 @@ export default function ChangePriceModal({
           label={"Precio"}
           value={priceFor}
           onChange={setPriceFor}
+          selectedToken={payTokenSelected}
+          setSelectedToken={setPayTokenSelected}
         />
       </div>
     </ActionModal>

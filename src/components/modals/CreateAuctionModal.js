@@ -20,6 +20,7 @@ export default function CreateAuctionModal({
   const [minimumBid, setMinimumBid] = useState(true);
 
   const [buyNowPrice, setBuyNowPrice] = useState(0);
+  const [payTokenSelected, setPayTokenSelected] = useState(null);
 
   const [startDate, setStartDate] = useState(0);
   const [startHour, setStartHour] = useState(0);
@@ -42,7 +43,8 @@ export default function CreateAuctionModal({
         buyNowPrice,
         minimumBid,
         startTime,
-        endTime
+        endTime,
+        payTokenSelected
       );
     } catch (e) {
       console.log(e);
@@ -82,6 +84,8 @@ export default function CreateAuctionModal({
           label={"Que precio quieres asegurar?"}
           value={reservePrice}
           onChange={setReservePrice}
+          selectedToken={payTokenSelected}
+          setSelectedToken={setPayTokenSelected}
         />
         <div className="flex items-center gap-2">
           <span className="font-bold text-sm text-gray-700 dark:text-gray-400 border-gray-300 p-3">
@@ -100,6 +104,8 @@ export default function CreateAuctionModal({
           value={buyNowPrice}
           onChange={setBuyNowPrice}
           error={buyNowPrice < reservePrice * 2}
+          selectedToken={payTokenSelected}
+          setSelectedToken={setPayTokenSelected}
           errorMessage={
             "El precio de compra tiene que ser mínimo el doble de reserva"
           }

@@ -1,7 +1,6 @@
 import CoinGecko from "coingecko-api";
 import React, { useEffect } from "react";
 import { useState } from "react";
-import wFTMicon from "../../assets/WFTM.png";
 import { useApi } from "../../api/index";
 import { Icon } from "@iconify/react";
 export const Erc20AmountInput = ({
@@ -10,11 +9,12 @@ export const Erc20AmountInput = ({
   onChange,
   error,
   errorMessage,
+  selectedToken,
+  setSelectedToken,
 }) => {
   const { getAllPayTokens } = useApi();
   const [coinPrice, setCoinPrice] = useState(0);
   const [payTokens, setPayTokens] = useState([]);
-  const [selectedPayToken, setSelectedPayToken] = useState({});
   const [openSelect, setOpenSelect] = useState(false);
   const formatPrice = (value) => {
     let price = value * coinPrice;
@@ -25,7 +25,7 @@ export const Erc20AmountInput = ({
   };
 
   const handleSelectPayToken = (token) => {
-    setSelectedPayToken(token);
+    setSelectedToken(token);
     setOpenSelect(false);
   };
 
@@ -51,7 +51,7 @@ export const Erc20AmountInput = ({
     const fetchData = async () => {
       let _payTokens = await getAllPayTokens();
       setPayTokens(_payTokens);
-      setSelectedPayToken(_payTokens[0]);
+      setSelectedToken(_payTokens[0]);
       const CoinGeckoClient = new CoinGecko();
       let data = await CoinGeckoClient.simple.price({ ids: ["fantom"] });
       setCoinPrice(data.data.fantom.usd);
@@ -72,8 +72,8 @@ export const Erc20AmountInput = ({
           className="flex rounded py-2 px-1 w-[225px] bg-gray-300 dark:bg-dark-3 dark:hover:bg-dark-4 justify-evenly cursor-pointer items-center "
         >
           <div className="flex items-center">
-            <img width={32} src={selectedPayToken?.image} alt="Fantom coin" />
-            <div className="px-2">{selectedPayToken?.name}</div>
+            <img width={32} src={selectedToken?.image} alt="Fantom coin" />
+            <div className="px-2">{selectedToken?.name}</div>
           </div>
           {openSelect && (
             <div className="absolute rounded top-[170px]  w-[130px] bg-gray-300 dark:bg-dark-3">
@@ -90,7 +90,7 @@ export const Erc20AmountInput = ({
                           ? "cursor-not-allowed dark:text-gray-500"
                           : "hover:dark:bg-dark-2 hover:bg-gray-600  "
                       } ${
-                        token?.name === selectedPayToken.name &&
+                        token?.name === selectedToken.name &&
                         " bg-gray-600 dark:bg-dark-2"
                       } `}
                     >

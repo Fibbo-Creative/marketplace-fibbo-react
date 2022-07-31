@@ -20,6 +20,7 @@ export default function UpdateAuctionModal({
   const [endDate, setEndDate] = useState(0);
   const [endHour, setEndHour] = useState(0);
   const [actionError, setActionError] = useState(false);
+  const [payTokenSelected, setPayTokenSelected] = useState(null);
 
   const auctionStarted = new Date().getTime() / 1000 >= auctionInfo?.startTime;
 
@@ -73,6 +74,8 @@ export default function UpdateAuctionModal({
                 parseFloat(auctionInfo.reservePrice)
               }
               errorMessage={"El nuevo precio reservado debe ser diferente"}
+              selectedToken={payTokenSelected}
+              setSelectedToken={setPayTokenSelected}
             />
           )}
           {!auctionStarted && (

@@ -101,6 +101,7 @@ export default function ItemPage() {
   const [openCancelAuctionModal, setOpenCancelAuctionModal] = useState(false);
   const [openUpdateAuctionModal, setOpenUpdateAuctionModal] = useState(false);
   const [openBuyNowModal, setOpenBuyNowModal] = useState(false);
+  const [isHighestBidder, setIsHighestBidder] = useState(false);
 
   const [loading, setLoading] = useState(true);
 
@@ -209,6 +210,9 @@ export default function ItemPage() {
             ...bid,
             bidder: bidderProfile,
           });
+          if (bid.bidder === wallet) {
+            setIsHighestBidder(true);
+          }
         }
       }
     } catch (e) {
@@ -225,18 +229,26 @@ export default function ItemPage() {
     }
   };
 
-  const handleListItem = async (price) => {
-    await listItem(collection, tokenId, price);
+  const handleListItem = async (price, payToken) => {
+    await listItem(collection, tokenId, price, payToken);
 
     let listingInfo = await getListingInfo(collection, tokenId, wallet);
-    listing.current = listingInfo;
+    let payTokenInfo = await getPayTokenInfo(payToken.contractAddress);
+    listing.current = {
+      ...listingInfo,
+      payToken: payTokenInfo,
+    };
     setIsForSale(true);
     setActionMade(1);
   };
 
-  const handleUpdatePrice = async (newPrice) => {
-    await updateListing(collection, tokenId, newPrice);
+  const handleUpdatePrice = async (newPrice, payToken) => {
+    await updateListing(collection, tokenId, newPrice, payToken);
 
+    if (listing.current.payToken.contractAddress !== payToken.contractAddress) {
+      let payTokenInfo = await getPayTokenInfo(payToken.contractAddress);
+      listing.current.payToken = payTokenInfo;
+    }
     listing.current.price = newPrice;
     setActionMade(1);
   };
@@ -248,14 +260,23 @@ export default function ItemPage() {
     setActionMade(1);
   };
 
-  const handleMakeOffer = async (offerPrice, deadline) => {
-    await makeOffer(wallet, collection, tokenId, offerPrice, deadline);
+  const handleMakeOffer = async (offerPrice, deadline, payToken) => {
+    await makeOffer(
+      wallet,
+      collection,
+      tokenId,
+      offerPrice,
+      deadline,
+      payToken
+    );
 
     let _offer = await getOffer(collection, tokenId, wallet);
     const offerCreator = await getProfileInfo(wallet);
+    const payTokenInfo = await getPayTokenInfo(payToken.contractAddress);
     _offer = {
       ..._offer,
       creator: offerCreator,
+      payToken: payTokenInfo,
     };
     offers.current.push(_offer);
     hasAnOffer();
@@ -283,13 +304,14 @@ export default function ItemPage() {
     setMyOffer(null);
   };
 
-  const hanldeBuyItem = async () => {
+  const handleBuyItem = async () => {
     await buyItem(
       wallet,
       collection,
       tokenId,
       tokenInfo?.current.owner,
-      listing?.current.price
+      listing?.current.price,
+      listing?.payToken.contractAddress
     );
     offers.current = [];
 
@@ -307,7 +329,8 @@ export default function ItemPage() {
     buyNowPrice,
     minimumBid,
     startTime,
-    endTime
+    endTime,
+    payToken
   ) => {
     await createAuction(
       wallet,
@@ -317,12 +340,16 @@ export default function ItemPage() {
       buyNowPrice,
       minimumBid,
       startTime,
-      endTime
+      endTime,
+      payToken
     );
 
     const _auction = await getAuction(collection, tokenId);
-
-    auctionInfo.current = _auction;
+    const payTokenInfo = await getPayTokenInfo(payToken.contractAddress);
+    auctionInfo.current = {
+      ..._auction,
+      payToken: payTokenInfo,
+    };
     setIsOnAuction(true);
   };
 
@@ -375,6 +402,7 @@ export default function ItemPage() {
       bidder: profile,
     };
     setHighestBid(_highestBid);
+    setIsHighestBidder(true);
   };
 
   const hanldeBuyNow = async () => {
@@ -739,12 +767,14 @@ export default function ItemPage() {
 
                     {isOnAuction && !isOwner && (
                       <>
-                        <ActionButton
-                          disabled={!auctionStarted}
-                          size="small"
-                          buttonAction={() => setOpenBidModal(true)}
-                          text="Realizar Puja"
-                        />
+                        {!isHighestBidder && (
+                          <ActionButton
+                            disabled={!auctionStarted}
+                            size="small"
+                            buttonAction={() => setOpenBidModal(true)}
+                            text="Realizar Puja"
+                          />
+                        )}
                         <ActionButton
                           disabled={!auctionStarted}
                           size="small"
@@ -802,7 +832,7 @@ export default function ItemPage() {
           listing={listing.current}
           showModal={openBuyModal}
           handleCloseModal={() => setOpenBuyModal(false)}
-          onBuyItem={hanldeBuyItem}
+          onBuyItem={handleBuyItem}
         />
 
         <MakeOfferModal

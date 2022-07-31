@@ -10,10 +10,10 @@ export default function PutForSaleModal({
   onListItem,
 }) {
   const [priceFor, setPriceFor] = useState(0);
-
+  const [payTokenSelected, setPayTokenSelected] = useState(null);
   const putItemForSale = async () => {
     if (priceFor > 0) {
-      await onListItem(priceFor);
+      await onListItem(priceFor, payTokenSelected);
     }
   };
   return (
@@ -33,6 +33,8 @@ export default function PutForSaleModal({
           label={"Precio"}
           value={priceFor}
           onChange={setPriceFor}
+          selectedToken={payTokenSelected}
+          setSelectedToken={setPayTokenSelected}
         />
       </div>
     </ActionModal>

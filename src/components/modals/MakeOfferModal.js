@@ -16,6 +16,7 @@ export default function MakeOfferModal({
   const [expireDate, setExpireDate] = useState(0);
   const [expireHour, setExpireHour] = useState(0);
   const [actionError, setActionError] = useState(false);
+  const [payTokenSelected, setPayTokenSelected] = useState(null);
 
   const { getWFTMBalance } = useWFTMContract();
   const handleMakeOffer = async () => {
@@ -23,7 +24,7 @@ export default function MakeOfferModal({
       var endTime = new Date(`${expireDate}T${expireHour}`);
       const deadline = Math.floor(endTime.getTime() / 1000);
 
-      await onMakeOffer(offerPrice, deadline);
+      await onMakeOffer(offerPrice, deadline, payTokenSelected);
     } catch (e) {
       console.log(e);
     }
@@ -67,6 +68,8 @@ export default function MakeOfferModal({
             onChange={setOfferPrice}
             error={offerPrice > wftmBalance}
             errorMessage={"No tienes suficientes WFTM"}
+            selectedToken={payTokenSelected}
+            setSelectedToken={setPayTokenSelected}
           />
           <DateTimeInput
             label={"Fecha de Expiración"}

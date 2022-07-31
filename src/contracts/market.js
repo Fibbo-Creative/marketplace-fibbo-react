@@ -28,7 +28,7 @@ export const useMarketplace = () => {
     return await getContract(address, MARKETPLACE_ABI);
   };
 
-  const listItem = async (collection, tokenId, price) => {
+  const listItem = async (collection, tokenId, price, payToken) => {
     const marketContract = await getMarketContract();
     let defaultCollection = await getDefaultCollectionContract();
 
@@ -44,7 +44,7 @@ export const useMarketplace = () => {
     let listItemTx = await marketContract.listItem(
       collection,
       tokenId,
-      WFTM_ADDRESS,
+      payToken.contractAddress,
       parseEther(price.toString()),
       0
     );
@@ -52,9 +52,17 @@ export const useMarketplace = () => {
     await listItemTx.wait();
   };
 
-  const buyItem = async (buyer, collection, tokenId, owner, price) => {
+  const buyItem = async (
+    buyer,
+    collection,
+    tokenId,
+    owner,
+    price,
+    payToken
+  ) => {
     const marketContract = await getMarketContract();
-    const erc20 = await getERC20Contract(WFTM_ADDRESS);
+    const tokenAddress = payToken.contractAddress;
+    const erc20 = await getERC20Contract(tokenAddress);
     price = parseEther(price.toString());
     const allowance = await erc20.allowance(buyer, marketContract.address);
 
@@ -67,7 +75,7 @@ export const useMarketplace = () => {
     let buyItemTx = await marketContract.buyItem(
       collection,
       tokenId,
-      WFTM_ADDRESS,
+      tokenAddress,
       owner
     );
 
@@ -93,13 +101,13 @@ export const useMarketplace = () => {
     await cancelListingTx.wait();
   };
 
-  const updateListing = async (collection, tokenId, price) => {
+  const updateListing = async (collection, tokenId, price, payToken) => {
     const marketContract = await getMarketContract();
 
     let updateListingTx = await marketContract.updateListing(
       collection,
       tokenId,
-      WFTM_ADDRESS,
+      payToken.contractAddress,
       parseEther(price.toString())
     );
 
@@ -128,10 +136,12 @@ export const useMarketplace = () => {
     collection,
     tokenId,
     offerPrice,
-    deadline
+    deadline,
+    payToken
   ) => {
     const marketContract = await getMarketContract();
-    const erc20 = await getERC20Contract(WFTM_ADDRESS);
+    const tokenAddress = payToken.contractAddress;
+    const erc20 = await getERC20Contract(tokenAddress);
 
     const allowance = await erc20.allowance(buyer, marketContract.address);
     if (allowance.lt(offerPrice)) {
@@ -142,7 +152,7 @@ export const useMarketplace = () => {
     let makeOfferTx = await marketContract.createOffer(
       collection,
       ethers.BigNumber.from(tokenId),
-      WFTM_ADDRESS,
+      tokenAddress,
       parseEther(offerPrice.toString()),
       ethers.BigNumber.from(deadline)
     );
