@@ -58,6 +58,7 @@ export default function ProfileContainer() {
   const { _width } = useRespnsive();
 
   const [loading, setLoading] = useState(false);
+  const [loadingInfo, setLoadingInfo] = useState(false);
 
   const changeSmallDisplay = () => {
     setSmallViewUser(true);
@@ -137,11 +138,13 @@ export default function ProfileContainer() {
     const fetchData = async () => {
       if (!loading) {
         setLoading(true);
+        setLoadingInfo(true);
         let isMyProfile = wallet === address;
         setMyprofile(isMyProfile);
         const profileDataResponse = await getProfileInfo(address);
 
         profileData.current = isMyProfile ? userProfile : profileDataResponse;
+        setLoading(false);
         const collectedItemsResponse = await getNftsFromAddress(address);
         setUserItems(collectedItemsResponse);
         setCollectedItems(collectedItemsResponse);
@@ -156,7 +159,7 @@ export default function ProfileContainer() {
         setMyOffers(myOffers);
         setOffers(offers);
 
-        setLoading(false);
+        setLoadingInfo(false);
       }
     };
     fetchData();
@@ -328,113 +331,125 @@ export default function ProfileContainer() {
             <div
               className={`flex flex-wrap sm:flex-row gap-2 sm:gap-10   sm:overflow-hidden items-center justify-center mb-3`}
             >
-              <ProfileTab
-                title={"En posesión"}
-                count={collectedItems.length}
-                type={{
-                  type: "Collected",
-                  viewAs: "grid",
-                }}
-                selectedType={itemsType}
-                onClick={() =>
-                  handleSetItemsType({
-                    type: "Collected",
-                    viewAs: "grid",
-                  })
-                }
-              />
-              <ProfileTab
-                title={"Creados"}
-                count={createdItems.length}
-                type={{ type: "Created", viewAs: "grid" }}
-                selectedType={itemsType}
-                onClick={() =>
-                  handleSetItemsType({ type: "Created", viewAs: "grid" })
-                }
-              />
-              <ProfileTab
-                title={"Actividad"}
-                count={activity.length}
-                type={{ type: "Activity", viewAs: "table" }}
-                selectedType={itemsType}
-                onClick={() =>
-                  handleSetItemsType({ type: "Activity", viewAs: "table" })
-                }
-              />
-              <ProfileTab
-                title={"Ofertas"}
-                count={offers.length}
-                type={{ type: "Offers", viewAs: "table" }}
-                selectedType={itemsType}
-                onClick={() =>
-                  handleSetItemsType({ type: "Offers", viewAs: "table" })
-                }
-              />
-              <ProfileTab
-                title={"Mis Ofertas"}
-                count={myOffers.length}
-                type={{ type: "MyOffers", viewAs: "table" }}
-                selectedType={itemsType}
-                onClick={() =>
-                  handleSetItemsType({ type: "MyOffers", viewAs: "table" })
-                }
-              />
+              {!loadingInfo && (
+                <>
+                  <ProfileTab
+                    title={"En posesión"}
+                    count={collectedItems.length}
+                    type={{
+                      type: "Collected",
+                      viewAs: "grid",
+                    }}
+                    selectedType={itemsType}
+                    onClick={() =>
+                      handleSetItemsType({
+                        type: "Collected",
+                        viewAs: "grid",
+                      })
+                    }
+                  />
+                  <ProfileTab
+                    title={"Creados"}
+                    count={createdItems.length}
+                    type={{ type: "Created", viewAs: "grid" }}
+                    selectedType={itemsType}
+                    onClick={() =>
+                      handleSetItemsType({ type: "Created", viewAs: "grid" })
+                    }
+                  />
+                  <ProfileTab
+                    title={"Actividad"}
+                    count={activity.length}
+                    type={{ type: "Activity", viewAs: "table" }}
+                    selectedType={itemsType}
+                    onClick={() =>
+                      handleSetItemsType({ type: "Activity", viewAs: "table" })
+                    }
+                  />
+                  <ProfileTab
+                    title={"Ofertas"}
+                    count={offers.length}
+                    type={{ type: "Offers", viewAs: "table" }}
+                    selectedType={itemsType}
+                    onClick={() =>
+                      handleSetItemsType({ type: "Offers", viewAs: "table" })
+                    }
+                  />
+                  <ProfileTab
+                    title={"Mis Ofertas"}
+                    count={myOffers.length}
+                    type={{ type: "MyOffers", viewAs: "table" }}
+                    selectedType={itemsType}
+                    onClick={() =>
+                      handleSetItemsType({ type: "MyOffers", viewAs: "table" })
+                    }
+                  />
+                </>
+              )}
             </div>
             <div className="h-[10px] w-sceen bg-gradient-to-r from-[#7E29F1] to-[#8BC3FD] "></div>
           </div>
-          {itemsType.viewAs === "grid" ? (
+          {!loadingInfo ? (
             <>
-              <div className="flex flex-row items-center justify-center gap-2 md:gap-5 ">
-                <button
-                  onClick={changeSmallDisplay}
-                  className="hover:-translate-y-1"
-                >
-                  <Icon
-                    icon="akar-icons:dot-grid-fill"
-                    width="40"
-                    height="40"
-                    color="grey"
-                  />
-                </button>
-                <button
-                  onClick={changeBigDisplay}
-                  className="hover:-translate-y-1"
-                >
-                  <Icon
-                    icon="ci:grid-big-round"
-                    width="60"
-                    height="60"
-                    color="grey"
-                  />
-                </button>
-              </div>
-              <div className="flex w-full flex-wrap gap-5 items-center justify-center ">
-                {userItems?.map((item) => {
-                  return (
-                    <div key={Math.random(1, 9999)} className="p-5">
-                      <NftCard
-                        onClick={() => goToNftDetail(item)}
-                        item={item}
-                        isSmall={userSmallview}
+              {itemsType.viewAs === "grid" ? (
+                <>
+                  <div className="flex flex-row items-center justify-center gap-2 md:gap-5 ">
+                    <button
+                      onClick={changeSmallDisplay}
+                      className="hover:-translate-y-1"
+                    >
+                      <Icon
+                        icon="akar-icons:dot-grid-fill"
+                        width="40"
+                        height="40"
+                        color="grey"
                       />
-                    </div>
-                  );
-                })}
-              </div>
+                    </button>
+                    <button
+                      onClick={changeBigDisplay}
+                      className="hover:-translate-y-1"
+                    >
+                      <Icon
+                        icon="ci:grid-big-round"
+                        width="60"
+                        height="60"
+                        color="grey"
+                      />
+                    </button>
+                  </div>
+                  <div className="flex w-full flex-wrap gap-5 items-center justify-center ">
+                    {userItems?.map((item) => {
+                      return (
+                        <div key={Math.random(1, 9999)} className="p-5">
+                          <NftCard
+                            onClick={() => goToNftDetail(item)}
+                            item={item}
+                            isSmall={userSmallview}
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </>
+              ) : (
+                <div className="mx-5">
+                  {itemsType.type === "Activity" ? (
+                    <ProfileActivityTable historyItems={activity} />
+                  ) : (
+                    <>
+                      {itemsType.type === "Offers" ? (
+                        <ProfileOffersTable offers={offers} />
+                      ) : (
+                        <ProfileMyOffersTable offers={myOffers} />
+                      )}
+                    </>
+                  )}
+                </div>
+              )}
             </>
           ) : (
-            <div className="mx-5">
-              {itemsType.type === "Activity" ? (
-                <ProfileActivityTable historyItems={activity} />
-              ) : (
-                <>
-                  {itemsType.type === "Offers" ? (
-                    <ProfileOffersTable offers={offers} />
-                  ) : (
-                    <ProfileMyOffersTable offers={myOffers} />
-                  )}
-                </>
-              )}
+            <div className="w-screen h-[50vh] animate-pulse flex items-center justify-center">
+              <img src={fibboLogo} className="w-[128px] animate-spin" />
             </div>
           )}
         </>

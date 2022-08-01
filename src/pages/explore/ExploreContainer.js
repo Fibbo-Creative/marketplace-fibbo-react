@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { PageWithLoading } from "../../components/basic/PageWithLoading";
 import useResponsive from "../../hooks/useResponsive";
 import { FiltersSidebarModal } from "../../components/modals/FiltersSidebarModal";
+import fibboLogo from "../../assets/logoNavbarSmall.png";
 
 export default function ExploreContainer() {
   const navigate = useNavigate();
@@ -24,20 +25,26 @@ export default function ExploreContainer() {
   const [userSmallview, setSmallViewUser] = useState(false);
   const [openedSidebar, setOpenedSidebar] = useState(true);
   const [filtersSelected, setFiltersSelected] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [loadingInfo, setLoadingInfo] = useState(false);
+
   const [allErc20Tokens, setAllErc20Tokens] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const forSaleItems = await getAllTokens();
-      console.log(forSaleItems);
-      setAllMarketItems(forSaleItems);
-      setVisibleMarketItems(forSaleItems.slice(0, 12));
-      setLoading(false);
-      setOpenedSidebar(_width < 900 ? false : true);
+      setLoadingInfo(true);
       const _payTokens = await getAllPayTokens();
       setAllErc20Tokens(_payTokens);
+
+      const forSaleItems = await getAllTokens();
+
+      setAllMarketItems(forSaleItems);
+      setLoading(false);
+      setVisibleMarketItems(forSaleItems.slice(0, 12));
+
+      setOpenedSidebar(_width < 900 ? false : true);
+      setLoadingInfo(false);
     };
     fetchData();
   }, []);
@@ -414,14 +421,6 @@ export default function ExploreContainer() {
     }
   }, [filtersSelected]);
 
-  useEffect(() => {
-    if (_width < 900) {
-      setOpenedSidebar(false);
-    } else {
-      setOpenedSidebar(true);
-    }
-  }, []);
-
   return (
     <PageWithLoading loading={loading}>
       <>
@@ -547,24 +546,30 @@ export default function ExploreContainer() {
                 </div>
               </div>
 
-              <InfiniteScroll
-                className="flex  mt-2 flex-wrap justify-center"
-                dataLength={visibleMarketItems.length}
-                next={addMoreItems}
-                hasMore={true}
-              >
-                {visibleMarketItems.map((item) => {
-                  return (
-                    <div key={Math.random(1, 9999)} className="p-5">
-                      <NftCard
-                        onClick={() => goToNftDetail(item)}
-                        isSmall={userSmallview}
-                        item={item}
-                      />
-                    </div>
-                  );
-                })}
-              </InfiniteScroll>
+              {!loadingInfo ? (
+                <InfiniteScroll
+                  className="flex  mt-2 flex-wrap justify-center"
+                  dataLength={visibleMarketItems.length}
+                  next={addMoreItems}
+                  hasMore={true}
+                >
+                  {visibleMarketItems.map((item) => {
+                    return (
+                      <div key={Math.random(1, 9999)} className="p-5">
+                        <NftCard
+                          onClick={() => goToNftDetail(item)}
+                          isSmall={userSmallview}
+                          item={item}
+                        />
+                      </div>
+                    );
+                  })}
+                </InfiniteScroll>
+              ) : (
+                <div className="w-screen h-[50vh] animate-pulse flex items-center justify-center">
+                  <img src={fibboLogo} className="w-[128px] animate-spin" />
+                </div>
+              )}
             </div>
             {_width < 900 && (
               <FiltersSidebarModal
