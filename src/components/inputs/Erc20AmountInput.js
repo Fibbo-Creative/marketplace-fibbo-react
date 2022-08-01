@@ -10,6 +10,7 @@ export const Erc20AmountInput = ({
   error,
   errorMessage,
   selectedToken,
+  selectDisabled,
   setSelectedToken,
 }) => {
   const { getAllPayTokens } = useApi();
@@ -68,8 +69,10 @@ export const Erc20AmountInput = ({
         className={`flex border-2 rounded-md ${error && "border-red-600"}  `}
       >
         <div
-          onClick={() => setOpenSelect(!openSelect)}
-          className="flex rounded py-2 px-1 w-[225px] bg-gray-300 dark:bg-dark-3 dark:hover:bg-dark-4 justify-evenly cursor-pointer items-center "
+          onClick={() => (!selectDisabled ? setOpenSelect(!openSelect) : null)}
+          className={`flex rounded py-2 px-1 w-[225px] bg-gray-300 dark:bg-dark-3 dark:hover:bg-dark-4 justify-evenly ${
+            selectDisabled ? "cursor-not-allowed" : "cursor-pointer"
+          } items-center `}
         >
           <div className="flex items-center">
             <img width={32} src={selectedToken?.image} alt="Fantom coin" />
@@ -91,7 +94,7 @@ export const Erc20AmountInput = ({
                           : "hover:dark:bg-dark-2 hover:bg-gray-600  "
                       } ${
                         token?.name === selectedToken.name &&
-                        " bg-gray-600 dark:bg-dark-2"
+                        " bg-gray-400 dark:bg-dark-2"
                       } `}
                     >
                       <img
@@ -107,12 +110,14 @@ export const Erc20AmountInput = ({
               </div>
             </div>
           )}
-          <Icon
-            icon="ci:play-arrow"
-            rotate={openSelect ? 1 : 0}
-            width="20"
-            height="20"
-          />
+          {!selectDisabled && (
+            <Icon
+              icon="ci:play-arrow"
+              rotate={openSelect ? 1 : 0}
+              width="20"
+              height="20"
+            />
+          )}
         </div>
 
         <input

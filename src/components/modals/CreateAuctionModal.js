@@ -105,6 +105,7 @@ export default function CreateAuctionModal({
           onChange={setBuyNowPrice}
           error={buyNowPrice < reservePrice * 2}
           selectedToken={payTokenSelected}
+          selectDisabled={true}
           setSelectedToken={setPayTokenSelected}
           errorMessage={
             "El precio de compra tiene que ser mínimo el doble de reserva"

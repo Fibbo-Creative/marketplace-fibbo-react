@@ -22,6 +22,8 @@ import CancelAuctionModal from "../../components/modals/CancelAuctionModal";
 import UpdateAuctionModal from "../../components/modals/UpdateAuctionModal";
 import ChangePriceModal from "../../components/modals/ChangePriceModal";
 import UnlistItemModal from "../../components/modals/UnlistItemModal";
+import ConnectionModal from "../../components/modals/ConnectionModal";
+
 import AdditionalContentModal from "../../components/modals/AdditionalContentModal";
 import ActionButton from "../../components/ActionButton";
 import { ItemDirectOffers } from "../../components/ItemDirectOffers";
@@ -57,7 +59,7 @@ const formatDate = (datetime) => {
 export default function ItemPage() {
   const navigate = useNavigate();
   let { collection, tokenId } = useParams();
-  const { wallet } = useAccount();
+  const { wallet, connectToWallet } = useAccount();
   const {
     getProfileInfo,
     getNftInfo,
@@ -89,6 +91,7 @@ export default function ItemPage() {
     buyNow,
   } = useAuction();
 
+  const [openConnectionModal, setOpenConnectionModal] = useState(false);
   const [openSellModal, setOpenSellModal] = useState(false);
   const [openBuyModal, setOpenBuyModal] = useState(false);
   const [openOfferModal, setOpenOfferModal] = useState(false);
@@ -684,13 +687,21 @@ export default function ItemPage() {
                         {!myOffer ? (
                           <ActionButton
                             size="small"
-                            buttonAction={() => setOpenOfferModal(true)}
+                            buttonAction={() =>
+                              !wallet
+                                ? setOpenConnectionModal(true)
+                                : setOpenOfferModal(true)
+                            }
                             text="Realizar Oferta"
                           />
                         ) : (
                           <ActionButton
                             size="small"
-                            buttonAction={() => setOpenCancelOfferModal(true)}
+                            buttonAction={() =>
+                              !wallet
+                                ? setOpenConnectionModal(true)
+                                : setOpenCancelOfferModal(true)
+                            }
                             text="Cancelar Oferta"
                           />
                         )}
@@ -701,19 +712,31 @@ export default function ItemPage() {
                       <>
                         <ActionButton
                           size="small"
-                          buttonAction={() => setOpenBuyModal(true)}
+                          buttonAction={() =>
+                            !wallet
+                              ? setOpenConnectionModal(true)
+                              : setOpenBuyModal(true)
+                          }
                           text="Comprar NFT"
                         />
                         {!myOffer ? (
                           <ActionButton
                             size="small"
-                            buttonAction={() => setOpenOfferModal(true)}
+                            buttonAction={() =>
+                              !wallet
+                                ? setOpenConnectionModal(true)
+                                : setOpenOfferModal(true)
+                            }
                             text="Realizar Oferta"
                           />
                         ) : (
                           <ActionButton
                             size="small"
-                            buttonAction={() => setOpenCancelOfferModal(true)}
+                            buttonAction={() =>
+                              !wallet
+                                ? setOpenConnectionModal(true)
+                                : setOpenCancelOfferModal(true)
+                            }
                             text="Cancelar Oferta"
                           />
                         )}
@@ -724,12 +747,20 @@ export default function ItemPage() {
                       <>
                         <ActionButton
                           size="small"
-                          buttonAction={() => setOpenSellModal(true)}
+                          buttonAction={() =>
+                            !wallet
+                              ? setOpenConnectionModal(true)
+                              : setOpenSellModal(true)
+                          }
                           text="Poner en Venta"
                         />
                         <ActionButton
                           size="small"
-                          buttonAction={() => setOpenCreateAuction(true)}
+                          buttonAction={() =>
+                            !wallet
+                              ? setOpenConnectionModal(true)
+                              : setOpenCreateAuction(true)
+                          }
                           text="Subastar Item"
                         />
                       </>
@@ -739,12 +770,20 @@ export default function ItemPage() {
                       <div className="flex flex-col md:flex-row gap-3">
                         <ActionButton
                           size="small"
-                          buttonAction={() => setOpenChangePriceModal(true)}
+                          buttonAction={() =>
+                            !wallet
+                              ? setOpenConnectionModal(true)
+                              : setOpenChangePriceModal(true)
+                          }
                           text="Cambiar Precio"
                         />
                         <ActionButton
                           size="small"
-                          buttonAction={() => setOpenUnlistItemModal(true)}
+                          buttonAction={() =>
+                            !wallet
+                              ? setOpenConnectionModal(true)
+                              : setOpenUnlistItemModal(true)
+                          }
                           text="Quitar en venta"
                         />
                       </div>
@@ -754,12 +793,20 @@ export default function ItemPage() {
                       <>
                         <ActionButton
                           size="small"
-                          buttonAction={() => setOpenUpdateAuctionModal(true)}
+                          buttonAction={() =>
+                            !wallet
+                              ? setOpenConnectionModal(true)
+                              : setOpenUpdateAuctionModal(true)
+                          }
                           text="Actualizar"
                         />
                         <ActionButton
                           size="small"
-                          buttonAction={() => setOpenCancelAuctionModal(true)}
+                          buttonAction={() =>
+                            !wallet
+                              ? setOpenConnectionModal(true)
+                              : setOpenCancelAuctionModal(true)
+                          }
                           text="Cancelar"
                         />
                       </>
@@ -771,14 +818,22 @@ export default function ItemPage() {
                           <ActionButton
                             disabled={!auctionStarted}
                             size="small"
-                            buttonAction={() => setOpenBidModal(true)}
+                            buttonAction={() =>
+                              !wallet
+                                ? setOpenConnectionModal(true)
+                                : setOpenBidModal(true)
+                            }
                             text="Realizar Puja"
                           />
                         )}
                         <ActionButton
                           disabled={!auctionStarted}
                           size="small"
-                          buttonAction={() => setOpenBuyNowModal(true)}
+                          buttonAction={() =>
+                            !wallet
+                              ? setOpenConnectionModal(true)
+                              : setOpenBuyNowModal(true)
+                          }
                           text="Comprar ya"
                         />
                       </>
@@ -805,7 +860,11 @@ export default function ItemPage() {
           </>
         )}
       </div>
-
+      <ConnectionModal
+        showModal={openConnectionModal}
+        handleCloseModal={() => setOpenConnectionModal(false)}
+        connectToWallet={connectToWallet}
+      />
       <>
         <PutForSaleModal
           collectionAddress={collection}
