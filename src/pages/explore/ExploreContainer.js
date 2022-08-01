@@ -35,7 +35,7 @@ export default function ExploreContainer() {
       setAllMarketItems(forSaleItems);
       setVisibleMarketItems(forSaleItems.slice(0, 12));
       setLoading(false);
-      setOpenedSidebar(true);
+      setOpenedSidebar(_width < 900 ? false : true);
       const _payTokens = await getAllPayTokens();
       setAllErc20Tokens(_payTokens);
     };
@@ -536,6 +536,14 @@ export default function ExploreContainer() {
                       </div>
                     );
                   })}
+                  {filtersSelected.length > 0 && (
+                    <div
+                      onClick={() => setFiltersSelected([])}
+                      className=" cursor-pointer transition ml-5 text-gray-400 dark:hover:text-white hover:text-black"
+                    >
+                      Limpiar Todos
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -569,6 +577,12 @@ export default function ExploreContainer() {
                   { name: "Pujado", filter: filterByBidded },
                 ]}
                 filtersSelected={filtersSelected}
+                payTokenFilters={allErc20Tokens.map((item) => {
+                  return {
+                    ...item,
+                    filter: selectPayTokenFilter,
+                  };
+                })}
               />
             )}
           </>

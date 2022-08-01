@@ -326,7 +326,7 @@ export default function ProfileContainer() {
 
           <div className="mt-10 mb-10 ">
             <div
-              className={`flex flex-wrap sm:flex-row gap-2 sm:gap-10  overflow-x-scroll sm:overflow-hidden items-center justify-center mb-3`}
+              className={`flex flex-wrap sm:flex-row gap-2 sm:gap-10   sm:overflow-hidden items-center justify-center mb-3`}
             >
               <ProfileTab
                 title={"En posesión"}

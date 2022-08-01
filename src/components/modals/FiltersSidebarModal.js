@@ -9,6 +9,7 @@ export const FiltersSidebarModal = ({
   setOpenSidebar,
   statusFilters,
   filtersSelected,
+  payTokenFilters,
 }) => {
   return (
     <Dialog
@@ -54,6 +55,12 @@ export const FiltersSidebarModal = ({
               <FilterBottomDropDown name="Estado">
                 <FilterButtons
                   options={statusFilters}
+                  filtersSelected={filtersSelected}
+                />
+              </FilterBottomDropDown>
+              <FilterBottomDropDown name="Token">
+                <FilterButtons
+                  options={payTokenFilters}
                   filtersSelected={filtersSelected}
                 />
               </FilterBottomDropDown>
