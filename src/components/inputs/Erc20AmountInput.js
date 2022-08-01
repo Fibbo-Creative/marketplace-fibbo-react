@@ -100,7 +100,6 @@ export const Erc20AmountInput = ({
                       <img
                         width={32}
                         src={token?.image}
-                        alt="Fantom coin"
                         className={`${token.disabled && "opacity-50"}`}
                       />
                       <div className="px-2 ">{token?.name}</div>
