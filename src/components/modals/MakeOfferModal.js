@@ -57,7 +57,9 @@ export default function MakeOfferModal({
       completedLabel={`Ver tu oferta`}
       completedAction={handleCloseModal}
       submitDisabled={
-        wftmBalance < offerPrice || actionError || offerPrice === 0
+        parseFloat(wftmBalance) < parseFloat(offerPrice) ||
+        actionError ||
+        offerPrice === 0
       }
     >
       <div className="my-10 mx-8 flex flex-col gap-10">
@@ -66,7 +68,7 @@ export default function MakeOfferModal({
             label={"Que precio quieres ofertar?"}
             value={offerPrice}
             onChange={setOfferPrice}
-            error={offerPrice > wftmBalance}
+            error={parseFloat(wftmBalance) < parseFloat(offerPrice)}
             errorMessage={"No tienes suficientes WFTM"}
             selectedToken={payTokenSelected}
             setSelectedToken={setPayTokenSelected}
