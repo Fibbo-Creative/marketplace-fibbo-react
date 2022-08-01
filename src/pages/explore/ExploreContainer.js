@@ -14,7 +14,7 @@ import { FiltersSidebarModal } from "../../components/modals/FiltersSidebarModal
 
 export default function ExploreContainer() {
   const navigate = useNavigate();
-  const { getNftsForSale, getAllTokens } = useApi();
+  const { getNftsForSale, getAllTokens, getAllPayTokens } = useApi();
   const { wallet } = useAccount();
   const [allMarketItems, setAllMarketItems] = useState([]);
   const [visibleMarketItems, setVisibleMarketItems] = useState([]);
@@ -25,6 +25,8 @@ export default function ExploreContainer() {
   const [openedSidebar, setOpenedSidebar] = useState(true);
   const [filtersSelected, setFiltersSelected] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [allErc20Tokens, setAllErc20Tokens] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -33,6 +35,9 @@ export default function ExploreContainer() {
       setAllMarketItems(forSaleItems);
       setVisibleMarketItems(forSaleItems.slice(0, 12));
       setLoading(false);
+      setOpenedSidebar(true);
+      const _payTokens = await getAllPayTokens();
+      setAllErc20Tokens(_payTokens);
     };
     fetchData();
   }, []);
@@ -291,21 +296,36 @@ export default function ExploreContainer() {
   };
 
   const removeFilter = (filter) => {
-    switch (filter) {
-      case "En Venta":
-        filterBySelling();
-        break;
-      case "Ofertado":
-        filterByOffered();
-        break;
-      case "En Subasta":
-        filterByAuctioned();
-        break;
-      case "Pujado":
-        filterByBidded();
-        break;
-      default:
-        break;
+    if (typeof filter === "object") {
+      selectPayTokenFilter(filter);
+    } else {
+      switch (filter) {
+        case "En Venta":
+          filterBySelling();
+          break;
+        case "Ofertado":
+          filterByOffered();
+          break;
+        case "En Subasta":
+          filterByAuctioned();
+          break;
+        case "Pujado":
+          filterByBidded();
+          break;
+        default:
+          break;
+      }
+    }
+  };
+
+  const selectPayTokenFilter = (token) => {
+    let isSelected = filtersSelected.find((item) => item === token);
+    console.log(isSelected);
+    if (isSelected) {
+      setVisibleMarketItems(allMarketItems);
+      setFiltersSelected(filtersSelected.filter((item) => item !== token));
+    } else {
+      setFiltersSelected([...filtersSelected, token]);
     }
   };
 
@@ -337,6 +357,44 @@ export default function ExploreContainer() {
             (item) => item.auction?.topBid !== undefined
           );
           filtered = [...filtered, ...result];
+        }
+        if (filter.contractAddress) {
+          let _result = [];
+          if (filtersSelected.includes("En Venta")) {
+            _result = allMarketItems.filter(
+              (item) =>
+                item.payToken?.contractAddress === filter.contractAddress
+            );
+          } else if (filtersSelected.includes("Ofertado")) {
+            _result = allMarketItems.filter(
+              (item) =>
+                item.offer?.payToken.contractAddress === filter.contractAddress
+            );
+          } else if (filtersSelected.includes("En Subasta")) {
+            _result = allMarketItems.filter(
+              (item) =>
+                item.auction?.payToken.contractAddress ===
+                filter.contractAddress
+            );
+          } else if (filtersSelected.includes("Pujado")) {
+            _result = allMarketItems.filter(
+              (item) =>
+                item.auction?.topBid !== undefined &&
+                item.auction?.payToken.contractAddress ===
+                  filter.contractAddress
+            );
+          } else {
+            _result = allMarketItems.filter(
+              (item) =>
+                item.payToken?.contractAddress === filter.contractAddress ||
+                item.offer?.payToken.contractAddress ===
+                  filter.contractAddress ||
+                item.auction?.payToken.contractAddress ===
+                  filter.contractAddress
+            );
+          }
+
+          filtered = [...filtered, ..._result];
         }
       });
       //remove duplicates
@@ -385,6 +443,12 @@ export default function ExploreContainer() {
                   { name: "En Subasta", filter: filterByAuctioned },
                   { name: "Pujado", filter: filterByBidded },
                 ]}
+                payTokenFilters={allErc20Tokens.map((item) => {
+                  return {
+                    ...item,
+                    filter: selectPayTokenFilter,
+                  };
+                })}
               />
             )}
             <div className={`flex flex-col ${openedSidebar && "ml-[17vw]"}`}>
@@ -453,11 +517,21 @@ export default function ExploreContainer() {
                   {filtersSelected.map((filter) => {
                     return (
                       <div
-                        key={filter.name}
+                        key={Math.random(1, 999999)}
                         onClick={() => removeFilter(filter)}
                         className="cursor-pointer text-xs md:text-sm  flex  items-center gap-2 dark:bg-dark-2 hover:bg-gray-200 hover:dark:bg-dark-4 border border-gray-200 rounded-xl px-8 py-3"
                       >
-                        {filter}
+                        {typeof filter === "object" ? (
+                          <div className="flex gap-2 items-center">
+                            {filter.image && (
+                              <img src={filter.image} width={24} />
+                            )}
+                            {filter.name}
+                          </div>
+                        ) : (
+                          filter
+                        )}
+
                         <Icon icon="ep:close" width={24} />
                       </div>
                     );

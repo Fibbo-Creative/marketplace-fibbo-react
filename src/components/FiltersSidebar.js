@@ -14,6 +14,7 @@ export default function FiltersSidebar({
   filtersSelected,
   setFiltersSelected,
   statusFilters,
+  payTokenFilters,
 }) {
   const [min_state, setMinState] = useState(0);
   const [max_state, setMaxState] = useState(100);
@@ -55,10 +56,16 @@ export default function FiltersSidebar({
               />
             </button>
           </div>
-          <div className="flex flex-col font-medium w-full gap-4">
+          <div className="flex flex-col font-medium w-full">
             <FilterBottomDropDown name="Estado">
               <FilterButtons
                 options={statusFilters}
+                filtersSelected={filtersSelected}
+              />
+            </FilterBottomDropDown>
+            <FilterBottomDropDown name="Token">
+              <FilterButtons
+                options={payTokenFilters}
                 filtersSelected={filtersSelected}
               />
             </FilterBottomDropDown>
