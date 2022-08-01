@@ -282,7 +282,7 @@ export default function CreateContainer() {
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-3 pt-5">
+                {/*                 <div className="flex flex-col gap-3 pt-5">
                   <div className="flex flex-row gap-2">
                     <label className="">
                       <input type="checkbox" className="" value="" />
@@ -301,7 +301,7 @@ export default function CreateContainer() {
                       />{" "}
                     </abbr>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
             <div className="flex flex-col justify-center items-center mt-10 w-full lg:p-0 pb-20 gap-5 ">
