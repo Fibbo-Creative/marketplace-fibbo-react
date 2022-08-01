@@ -22,24 +22,6 @@ export const BasicModal = ({
           &#8203;
         </span>
 
-<<<<<<< HEAD
-        <div
-          className={`dark:bg-dark-3 dark:text-white inline-block ${
-            size === "large" ? "max-w-xl" : "max-w-md"
-          } w-full p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl dark:shadow-dark-1 shadow-gray-400  rounded-2xl`}
-        >
-          <Dialog.Title
-            as="h3"
-            className="dark:text-white text-lg font-medium leading-6 text-gray-900 flex justify-between"
-          >
-            <div>{title}</div>
-            <div className="cursor-pointer" onClick={() => handleCloseModal()}>
-              <Icon className="text-2xl" icon="ant-design:close-outlined" />
-            </div>
-          </Dialog.Title>
-
-          <Dialog.Panel>{children}</Dialog.Panel>
-=======
         <div className="dark:bg-dark-3 dark:text-white inline-block w-full max-w-xl p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl dark:shadow-dark-1 shadow-gray-400  rounded-2xl">
           <Dialog.Panel>
             <Dialog.Title
@@ -57,7 +39,6 @@ export const BasicModal = ({
 
             {children}
           </Dialog.Panel>
->>>>>>> dev-auctions
         </div>
       </div>
     </Dialog>
