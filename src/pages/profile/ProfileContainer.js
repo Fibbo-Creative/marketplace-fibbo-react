@@ -86,7 +86,6 @@ export default function ProfileContainer() {
     const file = e.target.files[0];
     try {
       let imgUrl = await setProfileBanner(wallet, file);
-      console.log(imgUrl);
       profileData.current.profileBanner = imgUrl;
       stateDispatch({
         type: actionTypes.SET_PROFILE_BANNER,
@@ -103,7 +102,6 @@ export default function ProfileContainer() {
     const file = e.target.files[0];
     try {
       let imgUrl = await setProfileImg(wallet, file);
-      console.log(imgUrl);
       profileData.current.profileImg = imgUrl;
       stateDispatch({
         type: actionTypes.SET_PROFILE_IMAGE,

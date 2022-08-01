@@ -176,7 +176,6 @@ export default function ItemPage() {
       totalItems: numberOfTokens,
     });
 
-    console.log(history);
     setLoading(false);
   };
 
@@ -191,7 +190,6 @@ export default function ItemPage() {
           ..._auction,
           payToken: payTokenInfo,
         };
-        console.log(auctionInfo.current);
       }
     } catch (e) {
       console.log(e);

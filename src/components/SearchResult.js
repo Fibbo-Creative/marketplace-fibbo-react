@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchResultItem from "./SearchResultItem";
 
@@ -7,7 +7,9 @@ export default function SearchResult({
   profilesResult,
   setInputValue,
   setSearchResult,
+  setOpenSearchResult,
 }) {
+  const ref = useRef(null);
   const navigate = useNavigate();
   const goToItemDetail = (item) => {
     navigate(`/explore/${item.collectionAddress}/${item.tokenId}`);
@@ -23,8 +25,25 @@ export default function SearchResult({
     setSearchResult.profiles([]);
   };
 
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (ref.current && !ref.current.contains(event.target)) {
+        setOpenSearchResult(false);
+      }
+    }
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [ref]);
+
   return (
-    <div className="overflow-y-scroll h-[700px] dark:bg-gray-700 absolute z-99 flex flex-col bg-white w-[300px]  md:w-[400px] border border-gray">
+    <div
+      ref={ref}
+      className="overflow-y-scroll h-[700px] dark:bg-gray-700 absolute z-99 flex flex-col bg-white w-[300px]  md:w-[400px] border border-gray"
+    >
       <div className="dark:bg-dark-3 uppercase cursor-pointer flex items-center px-2 py-1 gap-3 bg-gray-100 border-b ">
         <div>Items</div>
       </div>

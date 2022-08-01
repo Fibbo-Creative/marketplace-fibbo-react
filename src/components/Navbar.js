@@ -20,6 +20,7 @@ export default function Navbar() {
   const [{ userProfile, verifiedAddress }] = useStateContext();
   const [searchItemsData, setSearchItemsData] = useState([]);
   const [searchProfilesData, setSearchProfilesData] = useState([]);
+  const [openSearchResult, setOpenSearchResult] = useState(false);
 
   const searchInputRef = useRef(null);
 
@@ -33,6 +34,7 @@ export default function Navbar() {
   const searchItems = async (queryText) => {
     setSearchText(queryText);
     if (queryText.length >= 4) {
+      setOpenSearchResult(true);
       const { items, profiles } = await searchItemsAndProfiles(queryText);
       if (items.length === 0) {
         setSearchItemsData([
@@ -116,18 +118,20 @@ export default function Navbar() {
                   />
                 </div>
               </div>
-              {(searchItemsData.length > 0 ||
-                searchProfilesData.length > 0) && (
-                <SearchResult
-                  setInputValue={setSearchText}
-                  setSearchResult={{
-                    items: setSearchItemsData,
-                    profiles: setSearchProfilesData,
-                  }}
-                  itemsResult={searchItemsData}
-                  profilesResult={searchProfilesData}
-                />
-              )}
+              {openSearchResult &&
+                (searchItemsData.length > 0 ||
+                  searchProfilesData.length > 0) && (
+                  <SearchResult
+                    setInputValue={setSearchText}
+                    setSearchResult={{
+                      items: setSearchItemsData,
+                      profiles: setSearchProfilesData,
+                    }}
+                    itemsResult={searchItemsData}
+                    profilesResult={searchProfilesData}
+                    setOpenSearchResult={setOpenSearchResult}
+                  />
+                )}
             </div>
             <div className="flex ">
               <NavbarItem text="Marketplace" to="/explore" />

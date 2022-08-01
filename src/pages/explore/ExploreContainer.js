@@ -34,17 +34,21 @@ export default function ExploreContainer() {
     const fetchData = async () => {
       setLoading(true);
       setLoadingInfo(true);
+      setOpenedSidebar(_width < 900 ? false : true);
       const _payTokens = await getAllPayTokens();
       setAllErc20Tokens(_payTokens);
 
-      const forSaleItems = await getAllTokens();
+      const firstItems = await getAllTokens(20);
+      setAllMarketItems(firstItems);
+      setVisibleMarketItems(firstItems.slice(0, 12));
 
-      setAllMarketItems(forSaleItems);
       setLoading(false);
-      setVisibleMarketItems(forSaleItems.slice(0, 12));
-
-      setOpenedSidebar(_width < 900 ? false : true);
       setLoadingInfo(false);
+
+      const forSaleItems = await getAllTokens();
+      setAllMarketItems(forSaleItems);
+
+      setVisibleMarketItems(forSaleItems.slice(0, 12));
     };
     fetchData();
   }, []);
@@ -141,7 +145,6 @@ export default function ExploreContainer() {
 
       const sortedArray = allMarketItems.sort(orderByRecently);
       const visibledsortedArray = visibleMarketItems.sort(orderByRecently);
-      console.log(visibledsortedArray);
       setAllMarketItems(sortedArray);
       setVisibleMarketItems(visibledsortedArray.slice(0, visibleItemsCount));
     }
@@ -327,7 +330,6 @@ export default function ExploreContainer() {
 
   const selectPayTokenFilter = (token) => {
     let isSelected = filtersSelected.find((item) => item === token);
-    console.log(isSelected);
     if (isSelected) {
       setVisibleMarketItems(allMarketItems);
       setFiltersSelected(filtersSelected.filter((item) => item !== token));
