@@ -75,7 +75,7 @@ export const Erc20AmountInput = ({
           } items-center `}
         >
           <div className="flex items-center">
-            <img width={32} src={selectedToken?.image} alt="Fantom coin" />
+            <img width={32} src={selectedToken?.image} />
             <div className="px-2">{selectedToken?.name}</div>
           </div>
           {openSelect && (
