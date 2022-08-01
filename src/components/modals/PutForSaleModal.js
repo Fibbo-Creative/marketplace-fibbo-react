@@ -1,96 +1,42 @@
-import { Icon } from "@iconify/react";
 import React, { useState } from "react";
-import { parseEther } from "ethers/lib/utils";
-import ActionButton from "../ActionButton";
-import { useMarketplace } from "../../contracts/market";
-import { useApi } from "../../api";
-import { BasicModal } from "./BasicModal";
-import { Check } from "../lottie/Check";
+import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
+import { ActionModal } from "./ActionModal";
 
 export default function PutForSaleModal({
   children,
   showModal,
   handleCloseModal,
-  tokenId,
-  collectionAddress,
   wallet,
+  onListItem,
 }) {
-  const { saveListedItem } = useApi();
-  const { listItem } = useMarketplace();
   const [priceFor, setPriceFor] = useState(0);
-  const [completedAction, setCompletedAction] = useState(false);
-
+  const [payTokenSelected, setPayTokenSelected] = useState(null);
   const putItemForSale = async () => {
     if (priceFor > 0) {
-      //en el contrato del marketplace -> createMarketItem
-      const priceFormatted = parseEther(priceFor.toString());
-
-      await listItem(collectionAddress, tokenId, priceFormatted);
-
-      await saveListedItem(
-        parseInt(tokenId),
-        wallet,
-        parseFloat(priceFor),
-        collectionAddress
-      );
-
-      setCompletedAction(true);
+      await onListItem(priceFor, payTokenSelected);
     }
   };
   return (
-    <BasicModal
+    <ActionModal
       title="Poner NFT en venta"
       size="large"
       showModal={showModal}
       handleCloseModal={handleCloseModal}
+      onSubmit={putItemForSale}
+      submitLabel={"Poner Item en venta"}
+      completedText={`Item listado por ${priceFor} correctamente`}
+      completedLabel={`Ver ítem acutalizado`}
+      completedAction={handleCloseModal}
     >
-      {!completedAction ? (
-        <div className="my-10 mx-8 flex flex-col gap-10">
-          <div>
-            <div>Precio</div>
-            <div className="flex">
-              <div className="flex w-[100px] bg-gray-300  justify-evenly items-center">
-                <img
-                  width={32}
-                  src="https://assets.trustwalletapp.com/blockchains/fantom/info/logo.png"
-                  alt="Fantom coin"
-                />
-                FTM
-              </div>
-              <input
-                value={priceFor}
-                onChange={(e) => setPriceFor(e.target.value)}
-                className="border w-full p-2 text-end dark:bg-dark-4"
-                type="number"
-              />
-            </div>
-          </div>
-          <div className="w-full flex items-center justify-center">
-            <ActionButton
-              variant="contained"
-              size="small"
-              text="Listar Ítem"
-              buttonAction={(e) => putItemForSale()}
-            />
-          </div>
-        </div>
-      ) : (
-        <div className="my-10 mx-8 flex flex-col gap-10">
-          <div className="flex flex-col gap-5 items-center">
-            <div className="flex gap-5 items-center">
-              <Check />
-              <p>Item Listado correctamente por {priceFor} FTM</p>
-            </div>
-
-            <ActionButton
-              size="large"
-              variant={"contained"}
-              text="Ver Ítem actualizado"
-              buttonAction={(e) => window.location.reload()}
-            />
-          </div>
-        </div>
-      )}
-    </BasicModal>
+      <div className="my-10 mx-8 flex flex-col gap-10 pb-10">
+        <Erc20AmountInput
+          label={"Precio"}
+          value={priceFor}
+          onChange={setPriceFor}
+          selectedToken={payTokenSelected}
+          setSelectedToken={setPayTokenSelected}
+        />
+      </div>
+    </ActionModal>
   );
 }

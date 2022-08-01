@@ -20,6 +20,11 @@ export const useAddressRegistry = () => {
     return await addressRegistryContract.marketplace();
   };
 
+  const getAuctionAddress = async () => {
+    const addressRegistryContract = await getAddressRegistryContract();
+    return await addressRegistryContract.auction();
+  };
+
   const getCommunityAddress = async () => {
     const addressRegistryContract = await getAddressRegistryContract();
     return await addressRegistryContract.community();
@@ -30,11 +35,18 @@ export const useAddressRegistry = () => {
     return await addressRegistryContract.verification();
   };
 
+  const getTokenRegistry = async () => {
+    const addressRegistryContract = await getAddressRegistryContract();
+    return await addressRegistryContract.tokenRegistry();
+  };
+
   return {
     getAddressRegistryContract,
     getFibboCollectionAddress,
     getMarketplaceAddress,
     getCommunityAddress,
     getVerificationAddress,
+    getTokenRegistry,
+    getAuctionAddress,
   };
 };

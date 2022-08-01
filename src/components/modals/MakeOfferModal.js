@@ -1,59 +1,92 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { BasicModal } from "./BasicModal";
-
+import { formatEther } from "ethers/lib/utils";
+import { useWFTMContract } from "../../contracts/wftm";
+import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
+import { DateTimeInput } from "../inputs/DateTimeInput";
+import { ActionModal } from "./ActionModal";
 export default function MakeOfferModal({
-  children,
   showModal,
   handleCloseModal,
-  itemId,
   wallet,
-  tokenInfo,
+  onMakeOffer,
 }) {
-  const navigate = useNavigate();
   const [offerPrice, setOfferPrice] = useState(0);
+  const [wftmBalance, setWftmBalance] = useState(0);
+  const [expireDate, setExpireDate] = useState(0);
+  const [expireHour, setExpireHour] = useState(0);
+  const [actionError, setActionError] = useState(false);
+  const [payTokenSelected, setPayTokenSelected] = useState(null);
 
-  const makeOffer = async () => {
-    if (offerPrice > 0) {
-      navigate("/explore");
+  const { getWFTMBalance } = useWFTMContract();
+  const handleMakeOffer = async () => {
+    try {
+      var endTime = new Date(`${expireDate}T${expireHour}`);
+      const deadline = Math.floor(endTime.getTime() / 1000);
+
+      await onMakeOffer(offerPrice, deadline, payTokenSelected);
+    } catch (e) {
+      console.log(e);
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const today = new Date();
+      const date = today.setDate(today.getDate() + 1);
+      let valueDate = new Date(date);
+      setExpireDate(valueDate.toISOString().split("T")[0]);
+      setExpireHour("23:59");
+
+      if (wallet) {
+        const walletBalanceWFTM = await getWFTMBalance(wallet);
+        setWftmBalance(formatEther(walletBalanceWFTM));
+      }
+    };
+    fetchData();
+  }, [wallet]);
   return (
-    <BasicModal
+    <ActionModal
       title={"Realizar oferta"}
       size="large"
       showModal={showModal}
       handleCloseModal={handleCloseModal}
+      onSubmit={() => handleMakeOffer()}
+      submitLabel={"Realizar Oferta"}
+      completedText={`Oferta por ${offerPrice} wFTM creada correctamente`}
+      completedLabel={`Ver tu oferta`}
+      completedAction={handleCloseModal}
+      submitDisabled={
+        wftmBalance < offerPrice || actionError || offerPrice === 0
+      }
     >
       <div className="my-10 mx-8 flex flex-col gap-10">
         <div className="flex flex-col gap-4">
-          <div>What price you want to offer?</div>
-          <div className="flex">
-            <div className="flex w-[100px] bg-gray-300 justify-evenly items-center">
-              <img
-                width={32}
-                src="https://assets.trustwalletapp.com/blockchains/fantom/info/logo.png"
-                alt="Fantom coin"
-              />
-              FTM
-            </div>
-            <input
-              value={offerPrice}
-              onChange={(e) => setOfferPrice(e.target.value)}
-              className="flex-1 border p-2 text-end"
-              type="number"
-            />
-          </div>
-        </div>
-        <div className="w-full flex items-center justify-center">
-          <button
-            onClick={() => makeOffer()}
-            className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Make offer
-          </button>
+          <Erc20AmountInput
+            label={"Que precio quieres ofertar?"}
+            value={offerPrice}
+            onChange={setOfferPrice}
+            error={offerPrice > wftmBalance}
+            errorMessage={"No tienes suficientes WFTM"}
+            selectedToken={payTokenSelected}
+            setSelectedToken={setPayTokenSelected}
+          />
+          <DateTimeInput
+            label={"Fecha de Expiración"}
+            valueDate={expireDate}
+            valueHour={expireHour}
+            onChangeDate={setExpireDate}
+            onChange={setExpireHour}
+            errorType={{
+              type: "AFTER",
+              params: {
+                to: new Date(),
+              },
+            }}
+            setActionError={setActionError}
+          />
         </div>
       </div>
-    </BasicModal>
+    </ActionModal>
   );
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export default function useRespnsive() {
+export default function useResponsive() {
   const [_width, setWidth] = useState(0);
 
   useEffect(() => {

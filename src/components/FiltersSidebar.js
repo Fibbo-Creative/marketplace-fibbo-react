@@ -6,12 +6,16 @@ import FilterRange from "./FilterRange";
 
 export default function FiltersSidebar({
   allMarketItems,
+  openedSidebar,
   setAllMarketItems,
   visibleMarketItems,
   setOpenedSidebar,
   setVisibleMarketItems,
+  filtersSelected,
+  setFiltersSelected,
+  statusFilters,
+  payTokenFilters,
 }) {
-  const [showSidebar, setShowSidebar] = useState(false);
   const [min_state, setMinState] = useState(0);
   const [max_state, setMaxState] = useState(100);
 
@@ -28,37 +32,45 @@ export default function FiltersSidebar({
 
   const handleShowSidebar = (show) => {
     setOpenedSidebar(show);
-    setShowSidebar(show);
   };
 
   return (
-    <div className="hidden lg:flex">
-      {showSidebar ? (
+    <div className="hidden md:flex ">
+      {openedSidebar ? (
         <div
-          className={`flex flex-col top-20 left-0 w-[17vw] bg-white-600 p-7 pl-20 fixed h-full z-40 ease-in-out duration-300 border-r border-gray-300 ${
-            showSidebar ? "-translate-x-0 " : "-translate-x-full"
+          className={`flex dark:text-gray-400 flex-col  w-[17vw] bg-white-600  fixed h-full z-40 border-r border-gray-300 ${
+            openedSidebar ? "-translate-x-0 " : "-translate-x-full"
           }`}
         >
           <div
-            className="flex flex-row cursor-pointer gap-20"
-            onClick={() => handleShowSidebar(!showSidebar)}
+            className="flex flex-row px-4 py-5  justify-between items-center cursor-pointer"
+            onClick={() => handleShowSidebar(!openedSidebar)}
           >
-            <h3 className="text-3xl font-semibold text-black">Filtros</h3>
+            <div className="text-2xl font-semibold ">Filtros</div>
             <button>
               <Icon
                 icon="eva:menu-arrow-outline"
                 width="40"
                 height="40"
-                color="purple"
+                className="dark:text-gray-400 text-gray-400"
               />
             </button>
           </div>
-          <div className="flex flex-col left-0 font-medium w-full top-24 fixed gap-4">
+          <div className="flex flex-col font-medium w-full">
             <FilterBottomDropDown name="Estado">
-              <FilterButtons />
+              <FilterButtons
+                options={statusFilters}
+                filtersSelected={filtersSelected}
+              />
+            </FilterBottomDropDown>
+            <FilterBottomDropDown name="Token">
+              <FilterButtons
+                options={payTokenFilters}
+                filtersSelected={filtersSelected}
+              />
             </FilterBottomDropDown>
 
-            <FilterBottomDropDown name="Precio">
+            {/*  <FilterBottomDropDown name="Precio">
               <FilterRange
                 min_state={min_state}
                 max_state={max_state}
@@ -66,22 +78,24 @@ export default function FiltersSidebar({
                 setMinState={setMinState}
                 applyFilter={applyRangeFilter}
               />
-            </FilterBottomDropDown>
+            </FilterBottomDropDown> */}
           </div>
         </div>
       ) : (
-        <button
-          onClick={() => handleShowSidebar(!showSidebar)}
-          className="text-4xl text-black items-center cursor-pointer fixed left-10 top-24 z-50 hover:-translate-y-0.5"
-        >
-          <Icon
-            icon="eva:menu-arrow-outline"
-            hFlip={true}
-            width="40"
-            height="40"
-            color="purple"
-          />
-        </button>
+        <div className="flex dark:text-gray-400 flex-col px-4  bg-white-600  fixed h-full z-40 border-r border-gray-300">
+          <button
+            onClick={() => handleShowSidebar(!openedSidebar)}
+            className="text-4xl dark:text-gray-400 text-black py-5 cursor-pointer z-50 hover:-translate-y-0.5"
+          >
+            <Icon
+              icon="eva:menu-arrow-outline"
+              hFlip={true}
+              width="40"
+              height="40"
+              className="dark:text-gray-400 text-gray-400"
+            />
+          </button>
+        </div>
       )}
     </div>
   );

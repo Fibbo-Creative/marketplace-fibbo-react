@@ -1,20 +1,16 @@
-import React from "react";
-import { truncateWallet } from "../utils/wallet";
-import useRespnsive from "../hooks/useResponsive";
-import DropDown from "./DropDown";
-import { ADDRESS_ZERO } from "../constants/networks";
+import React, { useState } from "react";
+
 import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
+import { ADDRESS_ZERO } from "../../../constants/networks";
+import useResponsive from "../../../hooks/useResponsive";
+import { truncateWallet } from "../../../utils/wallet";
 
-export default function ItemHistory({ historyItems }) {
-  const { _width } = useRespnsive();
+export default function ProfileActivityTable({ historyItems }) {
+  const { _width } = useResponsive();
   const navigate = useNavigate();
   return (
-    <DropDown
-      className={`mb-5 dark:bg-dark-2`}
-      icon="bytesize:activity"
-      title="Actividad"
-    >
+    <>
       {_width > 1024 ? (
         <table className="w-full text-left table-auto ">
           <thead className="bg-gray-200 dark:bg-dark-3 p-2">
@@ -23,13 +19,16 @@ export default function ItemHistory({ historyItems }) {
                 Evento
               </th>
               <th cope="col" className="px-6 py-3">
+                Item
+              </th>
+              <th cope="col" className="px-6 py-3">
                 Precio
               </th>
               <th cope="col" className="px-6 py-3">
-                De
+                Iniciador
               </th>
               <th cope="col" className="px-6 py-3">
-                A
+                Recipiente
               </th>
               <th cope="col" className="px-6 py-3">
                 Fecha
@@ -41,6 +40,31 @@ export default function ItemHistory({ historyItems }) {
               return (
                 <tr key={Math.random(9999) * 1000}>
                   <td className="px-6 py-4">{item.eventType}</td>
+                  <td className="px-6 py-4">
+                    <div className="flex gap-2 items-center">
+                      <img
+                        className="rounded-full"
+                        width={32}
+                        src={item.item.image}
+                        alt={`from-${item._id}-img`}
+                      />
+                      <p
+                        className="text-primary-2 underline cursor-pointer"
+                        onClick={() =>
+                          isMobile
+                            ? navigate(
+                                `/explore/${item.item.collectionAddress}/${item.item.tokenId}`
+                              )
+                            : window.open(
+                                `/explore/${item.item.collectionAddress}/${item.item.tokenId}`,
+                                "_blank"
+                              )
+                        }
+                      >
+                        {item.item.name}
+                      </p>
+                    </div>
+                  </td>
                   <td className="px-6 py-4">
                     {item.price !== 0 ? (
                       <div className="flex items-center gap-3">
@@ -129,6 +153,36 @@ export default function ItemHistory({ historyItems }) {
                 </div>
                 <div className="flex justify-between">
                   <div>
+                    <b>Item</b>
+                  </div>
+                  <div>
+                    <div className="flex gap-2 items-center">
+                      <img
+                        className="rounded-full"
+                        width={32}
+                        src={item.item.image}
+                        alt={`from-${item._id}-img`}
+                      />
+                      <p
+                        className="text-primary-2 underline cursor-pointer"
+                        onClick={() =>
+                          isMobile
+                            ? navigate(
+                                `/explore/${item.item.collectionAddress}/${item.item.tokenId}`
+                              )
+                            : window.open(
+                                `/explore/${item.item.collectionAddress}/${item.item.tokenId}`,
+                                "_blank"
+                              )
+                        }
+                      >
+                        {item.item.name}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex justify-between">
+                  <div>
                     <b>Precio</b>
                   </div>
                   <div>
@@ -145,7 +199,7 @@ export default function ItemHistory({ historyItems }) {
                 </div>
                 <div className="flex justify-between">
                   <div>
-                    <b>De</b>
+                    <b>Iniciador</b>
                   </div>
                   <div>
                     {item.from === ADDRESS_ZERO ? (
@@ -175,7 +229,7 @@ export default function ItemHistory({ historyItems }) {
                 </div>
                 <div className="flex justify-between">
                   <div>
-                    <b>A</b>
+                    <b>Recipiente</b>
                   </div>
                   <div>
                     {item.to === ADDRESS_ZERO ? (
@@ -211,6 +265,6 @@ export default function ItemHistory({ historyItems }) {
           })}
         </div>
       )}
-    </DropDown>
+    </>
   );
 }

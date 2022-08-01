@@ -13,7 +13,6 @@ export default () => {
         : "https://rpc.testnet.fantom.network/",
       isMainnet ? 250 : 4002
     );
-
     const walletBalance = await provider.getBalance(wallet);
 
     return formatEther(walletBalance);

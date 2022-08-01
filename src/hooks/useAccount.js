@@ -36,7 +36,6 @@ export default function useAccount() {
     const userProfileRequest = await getProfileInfo(_wallet);
 
     const isVerifiedAddress = await checkWalletVerified(_wallet);
-
     if (userProfileRequest) {
       stateDispatch({
         type: actionTypes.SET_USER_PROFILE,

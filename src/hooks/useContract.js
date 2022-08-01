@@ -9,8 +9,10 @@ const isMainnet = false;
 export default () => {
   const getContract = useCallback(async (address, abi) => {
     if (window.ethereum) {
+      const prov = new ethers.providers.Web3Provider(window.ethereum);
+
       if (window.ethereum.isConnected()) {
-        await window.ethereum.enable();
+        await prov.send("eth_requestAccounts", []);
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
 

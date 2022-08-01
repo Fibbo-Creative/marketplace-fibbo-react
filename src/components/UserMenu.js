@@ -4,10 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { useStateContext } from "../context/StateProvider";
 import { ThemeContext } from "../context/ThemeContext";
 
-export const UserMenu = ({ setOpenMenu, disconnectWallet }) => {
+export const UserMenu = ({ setOpenStation, setOpenMenu, disconnectWallet }) => {
   const ref = useRef(null);
   const { theme, setTheme } = React.useContext(ThemeContext);
   const [{ userProfile }] = useStateContext();
+
   const navigate = useNavigate();
   const goToProfile = () => {
     setOpenMenu(false);
@@ -34,31 +35,39 @@ export const UserMenu = ({ setOpenMenu, disconnectWallet }) => {
   }, [ref]);
 
   return (
-    <div
-      ref={ref}
-      className="w-[175px] md:w-[225px] bg-gray-100 dark:bg-dark-2 absolute  z-20 flex flex-col  rounded-md"
-    >
-      <UserMenuItem
-        text="Perfil"
-        icon="healthicons:ui-user-profile"
-        onClick={() => goToProfile()}
-      />
-      <UserMenuItem
-        text="Configuración"
-        icon="ci:settings"
-        disabled
-        onClick={() => goToProfile()}
-      />
-      <UserMenuItem
-        text="Desconectar"
-        icon="ri:logout-box-line"
-        onClick={handleDisconnect}
-      />
-      <UserMenuItemToggle
-        text="Tema Oscuro"
-        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      />
-    </div>
+    <>
+      <div
+        ref={ref}
+        className="w-[175px] md:w-[225px] bg-gray-100 dark:bg-dark-2 absolute  z-20 flex flex-col  rounded-md"
+      >
+        <UserMenuItem
+          text="Perfil"
+          icon="healthicons:ui-user-profile"
+          onClick={() => goToProfile()}
+        />
+        <UserMenuItem
+          text="Configuración"
+          icon="ci:settings"
+          disabled
+          onClick={() => goToProfile()}
+        />
+        <UserMenuItem
+          text="Estación wFTM"
+          icon="carbon:gas-station-filled"
+          onClick={() => setOpenStation(true)}
+        />
+        <UserMenuItem
+          text="Desconectar"
+          icon="ri:logout-box-line"
+          onClick={handleDisconnect}
+        />
+
+        <UserMenuItemToggle
+          text="Tema Oscuro"
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+        />
+      </div>
+    </>
   );
 };
 

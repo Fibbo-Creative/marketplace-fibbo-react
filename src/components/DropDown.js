@@ -1,9 +1,9 @@
 import { Icon } from "@iconify/react";
 import React from "react";
 
-export default function DropDown({ title, children, icon, className }) {
+export default function DropDown({ title, opened, children, icon, className }) {
   return (
-    <details className={` p-3 border-2 flex  ${className}`}>
+    <details open={opened} className={` p-3 border-2 flex  ${className}`}>
       <summary className="flex cursor-pointer pb-2 border-b-2 border-t-none ">
         {icon ? (
           <div className="flex gap-3 items-center">

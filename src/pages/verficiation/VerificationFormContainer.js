@@ -40,7 +40,6 @@ export const VerificationFormContainer = () => {
   };
 
   const checkVerifyCode = (code) => {
-    console.log(code);
     setVerificationCode(code);
 
     if (sendedCode === parseInt(code)) {

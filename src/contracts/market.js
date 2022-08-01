@@ -1,13 +1,24 @@
+import { ethers } from "ethers";
+import { ChainId } from "@sushiswap/sdk";
 import useContract from "../hooks/useContract";
 import { MARKETPLACE_ABI } from "./abi";
 import { useAddressRegistry } from "./addressRegistry";
 import { useDefaultCollection } from "./collection";
+import { Contracts } from "../constants/networks";
+import { formatEther, parseEther } from "ethers/lib/utils";
+import { useTokens } from "./token";
+import useAccount from "../hooks/useAccount";
+
+const CHAIN = ChainId.FANTOM_TESTNET;
+const WFTM_ADDRESS = Contracts[CHAIN].wftmAddress;
 
 export const useMarketplace = () => {
+  const { getERC20Contract } = useTokens();
+  const { wallet } = useAccount();
   const { getMarketplaceAddress, getFibboCollectionAddress } =
     useAddressRegistry();
 
-  const { getDefaultCollectionContract } = useDefaultCollection();
+  const { setApproval, getDefaultCollectionContract } = useDefaultCollection();
   const { getContract } = useContract();
 
   const getContractAddress = async () => await getMarketplaceAddress();
@@ -17,29 +28,55 @@ export const useMarketplace = () => {
     return await getContract(address, MARKETPLACE_ABI);
   };
 
-  const listItem = async (collection, tokenId, price) => {
+  const listItem = async (collection, tokenId, price, payToken) => {
     const marketContract = await getMarketContract();
-    let collectionAddress = await getFibboCollectionAddress();
+    let defaultCollection = await getDefaultCollectionContract();
+
+    const isApproved = await defaultCollection.isApprovedForAll(
+      wallet,
+      marketContract.address
+    );
+
+    if (!isApproved) {
+      await setApproval();
+    }
+
     let listItemTx = await marketContract.listItem(
-      collectionAddress,
+      collection,
       tokenId,
-      price
+      payToken.contractAddress,
+      parseEther(price.toString()),
+      0
     );
 
     await listItemTx.wait();
   };
 
-  const buyItem = async (collection, tokenId, buyer, price) => {
+  const buyItem = async (
+    buyer,
+    collection,
+    tokenId,
+    owner,
+    price,
+    payToken
+  ) => {
     const marketContract = await getMarketContract();
+    const tokenAddress = payToken.contractAddress;
+    const erc20 = await getERC20Contract(tokenAddress);
+    price = parseEther(price.toString());
+    const allowance = await erc20.allowance(buyer, marketContract.address);
+
+    if (allowance.lt(price)) {
+      const tx = await erc20.approve(marketContract.address, price);
+      await tx.wait();
+    }
     const defaultCollection = await getDefaultCollectionContract();
 
     let buyItemTx = await marketContract.buyItem(
-      defaultCollection.address,
+      collection,
       tokenId,
-      buyer,
-      {
-        value: price,
-      }
+      tokenAddress,
+      owner
     );
 
     await buyItemTx.wait();
@@ -64,32 +101,107 @@ export const useMarketplace = () => {
     await cancelListingTx.wait();
   };
 
-  const updateListing = async (collection, tokenId, price) => {
+  const updateListing = async (collection, tokenId, price, payToken) => {
     const marketContract = await getMarketContract();
-    const collectionAddress = await getFibboCollectionAddress();
 
     let updateListingTx = await marketContract.updateListing(
-      collectionAddress,
+      collection,
       tokenId,
-      price
+      payToken.contractAddress,
+      parseEther(price.toString())
     );
 
     await updateListingTx.wait();
   };
 
-  const getListingInfo = async (tokenId, owner) => {
+  const getListingInfo = async (collection, tokenId, owner) => {
     const marketContract = await getMarketContract();
-    const collectionContract = await getFibboCollectionAddress();
 
     const listingInfo = await marketContract.listings(
-      collectionContract,
+      collection,
       tokenId,
       owner
     );
 
-    return listingInfo;
+    const formatted = {
+      payToken: listingInfo[0],
+      price: formatEther(listingInfo[1]),
+    };
+
+    return formatted;
   };
 
+  const makeOffer = async (
+    buyer,
+    collection,
+    tokenId,
+    offerPrice,
+    deadline,
+    payToken
+  ) => {
+    const marketContract = await getMarketContract();
+    const tokenAddress = payToken.contractAddress;
+    const erc20 = await getERC20Contract(tokenAddress);
+
+    const allowance = await erc20.allowance(buyer, marketContract.address);
+    if (allowance.lt(offerPrice)) {
+      const tx = await erc20.approve(marketContract.address, offerPrice);
+      await tx.wait();
+    }
+
+    let makeOfferTx = await marketContract.createOffer(
+      collection,
+      ethers.BigNumber.from(tokenId),
+      tokenAddress,
+      parseEther(offerPrice.toString()),
+      ethers.BigNumber.from(deadline)
+    );
+
+    await makeOfferTx.wait();
+  };
+
+  const acceptOffer = async (collection, tokenId, creator) => {
+    const marketContract = await getMarketContract();
+    const defaultCollection = await getDefaultCollectionContract();
+
+    const isApproved = await defaultCollection.isApprovedForAll(
+      wallet,
+      marketContract.address
+    );
+
+    if (!isApproved) {
+      await setApproval();
+    }
+
+    let acceptOfferTx = await marketContract.acceptOffer(
+      collection,
+      tokenId,
+      creator
+    );
+
+    await acceptOfferTx.wait();
+  };
+
+  const cancelOffer = async (collection, tokenId) => {
+    const marketContract = await getMarketContract();
+
+    let cancelOfferTx = await marketContract.cancelOffer(collection, tokenId);
+
+    await cancelOfferTx.wait();
+  };
+
+  const getOffer = async (collection, tokenId, wallet) => {
+    const marketContract = await getMarketContract();
+
+    let offer = await marketContract.offers(collection, tokenId, wallet);
+
+    return {
+      payToken: offer.payToken,
+      price: formatEther(offer.price),
+      deadline: offer.deadline,
+      creator: wallet,
+    };
+  };
   return {
     getContractAddress,
     getMarketContract,
@@ -98,5 +210,9 @@ export const useMarketplace = () => {
     cancelListing,
     updateListing,
     getListingInfo,
+    makeOffer,
+    cancelOffer,
+    acceptOffer,
+    getOffer,
   };
 };

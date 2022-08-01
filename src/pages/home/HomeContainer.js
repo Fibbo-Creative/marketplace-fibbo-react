@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FiboIMG from "../../assets/logoHome.png";
 import ActionButton from "../../components/ActionButton";
-import MobileDetect from "mobile-detect";
 import { useStateContext } from "../../context/StateProvider";
 import { PageWithLoading } from "../../components/basic/PageWithLoading";
 import Lottie from "react-lottie-player";
@@ -12,8 +11,6 @@ import useRespnsive from "../../hooks/useResponsive";
 
 export default function HomeContainer() {
   const [{ verifiedAddress }] = useStateContext();
-  let type = new MobileDetect(window.navigator.userAgent);
-  const [phone, setPhone] = useState(type.phone());
   const navigate = useNavigate();
   const { _width } = useRespnsive();
 

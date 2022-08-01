@@ -1,0 +1,73 @@
+import { Dialog } from "@headlessui/react";
+import { Icon } from "@iconify/react";
+import React from "react";
+import FilterBottomDropDown from "../FilterBottomDropDown";
+import FilterButtons from "../FilterButtons";
+
+export const FiltersSidebarModal = ({
+  openSidebar,
+  setOpenSidebar,
+  statusFilters,
+  filtersSelected,
+  payTokenFilters,
+}) => {
+  return (
+    <Dialog
+      open={openSidebar}
+      onClose={() => setOpenSidebar(false)}
+      aria-modal="true"
+    >
+      <div
+        className="fixed inset-0 bg-white bg-opacity-50"
+        id="headlessui-dialog-overlay-97"
+      >
+        <Dialog.Panel>
+          <div className="mt-[79px] dark:bg-dark-3 dark:text-white ml-auto relative max-w-lg w-full h-screen shadow-xl py-4 pb-12 flex flex-col gap-3 overflow-y-auto bg-white text-black">
+            <div className="px-4 flex items-center justify-between">
+              <h2 className="text-sm uppercase font-600 tracking-wide">
+                Filters
+              </h2>
+              <button
+                type="button"
+                className="-mr-2 w-10 rounded-md flex items-center justify-center opacity-50"
+                tabIndex="0"
+                onClick={(e) => setOpenSidebar(false)}
+              >
+                <span className="sr-only">Close menu</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                  className="h-6 w-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+            <div className=" pb-28 px-4 lg:px-0 pt-2 scrollbar-hide lg:max-h-[calc(100vh-11.5rem)] ">
+              <FilterBottomDropDown name="Estado">
+                <FilterButtons
+                  options={statusFilters}
+                  filtersSelected={filtersSelected}
+                />
+              </FilterBottomDropDown>
+              <FilterBottomDropDown name="Token">
+                <FilterButtons
+                  options={payTokenFilters}
+                  filtersSelected={filtersSelected}
+                />
+              </FilterBottomDropDown>
+            </div>
+          </div>
+        </Dialog.Panel>
+      </div>
+    </Dialog>
+  );
+};

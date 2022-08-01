@@ -2,8 +2,10 @@ import axios from "axios";
 
 const herokuURL = "https://fibbo-market-api.herokuapp.com/";
 const localURL = "http://localhost:9000/";
+const localDevURL = "http://192.168.1.48.sslip.io:9000";
+const herokuDevURL = "https://market-api-dev.herokuapp.com/";
 
-const marketplaceApi = axios.create({ baseURL: herokuURL });
+const marketplaceApi = axios.create({ baseURL: localDevURL });
 const isMainnet = false;
 
 export const useApi = () => {
@@ -14,6 +16,16 @@ export const useApi = () => {
   //#region Profile
   const getProfileInfo = async (address) => {
     const res = await marketplaceApi.get(`users/profile?wallet=${address}`);
+    return res.data;
+  };
+
+  const getWalletHistory = async (address) => {
+    const res = await marketplaceApi.get(`users/history?address=${address}`);
+    return res.data;
+  };
+
+  const getWalletOffers = async (address) => {
+    const res = await marketplaceApi.get(`users/offers?address=${address}`);
     return res.data;
   };
 
@@ -47,7 +59,7 @@ export const useApi = () => {
       }
     );
 
-    return imgAddedToSanity;
+    return imgAddedToSanity.data;
   };
 
   const setProfileImg = async (address, file) => {
@@ -64,12 +76,30 @@ export const useApi = () => {
         },
       }
     );
-    return imgAddedToSanity;
+    return imgAddedToSanity.data;
+  };
+
+  //#endregion
+
+  //#region PayTokens
+  const getAllPayTokens = async () => {
+    const res = await marketplaceApi.get("api/payTokens");
+    return res.data;
+  };
+
+  const getPayTokenInfo = async (address) => {
+    const res = await marketplaceApi.get(`api/payToken?address=${address}`);
+    return res.data;
   };
 
   //#endregion
 
   //#region Nfts
+
+  const getAllTokens = async () => {
+    const res = await marketplaceApi.get("nfts/allNfts");
+    return res.data;
+  };
 
   const getNftsForSale = async () => {
     const res = await marketplaceApi.get("nfts/nftsForSale");
@@ -97,6 +127,13 @@ export const useApi = () => {
     return res.data;
   };
 
+  const getNftsFromCreator = async (address) => {
+    const res = await marketplaceApi.get(
+      `nfts/nftsByCreator?address=${address}`
+    );
+    return res.data;
+  };
+
   const saveMintedItem = async (
     name,
     description,
@@ -119,46 +156,16 @@ export const useApi = () => {
     });
   };
 
-  const saveListedItem = async (tokenId, owner, price, collection) => {
-    await marketplaceApi.post("nfts/putForSale", {
-      tokenId: tokenId,
-      owner: owner,
-      price: price,
-      collectionAddress: collection,
-    });
-  };
+  //#endregion
 
-  const saveNftBought = async (
-    prevOwner,
-    newOwner,
-    boughtFor,
-    tokenId,
-    collection
-  ) => {
-    await marketplaceApi.post("nfts/nftBought", {
-      prevOwner: prevOwner,
-      newOwner: newOwner,
-      boughtFor: boughtFor,
-      tokenId: tokenId,
-      collectionAddress: collection,
-    });
-  };
+  //#region Offers
+  const getItemOffers = async (collection, tokenId) => {
+    const offers = await marketplaceApi.get(
+      `/offers/get?collection=${collection}&tokenId=${tokenId}`
+    );
+    const offersResult = offers.data;
 
-  const savePriceChanged = async (tokenId, owner, newPrice, collection) => {
-    await marketplaceApi.post("nfts/changePrice", {
-      tokenId: parseInt(tokenId),
-      owner: owner,
-      newPrice: newPrice,
-      collectionAddress: collection,
-    });
-  };
-
-  const saveUnlistedItem = async (tokenId, owner, collection) => {
-    await marketplaceApi.post("nfts/unlistItem", {
-      owner: owner,
-      tokenId: tokenId,
-      collectionAddress: collection,
-    });
+    return offersResult;
   };
 
   //#endregion
@@ -238,19 +245,22 @@ export const useApi = () => {
     setProfileImg,
     setUsername,
     getNftsForSale,
+    getAllTokens,
     getNftInfo,
+    getItemOffers,
     getCollectionInfo,
     getNftsFromAddress,
     getNftHistory,
-    saveNftBought,
-    savePriceChanged,
-    saveUnlistedItem,
-    saveListedItem,
     saveMintedItem,
     searchItemsAndProfiles,
     uploadImgToCDN,
     createNewSuggestion,
     getVerificatedArtists,
     newVerifyRequest,
+    getNftsFromCreator,
+    getWalletHistory,
+    getWalletOffers,
+    getAllPayTokens,
+    getPayTokenInfo,
   };
 };

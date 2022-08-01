@@ -12,6 +12,7 @@ import { TextArea } from "../../components/inputs/TextArea";
 import { NumberInput } from "../../components/inputs/NumberInput";
 import { PageWithLoading } from "../../components/basic/PageWithLoading";
 import { NotVerified } from "../../components/basic/NotVerified";
+import { Icon } from "@iconify/react";
 
 const validateName = (name) => {
   if (name.length > 4 && name.length < 30) return true;
@@ -278,6 +279,27 @@ export default function CreateContainer() {
                         onChange={(e) => setHiddenContent(e.target.value)}
                       />
                     )}
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-3 pt-5">
+                  <div className="flex flex-row gap-2">
+                    <label className="">
+                      <input type="checkbox" className="" value="" />
+
+                      <span className="font-bold text-lg text-gray-700 dark:text-gray-400 border-gray-300 p-3 flex-row ">
+                        Contenido Explícito o Sensible
+                      </span>
+                    </label>
+                    <abbr
+                      className="cursor-pointer "
+                      title="Si el contenido és explícito o sensible, como pornografía o contenido 'not safe for work' (NSFW), protegerá a los usuarios de FIBBO que realicen búsquedas seguras y no les mostrará el contenido."
+                    >
+                      <Icon
+                        className="w-auto h-auto flex m-0"
+                        icon="akar-icons:info"
+                      />{" "}
+                    </abbr>
                   </div>
                 </div>
               </div>

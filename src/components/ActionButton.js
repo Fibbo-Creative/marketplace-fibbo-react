@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const styles = {
   basicStyle:
@@ -12,8 +12,10 @@ const styles = {
     "border text-white  text-sm uppercase rounded shadow-md  leading-tight hover:bg-white hover:text-primary-4 hover:border hover:border-primary-4 transition duration-150 ease-in-out",
   gradient: "",
   contentDisabled: "",
+  smallerContent:
+    "w-[73px] h-[33px] text-xs py-2 px-3 flex items-center justify-center ",
   smallContent:
-    "w-[148px] h-[33px] py-2 px-3 flex items-center justify-center ",
+    "w-[148px] h-[33px] py-2 px-2 flex items-center justify-center ",
   largeContent:
     "w-[223px]  h-[38px] py-2.5 px-4  flex items-center justify-center",
 };
@@ -47,16 +49,24 @@ export default function ActionButton({
   size,
 }) {
   const [loading, setLoading] = useState(false);
+  const [actionDone, setActionDone] = useState(false);
 
   const executeAction = async (e) => {
     try {
       setLoading(true);
       await buttonAction(e);
       setLoading(false);
+      setActionDone(true);
     } catch (e) {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      setLoading(false);
+    };
+  }, [actionDone]);
   return (
     <button
       onClick={(e) => executeAction(e)}
