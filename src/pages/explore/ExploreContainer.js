@@ -43,11 +43,10 @@ export default function ExploreContainer() {
       //setVisibleMarketItems(firstItems.slice(0, 12));
 
       setLoading(false);
-      setLoadingInfo(false);
 
       const forSaleItems = await getAllTokens();
       setAllMarketItems(forSaleItems);
-
+      setLoadingInfo(false);
       setVisibleMarketItems(forSaleItems.slice(0, 12));
     };
     fetchData();
