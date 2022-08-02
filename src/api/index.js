@@ -15,7 +15,11 @@ export const useApi = () => {
   //#region Profile
   const getProfileInfo = async (address) => {
     const res = await marketplaceApi.get(`users/profile?wallet=${address}`);
-    return res.data;
+    if (res.status === 205) {
+      return null;
+    } else {
+      return res.data;
+    }
   };
 
   const getWalletHistory = async (address) => {

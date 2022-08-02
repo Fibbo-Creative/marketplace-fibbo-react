@@ -187,9 +187,9 @@ export default function WrappedFTMModal({
                   >
                     <span>$0.00</span>
                   </div>
-                  <div className="text-gray-400 flex w-full justify-end">
-                    Balance {parseFloat(WftmBalance).toFixed(4)}
-                  </div>
+                </div>
+                <div className="text-gray-400 flex w-full justify-end">
+                  Balance {parseFloat(WftmBalance).toFixed(4)}
                 </div>
                 {ftmAmount > WftmBalance && (
                   <div className="text-red-600 text-sm">
@@ -208,9 +208,6 @@ export default function WrappedFTMModal({
               <div>
                 <div>FTM</div>
                 <div className="flex">
-                  <div className="text-gray-400 flex w-full justify-end">
-                    Balance {parseFloat(ftmBalance).toFixed(4)}
-                  </div>
                   <input
                     value={ftmAmount}
                     onChange={(e) => handleInputChange(e.target.value)}
@@ -220,6 +217,9 @@ export default function WrappedFTMModal({
                   <div className="border w-24 dark:bg-dark-4 text-gray-400 flex items-center justify-center">
                     <span>$0.00</span>
                   </div>
+                </div>
+                <div className="text-gray-400 flex w-full justify-end">
+                  Balance {parseFloat(ftmBalance).toFixed(4)}
                 </div>
               </div>
             </div>
