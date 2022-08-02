@@ -155,6 +155,7 @@ export default function MakeBidModal({
             }`}
             selectedToken={payTokenSelected}
             setSelectedToken={setPayTokenSelected}
+            showBalance={true}
           />
         </div>
       </div>

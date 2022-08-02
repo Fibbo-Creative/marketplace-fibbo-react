@@ -131,15 +131,15 @@ export const ItemDirectOffers = ({
                   </tr>
                 );
               })}
-              <RemoveOfferModal
-                showModal={showRemoveOffer}
-                handleCloseModal={() => setShowRemoveOffer(false)}
-                offer={detailOffer}
-                wallet={wallet}
-                onCancelOffer={onCancelOffer}
-              />
             </tbody>
           </table>
+          <RemoveOfferModal
+            showModal={showRemoveOffer}
+            handleCloseModal={() => setShowRemoveOffer(false)}
+            offer={detailOffer}
+            wallet={wallet}
+            onCancelOffer={onCancelOffer}
+          />
           {isOwner && (
             <AcceptOfferModal
               showModal={showAcceptOffer}

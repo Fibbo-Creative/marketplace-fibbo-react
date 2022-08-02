@@ -3,6 +3,9 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useApi } from "../../api/index";
 import { Icon } from "@iconify/react";
+import { useWFTMContract } from "../../contracts/wftm";
+import useAccount from "../../hooks/useAccount";
+import { formatEther, parseEther } from "ethers/lib/utils";
 export const Erc20AmountInput = ({
   label,
   value,
@@ -11,12 +14,16 @@ export const Erc20AmountInput = ({
   errorMessage,
   selectedToken,
   selectDisabled,
-  setSelectedToken,
+  setSelectedToken = true,
+  showBalance,
 }) => {
   const { getAllPayTokens } = useApi();
+  const { getWFTMBalance } = useWFTMContract();
+  const { wallet } = useAccount();
   const [coinPrice, setCoinPrice] = useState(0);
   const [payTokens, setPayTokens] = useState([]);
   const [openSelect, setOpenSelect] = useState(false);
+  const [tokenBalance, setTokenBalance] = useState("0.000");
   const formatPrice = (value) => {
     let price = value * coinPrice;
     if (!value) {
@@ -25,8 +32,12 @@ export const Erc20AmountInput = ({
     return "$" + price.toFixed(2).toString();
   };
 
-  const handleSelectPayToken = (token) => {
+  const handleSelectPayToken = async (token) => {
     setSelectedToken(token);
+    if (token.name === "WFTM") {
+      const wftBalance = await getWFTMBalance(wallet);
+      setTokenBalance(formatEther(wftBalance.toString()));
+    }
     setOpenSelect(false);
   };
 
@@ -53,6 +64,10 @@ export const Erc20AmountInput = ({
       let _payTokens = await getAllPayTokens();
       setPayTokens(_payTokens);
       setSelectedToken(_payTokens[0]);
+      if (_payTokens[0].name === "WFTM") {
+        const wftBalance = await getWFTMBalance(wallet);
+        setTokenBalance(formatEther(wftBalance.toString()));
+      }
       const CoinGeckoClient = new CoinGecko();
       let data = await CoinGeckoClient.simple.price({ ids: ["fantom"] });
       setCoinPrice(data.data.fantom.usd);
@@ -133,7 +148,11 @@ export const Erc20AmountInput = ({
           <span>{formatPrice(value)}</span>
         </div>
       </div>
-
+      {showBalance && (
+        <div className="flex w-full justify-end text-gray-400">
+          Balance {tokenBalance}
+        </div>
+      )}
       {error && <div className="text-red-600 text-sm">{errorMessage}</div>}
     </div>
   );

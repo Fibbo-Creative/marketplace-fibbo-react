@@ -52,7 +52,7 @@ export default function NewFeatureModal({
           <div className="w-full flex justify-center">
             <ActionButton
               buttonAction={() => addNewSuggestion()}
-              text="Añadir Suggerencia"
+              text="Añadir Sugerencia"
               size="large"
             />
           </div>

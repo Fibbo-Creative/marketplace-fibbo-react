@@ -7,7 +7,7 @@ import { useWFTMContract } from "../../contracts/wftm";
 import { ethers } from "ethers";
 import { useNavigate } from "react-router-dom";
 import useProvider from "../../hooks/useProvider";
-import { formatEther, parseEther, _fetchData } from "ethers/lib/utils";
+import { formatEther } from "ethers/lib/utils";
 import CoinGecko from "coingecko-api";
 
 export default function WrappedFTMModal({
@@ -128,6 +128,9 @@ export default function WrappedFTMModal({
                     <span>{formatPrice()}</span>
                   </div>
                 </div>
+                <div className="text-gray-400 flex w-full justify-end">
+                  Balance {parseFloat(ftmBalance).toFixed(4)}
+                </div>
                 {ftmAmount > ftmBalance && (
                   <div className="text-red-600 text-sm">
                     No tienes suficientes FTM para convertir
@@ -159,6 +162,9 @@ export default function WrappedFTMModal({
                     <span>$0.00</span>
                   </div>
                 </div>
+                <div className="text-gray-400 flex w-full justify-end">
+                  Balance {parseFloat(WftmBalance).toFixed(4)}
+                </div>
               </div>
             </div>
           ) : (
@@ -181,6 +187,9 @@ export default function WrappedFTMModal({
                   >
                     <span>$0.00</span>
                   </div>
+                  <div className="text-gray-400 flex w-full justify-end">
+                    Balance {parseFloat(WftmBalance).toFixed(4)}
+                  </div>
                 </div>
                 {ftmAmount > WftmBalance && (
                   <div className="text-red-600 text-sm">
@@ -199,6 +208,9 @@ export default function WrappedFTMModal({
               <div>
                 <div>FTM</div>
                 <div className="flex">
+                  <div className="text-gray-400 flex w-full justify-end">
+                    Balance {parseFloat(ftmBalance).toFixed(4)}
+                  </div>
                   <input
                     value={ftmAmount}
                     onChange={(e) => handleInputChange(e.target.value)}

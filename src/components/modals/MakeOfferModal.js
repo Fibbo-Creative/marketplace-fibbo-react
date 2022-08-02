@@ -72,6 +72,7 @@ export default function MakeOfferModal({
             errorMessage={"No tienes suficientes WFTM"}
             selectedToken={payTokenSelected}
             setSelectedToken={setPayTokenSelected}
+            showBalance={true}
           />
           <DateTimeInput
             label={"Fecha de Expiración"}
