@@ -34,7 +34,6 @@ export default function useAccount() {
       await changeChainCorrect();
     }
     const userProfileRequest = await getProfileInfo(_wallet);
-
     const isVerifiedAddress = await checkWalletVerified(_wallet);
     if (userProfileRequest) {
       stateDispatch({

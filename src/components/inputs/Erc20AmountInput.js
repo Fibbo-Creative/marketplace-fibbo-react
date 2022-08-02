@@ -150,7 +150,7 @@ export const Erc20AmountInput = ({
       </div>
       {showBalance && (
         <div className="flex w-full justify-end text-gray-400">
-          Balance {tokenBalance}
+          Balance {parseFloat(tokenBalance).toFixed(4)}
         </div>
       )}
       {error && <div className="text-red-600 text-sm">{errorMessage}</div>}

@@ -38,9 +38,9 @@ export default function ExploreContainer() {
       const _payTokens = await getAllPayTokens();
       setAllErc20Tokens(_payTokens);
 
-      const firstItems = await getAllTokens(20);
-      setAllMarketItems(firstItems);
-      setVisibleMarketItems(firstItems.slice(0, 12));
+      //const firstItems = await getAllTokens(20);
+      //setAllMarketItems(firstItems);
+      //setVisibleMarketItems(firstItems.slice(0, 12));
 
       setLoading(false);
       setLoadingInfo(false);

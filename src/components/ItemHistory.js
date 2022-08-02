@@ -40,7 +40,7 @@ export default function ItemHistory({ historyItems }) {
             {historyItems?.map((item) => {
               return (
                 <tr key={Math.random(9999) * 1000}>
-                  <td className="px-6 py-4">{item.eventType}</td>
+                  <td className="px-6 py-4">{item.eventDesc}</td>
                   <td className="px-6 py-4">
                     {item.price !== 0 ? (
                       <div className="flex items-center gap-3">
@@ -125,7 +125,7 @@ export default function ItemHistory({ historyItems }) {
                   <div>
                     <b>Evento</b>
                   </div>
-                  <div>{item.eventType}</div>
+                  <div>{item.eventDesc}</div>
                 </div>
                 <div className="flex justify-between">
                   <div>

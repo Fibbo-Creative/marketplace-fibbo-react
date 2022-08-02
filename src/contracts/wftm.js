@@ -5,6 +5,8 @@ import { calculateGasMargin, getHigherGWEI } from "../utils/gas";
 import useContract from "../hooks/useContract";
 import { ethers } from "ethers";
 import { useMarketplace } from "./market";
+import { useApi } from "../api";
+import { useAuction } from "./auction";
 
 const WFTM_ADDRESS = {
   [ChainId.FANTOM]: "0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83",
@@ -22,7 +24,9 @@ const isMainnet = false;
 const CHAIN = isMainnet ? ChainId.FANTOM : ChainId.FANTOM_TESTNET;
 export const useWFTMContract = () => {
   const { getContract } = useContract();
+  const { setImportWFTM } = useApi();
   const { getContractAddress } = useMarketplace();
+  const { getAuctionContract } = useAuction();
 
   const wftmAddress = WFTM_ADDRESS[CHAIN];
 
@@ -33,8 +37,8 @@ export const useWFTMContract = () => {
     return await contract.balanceOf(address);
   };
 
-  const importWFTM = async () => {
-    const asset = await window.ethereum.request({
+  const importWFTM = async (wallet) => {
+    const success = await window.ethereum.request({
       method: "wallet_watchAsset",
       params: {
         type: "ERC20", // Initially only supports ERC20, but eventually more!
@@ -46,14 +50,17 @@ export const useWFTMContract = () => {
         },
       },
     });
-    console.log(asset);
+    if (success) await setImportWFTM(wallet);
   };
 
-  const wrapFTM = async (value, from) => {
-    await importWFTM();
+  const wrapFTM = async (isImported, wallet, value, from) => {
+    if (!isImported) await importWFTM(wallet);
     const contract = await getWFTMContract();
 
     const marketAddress = await getContractAddress();
+
+    const auctionContract = await getAuctionContract();
+
     const options = {
       value,
       from,
@@ -68,6 +75,12 @@ export const useWFTMContract = () => {
 
     const approveTx = await contract.approve(marketAddress, value);
     await approveTx.wait();
+
+    const approveAuctionTx = await contract.approve(
+      auctionContract.address,
+      value
+    );
+    await approveAuctionTx.wait();
   };
 
   const unwrapFTM = async (value) => {

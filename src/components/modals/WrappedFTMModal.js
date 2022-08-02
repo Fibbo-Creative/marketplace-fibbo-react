@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import useProvider from "../../hooks/useProvider";
 import { formatEther } from "ethers/lib/utils";
 import CoinGecko from "coingecko-api";
+import { useStateContext } from "../../context/StateProvider";
 
 export default function WrappedFTMModal({
   children,
@@ -17,6 +18,7 @@ export default function WrappedFTMModal({
   wallet,
 }) {
   const { getWFTMBalance, wrapFTM, unwrapFTM } = useWFTMContract();
+  const [{ userProfile }] = useStateContext();
   const navigate = useNavigate();
   const [ftmAmount, setFtmAmount] = useState(0);
   const [completedAction, setCompletedAction] = useState(false);
@@ -44,15 +46,18 @@ export default function WrappedFTMModal({
     return "$" + price.toFixed(3).toString();
   };
 
-  const formatBalance = () => {
-    return parseFloat(ftmBalance).toFixed(3);
+  const closeModal = () => {
+    setCompletedAction(false);
+    setFtmAmount(0);
+    handleCloseModal();
   };
 
   const handleWrapFTM = async () => {
     try {
+      const isImported = userProfile.importedWFTM;
       const price = ethers.utils.parseEther(ftmAmount.toString());
       if (fromFTM) {
-        await wrapFTM(price, wallet);
+        await wrapFTM(isImported, wallet, price, wallet);
         setCompletedAction(true);
       }
     } catch (e) {
@@ -250,8 +255,8 @@ export default function WrappedFTMModal({
             <ActionButton
               size="large"
               variant={"contained"}
-              text="Ir al mercado"
-              buttonAction={handleGoToMarket}
+              text="Cerrar Estación"
+              buttonAction={closeModal}
             />
           </div>
         </div>

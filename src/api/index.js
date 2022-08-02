@@ -4,7 +4,7 @@ const localURL = "http://localhost:9000/";
 const localDevURL = "http://192.168.1.48.sslip.io:9000";
 const herokuDevURL = "https://market-api-dev.herokuapp.com/";
 
-const marketplaceApi = axios.create({ baseURL: herokuDevURL });
+const marketplaceApi = axios.create({ baseURL: localURL });
 const isMainnet = false;
 
 export const useApi = () => {
@@ -43,6 +43,13 @@ export const useApi = () => {
     const res = await marketplaceApi.post("users/setUsername", {
       wallet: address,
       username: newUsername,
+    });
+    return res.data;
+  };
+
+  const setImportWFTM = async (address) => {
+    const res = await marketplaceApi.post("users/setImportWFTM", {
+      wallet: address,
     });
     return res.data;
   };
@@ -266,5 +273,6 @@ export const useApi = () => {
     getWalletOffers,
     getAllPayTokens,
     getPayTokenInfo,
+    setImportWFTM,
   };
 };

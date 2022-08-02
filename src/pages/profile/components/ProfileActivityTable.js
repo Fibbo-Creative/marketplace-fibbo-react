@@ -39,7 +39,7 @@ export default function ProfileActivityTable({ historyItems }) {
             {historyItems?.map((item) => {
               return (
                 <tr key={Math.random(9999) * 1000}>
-                  <td className="px-6 py-4">{item.eventType}</td>
+                  <td className="px-6 py-4">{item.eventDesc}</td>
                   <td className="px-6 py-4">
                     <div className="flex gap-2 items-center">
                       <img
@@ -149,7 +149,7 @@ export default function ProfileActivityTable({ historyItems }) {
                   <div>
                     <b>Evento</b>
                   </div>
-                  <div>{item.eventType}</div>
+                  <div>{item.eventDesc}</div>
                 </div>
                 <div className="flex justify-between">
                   <div>
