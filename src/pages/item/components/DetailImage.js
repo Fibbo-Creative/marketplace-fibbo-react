@@ -8,19 +8,38 @@ export default function DetailImage({ tokenImage, tokenName, loading }) {
   const [qrcode, setQrcode] = useState('')
   
   
+
   
   const GenerateQRCode = () => {
+    
+    
     
     const url = 'https://fibbo-market.web.app' + window.location.pathname
     
     QRCode.toDataURL( url, (err, url) => {
       if (err) return console.error(err) 
-
-      if (imgOrQR === tokenImage)
+      
+      var qrIcon = document.getElementById("qrIcon")
+      
+      if (imgOrQR === tokenImage) {
+        var qrFlag = document.getElementById('boton_descargar');
+        var nftIcon = document.getElementById('nftIcon');
         setImgOrQr(url)
-      else 
-        setImgOrQr(tokenImage)
+        qrFlag.style.display = "block";
+        nftIcon.style.display = "block";
+        qrIcon.style.display = "none";
 
+      }
+
+      else {
+        var qrFlag = document.getElementById('boton_descargar');
+        var nftIcon = document.getElementById('nftIcon');
+        setImgOrQr(tokenImage)
+        qrFlag.style.display = "none";
+        nftIcon.style.display = "none";
+        qrIcon.style.display = "block";
+      }
+        
     })
 
   }
@@ -38,8 +57,13 @@ export default function DetailImage({ tokenImage, tokenName, loading }) {
           />
           
         )}
-        
-        <Icon className="flex w-[30px] h-[30px] cursor-pointer b-0" onClick={GenerateQRCode} icon="ion:qr-code" /> 
+        <div className="flex flex-row gap-6">
+        <Icon id="qrIcon" className="flex w-[25px] h-[25px] cursor-pointer b-0 hover:w-[30px] hover:h-[30px]" onClick={GenerateQRCode} icon="ion:qr-code" /> 
+        <Icon id="nftIcon" className="flex w-[25px] h-[25px] cursor-pointer b-0 hover:w-[30px] hover:h-[30px] hidden" onClick={GenerateQRCode} icon="bi:file-image" />
+        <div id="boton_descargar" className="hidden" >
+          <Icon className="flex w-[25px] h-[25px] cursor-pointer b-0 hover:w-[30px] hover:h-[30px]" icon="charm:download"/>
+        </div>
+        </div>
     
 
       </div>
