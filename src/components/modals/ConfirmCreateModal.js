@@ -68,7 +68,7 @@ export const ConfirmCreateModal = ({
       {!completedAction ? (
         <div className="flex flex-col gap-10  items-center">
           <div className="flex flex-col md:flex-row md:justify-between gap-4 mt-10">
-            <div className="w-[225px] lg:w-[300px]">
+            <div className="w-[225px] lg:w-[300px] object-contain">
               <img
                 src={itemData.image}
                 alt={`item-${itemData.name}`}

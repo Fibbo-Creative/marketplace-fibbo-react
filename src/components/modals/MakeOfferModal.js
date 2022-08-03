@@ -5,6 +5,7 @@ import { useWFTMContract } from "../../contracts/wftm";
 import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
 import { DateTimeInput } from "../inputs/DateTimeInput";
 import { ActionModal } from "./ActionModal";
+import { useStateContext } from "../../context/StateProvider";
 export default function MakeOfferModal({
   showModal,
   handleCloseModal,
@@ -17,6 +18,7 @@ export default function MakeOfferModal({
   const [expireHour, setExpireHour] = useState(0);
   const [actionError, setActionError] = useState(false);
   const [payTokenSelected, setPayTokenSelected] = useState(null);
+  const [{ updatedWFTM }] = useStateContext();
 
   const { getWFTMBalance } = useWFTMContract();
   const handleMakeOffer = async () => {
@@ -45,6 +47,16 @@ export default function MakeOfferModal({
     };
     fetchData();
   }, [wallet]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (wallet) {
+        const walletBalanceWFTM = await getWFTMBalance(wallet);
+        setWftmBalance(formatEther(walletBalanceWFTM));
+      }
+    };
+    fetchData();
+  }, [updatedWFTM]);
   return (
     <ActionModal
       title={"Realizar oferta"}

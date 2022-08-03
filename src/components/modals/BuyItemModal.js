@@ -4,6 +4,7 @@ import { formatEther } from "ethers/lib/utils";
 import ReactTooltip from "react-tooltip";
 import { useWFTMContract } from "../../contracts/wftm";
 import { ActionModal } from "./ActionModal";
+import { useStateContext } from "../../context/StateProvider";
 
 export default function BuyItemModal({
   children,
@@ -15,6 +16,7 @@ export default function BuyItemModal({
   wallet,
 }) {
   const [wftmBalance, setWftmBalance] = useState(0);
+  const [{ updatedWFTM }] = useStateContext();
   const { getWFTMBalance } = useWFTMContract();
 
   const handleBuyItem = async () => {
@@ -33,7 +35,7 @@ export default function BuyItemModal({
       }
     };
     fetchData();
-  });
+  }, [updatedWFTM]);
   return (
     <ActionModal
       title="Comprar NFT"

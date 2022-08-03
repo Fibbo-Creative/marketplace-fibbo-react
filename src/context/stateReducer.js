@@ -4,6 +4,7 @@ export const initialState = {
   verifiedAddress: false,
   balance: 0,
   correctChain: true,
+  updatedWFTM: false,
 };
 
 export const actionTypes = {
@@ -11,6 +12,7 @@ export const actionTypes = {
   SET_PROFILE_BANNER: "SET_PROFILE_BANNER",
   SET_PROFILE_IMAGE: "SET_PROFILE_IMAGE",
   SET_USERNAME: "SET_USERNAME",
+  UPDATED_WFTM: "UPDATED_WFTM",
 };
 
 const stateReducer = (state, action) => {
@@ -45,6 +47,11 @@ const stateReducer = (state, action) => {
           ...state.userProfile,
           username: action.username,
         },
+      };
+    case actionTypes.UPDATED_WFTM:
+      return {
+        ...state,
+        updatedWFTM: !state.updatedWFTM,
       };
 
     default:

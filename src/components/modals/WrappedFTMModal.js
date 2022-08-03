@@ -10,6 +10,7 @@ import useProvider from "../../hooks/useProvider";
 import { formatEther } from "ethers/lib/utils";
 import CoinGecko from "coingecko-api";
 import { useStateContext } from "../../context/StateProvider";
+import { actionTypes } from "../../context/stateReducer";
 
 export default function WrappedFTMModal({
   children,
@@ -18,7 +19,7 @@ export default function WrappedFTMModal({
   wallet,
 }) {
   const { getWFTMBalance, wrapFTM, unwrapFTM } = useWFTMContract();
-  const [{ userProfile }] = useStateContext();
+  const [{ userProfile, updatedWFTM }, dispatch] = useStateContext();
   const navigate = useNavigate();
   const [ftmAmount, setFtmAmount] = useState(0);
   const [completedAction, setCompletedAction] = useState(false);
@@ -58,6 +59,9 @@ export default function WrappedFTMModal({
       const price = ethers.utils.parseEther(ftmAmount.toString());
       if (fromFTM) {
         await wrapFTM(isImported, wallet, price, wallet);
+        dispatch({
+          type: actionTypes.UPDATED_WFTM,
+        });
         setCompletedAction(true);
       }
     } catch (e) {
@@ -71,6 +75,9 @@ export default function WrappedFTMModal({
       if (!fromFTM) {
         const tx = await unwrapFTM(price);
         await tx.wait();
+        dispatch({
+          type: actionTypes.UPDATED_WFTM,
+        });
         setCompletedAction(true);
       }
     } catch (e) {

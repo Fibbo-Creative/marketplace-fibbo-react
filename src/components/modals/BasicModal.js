@@ -22,7 +22,11 @@ export const BasicModal = ({
           &#8203;
         </span>
 
-        <div className="dark:bg-dark-3 dark:text-white inline-block w-full max-w-xl p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl dark:shadow-dark-1 shadow-gray-400  rounded-2xl">
+        <div
+          className={`dark:bg-dark-3 dark:text-white inline-block w-full ${
+            size === "large" ? "max-w-2xl" : "max-w-xl"
+          } p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl dark:shadow-dark-1 shadow-gray-400  rounded-2xl`}
+        >
           <Dialog.Panel>
             <Dialog.Title
               as="h3"

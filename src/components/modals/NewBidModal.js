@@ -6,6 +6,7 @@ import { useWFTMContract } from "../../contracts/wftm";
 import { isMobile } from "react-device-detect";
 import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
 import { ActionModal } from "./ActionModal";
+import { useStateContext } from "../../context/StateProvider";
 
 export default function MakeBidModal({
   collection,
@@ -22,6 +23,7 @@ export default function MakeBidModal({
   const [bidAmmount, setBidAmmount] = useState(0);
   const [wftmBalance, setWftmBalance] = useState(0);
   const [payTokenSelected, setPayTokenSelected] = useState(null);
+  const [{ updatedWFTM }] = useStateContext();
 
   const { getWFTMBalance } = useWFTMContract();
 
@@ -54,6 +56,16 @@ export default function MakeBidModal({
     };
     fetchData();
   }, [wallet]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (wallet) {
+        const walletBalanceWFTM = await getWFTMBalance(wallet);
+        setWftmBalance(formatEther(walletBalanceWFTM));
+      }
+    };
+    fetchData();
+  }, [updatedWFTM]);
   return (
     <ActionModal
       title={"Realizar puja"}
