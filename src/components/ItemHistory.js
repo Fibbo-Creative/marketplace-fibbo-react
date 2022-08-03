@@ -183,21 +183,21 @@ export default function ItemHistory({ historyItems }) {
                           <img
                             className="rounded-full"
                             width={32}
-                            src={item.from.profileImg}
-                            alt={`from-${item.from._id}-img`}
+                            src={item.from?.profileImg}
+                            alt={`from-${item.from?._id}-img`}
                           />
                           <p
                             className="text-primary-2 underline cursor-pointer"
                             onClick={() =>
                               isMobile
-                                ? navigate(`/profile/${item.from.wallet}`)
+                                ? navigate(`/profile/${item.from?.wallet}`)
                                 : window.open(
-                                    `/profile/${item.from.wallet}`,
+                                    `/profile/${item.from?.wallet}`,
                                     "_blank"
                                   )
                             }
                           >
-                            {item.from.username}
+                            {item.from?.username}
                           </p>
                         </div>
                       )}
@@ -210,21 +210,21 @@ export default function ItemHistory({ historyItems }) {
                           <img
                             className="rounded-full"
                             width={32}
-                            src={item.to.profileImg}
-                            alt={`from-${item.to._id}-img`}
+                            src={item.to?.profileImg}
+                            alt={`from-${item.to?._id}-img`}
                           />
                           <p
                             className="text-primary-2 underline cursor-pointer"
                             onClick={() =>
                               isMobile
-                                ? navigate(`/profile/${item.from.wallet}`)
+                                ? navigate(`/profile/${item.from?.wallet}`)
                                 : window.open(
-                                    `/profile/${item.to.wallet}`,
+                                    `/profile/${item.to?.wallet}`,
                                     "_blank"
                                   )
                             }
                           >
-                            {item.to.username}
+                            {item.to?.username}
                           </p>
                         </div>
                       )}
@@ -285,19 +285,19 @@ export default function ItemHistory({ historyItems }) {
                           <img
                             className="rounded-full"
                             width={32}
-                            src={item.from.profileImg}
-                            alt={`from-${item.from._id}-img`}
+                            src={item.from?.profileImg}
+                            alt={`from-${item.from?._id}-img`}
                           />
                           <p
                             className="text-primary-2 underline cursor-pointer"
                             onClick={() =>
                               window.open(
-                                `/profile/${item.from.wallet}`,
+                                `/profile/${item.from?.wallet}`,
                                 "_blank"
                               )
                             }
                           >
-                            {item.from.username}
+                            {item.from?.username}
                           </p>
                         </div>
                       )}
@@ -315,19 +315,19 @@ export default function ItemHistory({ historyItems }) {
                           <img
                             className="rounded-full"
                             width={32}
-                            src={item.to.profileImg}
-                            alt={`from-${item.to._id}-img`}
+                            src={item.to?.profileImg}
+                            alt={`from-${item.to?._id}-img`}
                           />
                           <p
                             className="text-primary-2 underline cursor-pointer"
                             onClick={() =>
                               window.open(
-                                `/profile/${item.to.wallet}`,
+                                `/profile/${item.to?.wallet}`,
                                 "_blank"
                               )
                             }
                           >
-                            {item.to.username}
+                            {item.to?.username}
                           </p>
                         </div>
                       )}

@@ -43,7 +43,7 @@ export default function ExploreContainer() {
 
       const forSaleItems = await getAllTokens();
       setAllMarketItems(forSaleItems);
-
+      console.log(forSaleItems.length);
       setVisibleMarketItems(forSaleItems.slice(0, 12));
     };
     fetchData();
@@ -108,22 +108,314 @@ export default function ExploreContainer() {
     return 0;
   };
   const orderByLowestP = (a, b) => {
-    if (a.price < b.price) {
-      return -1;
+    if (a.offer || b.offer) {
+      if (a.offer && !b.offer) {
+        if (b.auction) {
+          if (b.auction.topBid) {
+            if (a.offer.price < b.auction.topBid) {
+              return -1;
+            }
+            if (a.offer.price > b.auction.topBid) {
+              return 1;
+            }
+            return 0;
+          } else {
+            if (a.offer.price < b.auction.bid) {
+              return -1;
+            }
+            if (a.offer.price > b.auction.bid) {
+              return 1;
+            }
+            return 0;
+          }
+        } else {
+          if (a.offer.price < b.price) {
+            return -1;
+          }
+          if (a.offer.price > b.price) {
+            return 1;
+          }
+          return 0;
+        }
+      }
+      if (!a.offer && b.offer) {
+        if (a.auction) {
+          if (a.auction.topBid) {
+            if (a.auction.topBid < b.offer.price) {
+              return -1;
+            }
+            if (a.auction.topBid > b.offer.price) {
+              return 1;
+            }
+            return 0;
+          } else {
+            if (a.auction.bid < b.offer.price) {
+              return -1;
+            }
+            if (a.auction.bid > b.offer.price) {
+              return 1;
+            }
+            return 0;
+          }
+        } else {
+          if (a.price < b.offer.price) {
+            return -1;
+          }
+          if (a.price > b.offer.price) {
+            return 1;
+          }
+          return 0;
+        }
+      }
+      if (a.offer && b.offer) {
+        if (a.offer.price < b.offer.price) {
+          return -1;
+        }
+        if (a.offer.price > b.offer.price) {
+          return 1;
+        }
+        return 0;
+      }
+    } else if (a.auction || b.auction) {
+      if (a.auction && !b.auction) {
+        if (a.auction.topBid) {
+          if (a.auction.topBid < b.price) {
+            return -1;
+          }
+          if (a.auction.topBid > b.price) {
+            return 1;
+          }
+          return 0;
+        } else {
+          if (a.auction.bid < b.price) {
+            return -1;
+          }
+          if (a.auction.bid > b.price) {
+            return 1;
+          }
+          return 0;
+        }
+      }
+      if (!a.auction && b.auction) {
+        if (b.auction.topBid) {
+          if (a.price < b.auction.topBid) {
+            return -1;
+          }
+          if (a.price > b.auction.topBid) {
+            return 1;
+          }
+          return 0;
+        } else {
+          if (a.price < b.auction.bid) {
+            return -1;
+          }
+          if (a.price > b.auction.bid) {
+            return 1;
+          }
+          return 0;
+        }
+      }
+      if (a.auction && b.auction) {
+        if (a.auction.topBid && !b.auction.topBid) {
+          if (a.auction.topBid < b.auction.bid) {
+            return -1;
+          }
+          if (a.auction.topBid > b.auction.bid) {
+            return 1;
+          }
+          return 0;
+        }
+        if (!a.auction.topBid && b.auction.topBid) {
+          if (a.auction.bid < b.auction.topBid) {
+            return -1;
+          }
+          if (a.auction.bid > b.auction.topBid) {
+            return 1;
+          }
+          return 0;
+        }
+        if (!a.auction.topBid && !b.auction.topBid) {
+          if (a.auction.bid < b.auction.bid) {
+            return -1;
+          }
+          if (a.auction.bid > b.auction.bid) {
+            return 1;
+          }
+          return 0;
+        }
+        if (a.auction.topBid && a.auction.topBid) {
+          if (a.auction.topBid < b.auction.topBid) {
+            return -1;
+          }
+          if (a.auction.topBid > b.auction.topBid) {
+            return 1;
+          }
+          return 0;
+        }
+      }
+    } else {
+      if (a.price < b.price) {
+        return -1;
+      }
+      if (a.price > b.price) {
+        return 1;
+      }
+      return 0;
     }
-    if (a.price > b.price) {
-      return 1;
-    }
-    return 0;
   };
   const orderByHighestP = (a, b) => {
-    if (a.price > b.price) {
-      return -1;
+    if (a.offer || b.offer) {
+      if (a.offer && !b.offer) {
+        if (b.auction) {
+          if (b.auction.topBid) {
+            if (a.offer.price > b.auction.topBid) {
+              return -1;
+            }
+            if (a.offer.price < b.auction.topBid) {
+              return 1;
+            }
+            return 0;
+          } else {
+            if (a.offer.price > b.auction.bid) {
+              return -1;
+            }
+            if (a.offer.price < b.auction.bid) {
+              return 1;
+            }
+            return 0;
+          }
+        } else {
+          if (a.offer.price > b.price) {
+            return -1;
+          }
+          if (a.offer.price < b.price) {
+            return 1;
+          }
+          return 0;
+        }
+      }
+      if (!a.offer && b.offer) {
+        if (a.auction) {
+          if (a.auction.topBid) {
+            if (a.auction.topBid > b.offer.price) {
+              return -1;
+            }
+            if (a.auction.topBid < b.offer.price) {
+              return 1;
+            }
+          } else {
+            if (a.auction.bid > b.offer.price) {
+              return -1;
+            }
+            if (a.auction.bid < b.offer.price) {
+              return 1;
+            }
+          }
+        } else {
+          if (a.price > b.offer.price) {
+            return -1;
+          }
+          if (a.price < b.offer.price) {
+            return 1;
+          }
+          return 0;
+        }
+      }
+      if (a.offer && b.offer) {
+        if (a.offer.price > b.offer.price) {
+          return -1;
+        }
+        if (a.offer.price < b.offer.price) {
+          return 1;
+        }
+        return 0;
+      }
+    } else if (a.auction || b.auction) {
+      if (a.auction && !b.auction) {
+        if (a.auction.topBid) {
+          if (a.auction.topBid > b.price) {
+            return -1;
+          }
+          if (a.auction.topBid < b.price) {
+            return 1;
+          }
+          return 0;
+        } else {
+          if (a.auction.bid > b.price) {
+            return -1;
+          }
+          if (a.auction.bid < b.price) {
+            return 1;
+          }
+          return 0;
+        }
+      }
+      if (!a.auction && b.auction) {
+        if (b.auction.topBid) {
+          if (a.price > b.auction.topBid) {
+            return -1;
+          }
+          if (a.price < b.auction.topBid) {
+            return 1;
+          }
+          return 0;
+        } else {
+          if (a.price > b.auction.bid) {
+            return -1;
+          }
+          if (a.price < b.auction.bid) {
+            return 1;
+          }
+          return 0;
+        }
+      }
+      if (a.auction && b.auction) {
+        if (a.auction.topBid && !b.auction.topBid) {
+          if (a.auction.topBid > b.auction.bid) {
+            return -1;
+          }
+          if (a.auction.topBid < b.auction.bid) {
+            return 1;
+          }
+          return 0;
+        }
+        if (!a.auction.topBid && b.auction.topBid) {
+          if (a.auction.bid > b.auction.topBid) {
+            return -1;
+          }
+          if (a.auction.bid < b.auction.topBid) {
+            return 1;
+          }
+          return 0;
+        }
+        if (!a.auction.topBid && !b.auction.topBid) {
+          if (a.auction.bid > b.auction.bid) {
+            return -1;
+          }
+          if (a.auction.bid < b.auction.bid) {
+            return 1;
+          }
+          return 0;
+        }
+        if (a.auction.topBid && a.auction.topBid) {
+          if (a.auction.topBid > b.auction.topBid) {
+            return -1;
+          }
+          if (a.auction.topBid < b.auction.topBid) {
+            return 1;
+          }
+          return 0;
+        }
+      }
+    } else {
+      if (a.price > b.price) {
+        return -1;
+      }
+      if (a.price < b.price) {
+        return 1;
+      }
+      return 0;
     }
-    if (a.price < b.price) {
-      return 1;
-    }
-    return 0;
   };
 
   const orderByNearestEnd = (a, b) => {
@@ -204,28 +496,59 @@ export default function ExploreContainer() {
     }
     if (value === "6") {
       //highest price
+      let toOrderAll = [];
       const forSaleAll = allMarketItems.filter(
         (item) => item.price !== undefined
       );
-      const leftItemsAll = allMarketItems.filter((item) => {
+      const offeredAll = allMarketItems.filter(
+        (item) => item.offer !== undefined
+      );
+      const auctionAll = allMarketItems.filter(
+        (item) => item.auction !== undefined
+      );
+
+      toOrderAll = [...forSaleAll, ...offeredAll, ...auctionAll];
+
+      let leftItemsAll = allMarketItems.filter((item) => {
         return !forSaleAll.find((forSaleItem) => forSaleItem === item);
       });
+      leftItemsAll = leftItemsAll.filter((item) => {
+        return !offeredAll.find((offered) => offered === item);
+      });
+      leftItemsAll = leftItemsAll.filter((item) => {
+        return !auctionAll.find((auctioned) => auctioned === item);
+      });
 
+      let toOrder = [];
       const forSale = visibleMarketItems.filter(
         (item) => item.price !== undefined
       );
-      const leftItems = visibleMarketItems.filter((item) => {
+      const offered = visibleMarketItems.filter(
+        (item) => item.offer !== undefined
+      );
+      const auctioned = visibleMarketItems.filter(
+        (item) => item.auction !== undefined
+      );
+
+      toOrder = [...forSale, ...offered, ...auctioned];
+      let leftItems = visibleMarketItems.filter((item) => {
         return !forSale.find((forSaleItem) => forSaleItem === item);
       });
+      leftItems = leftItemsAll.filter((item) => {
+        return !offered.find((offered) => offered === item);
+      });
+      leftItems = leftItemsAll.filter((item) => {
+        return !auctioned.find((auctioned) => auctioned === item);
+      });
 
-      const sortedArrayAll = forSaleAll.sort(orderByHighestP);
-      const sortedArray = forSale.sort(orderByHighestP);
+      console.log(toOrder);
+      const sortedArrayAll = toOrderAll.sort(orderByHighestP);
+      const sortedArray = toOrder.sort(orderByHighestP);
 
+      console.log(sortedArrayAll);
       let finalArrayAll = sortedArrayAll.concat(leftItemsAll);
-      let finalArray = sortedArray.concat(leftItems);
-
       setAllMarketItems(finalArrayAll);
-      setVisibleMarketItems(finalArray.slice(0, visibleItemsCount));
+      setVisibleMarketItems(finalArrayAll.slice(0, visibleItemsCount));
     }
     if (value === "7") {
       //Lowest price

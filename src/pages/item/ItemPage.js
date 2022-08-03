@@ -143,7 +143,14 @@ export default function ItemPage() {
 
     tokenInfo.current = nftData;
     tokenHistoryInfo.current = history;
-    offers.current = _offers;
+
+    offers.current = _offers.sort((a, b) => {
+      if (a.price > b.price) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
 
     setIsOwner(nftData.owner === wallet);
 
@@ -280,6 +287,13 @@ export default function ItemPage() {
       payToken: payTokenInfo,
     };
     offers.current.push(_offer);
+    offers.current = offers.current.sort((a, b) => {
+      if (a.price > b.price) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
     hasAnOffer();
   };
 
@@ -798,15 +812,17 @@ export default function ItemPage() {
                           }
                           text="Actualizar"
                         />
-                        <ActionButton
-                          size="small"
-                          buttonAction={() =>
-                            !wallet
-                              ? setOpenConnectionModal(true)
-                              : setOpenCancelAuctionModal(true)
-                          }
-                          text="Cancelar"
-                        />
+                        {!highestBid && (
+                          <ActionButton
+                            size="small"
+                            buttonAction={() =>
+                              !wallet
+                                ? setOpenConnectionModal(true)
+                                : setOpenCancelAuctionModal(true)
+                            }
+                            text="Cancelar"
+                          />
+                        )}
                       </>
                     )}
 
