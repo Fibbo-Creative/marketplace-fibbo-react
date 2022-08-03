@@ -43,6 +43,7 @@ export default function ExploreContainer() {
 
       const forSaleItems = await getAllTokens();
       setAllMarketItems(forSaleItems);
+      console.log(forSaleItems);
       console.log(forSaleItems.length);
       setVisibleMarketItems(forSaleItems.slice(0, 12));
     };
@@ -90,22 +91,82 @@ export default function ExploreContainer() {
     return 0;
   };
   const orderByRecentlyListed = (a, b) => {
-    if (a.forSaleAt > b.forSaleAt) {
-      return -1;
+    if (a.auction || b.auction) {
+      if (a.auction && !b.auction) {
+        if (a.auction.createdAt > b.forSaleAt) {
+          return -1;
+        }
+        if (a.auction.createdAt < b.forSaleAt) {
+          return 1;
+        }
+        return 0;
+      }
+      if (!a.auction && b.auction) {
+        if (a.forSaleAt > b.auction.createdAt) {
+          return -1;
+        }
+        if (a.forSaleAt < b.auction.createdAt) {
+          return 1;
+        }
+        return 0;
+      }
+      if (a.auction && b.auction) {
+        if (a.auction.createdAt > b.auction.createdAt) {
+          return -1;
+        }
+        if (a.auction.createdAt < b.auction.createdAt) {
+          return 1;
+        }
+        return 0;
+      }
+    } else {
+      if (a.forSaleAt > b.forSaleAt) {
+        return -1;
+      }
+      if (a.forSaleAt < b.forSaleAt) {
+        return 1;
+      }
+      return 0;
     }
-    if (a.forSaleAt < b.forSaleAt) {
-      return 1;
-    }
-    return 0;
   };
   const orderByOldestListed = (a, b) => {
-    if (a.forSaleAt < b.forSaleAt) {
-      return -1;
+    if (a.auction || b.auction) {
+      if (a.auction && !b.auction) {
+        if (a.auction.createdAt < b.forSaleAt) {
+          return -1;
+        }
+        if (a.auction.createdAt > b.forSaleAt) {
+          return 1;
+        }
+        return 0;
+      }
+      if (!a.auction && b.auction) {
+        if (a.forSaleAt < b.auction.createdAt) {
+          return -1;
+        }
+        if (a.forSaleAt > b.auction.createdAt) {
+          return 1;
+        }
+        return 0;
+      }
+      if (a.auction && b.auction) {
+        if (a.auction.createdAt < b.auction.createdAt) {
+          return -1;
+        }
+        if (a.auction.createdAt > b.auction.createdAt) {
+          return 1;
+        }
+        return 0;
+      }
+    } else {
+      if (a.forSaleAt < b.forSaleAt) {
+        return -1;
+      }
+      if (a.forSaleAt > b.forSaleAt) {
+        return 1;
+      }
+      return 0;
     }
-    if (a.forSaleAt > b.forSaleAt) {
-      return 1;
-    }
-    return 0;
   };
   const orderByLowestP = (a, b) => {
     if (a.offer || b.offer) {
@@ -445,23 +506,40 @@ export default function ExploreContainer() {
       setVisibleMarketItems(visibledsortedArray.slice(0, visibleItemsCount));
     }
     if (value === "4") {
-      //highest price
+      let toSortAll = [];
       const forSaleAll = allMarketItems.filter(
         (item) => item.price !== undefined
       );
-      const leftItemsAll = allMarketItems.filter((item) => {
+      const auctionAll = allMarketItems.filter(
+        (item) => item.auction !== undefined
+      );
+      let leftItemsAll = allMarketItems.filter((item) => {
         return !forSaleAll.find((forSaleItem) => forSaleItem === item);
       });
+      leftItemsAll = leftItemsAll.filter((item) => {
+        return !auctionAll.find((auctioned) => auctioned === item);
+      });
 
+      toSortAll = [...forSaleAll, ...auctionAll];
+
+      let toSort = [];
       const forSale = visibleMarketItems.filter(
         (item) => item.price !== undefined
       );
-      const leftItems = visibleMarketItems.filter((item) => {
+      const auctioned = visibleMarketItems.filter(
+        (item) => item.auction !== undefined
+      );
+
+      toSort = [...forSale, ...auctioned];
+      let leftItems = visibleMarketItems.filter((item) => {
         return !forSale.find((forSaleItem) => forSaleItem === item);
       });
+      leftItems = leftItems.filter((item) => {
+        return !auctioned.find((auctioned) => auctioned === item);
+      });
 
-      const sortedArrayAll = forSaleAll.sort(orderByRecentlyListed);
-      const sortedArray = forSale.sort(orderByRecentlyListed);
+      const sortedArrayAll = toSortAll.sort(orderByRecentlyListed);
+      const sortedArray = toSort.sort(orderByRecentlyListed);
 
       let finalArrayAll = sortedArrayAll.concat(leftItemsAll);
       let finalArray = sortedArray.concat(leftItems);
@@ -471,22 +549,40 @@ export default function ExploreContainer() {
     }
     if (value === "5") {
       //Lowest price
+      let toSortAll = [];
       const forSaleAll = allMarketItems.filter(
         (item) => item.price !== undefined
       );
-      const leftItemsAll = allMarketItems.filter((item) => {
+      const auctionAll = allMarketItems.filter(
+        (item) => item.auction !== undefined
+      );
+      let leftItemsAll = allMarketItems.filter((item) => {
         return !forSaleAll.find((forSaleItem) => forSaleItem === item);
       });
+      leftItemsAll = leftItemsAll.filter((item) => {
+        return !auctionAll.find((auctioned) => auctioned === item);
+      });
 
+      toSortAll = [...forSaleAll, ...auctionAll];
+
+      let toSort = [];
       const forSale = visibleMarketItems.filter(
         (item) => item.price !== undefined
       );
-      const leftItems = visibleMarketItems.filter((item) => {
+      const auctioned = visibleMarketItems.filter(
+        (item) => item.auction !== undefined
+      );
+
+      toSort = [...forSale, ...auctioned];
+      let leftItems = visibleMarketItems.filter((item) => {
         return !forSale.find((forSaleItem) => forSaleItem === item);
       });
+      leftItems = leftItems.filter((item) => {
+        return !auctioned.find((auctioned) => auctioned === item);
+      });
 
-      const sortedArrayAll = forSaleAll.sort(orderByOldestListed);
-      const sortedArray = forSale.sort(orderByOldestListed);
+      const sortedArrayAll = toSortAll.sort(orderByOldestListed);
+      const sortedArray = toSort.sort(orderByOldestListed);
 
       let finalArrayAll = sortedArrayAll.concat(leftItemsAll);
       let finalArray = sortedArray.concat(leftItems);
@@ -545,10 +641,11 @@ export default function ExploreContainer() {
       const sortedArrayAll = toOrderAll.sort(orderByHighestP);
       const sortedArray = toOrder.sort(orderByHighestP);
 
-      console.log(sortedArrayAll);
       let finalArrayAll = sortedArrayAll.concat(leftItemsAll);
+      let finalArray = sortedArray.concat(leftItems);
+
       setAllMarketItems(finalArrayAll);
-      setVisibleMarketItems(finalArrayAll.slice(0, visibleItemsCount));
+      setVisibleMarketItems(finalArray.slice(0, visibleItemsCount));
     }
     if (value === "7") {
       //Lowest price
