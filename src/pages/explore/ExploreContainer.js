@@ -25,7 +25,7 @@ export default function ExploreContainer() {
   const [userSmallview, setSmallViewUser] = useState(false);
   const [openedSidebar, setOpenedSidebar] = useState(true);
   const [filtersSelected, setFiltersSelected] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [loadingInfo, setLoadingInfo] = useState(false);
 
   const [allErc20Tokens, setAllErc20Tokens] = useState([]);
@@ -43,9 +43,9 @@ export default function ExploreContainer() {
 
       const forSaleItems = await getAllTokens();
       setAllMarketItems(forSaleItems);
-      console.log(forSaleItems);
-      console.log(forSaleItems.length);
+
       setVisibleMarketItems(forSaleItems.slice(0, 12));
+      setLoading(false);
     };
     fetchData();
     setLoadingInfo(false);
@@ -841,7 +841,7 @@ export default function ExploreContainer() {
   }, [filtersSelected]);
 
   return (
-    <PageWithLoading loading={false}>
+    <PageWithLoading loading={loading}>
       <>
         {allMarketItems.length > 0 && (
           <>
