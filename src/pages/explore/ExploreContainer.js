@@ -32,7 +32,6 @@ export default function ExploreContainer() {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
       setLoadingInfo(true);
       setOpenedSidebar(_width < 900 ? false : true);
       const _payTokens = await getAllPayTokens();
@@ -42,14 +41,13 @@ export default function ExploreContainer() {
       //setAllMarketItems(firstItems);
       //setVisibleMarketItems(firstItems.slice(0, 12));
 
-      setLoading(false);
-
       const forSaleItems = await getAllTokens();
       setAllMarketItems(forSaleItems);
-      setLoadingInfo(false);
+
       setVisibleMarketItems(forSaleItems.slice(0, 12));
     };
     fetchData();
+    setLoadingInfo(false);
   }, []);
 
   const addMoreItems = () => {
@@ -423,7 +421,7 @@ export default function ExploreContainer() {
   }, [filtersSelected]);
 
   return (
-    <PageWithLoading loading={loading}>
+    <PageWithLoading loading={false}>
       <>
         {allMarketItems.length > 0 && (
           <>

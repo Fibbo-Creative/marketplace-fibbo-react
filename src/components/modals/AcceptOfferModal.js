@@ -21,7 +21,7 @@ export default function AcceptOfferModal({
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       onSubmit={() => handleAcceptOffer()}
-      submitLabel={"Acceptar Oferta"}
+      submitLabel={"Aceptar Oferta"}
       completedText={`Oferta acceptada por ${offer.price} wFTM correctamente`}
       completedLabel={`Ver item actualizado`}
       completedAction={handleCloseModal}
