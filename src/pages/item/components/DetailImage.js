@@ -46,7 +46,7 @@ export default function DetailImage({ tokenImage, tokenName, loading }) {
 
   return (
     <div className="col-span-1 flex items-center justify-center dark:bg-dark-2 ">
-      <div className="w-[450px] h-[450px] border-gray border-2 p-2 rounded-md flex flex-col gap-8 items-center ">
+      <div className="w-[450px] h-[450px] border-gray border-2 p-2 rounded-md flex flex-col gap-6 items-center ">
         {loading ? (
           <div className="w-full h-full animate-pulse bg-gray-400"></div>
         ) : (
