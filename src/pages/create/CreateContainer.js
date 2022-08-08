@@ -20,7 +20,7 @@ const validateName = (name) => {
 };
 
 const validateDesc = (desc) => {
-  if (desc.length > 25 && desc.length < 300) return true;
+  if (desc.length > 25 && desc.length < 500) return true;
   else return false;
 };
 export default function CreateContainer() {
@@ -235,11 +235,11 @@ export default function CreateContainer() {
                 <TextArea
                   label="Descripción"
                   required
-                  info={"De 50 a 300 carácteres"}
+                  info={"De 50 a 500 carácteres"}
                   error={descError}
                   value={desc}
                   errorMessage={
-                    "La descripción debe tener entre 50 y 300 carácteres"
+                    "La descripción debe tener entre 50 y 500 carácteres"
                   }
                   onChange={(e) => handleChangeDescription(e.target.value)}
                 />

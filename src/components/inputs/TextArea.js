@@ -17,7 +17,7 @@ export const TextArea = ({
       </div>
       <div className="text-sm">{info}</div>
       <textarea
-        className={`block dark:bg-dark-1 w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding 
+        className={` block dark:bg-dark-1 w-full px-3 py-1.5 text-md font-normal text-gray-700 bg-white bg-clip-padding 
             border border-solid border-black rounded transition ease-in-out m-0
             focus:text-gray-700 focus:bg-white  dark:border-primary-2  dark:text-gray-200 focus:border-blue-600 focus:outline-none ${
               error && "border-red-400 dark:border-red-400"
