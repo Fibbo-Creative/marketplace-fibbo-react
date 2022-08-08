@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import useRespnsive from "../hooks/useResponsive";
-import { truncateWallet } from "../utils/wallet";
 import ActionButton from "./ActionButton";
 import DropDown from "./DropDown";
 import { isMobile } from "react-device-detect";

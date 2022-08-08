@@ -12,11 +12,22 @@ import { PageWithLoading } from "../../components/basic/PageWithLoading";
 import useResponsive from "../../hooks/useResponsive";
 import { FiltersSidebarModal } from "../../components/modals/FiltersSidebarModal";
 import fibboLogo from "../../assets/logoNavbarSmall.png";
+import {
+  orderByHighestP,
+  orderByLowestP,
+  orderByNearestEnd,
+  orderByOldest,
+  orderByOldestListed,
+  orderByRecently,
+  orderByRecentlyListed,
+  sortMarketItems,
+} from "../../utils/sort";
 
 export default function ExploreContainer() {
   const navigate = useNavigate();
   const { getNftsForSale, getAllTokens, getAllPayTokens } = useApi();
   const { wallet } = useAccount();
+  const [marketItems, setMarketItems] = useState([]);
   const [allMarketItems, setAllMarketItems] = useState([]);
   const [visibleMarketItems, setVisibleMarketItems] = useState([]);
   const [filteredMarketItems, setFilteredMarketItems] = useState([]);
@@ -25,6 +36,7 @@ export default function ExploreContainer() {
   const [userSmallview, setSmallViewUser] = useState(false);
   const [openedSidebar, setOpenedSidebar] = useState(true);
   const [filtersSelected, setFiltersSelected] = useState([]);
+  const [sortSelected, setSortSelected] = useState(0);
   const [loading, setLoading] = useState(true);
   const [loadingInfo, setLoadingInfo] = useState(false);
 
@@ -43,6 +55,7 @@ export default function ExploreContainer() {
 
       const forSaleItems = await getAllTokens();
       setAllMarketItems(forSaleItems);
+      setMarketItems(forSaleItems);
 
       setVisibleMarketItems(forSaleItems.slice(0, 12));
       setLoading(false);
@@ -71,425 +84,8 @@ export default function ExploreContainer() {
     setSmallViewUser(false);
   };
 
-  const orderByRecently = (a, b) => {
-    if (a.createdAt > b.createdAt) {
-      return -1;
-    }
-    if (a.createdAt < b.createdAt) {
-      return 1;
-    }
-    return 0;
-  };
-
-  const orderByOldest = (a, b) => {
-    if (a.createdAt < b.createdAt) {
-      return -1;
-    }
-    if (a.createdAt > b.createdAt) {
-      return 1;
-    }
-    return 0;
-  };
-  const orderByRecentlyListed = (a, b) => {
-    if (a.auction || b.auction) {
-      if (a.auction && !b.auction) {
-        if (a.auction.createdAt > b.forSaleAt) {
-          return -1;
-        }
-        if (a.auction.createdAt < b.forSaleAt) {
-          return 1;
-        }
-        return 0;
-      }
-      if (!a.auction && b.auction) {
-        if (a.forSaleAt > b.auction.createdAt) {
-          return -1;
-        }
-        if (a.forSaleAt < b.auction.createdAt) {
-          return 1;
-        }
-        return 0;
-      }
-      if (a.auction && b.auction) {
-        if (a.auction.createdAt > b.auction.createdAt) {
-          return -1;
-        }
-        if (a.auction.createdAt < b.auction.createdAt) {
-          return 1;
-        }
-        return 0;
-      }
-    } else {
-      if (a.forSaleAt > b.forSaleAt) {
-        return -1;
-      }
-      if (a.forSaleAt < b.forSaleAt) {
-        return 1;
-      }
-      return 0;
-    }
-  };
-  const orderByOldestListed = (a, b) => {
-    if (a.auction || b.auction) {
-      if (a.auction && !b.auction) {
-        if (a.auction.createdAt < b.forSaleAt) {
-          return -1;
-        }
-        if (a.auction.createdAt > b.forSaleAt) {
-          return 1;
-        }
-        return 0;
-      }
-      if (!a.auction && b.auction) {
-        if (a.forSaleAt < b.auction.createdAt) {
-          return -1;
-        }
-        if (a.forSaleAt > b.auction.createdAt) {
-          return 1;
-        }
-        return 0;
-      }
-      if (a.auction && b.auction) {
-        if (a.auction.createdAt < b.auction.createdAt) {
-          return -1;
-        }
-        if (a.auction.createdAt > b.auction.createdAt) {
-          return 1;
-        }
-        return 0;
-      }
-    } else {
-      if (a.forSaleAt < b.forSaleAt) {
-        return -1;
-      }
-      if (a.forSaleAt > b.forSaleAt) {
-        return 1;
-      }
-      return 0;
-    }
-  };
-  const orderByLowestP = (a, b) => {
-    if (a.offer || b.offer) {
-      if (a.offer && !b.offer) {
-        if (b.auction) {
-          if (b.auction.topBid) {
-            if (a.offer.price < b.auction.topBid) {
-              return -1;
-            }
-            if (a.offer.price > b.auction.topBid) {
-              return 1;
-            }
-            return 0;
-          } else {
-            if (a.offer.price < b.auction.bid) {
-              return -1;
-            }
-            if (a.offer.price > b.auction.bid) {
-              return 1;
-            }
-            return 0;
-          }
-        } else {
-          if (a.offer.price < b.price) {
-            return -1;
-          }
-          if (a.offer.price > b.price) {
-            return 1;
-          }
-          return 0;
-        }
-      }
-      if (!a.offer && b.offer) {
-        if (a.auction) {
-          if (a.auction.topBid) {
-            if (a.auction.topBid < b.offer.price) {
-              return -1;
-            }
-            if (a.auction.topBid > b.offer.price) {
-              return 1;
-            }
-            return 0;
-          } else {
-            if (a.auction.bid < b.offer.price) {
-              return -1;
-            }
-            if (a.auction.bid > b.offer.price) {
-              return 1;
-            }
-            return 0;
-          }
-        } else {
-          if (a.price < b.offer.price) {
-            return -1;
-          }
-          if (a.price > b.offer.price) {
-            return 1;
-          }
-          return 0;
-        }
-      }
-      if (a.offer && b.offer) {
-        if (a.offer.price < b.offer.price) {
-          return -1;
-        }
-        if (a.offer.price > b.offer.price) {
-          return 1;
-        }
-        return 0;
-      }
-    } else if (a.auction || b.auction) {
-      if (a.auction && !b.auction) {
-        if (a.auction.topBid) {
-          if (a.auction.topBid < b.price) {
-            return -1;
-          }
-          if (a.auction.topBid > b.price) {
-            return 1;
-          }
-          return 0;
-        } else {
-          if (a.auction.bid < b.price) {
-            return -1;
-          }
-          if (a.auction.bid > b.price) {
-            return 1;
-          }
-          return 0;
-        }
-      }
-      if (!a.auction && b.auction) {
-        if (b.auction.topBid) {
-          if (a.price < b.auction.topBid) {
-            return -1;
-          }
-          if (a.price > b.auction.topBid) {
-            return 1;
-          }
-          return 0;
-        } else {
-          if (a.price < b.auction.bid) {
-            return -1;
-          }
-          if (a.price > b.auction.bid) {
-            return 1;
-          }
-          return 0;
-        }
-      }
-      if (a.auction && b.auction) {
-        if (a.auction.topBid && !b.auction.topBid) {
-          if (a.auction.topBid < b.auction.bid) {
-            return -1;
-          }
-          if (a.auction.topBid > b.auction.bid) {
-            return 1;
-          }
-          return 0;
-        }
-        if (!a.auction.topBid && b.auction.topBid) {
-          if (a.auction.bid < b.auction.topBid) {
-            return -1;
-          }
-          if (a.auction.bid > b.auction.topBid) {
-            return 1;
-          }
-          return 0;
-        }
-        if (!a.auction.topBid && !b.auction.topBid) {
-          if (a.auction.bid < b.auction.bid) {
-            return -1;
-          }
-          if (a.auction.bid > b.auction.bid) {
-            return 1;
-          }
-          return 0;
-        }
-        if (a.auction.topBid && a.auction.topBid) {
-          if (a.auction.topBid < b.auction.topBid) {
-            return -1;
-          }
-          if (a.auction.topBid > b.auction.topBid) {
-            return 1;
-          }
-          return 0;
-        }
-      }
-    } else {
-      if (a.price < b.price) {
-        return -1;
-      }
-      if (a.price > b.price) {
-        return 1;
-      }
-      return 0;
-    }
-  };
-  const orderByHighestP = (a, b) => {
-    if (a.offer || b.offer) {
-      if (a.offer && !b.offer) {
-        if (b.auction) {
-          if (b.auction.topBid) {
-            if (a.offer.price > b.auction.topBid) {
-              return -1;
-            }
-            if (a.offer.price < b.auction.topBid) {
-              return 1;
-            }
-            return 0;
-          } else {
-            if (a.offer.price > b.auction.bid) {
-              return -1;
-            }
-            if (a.offer.price < b.auction.bid) {
-              return 1;
-            }
-            return 0;
-          }
-        } else {
-          if (a.offer.price > b.price) {
-            return -1;
-          }
-          if (a.offer.price < b.price) {
-            return 1;
-          }
-          return 0;
-        }
-      }
-      if (!a.offer && b.offer) {
-        if (a.auction) {
-          if (a.auction.topBid) {
-            if (a.auction.topBid > b.offer.price) {
-              return -1;
-            }
-            if (a.auction.topBid < b.offer.price) {
-              return 1;
-            }
-          } else {
-            if (a.auction.bid > b.offer.price) {
-              return -1;
-            }
-            if (a.auction.bid < b.offer.price) {
-              return 1;
-            }
-          }
-        } else {
-          if (a.price > b.offer.price) {
-            return -1;
-          }
-          if (a.price < b.offer.price) {
-            return 1;
-          }
-          return 0;
-        }
-      }
-      if (a.offer && b.offer) {
-        if (a.offer.price > b.offer.price) {
-          return -1;
-        }
-        if (a.offer.price < b.offer.price) {
-          return 1;
-        }
-        return 0;
-      }
-    } else if (a.auction || b.auction) {
-      if (a.auction && !b.auction) {
-        if (a.auction.topBid) {
-          if (a.auction.topBid > b.price) {
-            return -1;
-          }
-          if (a.auction.topBid < b.price) {
-            return 1;
-          }
-          return 0;
-        } else {
-          if (a.auction.bid > b.price) {
-            return -1;
-          }
-          if (a.auction.bid < b.price) {
-            return 1;
-          }
-          return 0;
-        }
-      }
-      if (!a.auction && b.auction) {
-        if (b.auction.topBid) {
-          if (a.price > b.auction.topBid) {
-            return -1;
-          }
-          if (a.price < b.auction.topBid) {
-            return 1;
-          }
-          return 0;
-        } else {
-          if (a.price > b.auction.bid) {
-            return -1;
-          }
-          if (a.price < b.auction.bid) {
-            return 1;
-          }
-          return 0;
-        }
-      }
-      if (a.auction && b.auction) {
-        if (a.auction.topBid && !b.auction.topBid) {
-          if (a.auction.topBid > b.auction.bid) {
-            return -1;
-          }
-          if (a.auction.topBid < b.auction.bid) {
-            return 1;
-          }
-          return 0;
-        }
-        if (!a.auction.topBid && b.auction.topBid) {
-          if (a.auction.bid > b.auction.topBid) {
-            return -1;
-          }
-          if (a.auction.bid < b.auction.topBid) {
-            return 1;
-          }
-          return 0;
-        }
-        if (!a.auction.topBid && !b.auction.topBid) {
-          if (a.auction.bid > b.auction.bid) {
-            return -1;
-          }
-          if (a.auction.bid < b.auction.bid) {
-            return 1;
-          }
-          return 0;
-        }
-        if (a.auction.topBid && a.auction.topBid) {
-          if (a.auction.topBid > b.auction.topBid) {
-            return -1;
-          }
-          if (a.auction.topBid < b.auction.topBid) {
-            return 1;
-          }
-          return 0;
-        }
-      }
-    } else {
-      if (a.price > b.price) {
-        return -1;
-      }
-      if (a.price < b.price) {
-        return 1;
-      }
-      return 0;
-    }
-  };
-
-  const orderByNearestEnd = (a, b) => {
-    if (a.auction.endTime < b.auction.endTime) {
-      return -1;
-    }
-    if (a.auction.endTime > b.auction.endTime) {
-      return 1;
-    }
-    return 0;
-  };
-
   const sortItems = (value) => {
+    setSortSelected(value);
     if (value === "2") {
       //recentyl created
 
@@ -637,7 +233,6 @@ export default function ExploreContainer() {
         return !auctioned.find((auctioned) => auctioned === item);
       });
 
-      console.log(toOrder);
       const sortedArrayAll = toOrderAll.sort(orderByHighestP);
       const sortedArray = toOrder.sort(orderByHighestP);
 
@@ -834,9 +429,21 @@ export default function ExploreContainer() {
       });
       finalFiltered = finalFiltered.filter((item) => item !== undefined);
 
-      setVisibleMarketItems(finalFiltered);
+      console.log(typeof sortSelected);
+      if (sortSelected !== 0 && sortSelected !== 1) {
+        finalFiltered = sortMarketItems(sortSelected, finalFiltered);
+      }
+      console.log(finalFiltered);
+      setAllMarketItems(finalFiltered);
+      setVisibleMarketItems(finalFiltered.slice(0, 12));
     } else {
-      setVisibleMarketItems(allMarketItems);
+      let finalFiltered = [];
+      if (sortSelected !== 0 && sortSelected !== 1) {
+        finalFiltered = sortMarketItems(sortSelected, marketItems);
+      }
+
+      setAllMarketItems(finalFiltered);
+      setVisibleMarketItems(finalFiltered.slice(0, 12));
     }
   }, [filtersSelected]);
 
