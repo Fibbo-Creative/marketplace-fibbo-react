@@ -78,7 +78,7 @@ export default function ItemPage() {
     buyItem,
     acceptOffer,
   } = useMarketplace();
-  const { getTotalItems } = useDefaultCollection();
+  const { getTotalItems, getIsFreezedMetadata } = useDefaultCollection();
   const {
     getAuction,
     getHighestBid,
@@ -117,6 +117,7 @@ export default function ItemPage() {
   const [isOnAuction, setIsOnAuction] = useState(false);
   const [highestBid, setHighestBid] = useState(null);
   const [actionMade, setActionMade] = useState(0);
+  const [isFreezedMetadata, setIsFreezedMetadata] = useState(false);
 
   const tokenInfo = useRef({});
   const profileOwnerData = useRef({});
@@ -130,6 +131,10 @@ export default function ItemPage() {
 
   const redirectToProfile = () => {
     navigate(`/profile/${profileOwnerData.current.wallet}`);
+  };
+
+  const goToEdit = () => {
+    navigate(`/edit/${collection}/${tokenId}`);
   };
 
   const getItemDetails = async () => {
@@ -182,6 +187,9 @@ export default function ItemPage() {
       collection: collectionResponse.name,
       totalItems: numberOfTokens,
     });
+
+    let freezed = await getIsFreezedMetadata(tokenId);
+    setIsFreezedMetadata(freezed);
 
     setLoading(false);
   };
@@ -485,9 +493,18 @@ export default function ItemPage() {
               {loading ? (
                 <div className="w-full h-full animate-pulse bg-gray-300"></div>
               ) : (
-                <p className="text-3xl">
-                  <b>{tokenInfo?.current.name}</b>
-                </p>
+                <div className="flex justify-between items-center">
+                  <p className="text-3xl">
+                    <b>{tokenInfo?.current.name}</b>
+                  </p>
+                  {!isFreezedMetadata && isOwner && (
+                    <ActionButton
+                      text="EDIT"
+                      size="smaller"
+                      buttonAction={goToEdit}
+                    />
+                  )}
+                </div>
               )}
               {loading ? (
                 <div className="w-full h-full animate-pulse bg-gray-300"></div>

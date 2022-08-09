@@ -15,9 +15,9 @@ export const useDefaultCollection = () => {
     return await getContract(address, COLLECTION_ABI);
   };
 
-  const createToken = async (ipfsFileURL) => {
+  const mintNFT = async (wallet, ipfsFileURL) => {
     const collectionContract = await getDefaultCollectionContract();
-    let createNFTtx = await collectionContract.createToken(ipfsFileURL);
+    let createNFTtx = await collectionContract.mint(wallet, ipfsFileURL);
     let tx = await createNFTtx.wait();
     let event = tx.events[0];
     let value = event.args[2];
@@ -39,15 +39,23 @@ export const useDefaultCollection = () => {
   const getTotalItems = async () => {
     const collectionContract = await getDefaultCollectionContract();
 
-    const numberOfTokens = await collectionContract._tokenIds();
+    const numberOfTokens = await collectionContract.getCurrentTokenID();
     return numberOfTokens.toNumber();
+  };
+
+  const getIsFreezedMetadata = async (tokenId) => {
+    const collectionContract = await getDefaultCollectionContract();
+
+    const isFreezed = await collectionContract.isFreezedMetadata(tokenId);
+    return isFreezed;
   };
 
   return {
     getContractAddress,
     getTotalItems,
     getDefaultCollectionContract,
-    createToken,
+    mintNFT,
     setApproval,
+    getIsFreezedMetadata,
   };
 };

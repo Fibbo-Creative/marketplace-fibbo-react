@@ -14,6 +14,7 @@ import useChain from "./hooks/useChain";
 import { VerificationFormContainer } from "./pages/verficiation/VerificationFormContainer";
 import { useContext } from "react";
 import { ThemeContext } from "./context/ThemeContext";
+import EditContainer from "./pages/edit/EditContainer";
 
 function App() {
   const { theme } = useContext(ThemeContext);
@@ -32,6 +33,11 @@ function App() {
           <Routes>
             <Route path="*" element={<NotFoundContainer />} />
             <Route path="/create" element={<CreateContainer />} />
+            <Route
+              path="edit/:collection/:tokenId"
+              element={<EditContainer />}
+            />
+
             <Route path="/community" element={<FeaturesContainer />} />
             <Route
               path="/verificate/request"

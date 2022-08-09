@@ -14,7 +14,7 @@ export const ConfirmCreateModal = ({
   itemData,
   wallet,
 }) => {
-  const { createToken, getContractAddress } = useDefaultCollection();
+  const { mintNFT, getContractAddress } = useDefaultCollection();
   const { saveMintedItem } = useApi();
   const [newTokenId, setNewTokenId] = useState(0);
   const [address, setAddress] = useState("");
@@ -32,7 +32,7 @@ export const ConfirmCreateModal = ({
       const ipfsCID = await addJsonToIpfs(data);
       const ipfsFileURL = `https://ipfs.infura.io/ipfs/${ipfsCID.path}`;
 
-      let newTokenId = await createToken(ipfsFileURL);
+      let newTokenId = await mintNFT(wallet, ipfsFileURL);
       const address = await getContractAddress();
       //Si todo va bien, crear a sanity
       await saveMintedItem(
