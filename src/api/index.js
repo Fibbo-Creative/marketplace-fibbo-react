@@ -167,6 +167,32 @@ export const useApi = () => {
     });
   };
 
+  const editNftData = async (
+    name,
+    description,
+    creator,
+    tokenId,
+    royalty,
+    image,
+    collection,
+    additionalContent
+  ) => {
+    try {
+      await marketplaceApi.post("nfts/editItem", {
+        name: name,
+        description: description,
+        creator: creator,
+        tokenId: tokenId,
+        royalty: royalty,
+        sanityImgUrl: image,
+        collection: collection,
+        additionalContent: additionalContent,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   //#endregion
 
   //#region Offers
@@ -274,5 +300,6 @@ export const useApi = () => {
     getAllPayTokens,
     getPayTokenInfo,
     setImportWFTM,
+    editNftData,
   };
 };
