@@ -83,56 +83,60 @@ export const ItemDirectOffers = ({
               <tbody>
                 {offers.map((offer) => {
                   return (
-                    <tr key={Math.random(9999) * 1000}>
-                      <td className="px-6 py-4">
-                        <div className="flex gap-2 items-center">
-                          <img
-                            className="rounded-full"
-                            width={32}
-                            src={offer.creator.profileImg}
-                            alt={`from-${offer._id}-img`}
-                          />
-                          <p
-                            className="text-primary-2 underline cursor-pointer"
-                            onClick={() =>
-                              isMobile
-                                ? navigate(`/profile/${offer.creator.wallet}`)
-                                : window.open(
-                                    `/profile/${offer.creator.wallet}`,
-                                    "_blank"
-                                  )
-                            }
-                          >
-                            {offer.creator.username}
-                          </p>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-2">
-                          <img src={offer.payToken.image} width={24} alt="" />
-                          <div className="text-bold text-lg">{offer.price}</div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">{formatDate(offer)}</td>
-                      {isOwner && (
-                        <td className="px-6 py-4 flex flex-col gap-2 text-xs">
-                          <ActionButton
-                            text="Acceptar"
-                            size="smaller"
-                            buttonAction={() => handleShowAcceptOffer(offer)}
-                          />
+                    !hasExpired(offer) && (
+                      <tr key={Math.random(9999) * 1000}>
+                        <td className="px-6 py-4">
+                          <div className="flex gap-2 items-center">
+                            <img
+                              className="rounded-full"
+                              width={32}
+                              src={offer.creator.profileImg}
+                              alt={`from-${offer._id}-img`}
+                            />
+                            <p
+                              className="text-primary-2 underline cursor-pointer"
+                              onClick={() =>
+                                isMobile
+                                  ? navigate(`/profile/${offer.creator.wallet}`)
+                                  : window.open(
+                                      `/profile/${offer.creator.wallet}`,
+                                      "_blank"
+                                    )
+                              }
+                            >
+                              {offer.creator.username}
+                            </p>
+                          </div>
                         </td>
-                      )}
-                      {wallet === offer.creator.wallet && (
-                        <td className="px-6 py-4 flex flex-col gap-2 text-xs">
-                          <ActionButton
-                            text="Cancelar"
-                            size="smaller"
-                            buttonAction={() => handleShowRemoveOffer(offer)}
-                          />
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-2">
+                            <img src={offer.payToken.image} width={24} alt="" />
+                            <div className="text-bold text-lg">
+                              {offer.price}
+                            </div>
+                          </div>
                         </td>
-                      )}
-                    </tr>
+                        <td className="px-6 py-4">{formatDate(offer)}</td>
+                        {isOwner && (
+                          <td className="px-6 py-4 flex flex-col gap-2 text-xs">
+                            <ActionButton
+                              text="Acceptar"
+                              size="smaller"
+                              buttonAction={() => handleShowAcceptOffer(offer)}
+                            />
+                          </td>
+                        )}
+                        {wallet === offer.creator.wallet && (
+                          <td className="px-6 py-4 flex flex-col gap-2 text-xs">
+                            <ActionButton
+                              text="Cancelar"
+                              size="smaller"
+                              buttonAction={() => handleShowRemoveOffer(offer)}
+                            />
+                          </td>
+                        )}
+                      </tr>
+                    )
                   );
                 })}
               </tbody>
@@ -158,85 +162,91 @@ export const ItemDirectOffers = ({
           <div className="flex flex-col gap-10">
             {offers.map((offer) => {
               return (
-                <div
-                  key={Math.random(9999) * 100}
-                  className="flex flex-col gap-3 bg-gray-100 dark:bg-dark-3 p-3 hover:bg-gray-300"
-                >
-                  <div className="flex justify-between">
-                    <div>
-                      <b>Oferta de</b>
-                    </div>
-                    <div>
-                      <div className="flex gap-2 items-center">
-                        <img
-                          className="rounded-full"
-                          width={32}
-                          src={offer.creator.profileImg}
-                          alt={`from-${offer._id}-img`}
-                        />
-                        <p
-                          className="text-primary-2 underline cursor-pointer"
-                          onClick={() =>
-                            isMobile
-                              ? navigate(`/profile/${offer.creator.wallet}`)
-                              : window.open(
-                                  `/profile/${offer.creator.wallet}`,
-                                  "_blank"
-                                )
-                          }
-                        >
-                          {offer.creator.username}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-between">
-                    <div>
-                      <b>Precio</b>
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <img src={offer.payToken.image} width={24} alt="" />
-                        <div className="text-bold text-lg">{offer.price}</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-between">
-                    <div>
-                      <b>Expira en</b>
-                    </div>
-                    <div>{formatDate(offer)}</div>
-                  </div>
-                  <div className="flex items-center justify-center">
-                    {!hasExpired(offer) && (
+                !hasExpired(offer) && (
+                  <div
+                    key={Math.random(9999) * 100}
+                    className="flex flex-col gap-3 bg-gray-100 dark:bg-dark-3 p-3 hover:bg-gray-300"
+                  >
+                    <div className="flex justify-between">
                       <div>
-                        {isOwner && (
-                          <ActionButton
-                            text="Acceptar"
-                            size="smaller"
-                            buttonAction={() => handleShowAcceptOffer(offer)}
-                          />
-                        )}
-                        {wallet === offer.creator.wallet && (
-                          <>
-                            <ActionButton
-                              text="Cancelar"
-                              size="smaller"
-                              buttonAction={() => handleShowRemoveOffer(offer)}
-                            />
-                            <RemoveOfferModal
-                              showModal={showRemoveOffer}
-                              handleCloseModal={() => setShowRemoveOffer(false)}
-                              offer={detailOffer}
-                              wallet={wallet}
-                              onCancelOffer={onCancelOffer}
-                            />
-                          </>
-                        )}
+                        <b>Oferta de</b>
                       </div>
-                    )}
+                      <div>
+                        <div className="flex gap-2 items-center">
+                          <img
+                            className="rounded-full"
+                            width={32}
+                            src={offer.creator.profileImg}
+                            alt={`from-${offer._id}-img`}
+                          />
+                          <p
+                            className="text-primary-2 underline cursor-pointer"
+                            onClick={() =>
+                              isMobile
+                                ? navigate(`/profile/${offer.creator.wallet}`)
+                                : window.open(
+                                    `/profile/${offer.creator.wallet}`,
+                                    "_blank"
+                                  )
+                            }
+                          >
+                            {offer.creator.username}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex justify-between">
+                      <div>
+                        <b>Precio</b>
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <img src={offer.payToken.image} width={24} alt="" />
+                          <div className="text-bold text-lg">{offer.price}</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex justify-between">
+                      <div>
+                        <b>Expira en</b>
+                      </div>
+                      <div>{formatDate(offer)}</div>
+                    </div>
+                    <div className="flex items-center justify-center">
+                      {!hasExpired(offer) && (
+                        <div>
+                          {isOwner && (
+                            <ActionButton
+                              text="Acceptar"
+                              size="smaller"
+                              buttonAction={() => handleShowAcceptOffer(offer)}
+                            />
+                          )}
+                          {wallet === offer.creator.wallet && (
+                            <>
+                              <ActionButton
+                                text="Cancelar"
+                                size="smaller"
+                                buttonAction={() =>
+                                  handleShowRemoveOffer(offer)
+                                }
+                              />
+                              <RemoveOfferModal
+                                showModal={showRemoveOffer}
+                                handleCloseModal={() =>
+                                  setShowRemoveOffer(false)
+                                }
+                                offer={detailOffer}
+                                wallet={wallet}
+                                onCancelOffer={onCancelOffer}
+                              />
+                            </>
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
+                )
               );
             })}
 

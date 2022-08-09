@@ -31,10 +31,10 @@ export default function HomeContainer() {
   };
   return (
     <PageWithLoading loading={false}>
-      <div className="w-screen h-full m-0 p-0 b-0 dark:bg-dark-1">
+      <div className="w-screen h-full m-0 p-0 b-0 dark:bg-dark-1 tracking-wide ">
         <section className="flex flex-col-reverse lg:flex-row items-center justify-center w-full h-full gap-10 py-20 px-10">
           <div className="flex flex-col items-center justify-center w-full h-auto ">
-            <h1 className="flex text-2xl leading-normal sm:text-4xl pb-4 md:pb-7 xl:text-6xl xl:p-10 ">
+            <h1 className=" tracking-wide flex text-2xl leading-normal sm:text-4xl pb-4 md:pb-7 xl:text-6xl xl:p-10 ">
               <b>FIBBO : El Arte de expresar tu Arte</b>
             </h1>
             <p className="text-sm sm:text-lg md:text-xl p-0 dark:text-white  xl:p-10 text-justify">
@@ -71,7 +71,7 @@ export default function HomeContainer() {
 
         <section className="flex flex-col-reverse lg:flex-row-reverse items-center justify-center w-full h-full gap-10 py-20 px-10">
           <div className="flex flex-col items-center justify-center w-full h-auto ">
-            <h1 className="flex text-2xl leading-normal sm:text-4xl pb-4 md:pb-7 xl:text-6xl xl:p-10 ">
+            <h1 className="tracking-wide flex text-2xl leading-normal sm:text-4xl pb-4 md:pb-7 xl:text-6xl xl:p-10 ">
               <b>Únete a nuestra comunidad</b>
             </h1>
             <p className="text-sm sm:text-lg md:text-xl p-0  xl:p-10 text-justify">

@@ -53,7 +53,8 @@ export default function ExploreContainer() {
       //setAllMarketItems(firstItems);
       //setVisibleMarketItems(firstItems.slice(0, 12));
 
-      const forSaleItems = await getAllTokens();
+      let forSaleItems = await getAllTokens();
+      forSaleItems = forSaleItems.sort(orderByRecently);
       setAllMarketItems(forSaleItems);
       setMarketItems(forSaleItems);
 
@@ -86,193 +87,253 @@ export default function ExploreContainer() {
 
   const sortItems = (value) => {
     setSortSelected(value);
-    if (value === "2") {
-      //recentyl created
+    let sortedArrayAll = [];
+    let sortedArrayVisible = [];
+    if (value !== "0" && value !== "1") {
+      if (value === "2") {
+        //recentyl created
 
-      const sortedArray = allMarketItems.sort(orderByRecently);
-      const visibledsortedArray = visibleMarketItems.sort(orderByRecently);
-      setAllMarketItems(sortedArray);
-      setVisibleMarketItems(visibledsortedArray.slice(0, visibleItemsCount));
+        sortedArrayAll = allMarketItems.sort(orderByRecently);
+        sortedArrayVisible = visibleMarketItems.sort(orderByRecently);
+      }
+      if (value === "3") {
+        //oldest created
+        sortedArrayAll = allMarketItems.sort(orderByOldest);
+        sortedArrayVisible = visibleMarketItems.sort(orderByOldest);
+      }
+      if (value === "4") {
+        let toSortAll = [];
+        const forSaleAll = allMarketItems.filter(
+          (item) => item.price !== undefined
+        );
+        const auctionAll = allMarketItems.filter(
+          (item) => item.auction !== undefined
+        );
+        let leftItemsAll = allMarketItems.filter((item) => {
+          return !forSaleAll.find((forSaleItem) => forSaleItem === item);
+        });
+        leftItemsAll = leftItemsAll.filter((item) => {
+          return !auctionAll.find((auctioned) => auctioned === item);
+        });
+
+        toSortAll = [...forSaleAll, ...auctionAll];
+
+        let toSort = [];
+        const forSale = visibleMarketItems.filter(
+          (item) => item.price !== undefined
+        );
+        const auctioned = visibleMarketItems.filter(
+          (item) => item.auction !== undefined
+        );
+
+        toSort = [...forSale, ...auctioned];
+        let leftItems = visibleMarketItems.filter((item) => {
+          return !forSale.find((forSaleItem) => forSaleItem === item);
+        });
+        leftItems = leftItems.filter((item) => {
+          return !auctioned.find((auctioned) => auctioned === item);
+        });
+
+        const _sortedArrayAll = toSortAll.sort(orderByRecentlyListed);
+        const _sortedArray = toSort.sort(orderByRecentlyListed);
+
+        sortedArrayAll = _sortedArrayAll.concat(leftItemsAll);
+        sortedArrayVisible = _sortedArray.concat(leftItems);
+      }
+      if (value === "5") {
+        //Lowest price
+        let toSortAll = [];
+        const forSaleAll = allMarketItems.filter(
+          (item) => item.price !== undefined
+        );
+        const auctionAll = allMarketItems.filter(
+          (item) => item.auction !== undefined
+        );
+        let leftItemsAll = allMarketItems.filter((item) => {
+          return !forSaleAll.find((forSaleItem) => forSaleItem === item);
+        });
+        leftItemsAll = leftItemsAll.filter((item) => {
+          return !auctionAll.find((auctioned) => auctioned === item);
+        });
+
+        toSortAll = [...forSaleAll, ...auctionAll];
+
+        let toSort = [];
+        const forSale = visibleMarketItems.filter(
+          (item) => item.price !== undefined
+        );
+        const auctioned = visibleMarketItems.filter(
+          (item) => item.auction !== undefined
+        );
+
+        toSort = [...forSale, ...auctioned];
+        let leftItems = visibleMarketItems.filter((item) => {
+          return !forSale.find((forSaleItem) => forSaleItem === item);
+        });
+        leftItems = leftItems.filter((item) => {
+          return !auctioned.find((auctioned) => auctioned === item);
+        });
+
+        const _sortedArrayAll = toSortAll.sort(orderByOldestListed);
+        const _sortedArray = toSort.sort(orderByOldestListed);
+
+        sortedArrayAll = _sortedArrayAll.concat(leftItemsAll);
+        sortedArrayVisible = _sortedArray.concat(leftItems);
+      }
+      if (value === "6") {
+        //highest price
+        let toOrderAll = [];
+        const forSaleAll = allMarketItems.filter(
+          (item) => item.price !== undefined
+        );
+        const offeredAll = allMarketItems.filter(
+          (item) => item.offer !== undefined
+        );
+        const auctionAll = allMarketItems.filter(
+          (item) => item.auction !== undefined
+        );
+
+        toOrderAll = [...forSaleAll, ...offeredAll, ...auctionAll];
+
+        let leftItemsAll = allMarketItems.filter((item) => {
+          return !forSaleAll.find((forSaleItem) => forSaleItem === item);
+        });
+        leftItemsAll = leftItemsAll.filter((item) => {
+          return !offeredAll.find((offered) => offered === item);
+        });
+        leftItemsAll = leftItemsAll.filter((item) => {
+          return !auctionAll.find((auctioned) => auctioned === item);
+        });
+
+        let toOrder = [];
+        const forSale = visibleMarketItems.filter(
+          (item) => item.price !== undefined
+        );
+        const offered = visibleMarketItems.filter(
+          (item) => item.offer !== undefined
+        );
+        const auctioned = visibleMarketItems.filter(
+          (item) => item.auction !== undefined
+        );
+
+        toOrder = [...forSale, ...offered, ...auctioned];
+        let leftItems = visibleMarketItems.filter((item) => {
+          return !forSale.find((forSaleItem) => forSaleItem === item);
+        });
+        leftItems = leftItemsAll.filter((item) => {
+          return !offered.find((offered) => offered === item);
+        });
+        leftItems = leftItemsAll.filter((item) => {
+          return !auctioned.find((auctioned) => auctioned === item);
+        });
+
+        const _sortedArrayAll = toOrderAll.sort(orderByHighestP);
+        const _sortedArray = toOrder.sort(orderByHighestP);
+
+        sortedArrayAll = _sortedArrayAll.concat(leftItemsAll);
+        sortedArrayVisible = _sortedArray.concat(leftItems);
+      }
+      if (value === "7") {
+        //Lowest price
+        //Lowest price
+        //highest price
+        let toOrderAll = [];
+        const forSaleAll = allMarketItems.filter(
+          (item) => item.price !== undefined
+        );
+        const offeredAll = allMarketItems.filter(
+          (item) => item.offer !== undefined
+        );
+        const auctionAll = allMarketItems.filter(
+          (item) => item.auction !== undefined
+        );
+
+        toOrderAll = [...forSaleAll, ...offeredAll, ...auctionAll];
+        let leftItemsAll = allMarketItems.filter((item) => {
+          return !forSaleAll.find((forSaleItem) => forSaleItem === item);
+        });
+        leftItemsAll = leftItemsAll.filter((item) => {
+          return !offeredAll.find((offered) => offered === item);
+        });
+        leftItemsAll = leftItemsAll.filter((item) => {
+          return !auctionAll.find((auctioned) => auctioned === item);
+        });
+
+        let toOrder = [];
+        const forSale = visibleMarketItems.filter(
+          (item) => item.price !== undefined
+        );
+        const offered = visibleMarketItems.filter(
+          (item) => item.offer !== undefined
+        );
+        const auctioned = visibleMarketItems.filter(
+          (item) => item.auction !== undefined
+        );
+
+        toOrder = [...forSale, ...offered, ...auctioned];
+        let leftItems = visibleMarketItems.filter((item) => {
+          return !forSale.find((forSaleItem) => forSaleItem === item);
+        });
+        leftItems = leftItemsAll.filter((item) => {
+          return !offered.find((offered) => offered === item);
+        });
+        leftItems = leftItemsAll.filter((item) => {
+          return !auctioned.find((auctioned) => auctioned === item);
+        });
+
+        const _sortedArrayAll = toOrderAll.sort(orderByLowestP);
+        const _sortedArray = toOrder.sort(orderByLowestP);
+
+        sortedArrayAll = _sortedArrayAll.concat(leftItemsAll);
+        sortedArrayVisible = _sortedArray.concat(leftItems);
+      }
+      if (value === "8") {
+        const auctionsAll = allMarketItems.filter(
+          (item) => item.auction !== undefined
+        );
+        const leftItemsAll = allMarketItems.filter((item) => {
+          return !auctionsAll.find((auction) => auction === item);
+        });
+
+        const auctions = visibleMarketItems.filter(
+          (item) => item.auction !== undefined
+        );
+        const leftItems = visibleMarketItems.filter((item) => {
+          return !auctions.find((auction) => auction === item);
+        });
+
+        const _sortedArrayAll = auctionsAll.sort(orderByNearestEnd);
+        const _sortedArray = auctions.sort(orderByNearestEnd);
+
+        sortedArrayAll = _sortedArrayAll.concat(leftItemsAll);
+        sortedArrayVisible = _sortedArray.concat(leftItems);
+      }
     }
-    if (value === "3") {
-      //oldest created
-      const sortedArray = allMarketItems.sort(orderByOldest);
-      const visibledsortedArray = visibleMarketItems.sort(orderByOldest);
-      setAllMarketItems(sortedArray);
-      setVisibleMarketItems(visibledsortedArray.slice(0, visibleItemsCount));
-    }
-    if (value === "4") {
-      let toSortAll = [];
-      const forSaleAll = allMarketItems.filter(
-        (item) => item.price !== undefined
-      );
-      const auctionAll = allMarketItems.filter(
-        (item) => item.auction !== undefined
-      );
-      let leftItemsAll = allMarketItems.filter((item) => {
-        return !forSaleAll.find((forSaleItem) => forSaleItem === item);
-      });
-      leftItemsAll = leftItemsAll.filter((item) => {
-        return !auctionAll.find((auctioned) => auctioned === item);
-      });
 
-      toSortAll = [...forSaleAll, ...auctionAll];
+    let idsAll = [];
 
-      let toSort = [];
-      const forSale = visibleMarketItems.filter(
-        (item) => item.price !== undefined
-      );
-      const auctioned = visibleMarketItems.filter(
-        (item) => item.auction !== undefined
-      );
+    let finalArrayAll = sortedArrayAll.map((filter) => {
+      if (!idsAll.includes(filter._id)) {
+        idsAll.push(filter._id);
+        return filter;
+      }
+    });
+    finalArrayAll = finalArrayAll.filter((item) => item !== undefined);
 
-      toSort = [...forSale, ...auctioned];
-      let leftItems = visibleMarketItems.filter((item) => {
-        return !forSale.find((forSaleItem) => forSaleItem === item);
-      });
-      leftItems = leftItems.filter((item) => {
-        return !auctioned.find((auctioned) => auctioned === item);
-      });
+    console.log(finalArrayAll);
+    let ids = [];
 
-      const sortedArrayAll = toSortAll.sort(orderByRecentlyListed);
-      const sortedArray = toSort.sort(orderByRecentlyListed);
+    let finalArray = sortedArrayVisible.map((filter) => {
+      if (!ids.includes(filter._id)) {
+        ids.push(filter._id);
+        return filter;
+      }
+    });
+    finalArray = finalArray.filter((item) => item !== undefined);
+    console.log(finalArray);
 
-      let finalArrayAll = sortedArrayAll.concat(leftItemsAll);
-      let finalArray = sortedArray.concat(leftItems);
-
-      setAllMarketItems(finalArrayAll);
-      setVisibleMarketItems(finalArray.slice(0, visibleItemsCount));
-    }
-    if (value === "5") {
-      //Lowest price
-      let toSortAll = [];
-      const forSaleAll = allMarketItems.filter(
-        (item) => item.price !== undefined
-      );
-      const auctionAll = allMarketItems.filter(
-        (item) => item.auction !== undefined
-      );
-      let leftItemsAll = allMarketItems.filter((item) => {
-        return !forSaleAll.find((forSaleItem) => forSaleItem === item);
-      });
-      leftItemsAll = leftItemsAll.filter((item) => {
-        return !auctionAll.find((auctioned) => auctioned === item);
-      });
-
-      toSortAll = [...forSaleAll, ...auctionAll];
-
-      let toSort = [];
-      const forSale = visibleMarketItems.filter(
-        (item) => item.price !== undefined
-      );
-      const auctioned = visibleMarketItems.filter(
-        (item) => item.auction !== undefined
-      );
-
-      toSort = [...forSale, ...auctioned];
-      let leftItems = visibleMarketItems.filter((item) => {
-        return !forSale.find((forSaleItem) => forSaleItem === item);
-      });
-      leftItems = leftItems.filter((item) => {
-        return !auctioned.find((auctioned) => auctioned === item);
-      });
-
-      const sortedArrayAll = toSortAll.sort(orderByOldestListed);
-      const sortedArray = toSort.sort(orderByOldestListed);
-
-      let finalArrayAll = sortedArrayAll.concat(leftItemsAll);
-      let finalArray = sortedArray.concat(leftItems);
-
-      setAllMarketItems(finalArrayAll);
-      setVisibleMarketItems(finalArray.slice(0, visibleItemsCount));
-    }
-    if (value === "6") {
-      //highest price
-      let toOrderAll = [];
-      const forSaleAll = allMarketItems.filter(
-        (item) => item.price !== undefined
-      );
-      const offeredAll = allMarketItems.filter(
-        (item) => item.offer !== undefined
-      );
-      const auctionAll = allMarketItems.filter(
-        (item) => item.auction !== undefined
-      );
-
-      toOrderAll = [...forSaleAll, ...offeredAll, ...auctionAll];
-
-      let leftItemsAll = allMarketItems.filter((item) => {
-        return !forSaleAll.find((forSaleItem) => forSaleItem === item);
-      });
-      leftItemsAll = leftItemsAll.filter((item) => {
-        return !offeredAll.find((offered) => offered === item);
-      });
-      leftItemsAll = leftItemsAll.filter((item) => {
-        return !auctionAll.find((auctioned) => auctioned === item);
-      });
-
-      let toOrder = [];
-      const forSale = visibleMarketItems.filter(
-        (item) => item.price !== undefined
-      );
-      const offered = visibleMarketItems.filter(
-        (item) => item.offer !== undefined
-      );
-      const auctioned = visibleMarketItems.filter(
-        (item) => item.auction !== undefined
-      );
-
-      toOrder = [...forSale, ...offered, ...auctioned];
-      let leftItems = visibleMarketItems.filter((item) => {
-        return !forSale.find((forSaleItem) => forSaleItem === item);
-      });
-      leftItems = leftItemsAll.filter((item) => {
-        return !offered.find((offered) => offered === item);
-      });
-      leftItems = leftItemsAll.filter((item) => {
-        return !auctioned.find((auctioned) => auctioned === item);
-      });
-
-      const sortedArrayAll = toOrderAll.sort(orderByHighestP);
-      const sortedArray = toOrder.sort(orderByHighestP);
-
-      let finalArrayAll = sortedArrayAll.concat(leftItemsAll);
-      let finalArray = sortedArray.concat(leftItems);
-
-      setAllMarketItems(finalArrayAll);
-      setVisibleMarketItems(finalArray.slice(0, visibleItemsCount));
-    }
-    if (value === "7") {
-      //Lowest price
-      const sortedArray = allMarketItems.sort(orderByLowestP);
-      const visibledsortedArray = visibleMarketItems.sort(orderByLowestP);
-      setAllMarketItems(sortedArray);
-      setVisibleMarketItems(visibledsortedArray.slice(0, visibleItemsCount));
-    }
-    if (value === "8") {
-      const auctionsAll = allMarketItems.filter(
-        (item) => item.auction !== undefined
-      );
-      const leftItemsAll = allMarketItems.filter((item) => {
-        return !auctionsAll.find((auction) => auction === item);
-      });
-
-      const auctions = visibleMarketItems.filter(
-        (item) => item.auction !== undefined
-      );
-      const leftItems = visibleMarketItems.filter((item) => {
-        return !auctions.find((auction) => auction === item);
-      });
-
-      const sortedArrayAll = auctionsAll.sort(orderByNearestEnd);
-      const sortedArray = auctions.sort(orderByNearestEnd);
-
-      let finalArrayAll = sortedArrayAll.concat(leftItemsAll);
-      let finalArray = sortedArray.concat(leftItems);
-
-      setAllMarketItems(finalArrayAll);
-      setVisibleMarketItems(finalArray.slice(0, visibleItemsCount));
-    }
+    setAllMarketItems(finalArrayAll);
+    setVisibleMarketItems(finalArray.slice(0, visibleItemsCount));
   };
 
   const filterBySelling = () => {
@@ -438,19 +499,25 @@ export default function ExploreContainer() {
       setVisibleMarketItems(finalFiltered.slice(0, 12));
     } else {
       let finalFiltered = [];
+      console.log(sortSelected, typeof sortSelected);
       if (sortSelected !== 0 && sortSelected !== 1) {
         finalFiltered = sortMarketItems(sortSelected, marketItems);
+      } else {
+        finalFiltered = marketItems;
       }
 
       setAllMarketItems(finalFiltered);
-      setVisibleMarketItems(finalFiltered.slice(0, 12));
+      setVisibleMarketItems(finalFiltered?.slice(0, 12));
     }
+    return () => {
+      setAllMarketItems(marketItems);
+    };
   }, [filtersSelected]);
 
   return (
     <PageWithLoading loading={loading}>
       <>
-        {allMarketItems.length > 0 && (
+        {marketItems.length > 0 && (
           <>
             {_width > 900 && (
               <FiltersSidebar
@@ -575,11 +642,11 @@ export default function ExploreContainer() {
               {!loadingInfo ? (
                 <InfiniteScroll
                   className="flex  mt-2 flex-wrap justify-center"
-                  dataLength={visibleMarketItems.length}
+                  dataLength={visibleMarketItems?.length}
                   next={addMoreItems}
                   hasMore={true}
                 >
-                  {visibleMarketItems.map((item) => {
+                  {visibleMarketItems?.map((item) => {
                     return (
                       <div key={Math.random(1, 9999)} className="p-5">
                         <NftCard
