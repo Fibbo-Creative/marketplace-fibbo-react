@@ -223,6 +223,11 @@ export const useApi = () => {
     return res.data;
   };
 
+  const saveCollectionDetails = async (owner) => {
+    const res = await marketplaceApi.post(`collections/new`, {});
+    return res.data;
+  };
+
   //#endregion
 
   //#region General
@@ -306,6 +311,7 @@ export const useApi = () => {
     getNftsFromAddress,
     getNftHistory,
     saveMintedItem,
+    saveCollectionDetails,
     searchItemsAndProfiles,
     uploadImgToCDN,
     uploadJSONMetadata,
