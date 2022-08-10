@@ -74,6 +74,56 @@ export default function CollectionContainer() {
                 </div>
 
                 <div className="flex flex-col w-full pt-[40px] content-center justify-left">
+                    <a className="text-lg"><b>Links</b></a>
+                    <div className="flex flex-row w-full justify-center items-center ">
+                        <Icon className="flex mt-[20px] mr-[20px] ml-[20px]" icon="dashicons:admin-site-alt3" />
+                        <textarea
+                            className={`mt-[20px] block dark:bg-dark-1 w-full px-3 py-1.5 text-md font-normal text-gray-700 bg-white bg-clip-padding 
+                                border border-solid border-black rounded transition ease-in-out m-0
+                                focus:text-gray-700 focus:bg-white  dark:border-primary-2  dark:text-gray-200 focus:border-blue-600 focus:outline-none `}
+                            rows="1"
+                            type="text"
+                            placeholder="tuPaginaWeb.com"
+                        />
+                    </div>
+                    <div className="flex flex-row w-full justify-center items-center ">
+                        <Icon className="flex mt-[20px] mr-[20px] ml-[20px]" icon="bi:discord" />
+                        <textarea
+                            className={`mt-[20px] block dark:bg-dark-1 w-full px-3 py-1.5 text-md font-normal text-gray-700 bg-white bg-clip-padding 
+                                border border-solid border-black rounded transition ease-in-out m-0
+                                focus:text-gray-700 focus:bg-white  dark:border-primary-2  dark:text-gray-200 focus:border-blue-600 focus:outline-none `}
+                            rows="1"
+                            type="text"
+                            value="https://discord.gg/"
+                        />
+                    </div>
+                    <div className="flex flex-row w-full justify-center items-center ">
+                        <Icon className="flex mt-[20px] mr-[20px] ml-[20px]" icon="bxl:telegram" />
+                        <textarea
+                            className={`mt-[20px] block dark:bg-dark-1 w-full px-3 py-1.5 text-md font-normal text-gray-700 bg-white bg-clip-padding 
+                                border border-solid border-black rounded transition ease-in-out m-0
+                                focus:text-gray-700 focus:bg-white  dark:border-primary-2  dark:text-gray-200 focus:border-blue-600 focus:outline-none `}
+                            rows="1"
+                            type="text"
+                            value="https://t.me/"
+                        />
+                    </div>
+                    <div className="flex flex-row w-full justify-center items-center ">
+                        <Icon className="flex mt-[20px] mr-[20px] ml-[20px]" icon="cib:instagram" />
+                        <textarea
+                            className={`mt-[20px] block dark:bg-dark-1 w-full px-3 py-1.5 text-md font-normal text-gray-700 bg-white bg-clip-padding 
+                                border border-solid border-black rounded transition ease-in-out m-0
+                                focus:text-gray-700 focus:bg-white  dark:border-primary-2  dark:text-gray-200 focus:border-blue-600 focus:outline-none `}
+                            rows="1"
+                            type="text"
+                            value="https://www.instagram.com/"
+                        />
+                    </div>
+                    
+                    
+                </div>
+
+                <div className="flex flex-col w-full pt-[40px] content-center justify-left">
                     <div className="flex flex-row gap-2">
                         <label className="">
                         <input type="checkbox" className="" value="" />
@@ -89,10 +139,11 @@ export default function CollectionContainer() {
                         <Icon
                             className="w-auto h-auto flex m-0"
                             icon="akar-icons:info"
-                        />{" "}
+                        />
                         </abbr>
                     </div>
                 </div>
+
 
                 <div className="flex flex-col w-full pt-[40px] content-center justify-left">
                     <ActionButton text="Crear Colección" size="large"/>
