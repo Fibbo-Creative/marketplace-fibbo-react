@@ -141,6 +141,7 @@ export default function ItemPage() {
       listing: _listing,
     } = await getNftInfo(collection, tokenId);
 
+    console.log(nftData);
     tokenInfo.current = nftData;
     tokenHistoryInfo.current = history;
 
@@ -529,7 +530,7 @@ export default function ItemPage() {
                   </div>
                 )}
               </div>
-              {!loading && tokenInfo.additionalContent && isOwner && (
+              {!loading && tokenInfo.current.additionalContent && isOwner && (
                 <div
                   onClick={() => setOpenAdditionalModal(true)}
                   className="flex bg-gray-800 cursor-pointer  items-center text-gray-500 text-lg border-gray border-2 p-3 rounded-md gap-3"
@@ -992,12 +993,12 @@ export default function ItemPage() {
         />
       </>
 
-      {!loading && tokenInfo.additionalContent && isOwner && (
+      {!loading && tokenInfo.current.additionalContent && isOwner && (
         <>
           <AdditionalContentModal
             showModal={openAdditionalModal}
             handleCloseModal={() => setOpenAdditionalModal(false)}
-            additionalContent={tokenInfo.additionalContent}
+            additionalContent={tokenInfo.current.additionalContent}
           />
         </>
       )}
