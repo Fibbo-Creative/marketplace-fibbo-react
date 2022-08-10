@@ -56,7 +56,7 @@ export default function CollectionContainer() {
                             focus:text-gray-700 focus:bg-white  dark:border-primary-2  dark:text-gray-200 focus:border-blue-600 focus:outline-none `}
                         rows="1"
                         type="text"
-                        value="https://fibbo-market.web.app/collection/"
+                        defaultValue="https://fibbo-market.web.app/collection/"
                     />
                 </div>
 
@@ -94,7 +94,7 @@ export default function CollectionContainer() {
                                 focus:text-gray-700 focus:bg-white  dark:border-primary-2  dark:text-gray-200 focus:border-blue-600 focus:outline-none `}
                             rows="1"
                             type="text"
-                            value="https://discord.gg/"
+                            defaultValue="https://discord.gg/"
                         />
                     </div>
                     <div className="flex flex-row w-full justify-center items-center ">
@@ -105,7 +105,7 @@ export default function CollectionContainer() {
                                 focus:text-gray-700 focus:bg-white  dark:border-primary-2  dark:text-gray-200 focus:border-blue-600 focus:outline-none `}
                             rows="1"
                             type="text"
-                            value="https://t.me/"
+                            defaultValue="https://t.me/"
                         />
                     </div>
                     <div className="flex flex-row w-full justify-center items-center ">
@@ -116,7 +116,7 @@ export default function CollectionContainer() {
                                 focus:text-gray-700 focus:bg-white  dark:border-primary-2  dark:text-gray-200 focus:border-blue-600 focus:outline-none `}
                             rows="1"
                             type="text"
-                            value="https://www.instagram.com/"
+                            defaultValue="https://www.instagram.com/"
                         />
                     </div>
                     
