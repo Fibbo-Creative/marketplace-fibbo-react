@@ -172,7 +172,7 @@ export default function ProfileActivityTable({ historyItems }) {
                         <img
                           className="rounded-full"
                           width={32}
-                          src={item.item.image}
+                          src={item.item?.image}
                           alt={`from-${item._id}-img`}
                         />
                         <p
@@ -180,15 +180,15 @@ export default function ProfileActivityTable({ historyItems }) {
                           onClick={() =>
                             isMobile
                               ? navigate(
-                                  `/explore/${item.item.collectionAddress}/${item.item.tokenId}`
+                                  `/explore/${item.item?.collectionAddress}/${item.item.tokenId}`
                                 )
                               : window.open(
-                                  `/explore/${item.item.collectionAddress}/${item.item.tokenId}`,
+                                  `/explore/${item.item?.collectionAddress}/${item.item.tokenId}`,
                                   "_blank"
                                 )
                           }
                         >
-                          {item.item.name}
+                          {item.item?.name}
                         </p>
                       </div>
                     </td>
@@ -293,7 +293,7 @@ export default function ProfileActivityTable({ historyItems }) {
                         <img
                           className="rounded-full"
                           width={32}
-                          src={item.item.image}
+                          src={item.item?.image}
                           alt={`from-${item._id}-img`}
                         />
                         <p
@@ -301,15 +301,15 @@ export default function ProfileActivityTable({ historyItems }) {
                           onClick={() =>
                             isMobile
                               ? navigate(
-                                  `/explore/${item.item.collectionAddress}/${item.item.tokenId}`
+                                  `/explore/${item.item?.collectionAddress}/${item.item.tokenId}`
                                 )
                               : window.open(
-                                  `/explore/${item.item.collectionAddress}/${item.item.tokenId}`,
+                                  `/explore/${item.item?.collectionAddress}/${item.item.tokenId}`,
                                   "_blank"
                                 )
                           }
                         >
-                          {item.item.name}
+                          {item.item?.name}
                         </p>
                       </div>
                     </div>
