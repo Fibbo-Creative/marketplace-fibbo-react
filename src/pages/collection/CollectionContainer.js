@@ -76,7 +76,7 @@ export default function CollectionContainer() {
                 <div className="flex flex-col w-full pt-[40px] content-center justify-left">
                     <a className="text-lg"><b>Links</b></a>
                     <div className="flex flex-row w-full justify-center items-center ">
-                        <Icon className="flex mt-[20px] mr-[20px] ml-[20px]" icon="dashicons:admin-site-alt3" />
+                        <Icon className="flex mt-[20px] mr-[20px]" icon="dashicons:admin-site-alt3" />
                         <textarea
                             className={`mt-[20px] block dark:bg-dark-1 w-full px-3 py-1.5 text-md font-normal text-gray-700 bg-white bg-clip-padding 
                                 border border-solid border-black rounded transition ease-in-out m-0
@@ -87,7 +87,7 @@ export default function CollectionContainer() {
                         />
                     </div>
                     <div className="flex flex-row w-full justify-center items-center ">
-                        <Icon className="flex mt-[20px] mr-[20px] ml-[20px]" icon="bi:discord" />
+                        <Icon className="flex mt-[20px] mr-[20px]" icon="bi:discord" />
                         <textarea
                             className={`mt-[20px] block dark:bg-dark-1 w-full px-3 py-1.5 text-md font-normal text-gray-700 bg-white bg-clip-padding 
                                 border border-solid border-black rounded transition ease-in-out m-0
@@ -98,7 +98,7 @@ export default function CollectionContainer() {
                         />
                     </div>
                     <div className="flex flex-row w-full justify-center items-center ">
-                        <Icon className="flex mt-[20px] mr-[20px] ml-[20px]" icon="bxl:telegram" />
+                        <Icon className="flex mt-[20px] mr-[20px]" icon="bxl:telegram" />
                         <textarea
                             className={`mt-[20px] block dark:bg-dark-1 w-full px-3 py-1.5 text-md font-normal text-gray-700 bg-white bg-clip-padding 
                                 border border-solid border-black rounded transition ease-in-out m-0
@@ -109,7 +109,7 @@ export default function CollectionContainer() {
                         />
                     </div>
                     <div className="flex flex-row w-full justify-center items-center ">
-                        <Icon className="flex mt-[20px] mr-[20px] ml-[20px]" icon="cib:instagram" />
+                        <Icon className="flex mt-[20px] mr-[20px] " icon="cib:instagram" />
                         <textarea
                             className={`mt-[20px] block dark:bg-dark-1 w-full px-3 py-1.5 text-md font-normal text-gray-700 bg-white bg-clip-padding 
                                 border border-solid border-black rounded transition ease-in-out m-0
