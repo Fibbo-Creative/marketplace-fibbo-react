@@ -31,8 +31,8 @@ const formatHighestBid = (highestBidData) => {
 };
 
 export const useAuction = () => {
-  const { getERC20Contract } = useTokens();
-  const { getAuctionAddress, getFibboCollectionAddress } = useAddressRegistry();
+  const { getERC20Contract, getERC721Contract } = useTokens();
+  const { getAuctionAddress } = useAddressRegistry();
 
   const { getDefaultCollectionContract } = useDefaultCollection();
   const { getContract } = useContract();
@@ -90,15 +90,19 @@ export const useAuction = () => {
   ) => {
     const auctionContract = await getAuctionContract();
 
-    const collectionContract = await getDefaultCollectionContract();
+    const ERC721contract = await getERC721Contract(collection);
 
-    const isApprovedForAll = await collectionContract.isApprovedForAll(
+    const isApprovedForAll = await ERC721contract.isApprovedForAll(
       wallet,
       auctionContract.address
     );
 
     if (!isApprovedForAll) {
-      await setApproval();
+      const approveTx = await ERC721contract.setApprovalForAll(
+        auctionContract.address,
+        true
+      );
+      await approveTx.wait();
     }
 
     const createAuctionTx = await auctionContract.createAuction(

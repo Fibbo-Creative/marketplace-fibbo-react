@@ -57,6 +57,7 @@ export const MoreItems = ({ nfts }) => {
           {nfts?.map((item) => {
             return (
               <NftCard
+                key={item.tokenId}
                 isSmall={true}
                 item={item}
                 onClick={() => redirectToItem(item)}

@@ -49,7 +49,7 @@ export const useMarketplace = () => {
       tokenId,
       payToken.contractAddress,
       parseEther(price.toString()),
-      0
+      ethers.BigNumber.from(Math.floor(new Date().getTime() / 1000))
     );
 
     await listItemTx.wait();
@@ -73,7 +73,7 @@ export const useMarketplace = () => {
       const tx = await erc20.approve(marketContract.address, price);
       await tx.wait();
     }
-    const defaultCollection = await getDefaultCollectionContract();
+    const ERC721contract = await getERC721Contract(collection);
 
     let buyItemTx = await marketContract.buyItem(
       collection,
@@ -84,12 +84,18 @@ export const useMarketplace = () => {
 
     await buyItemTx.wait();
 
-    let approveTx = await defaultCollection.setApprovalForAll(
-      marketContract.address,
-      true
+    const isApproved = await ERC721contract.isApprovedForAll(
+      wallet,
+      marketContract.address
     );
 
-    await approveTx.wait();
+    if (!isApproved) {
+      let approveTx = await ERC721contract.setApprovalForAll(
+        marketContract.address,
+        true
+      );
+      await approveTx.wait();
+    }
   };
 
   const cancelListing = async (collection, tokenId) => {
@@ -97,7 +103,7 @@ export const useMarketplace = () => {
     const ERC721contract = await getERC721Contract(collection);
 
     let cancelListingTx = await marketContract.cancelListing(
-      ERC721contract,
+      ERC721contract.address,
       tokenId
     );
 
@@ -125,6 +131,10 @@ export const useMarketplace = () => {
       tokenId,
       owner
     );
+
+    const startingTime = await listingInfo[2];
+
+    console.log(new Date(startingTime * 1000));
 
     const formatted = {
       payToken: listingInfo[0],
@@ -168,15 +178,19 @@ export const useMarketplace = () => {
 
   const acceptOffer = async (collection, tokenId, creator) => {
     const marketContract = await getMarketContract();
-    const defaultCollection = await getDefaultCollectionContract();
+    const ERC721contract = await getERC721Contract(collection);
 
-    const isApproved = await defaultCollection.isApprovedForAll(
+    const isApproved = await ERC721contract.isApprovedForAll(
       wallet,
       marketContract.address
     );
 
     if (!isApproved) {
-      await setApproval();
+      const approveTx = await ERC721contract.setApprovalForAll(
+        marketContract.address,
+        true
+      );
+      await approveTx.wait();
     }
 
     let acceptOfferTx = await marketContract.acceptOffer(

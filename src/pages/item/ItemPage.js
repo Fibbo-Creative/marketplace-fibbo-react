@@ -155,9 +155,6 @@ export default function ItemPage() {
       listing: _listing,
     } = await getNftInfo(collection, tokenId);
 
-    console.log(_listing);
-    let listingInfo = await getListingInfo(collection, tokenId, wallet);
-    console.log(listingInfo);
     tokenInfo.current = nftData;
     tokenHistoryInfo.current = history;
 
@@ -171,8 +168,13 @@ export default function ItemPage() {
 
     setMoreItems(nfts);
     const contract = await getERC721Contract(collection);
-    const res = await contract.ownerOf(tokenId);
-    setIsOwner(res);
+    if (wallet) {
+      const res = await contract.ownerOf(tokenId);
+
+      setIsOwner(res === wallet);
+    } else {
+      setIsOwner(false);
+    }
 
     if (_listing) {
       setIsForSale(true);
@@ -349,8 +351,8 @@ export default function ItemPage() {
       collection,
       tokenId,
       tokenInfo?.current.owner,
-      listing?.current.price,
-      listing?.payToken.contractAddress
+      listing.current?.price,
+      listing.current?.payToken
     );
     offers.current = [];
 

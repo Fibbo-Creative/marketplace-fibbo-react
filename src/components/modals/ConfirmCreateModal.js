@@ -15,9 +15,8 @@ export const ConfirmCreateModal = ({
   collection,
   wallet,
 }) => {
-  const { mintNFT, getContractAddress } = useDefaultCollection();
   const { getERC721Contract } = useTokens();
-  const { saveMintedItem } = useApi();
+  const { saveMintedItem, uploadJSONMetadata } = useApi();
   const [newTokenId, setNewTokenId] = useState(0);
   const [address, setAddress] = useState("");
   const [completedAction, setCompletedAction] = useState(false);
@@ -25,15 +24,16 @@ export const ConfirmCreateModal = ({
   const navigate = useNavigate();
 
   const createNFT = async (e) => {
-    const data = JSON.stringify({
-      name: itemData.name,
-      description: itemData.description,
-      image: itemData.ipfsImage,
-    });
     try {
-      const ipfsCID = await addJsonToIpfs(data);
-      const ipfsFileURL = `https://ipfs.infura.io/ipfs/${ipfsCID.path}`;
+      const ipfsCID = await uploadJSONMetadata(
+        itemData.name,
+        itemData.description,
+        itemData.ipfsImage
+      );
 
+      const ipfsFileURL = `https://ipfs.io/ipfs/${ipfsCID}`;
+
+      console.log(ipfsFileURL);
       const contract = await getERC721Contract(collection.contractAddress);
       let mintTx = await contract.mint(wallet, ipfsFileURL);
       let tx = await mintTx.wait();

@@ -249,6 +249,15 @@ export const useApi = () => {
     );
     return imgAddedToSanity.data;
   };
+
+  const uploadJSONMetadata = async (name, desc, image) => {
+    const imgAddedToSanity = await marketplaceApi.post("api/uploadJson", {
+      name: name,
+      description: desc,
+      image: image,
+    });
+    return imgAddedToSanity.data;
+  };
   //#endregion
 
   //#region Community
@@ -299,6 +308,7 @@ export const useApi = () => {
     saveMintedItem,
     searchItemsAndProfiles,
     uploadImgToCDN,
+    uploadJSONMetadata,
     createNewSuggestion,
     getVerificatedArtists,
     newVerifyRequest,
