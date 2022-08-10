@@ -15,6 +15,7 @@ import { VerificationFormContainer } from "./pages/verficiation/VerificationForm
 import { useContext } from "react";
 import { ThemeContext } from "./context/ThemeContext";
 import EditContainer from "./pages/edit/EditContainer";
+import CollectionContainer from "./pages/collection/CollectionContainer";
 
 function App() {
   const { theme } = useContext(ThemeContext);
@@ -54,6 +55,7 @@ function App() {
             <Route path="/profile/:address" element={<ProfileContainer />} />
 
             <Route path="" element={<HomeContainer />} />
+            <Route path="/createCollection" element={<CollectionContainer/> } />
           </Routes>
         </>
       </BrowserRouter>
