@@ -22,7 +22,7 @@ export default function CollectionContainer() {
 
                 <div className="flex flex-col w-full pt-[40px] content-center justify-left">
                     <a className="text-lg"><b>Imagen principal de la colección</b></a>
-                    <a className="text-md pt-[20px]"> Selecciona la imagen de presentación de la colección. Esta imagen se utilizará para presentar su colección en la página de inicio u otras áreas promocionales de Fibbo.</a>
+                    <a className="text-md pt-[20px]"> Selecciona la imagen de presentación de la colección. Esta imagen se utilizará para presentar su colección en la página de inicio u otras áreas promocionales de Fibbo. Si no se selecciona ninguna imagen, se usará el logo de la colección.</a>
                     <div className="flex pt-[30px]">
                         <input className="flex w-[400px] h-[250px]" placeholder="IMAGEN DE PRESENTACIÓN"/>
                     </div>
@@ -56,7 +56,7 @@ export default function CollectionContainer() {
                             focus:text-gray-700 focus:bg-white  dark:border-primary-2  dark:text-gray-200 focus:border-blue-600 focus:outline-none `}
                         rows="1"
                         type="text"
-                        value="https://fibbo-market.web.app/collection/"
+                        defaultValue="https://fibbo-market.web.app/collection/"
                     />
                 </div>
 
@@ -71,6 +71,56 @@ export default function CollectionContainer() {
                         rows="5"
                         type="text"
                     />
+                </div>
+
+                <div className="flex flex-col w-full pt-[40px] content-center justify-left">
+                    <a className="text-lg"><b>Links</b></a>
+                    <div className="flex flex-row w-full justify-center items-center ">
+                        <Icon className="flex mt-[20px] mr-[20px]" icon="dashicons:admin-site-alt3" />
+                        <textarea
+                            className={`mt-[20px] block dark:bg-dark-1 w-full px-3 py-1.5 text-md font-normal text-gray-700 bg-white bg-clip-padding 
+                                border border-solid border-black rounded transition ease-in-out m-0
+                                focus:text-gray-700 focus:bg-white  dark:border-primary-2  dark:text-gray-200 focus:border-blue-600 focus:outline-none `}
+                            rows="1"
+                            type="text"
+                            placeholder="tuPaginaWeb.com"
+                        />
+                    </div>
+                    <div className="flex flex-row w-full justify-center items-center ">
+                        <Icon className="flex mt-[20px] mr-[20px]" icon="bi:discord" />
+                        <textarea
+                            className={`mt-[20px] block dark:bg-dark-1 w-full px-3 py-1.5 text-md font-normal text-gray-700 bg-white bg-clip-padding 
+                                border border-solid border-black rounded transition ease-in-out m-0
+                                focus:text-gray-700 focus:bg-white  dark:border-primary-2  dark:text-gray-200 focus:border-blue-600 focus:outline-none `}
+                            rows="1"
+                            type="text"
+                            defaultValue="https://discord.gg/"
+                        />
+                    </div>
+                    <div className="flex flex-row w-full justify-center items-center ">
+                        <Icon className="flex mt-[20px] mr-[20px]" icon="bxl:telegram" />
+                        <textarea
+                            className={`mt-[20px] block dark:bg-dark-1 w-full px-3 py-1.5 text-md font-normal text-gray-700 bg-white bg-clip-padding 
+                                border border-solid border-black rounded transition ease-in-out m-0
+                                focus:text-gray-700 focus:bg-white  dark:border-primary-2  dark:text-gray-200 focus:border-blue-600 focus:outline-none `}
+                            rows="1"
+                            type="text"
+                            defaultValue="https://t.me/"
+                        />
+                    </div>
+                    <div className="flex flex-row w-full justify-center items-center ">
+                        <Icon className="flex mt-[20px] mr-[20px] " icon="cib:instagram" />
+                        <textarea
+                            className={`mt-[20px] block dark:bg-dark-1 w-full px-3 py-1.5 text-md font-normal text-gray-700 bg-white bg-clip-padding 
+                                border border-solid border-black rounded transition ease-in-out m-0
+                                focus:text-gray-700 focus:bg-white  dark:border-primary-2  dark:text-gray-200 focus:border-blue-600 focus:outline-none `}
+                            rows="1"
+                            type="text"
+                            defaultValue="https://www.instagram.com/"
+                        />
+                    </div>
+                    
+                    
                 </div>
 
                 <div className="flex flex-col w-full pt-[40px] content-center justify-left">
@@ -89,10 +139,11 @@ export default function CollectionContainer() {
                         <Icon
                             className="w-auto h-auto flex m-0"
                             icon="akar-icons:info"
-                        />{" "}
+                        />
                         </abbr>
                     </div>
                 </div>
+
 
                 <div className="flex flex-col w-full pt-[40px] content-center justify-left">
                     <ActionButton text="Crear Colección" size="large"/>
