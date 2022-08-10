@@ -22,7 +22,7 @@ export default function CollectionContainer() {
 
                 <div className="flex flex-col w-full pt-[40px] content-center justify-left">
                     <a className="text-lg"><b>Imagen principal de la colección</b></a>
-                    <a className="text-md pt-[20px]"> Selecciona la imagen de presentación de la colección. Esta imagen se utilizará para presentar su colección en la página de inicio u otras áreas promocionales de Fibbo.</a>
+                    <a className="text-md pt-[20px]"> Selecciona la imagen de presentación de la colección. Esta imagen se utilizará para presentar su colección en la página de inicio u otras áreas promocionales de Fibbo. Si no se selecciona ninguna imagen, se usará el logo de la colección.</a>
                     <div className="flex pt-[30px]">
                         <input className="flex w-[400px] h-[250px]" placeholder="IMAGEN DE PRESENTACIÓN"/>
                     </div>
