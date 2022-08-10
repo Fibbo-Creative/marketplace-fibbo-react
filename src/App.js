@@ -55,7 +55,7 @@ function App() {
             <Route path="/profile/:address" element={<ProfileContainer />} />
 
             <Route path="" element={<HomeContainer />} />
-            <Route path="/createCollection" element={<CollectionContainer/> } />
+            <Route path="/collection/create" element={<CollectionContainer/> } />
           </Routes>
         </>
       </BrowserRouter>
