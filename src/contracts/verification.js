@@ -10,6 +10,7 @@ export const useVerification = () => {
 
   const geVerificationContract = async () => {
     const address = await getContractAddress();
+
     return await getContract(address, VERIFICATION_ABI);
   };
 

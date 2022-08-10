@@ -25,7 +25,7 @@ const validateDesc = (desc) => {
 };
 export default function CreateContainer() {
   const navigate = useNavigate();
-  const { uploadImgToCDN } = useApi();
+  const { uploadImgToCDN, getCollectionsAvailable } = useApi();
   const [ipfsImageUrl, setIpfsImageUrl] = useState("");
   const [sanityImgUrl, setSanityImgUrl] = useState("");
   const [name, setName] = useState("");
@@ -33,6 +33,8 @@ export default function CreateContainer() {
   const [royalty, setRoyalty] = useState("");
   const { connectToWallet, wallet } = useAccount();
   const [{ verifiedAddress }] = useStateContext();
+  const [collectionsAvailable, setCollectionsAvailable] = useState([]);
+  const [collectionSelected, setCollectionsSelected] = useState(null);
 
   const [loadingImage, setLoadingImage] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -134,13 +136,26 @@ export default function CreateContainer() {
     setRoyalty(value);
   };
 
+  const handleSelectCollection = (value) => {
+    const selected = collectionsAvailable.find((item) => item.name === value);
+
+    setCollectionsSelected(selected);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       await connectToWallet();
+
+      const collections = await getCollectionsAvailable(wallet);
+      setCollectionsAvailable(collections);
+      setCollectionsSelected(
+        collections.find((item) => item.name === "Default Collection")
+      );
       setLoading(false);
     };
     fetchData();
   }, [wallet, connectToWallet]);
+
   return (
     <PageWithLoading loading={loading}>
       <>
@@ -207,18 +222,24 @@ export default function CreateContainer() {
                 <div className="form-group mb-6 flex flex-col gap-3">
                   <div className="font-bold text-lg">Colección</div>
                   <select
-                    type="text"
-                    /*  value={}
-                onChange={} */
-                    disabled={true}
+                    value={collectionSelected?.name}
+                    onChange={(e) => handleSelectCollection(e.target.value)}
                     placeholder="Collection"
                     id="collectionInput"
                     className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 
               bg-white bg-clip-padding border border-solid border-black rounded transition ease-in-out m-0
               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                   >
-                    <option value={1}>Default Collection</option>
-                    <option value={2}>Other</option>
+                    {collectionsAvailable?.map((col) => {
+                      return (
+                        <option
+                          key={col.collectionAddress}
+                          value={col.collectionAddress}
+                        >
+                          {col.name}
+                        </option>
+                      );
+                    })}
                   </select>
                 </div>
                 <div className="flex flex-col gap-3  mb-4">
@@ -315,6 +336,7 @@ export default function CreateContainer() {
             <ConfirmCreateModal
               showModal={showConfirmationModal}
               handleCloseModal={(e) => setShowConfirmationModal(false)}
+              collection={collectionSelected}
               itemData={{
                 image: sanityImgUrl,
                 name: name,

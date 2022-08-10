@@ -7,14 +7,16 @@ import { addJsonToIpfs } from "../../utils/ipfs";
 import ActionButton from "../ActionButton";
 import { Check } from "../lottie/Check";
 import { BasicModal } from "./BasicModal";
-
+import { useTokens } from "../../contracts/token";
 export const ConfirmCreateModal = ({
   showModal,
   handleCloseModal,
   itemData,
+  collection,
   wallet,
 }) => {
   const { mintNFT, getContractAddress } = useDefaultCollection();
+  const { getERC721Contract } = useTokens();
   const { saveMintedItem } = useApi();
   const [newTokenId, setNewTokenId] = useState(0);
   const [address, setAddress] = useState("");
@@ -32,8 +34,14 @@ export const ConfirmCreateModal = ({
       const ipfsCID = await addJsonToIpfs(data);
       const ipfsFileURL = `https://ipfs.infura.io/ipfs/${ipfsCID.path}`;
 
-      let newTokenId = await mintNFT(wallet, ipfsFileURL);
-      const address = await getContractAddress();
+      const contract = await getERC721Contract(collection.contractAddress);
+      let mintTx = await contract.mint(wallet, ipfsFileURL);
+      let tx = await mintTx.wait();
+
+      console.log(tx);
+      let event = tx.events[0];
+      let value = event.args[2];
+      let newTokenId = value.toNumber();
       //Si todo va bien, crear a sanity
       await saveMintedItem(
         itemData.name,
@@ -42,7 +50,7 @@ export const ConfirmCreateModal = ({
         newTokenId,
         itemData.royalty ? itemData.royalty : 0,
         itemData.image,
-        address,
+        collection.contractAddress,
         itemData.hiddenContent
       );
       setNewTokenId(newTokenId);
@@ -54,7 +62,7 @@ export const ConfirmCreateModal = ({
   };
 
   const seeResult = async () => {
-    navigate(`/explore/${address}/${newTokenId}`);
+    navigate(`/explore/${collection.contractAddress}/${newTokenId}`);
   };
 
   return (
@@ -79,7 +87,7 @@ export const ConfirmCreateModal = ({
             <div className="flex flex-col gap-3 w-60">
               <div className="flex gap-2">
                 <b>Colleción:</b>
-                <p>Default Collection</p>
+                <p>{collection?.name}</p>
               </div>
               <div className="flex gap-2">
                 <b>Nombre:</b>

@@ -25,6 +25,11 @@ export const useAddressRegistry = () => {
     return await addressRegistryContract.auction();
   };
 
+  const getFactoryAddress = async () => {
+    const addressRegistryContract = await getAddressRegistryContract();
+    return await addressRegistryContract.factory();
+  };
+
   const getCommunityAddress = async () => {
     const addressRegistryContract = await getAddressRegistryContract();
     return await addressRegistryContract.community();
@@ -47,6 +52,7 @@ export const useAddressRegistry = () => {
     getCommunityAddress,
     getVerificationAddress,
     getTokenRegistry,
+    getFactoryAddress,
     getAuctionAddress,
   };
 };

@@ -8,7 +8,7 @@ export const Contracts = {
     wftmAddress: "0xf1277d1ed8ad466beddf92ef448a132661956621",
   },
   [ChainId.FANTOM_TESTNET]: {
-    addressRegistry: "0xF873d4D20176a15B7f77d55B316136daAeeA420f",
+    addressRegistry: "0xda5B4e49C1E38B9AbFdbC2593C039E167E604183",
     wftmAddress: "0xf1277d1ed8ad466beddf92ef448a132661956621",
   },
 };

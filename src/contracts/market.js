@@ -13,10 +13,9 @@ const CHAIN = ChainId.FANTOM_TESTNET;
 const WFTM_ADDRESS = Contracts[CHAIN].wftmAddress;
 
 export const useMarketplace = () => {
-  const { getERC20Contract } = useTokens();
+  const { getERC20Contract, getERC721Contract } = useTokens();
+  const { getMarketplaceAddress } = useAddressRegistry();
   const { wallet } = useAccount();
-  const { getMarketplaceAddress, getFibboCollectionAddress } =
-    useAddressRegistry();
 
   const { setApproval, getDefaultCollectionContract } = useDefaultCollection();
   const { getContract } = useContract();
@@ -30,15 +29,19 @@ export const useMarketplace = () => {
 
   const listItem = async (collection, tokenId, price, payToken) => {
     const marketContract = await getMarketContract();
-    let defaultCollection = await getDefaultCollectionContract();
+    let ERC721contract = await getERC721Contract(collection);
 
-    const isApproved = await defaultCollection.isApprovedForAll(
+    const isApproved = await ERC721contract.isApprovedForAll(
       wallet,
       marketContract.address
     );
 
     if (!isApproved) {
-      await setApproval();
+      const approveTx = await ERC721contract.setApprovalForAll(
+        marketContract.address,
+        true
+      );
+      await approveTx.wait();
     }
 
     let listItemTx = await marketContract.listItem(
@@ -91,10 +94,10 @@ export const useMarketplace = () => {
 
   const cancelListing = async (collection, tokenId) => {
     const marketContract = await getMarketContract();
-    const collectionAddress = await await getFibboCollectionAddress();
+    const ERC721contract = await getERC721Contract(collection);
 
     let cancelListingTx = await marketContract.cancelListing(
-      collectionAddress,
+      ERC721contract,
       tokenId
     );
 

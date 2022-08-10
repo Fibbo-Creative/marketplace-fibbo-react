@@ -31,6 +31,10 @@ import { truncateWallet } from "../../utils/wallet";
 import { Icon } from "@iconify/react";
 import CoinGecko from "coingecko-api";
 import { isMobile } from "react-device-detect";
+import { useTokens } from "../../contracts/token";
+import { useFactory } from "../../contracts/factory";
+import { ethers } from "ethers";
+import { MoreItems } from "../../components/MoreItems";
 
 const formatPriceInUsd = (price) => {
   let priceStr = price.toString().split(".");
@@ -79,6 +83,8 @@ export default function ItemPage() {
     acceptOffer,
   } = useMarketplace();
   const { getTotalItems, getIsFreezedMetadata } = useDefaultCollection();
+  const { getERC721Contract } = useTokens();
+
   const {
     getAuction,
     getHighestBid,
@@ -90,6 +96,8 @@ export default function ItemPage() {
     makeBid,
     buyNow,
   } = useAuction();
+
+  const { createNFTContract } = useFactory();
 
   const [openConnectionModal, setOpenConnectionModal] = useState(false);
   const [openSellModal, setOpenSellModal] = useState(false);
@@ -105,9 +113,8 @@ export default function ItemPage() {
   const [openUpdateAuctionModal, setOpenUpdateAuctionModal] = useState(false);
   const [openBuyNowModal, setOpenBuyNowModal] = useState(false);
   const [isHighestBidder, setIsHighestBidder] = useState(false);
-
   const [loading, setLoading] = useState(true);
-
+  const [moreItems, setMoreItems] = useState([]);
   const [coinPrice, setCoinPrice] = useState(1.2);
   const [myOffer, setMyOffer] = useState(null);
   const [chainInfo, setChainInfo] = useState({});
@@ -122,6 +129,7 @@ export default function ItemPage() {
   const tokenInfo = useRef({});
   const profileOwnerData = useRef({});
   const tokenHistoryInfo = useRef([]);
+  const [collectionInfo, setCollectionInfo] = useState(null);
   const offers = useRef([]);
   const listing = useRef(null);
   const auctionInfo = useRef(null);
@@ -143,9 +151,13 @@ export default function ItemPage() {
       nftData,
       offers: _offers,
       history,
+      nfts,
       listing: _listing,
     } = await getNftInfo(collection, tokenId);
 
+    console.log(_listing);
+    let listingInfo = await getListingInfo(collection, tokenId, wallet);
+    console.log(listingInfo);
     tokenInfo.current = nftData;
     tokenHistoryInfo.current = history;
 
@@ -157,7 +169,10 @@ export default function ItemPage() {
       }
     });
 
-    setIsOwner(nftData.owner === wallet);
+    setMoreItems(nfts);
+    const contract = await getERC721Contract(collection);
+    const res = await contract.ownerOf(tokenId);
+    setIsOwner(res);
 
     if (_listing) {
       setIsForSale(true);
@@ -177,6 +192,7 @@ export default function ItemPage() {
 
     const collectionResponse = await getCollectionInfo(collection);
 
+    setCollectionInfo(collectionResponse);
     const recipientInfo = await getProfileInfo(nftData.creator);
 
     const numberOfTokens = await getTotalItems();
@@ -443,6 +459,23 @@ export default function ItemPage() {
     setActionMade(1);
   };
 
+  const createNewCollection = async () => {
+    try {
+      const tx = await createNFTContract("IA Landscape", "IALCS", wallet);
+      const res = await tx.wait();
+      res.events.map((evt) => {
+        if (
+          evt.topics[0] ===
+          "0x2d49c67975aadd2d389580b368cfff5b49965b0bd5da33c144922ce01e7a4d7b"
+        ) {
+          const address = ethers.utils.hexDataSlice(evt.data, 44);
+
+          console.log(address);
+        }
+      });
+    } catch (e) {}
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       getItemDetails();
@@ -493,17 +526,27 @@ export default function ItemPage() {
               {loading ? (
                 <div className="w-full h-full animate-pulse bg-gray-300"></div>
               ) : (
-                <div className="flex justify-between items-center">
-                  <p className="text-3xl">
-                    <b>{tokenInfo?.current.name}</b>
-                  </p>
-                  {!isFreezedMetadata && isOwner && (
-                    <ActionButton
-                      text="EDIT"
-                      size="smaller"
-                      buttonAction={goToEdit}
-                    />
-                  )}
+                <div className="flex flex-col items-start gap-2">
+                  <div>{collectionInfo?.name}</div>
+                  <div className="flex justify-between items-center w-full">
+                    <p className="text-3xl">
+                      <b>{tokenInfo?.current.name}</b>
+                    </p>
+                    {!isFreezedMetadata && isOwner && (
+                      <div className="flex gap-3">
+                        <ActionButton
+                          text="EDIT"
+                          size="smaller"
+                          buttonAction={goToEdit}
+                        />
+                        <ActionButton
+                          text="New Collection"
+                          size="small"
+                          buttonAction={createNewCollection}
+                        />
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
               {loading ? (
@@ -887,6 +930,9 @@ export default function ItemPage() {
 
             <div className="col-span-1 md:col-span-2 row-span-3 ">
               <ItemHistory historyItems={tokenHistoryInfo.current} />
+            </div>
+            <div className="col-span-1 md:col-span-2 row-span-3 ">
+              <MoreItems nfts={moreItems} />
             </div>
           </>
         )}
