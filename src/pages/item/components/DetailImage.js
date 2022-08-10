@@ -2,10 +2,15 @@ import React from "react";
 import QRCode from "qrcode";
 import { useState } from "react";
 import { Icon } from "@iconify/react";
+import { saveAs } from 'file-saver';
 
 export default function DetailImage({ tokenImage, tokenName, loading }) {
   const [imgOrQR, setImgOrQr] = useState(tokenImage);
   const [qrcode, setQrcode] = useState("");
+
+  const downloadQR = () => {
+    saveAs(imgOrQR, tokenName)
+  }
 
   const GenerateQRCode = () => {
     const url = "https://fibbo-market.web.app" + window.location.pathname;
@@ -62,6 +67,7 @@ export default function DetailImage({ tokenImage, tokenName, loading }) {
             <Icon
               className="flex w-[25px] h-[25px] cursor-pointer b-0 hover:w-[30px] hover:h-[30px]"
               icon="charm:download"
+              onClick={downloadQR}
             />
           </div>
         </div>
