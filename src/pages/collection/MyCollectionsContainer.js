@@ -1,14 +1,43 @@
 import ActionButton from "../../components/ActionButton";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useApi } from "../../api";
+import useAccount from "../../hooks/useAccount";
+
+
 
 export default function MyCollectionsContainer() {
+    const { uploadImgToCDN, getMyCollections } = useApi();
+    const [collectionsAvailable, setCollectionsAvailable] = useState([]);
+    const [collectionSelected, setCollectionsSelected] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+
+
+    const { connectToWallet, wallet } = useAccount();
+
+
     const navigate = useNavigate();
 
     const goToCreateCollection = () => {
         console.log("eeee");
         navigate(`/collection/create`);
     };
+
+    useEffect(() => {
+        const fetchData = async () => {
+          await connectToWallet();
+    
+          const collections = await getMyCollections(wallet);
+          setCollectionsAvailable(collections);
+          setCollectionsSelected(
+            collections.find((item) => item.name === "Default Collection")
+          );
+          setLoading(false);
+        };
+        fetchData();
+      }, [wallet, connectToWallet]);
+    
 
     return(
         <div className="flex flex-col mt-[79px] mb-[79px] w-screen content-center justify-center">
