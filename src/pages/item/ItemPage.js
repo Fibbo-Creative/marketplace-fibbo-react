@@ -934,7 +934,7 @@ export default function ItemPage() {
               <ItemHistory historyItems={tokenHistoryInfo.current} />
             </div>
             <div className="col-span-1 md:col-span-2 row-span-3 ">
-              <MoreItems nfts={moreItems} />
+              <MoreItems nfts={moreItems} collectionInfo={collectionInfo} />
             </div>
           </>
         )}
