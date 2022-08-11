@@ -6,6 +6,7 @@ export const TextArea = ({
   error,
   info,
   value,
+  rows,
   onChange,
   placeholder,
   errorMessage,
@@ -22,7 +23,7 @@ export const TextArea = ({
             focus:text-gray-700 focus:bg-white  dark:border-primary-2  dark:text-gray-200 focus:border-blue-600 focus:outline-none ${
               error && "border-red-400 dark:border-red-400"
             }`}
-        rows="3"
+        rows={rows ? rows : "3"}
         placeholder={placeholder}
         value={value}
         onChange={onChange}

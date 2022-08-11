@@ -240,9 +240,11 @@ export const useApi = () => {
     return { items: result.items, profiles: result.profiles };
   };
 
-  const uploadImgToCDN = async (file) => {
+  const uploadImgToCDN = async (file, uploadToIpfs) => {
     var formData = new FormData();
     formData.append("image", file);
+    formData.append("uploadToIpfs", uploadToIpfs);
+
     const imgAddedToSanity = await marketplaceApi.post(
       "api/uploadImg",
       formData,

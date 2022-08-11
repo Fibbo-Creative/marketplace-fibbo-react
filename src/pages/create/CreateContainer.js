@@ -60,7 +60,7 @@ export default function CreateContainer() {
       setImageError(false);
       setLoadingImage(true);
       try {
-        const { sanity, ipfs } = await uploadImgToCDN(file);
+        const { sanity, ipfs } = await uploadImgToCDN(file, true);
         setIpfsImageUrl(`https://ipfs.io/ipfs/${ipfs}`);
 
         if (sanity === "INVALID IMG") {
