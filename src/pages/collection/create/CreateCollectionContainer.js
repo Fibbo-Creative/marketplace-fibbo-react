@@ -368,7 +368,7 @@ export default function CreateCollectionContainer() {
             value={url}
             onChange={(e) => handleChangeURL(e.target.value)}
             error={urlError}
-            info="Personaliza tu URL en OpenSea. Solo puede contener letras minúsculas, números y guiones"
+            info="Personaliza tu URL en Fibbo. Solo puede contener letras minúsculas, números y guiones"
             errorMessage="El formato de URL es incorrecto"
           />
         </div>

@@ -53,7 +53,8 @@ export default function ExploreContainer() {
       //setAllMarketItems(firstItems);
       //setVisibleMarketItems(firstItems.slice(0, 12));
 
-      const forSaleItems = await getAllTokens();
+      let forSaleItems = await getAllTokens();
+      forSaleItems = forSaleItems.sort(orderByRecently);
       setAllMarketItems(forSaleItems);
       setMarketItems(forSaleItems);
 
