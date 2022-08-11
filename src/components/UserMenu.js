@@ -14,6 +14,10 @@ export const UserMenu = ({ setOpenStation, setOpenMenu, disconnectWallet }) => {
     setOpenMenu(false);
     navigate(`profile/${userProfile.wallet}`);
   };
+  const goToMyCollections = () => {
+    setOpenMenu(false);
+    navigate(`myCollections`);
+  };
 
   const handleDisconnect = () => {
     setOpenMenu(false);
@@ -44,6 +48,11 @@ export const UserMenu = ({ setOpenStation, setOpenMenu, disconnectWallet }) => {
           text="Perfil"
           icon="healthicons:ui-user-profile"
           onClick={() => goToProfile()}
+        />
+        <UserMenuItem
+          text="Mis colecciones"
+          icon="ic:outline-collections"
+          onClick={() => goToMyCollections()}
         />
         <UserMenuItem
           text="Configuración"
