@@ -135,7 +135,7 @@ export default function Navbar() {
             </div>
             <div className="flex ">
               <NavbarItem text="Marketplace" to="/explore" />
-              <NavbarItem text="Coleciones" to="/collections" />
+              <NavbarItem text="Colecciones" to="/collections" />
 
               {!verifiedAddress && (
                 <NavbarItem text="Verifícate!" to="/verificate/request" />
