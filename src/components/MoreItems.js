@@ -8,7 +8,13 @@ export const MoreItems = ({ nfts, collectionInfo }) => {
   const navigate = useNavigate();
   const redirectToItem = (item) => {
     console.log(item);
-    navigate(`/explore/${item.collectionAddress}/${item.tokenId}`);
+    navigate(
+      `/explore/${
+        collectionInfo.customURL
+          ? collectionInfo.customURL
+          : item.collectionAddress
+      }/${item.tokenId}`
+    );
   };
 
   return (

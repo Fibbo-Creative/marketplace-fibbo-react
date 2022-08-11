@@ -142,7 +142,11 @@ export default function ItemPage() {
   };
 
   const goToEdit = () => {
-    navigate(`/edit/${collection}/${tokenId}`);
+    navigate(
+      `/edit/${
+        collectionInfo.customURL ? collectionInfo.customURL : collection
+      }/${tokenId}`
+    );
   };
 
   const getItemDetails = async () => {
@@ -166,8 +170,13 @@ export default function ItemPage() {
       }
     });
 
+    const collectionResponse = await getCollectionInfo(collection);
+    setCollectionInfo(collectionResponse);
+
     setMoreItems(nfts);
-    const contract = await getERC721Contract(collection);
+    const contract = await getERC721Contract(
+      collectionResponse.contractAddress
+    );
     if (wallet) {
       const res = await contract.ownerOf(tokenId);
 
@@ -186,15 +195,12 @@ export default function ItemPage() {
     profileOwnerData.current = profileOwnerResponse;
 
     setChainInfo({
-      collection: collection,
+      collection: collectionResponse.contractAddress,
       tokenId: tokenId,
       network: configData.chainInfo.name,
       chainId: configData.chainInfo.chainId,
     });
 
-    const collectionResponse = await getCollectionInfo(collection);
-
-    setCollectionInfo(collectionResponse);
     const recipientInfo = await getProfileInfo(nftData.creator);
 
     const numberOfTokens = await getTotalItems();
@@ -214,7 +220,10 @@ export default function ItemPage() {
 
   const getAuctions = async () => {
     try {
-      const _auction = await getAuction(collection, tokenId);
+      const _auction = await getAuction(
+        collectionInfo.contractAddress,
+        tokenId
+      );
 
       if (_auction.endTime !== 0) {
         setIsOnAuction(true);
@@ -233,7 +242,7 @@ export default function ItemPage() {
     try {
       if (auctionInfo.current) {
         const bid = await getHighestBid(
-          collection,
+          collectionInfo.contractAddress,
           tokenId,
           auctionInfo.current.payToken
         );
@@ -264,9 +273,13 @@ export default function ItemPage() {
   };
 
   const handleListItem = async (price, payToken) => {
-    await listItem(collection, tokenId, price, payToken);
+    await listItem(collectionInfo.contractAddress, tokenId, price, payToken);
 
-    let listingInfo = await getListingInfo(collection, tokenId, wallet);
+    let listingInfo = await getListingInfo(
+      collectionInfo.contractAddress,
+      tokenId,
+      wallet
+    );
     let payTokenInfo = await getPayTokenInfo(payToken.contractAddress);
     listing.current = {
       ...listingInfo,
@@ -277,7 +290,12 @@ export default function ItemPage() {
   };
 
   const handleUpdatePrice = async (newPrice, payToken) => {
-    await updateListing(collection, tokenId, newPrice, payToken);
+    await updateListing(
+      collectionInfo.contractAddress,
+      tokenId,
+      newPrice,
+      payToken
+    );
 
     if (listing.current.payToken.contractAddress !== payToken.contractAddress) {
       let payTokenInfo = await getPayTokenInfo(payToken.contractAddress);
@@ -288,7 +306,7 @@ export default function ItemPage() {
   };
 
   const handleUnlistItem = async () => {
-    await cancelListing(collection, tokenId);
+    await cancelListing(collectionInfo.contractAddress, tokenId);
     listing.current = null;
     setIsForSale(false);
     setActionMade(1);
@@ -297,14 +315,18 @@ export default function ItemPage() {
   const handleMakeOffer = async (offerPrice, deadline, payToken) => {
     await makeOffer(
       wallet,
-      collection,
+      collectionInfo.contractAddress,
       tokenId,
       offerPrice,
       deadline,
       payToken
     );
 
-    let _offer = await getOffer(collection, tokenId, wallet);
+    let _offer = await getOffer(
+      collectionInfo.contractAddress,
+      tokenId,
+      wallet
+    );
     const offerCreator = await getProfileInfo(wallet);
     const payTokenInfo = await getPayTokenInfo(payToken.contractAddress);
     _offer = {
@@ -324,7 +346,7 @@ export default function ItemPage() {
   };
 
   const handleAcceptOffer = async (from) => {
-    await acceptOffer(collection, tokenId, from);
+    await acceptOffer(collectionInfo.contractAddress, tokenId, from);
 
     listing.current = null;
     offers.current = [];
@@ -337,7 +359,7 @@ export default function ItemPage() {
   };
 
   const handleCancelOffer = async () => {
-    await cancelOffer(collection, tokenId);
+    await cancelOffer(collectionInfo.contractAddress, tokenId);
 
     offers.current = offers.current.filter(
       (offer) => offer.creator.wallet !== wallet
@@ -348,7 +370,7 @@ export default function ItemPage() {
   const handleBuyItem = async () => {
     await buyItem(
       wallet,
-      collection,
+      collectionInfo.contractAddress,
       tokenId,
       tokenInfo?.current.owner,
       listing.current?.price,
@@ -375,7 +397,7 @@ export default function ItemPage() {
   ) => {
     await createAuction(
       wallet,
-      collection,
+      collectionInfo.contractAddress,
       tokenId,
       reservePrice,
       buyNowPrice,
@@ -385,7 +407,7 @@ export default function ItemPage() {
       payToken
     );
 
-    const _auction = await getAuction(collection, tokenId);
+    const _auction = await getAuction(collectionInfo.contractAddress, tokenId);
     const payTokenInfo = await getPayTokenInfo(payToken.contractAddress);
     auctionInfo.current = {
       ..._auction,
@@ -395,7 +417,7 @@ export default function ItemPage() {
   };
 
   const handleCancelAuction = async () => {
-    await cancelAuction(collection, tokenId);
+    await cancelAuction(collectionInfo.contractAddress, tokenId);
     setIsOnAuction(false);
     auctionInfo.current = null;
   };
@@ -405,7 +427,11 @@ export default function ItemPage() {
       reservePrice !== 0 &&
       parseFloat(reservePrice) !== parseFloat(auctionInfo.current.reservePrice)
     ) {
-      await updateReservePrice(collection, tokenId, reservePrice);
+      await updateReservePrice(
+        collectionInfo.contractAddress,
+        tokenId,
+        reservePrice
+      );
 
       auctionInfo.current.reservePrice = reservePrice;
     }
@@ -416,7 +442,7 @@ export default function ItemPage() {
     ) {
       startTime = Math.floor(startTime.getTime() / 1000);
 
-      await updateStartTime(collection, tokenId, startTime);
+      await updateStartTime(collectionInfo.contractAddress, tokenId, startTime);
 
       auctionInfo.current.startTime = startTime;
     }
@@ -427,16 +453,19 @@ export default function ItemPage() {
     ) {
       endTime = Math.floor(endTime.getTime() / 1000);
 
-      await updateEndTime(collection, tokenId, endTime);
+      await updateEndTime(collectionInfo.contractAddress, tokenId, endTime);
 
       auctionInfo.current.endTime = endTime;
     }
   };
 
   const handleMakeBid = async (bidAmount) => {
-    await makeBid(wallet, collection, tokenId, bidAmount);
+    await makeBid(wallet, collectionInfo.contractAddress, tokenId, bidAmount);
 
-    let _highestBid = await getHighestBid(collection, tokenId);
+    let _highestBid = await getHighestBid(
+      collectionInfo.contractAddress,
+      tokenId
+    );
     const profile = await getProfileInfo(_highestBid.bidder);
     _highestBid = {
       ..._highestBid,
@@ -447,7 +476,12 @@ export default function ItemPage() {
   };
 
   const hanldeBuyNow = async () => {
-    await buyNow(wallet, collection, tokenId, auctionInfo.current?.buyNowPrice);
+    await buyNow(
+      wallet,
+      collectionInfo.contractAddress,
+      tokenId,
+      auctionInfo.current?.buyNowPrice
+    );
 
     offers.current = [];
 
@@ -461,26 +495,9 @@ export default function ItemPage() {
     setActionMade(1);
   };
 
-  const createNewCollection = async () => {
-    try {
-      const tx = await createNFTContract("IA Landscape", "IALCS", wallet);
-      const res = await tx.wait();
-      res.events.map((evt) => {
-        if (
-          evt.topics[0] ===
-          "0x2d49c67975aadd2d389580b368cfff5b49965b0bd5da33c144922ce01e7a4d7b"
-        ) {
-          const address = ethers.utils.hexDataSlice(evt.data, 44);
-
-          console.log(address);
-        }
-      });
-    } catch (e) {}
-  };
-
   useEffect(() => {
     const fetchData = async () => {
-      getItemDetails();
+      await getItemDetails();
       getAuctions().then(() => {
         getBid();
       });
@@ -498,7 +515,10 @@ export default function ItemPage() {
       if (actionMade === 1) {
         let changed = true;
         while (changed) {
-          const res = await getNftHistory(collection, tokenId);
+          const res = await getNftHistory(
+            collectionInfo.contractAddress,
+            tokenId
+          );
           if (res.length !== tokenHistoryInfo.current.length) {
             tokenHistoryInfo.current = res;
             changed = false;
@@ -540,11 +560,6 @@ export default function ItemPage() {
                           text="EDIT"
                           size="smaller"
                           buttonAction={goToEdit}
-                        />
-                        <ActionButton
-                          text="New Collection"
-                          size="small"
-                          buttonAction={createNewCollection}
                         />
                       </div>
                     )}
@@ -946,7 +961,7 @@ export default function ItemPage() {
       />
       <>
         <PutForSaleModal
-          collectionAddress={collection}
+          collectionAddress={collectionInfo?.contractAddress}
           tokenId={tokenId}
           wallet={wallet}
           showModal={openSellModal}
@@ -954,7 +969,7 @@ export default function ItemPage() {
           onListItem={handleListItem}
         />
         <CreateAuctionModal
-          collection={collection}
+          collection={collectionInfo?.contractAddress}
           tokenId={tokenId}
           wallet={wallet}
           tokenInfo={tokenInfo}
@@ -974,7 +989,7 @@ export default function ItemPage() {
         />
 
         <MakeOfferModal
-          collection={collection}
+          collection={collectionInfo?.contractAddress}
           tokenId={tokenId}
           tokenInfo={tokenInfo}
           wallet={wallet}
@@ -996,7 +1011,7 @@ export default function ItemPage() {
 
       <>
         <MakeBidModal
-          collection={collection}
+          collection={collectionInfo?.contractAddress}
           tokenId={tokenId}
           showModal={openBidModal}
           handleCloseModal={(e) => setOpenBidModal(false)}
@@ -1006,7 +1021,7 @@ export default function ItemPage() {
           onMakeBid={handleMakeBid}
         />
         <BuyNowModal
-          collection={collection}
+          collection={collectionInfo?.contractAddress}
           tokenId={tokenId}
           showModal={openBuyNowModal}
           handleCloseModal={(e) => setOpenBuyNowModal(false)}
@@ -1020,7 +1035,7 @@ export default function ItemPage() {
       {auctionInfo.current && (
         <>
           <CancelAuctionModal
-            collection={collection}
+            collection={collectionInfo?.contractAddress}
             tokenId={tokenId}
             showModal={openCancelAuctionModal}
             handleCloseModal={(e) => setOpenCancelAuctionModal(false)}

@@ -223,8 +223,41 @@ export const useApi = () => {
     return res.data;
   };
 
-  const saveCollectionDetails = async (owner) => {
-    const res = await marketplaceApi.post(`collections/new`, {});
+  const getMyCollections = async (owner) => {
+    const res = await marketplaceApi.get(
+      `collections/myCollections?owner=${owner}`
+    );
+    return res.data;
+  };
+
+  const saveCollectionDetails = async (
+    contractAddress,
+    creator,
+    name,
+    description,
+    logoImage,
+    featuredImage,
+    bannerImage,
+    customURL,
+    websiteURL,
+    discordURL,
+    telegramURL,
+    instagramURL
+  ) => {
+    const res = await marketplaceApi.post(`collections/new`, {
+      contractAddress,
+      creator,
+      name,
+      description,
+      logoImage,
+      featuredImage,
+      bannerImage,
+      customURL,
+      websiteURL,
+      discordURL,
+      telegramURL,
+      instagramURL,
+    });
     return res.data;
   };
 
@@ -326,6 +359,7 @@ export const useApi = () => {
     getAllPayTokens,
     getPayTokenInfo,
     setImportWFTM,
+    getMyCollections,
     editNftData,
   };
 };

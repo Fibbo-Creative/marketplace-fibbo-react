@@ -5,10 +5,16 @@ import { ImageInput } from "../../../components/inputs/ImageInput";
 import { TextInput } from "../../../components/inputs/TextInput";
 import { TextArea } from "../../../components/inputs/TextArea";
 import { useApi } from "../../../api";
+import { ethers } from "ethers";
+import { useFactory } from "../../../contracts/factory";
+import useAccount from "../../../hooks/useAccount";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateCollectionContainer() {
-  const { uploadImgToCDN, getCollectionsAvailable } = useApi();
-
+  const { uploadImgToCDN, saveCollectionDetails } = useApi();
+  const navigate = useNavigate();
+  const { createNFTContract } = useFactory();
+  const { wallet } = useAccount();
   const [logoImage, setLogoImage] = useState("");
   const [logoImageError, setLogoImageError] = useState("");
   const [logoImageMessageError, setLogoImageMessageError] = useState("");
@@ -31,10 +37,50 @@ export default function CreateCollectionContainer() {
   const [descError, setDescError] = useState(false);
 
   const [website, setWebsite] = useState("https://");
-  const [discord, setDiscord] = useState("https://discord.gg/");
-  const [telegram, setTelegram] = useState("https://t.me/");
-  const [instagram, setInstagram] = useState("https://www.instagram.com/");
+  const [websiteError, setWebsiteError] = useState(false);
 
+  const [discord, setDiscord] = useState("https://discord.gg/");
+  const [discordError, setDiscordError] = useState(false);
+
+  const [telegram, setTelegram] = useState("https://t.me/");
+  const [telegramError, setTelegramError] = useState(false);
+
+  const [instagram, setInstagram] = useState("https://www.instagram.com/");
+  const [instagramError, setInstagramError] = useState(false);
+
+  const checkURLFormat = (base, state) => {
+    const stateValue = state.split(base);
+    if (stateValue[1] !== "") {
+      const conditions = [
+        ".",
+        "~",
+        ":",
+        "/",
+        "?",
+        "#",
+        "[",
+        "]",
+        "@",
+        "!",
+        "$",
+        "&",
+        "(",
+        ")",
+        "%",
+        "*",
+        "+",
+        ",",
+        ";",
+        "=",
+      ];
+      if (conditions.some((el) => stateValue[1].includes(el))) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+    return true;
+  };
   const onSelectLogoImage = async (e) => {
     const file = e.target.files[0];
     if (file.type.includes("image")) {
@@ -104,7 +150,7 @@ export default function CreateCollectionContainer() {
   const handleChangeURL = (value) => {
     setUrlError(false);
     let finalValue = value.split("https://fibbo-market.web.app/collection/");
-    console.log(finalValue[1]);
+
     if (finalValue[1]) {
       setUrl(`https://fibbo-market.web.app/collection/${finalValue[1]}`);
     } else {
@@ -118,9 +164,8 @@ export default function CreateCollectionContainer() {
   };
 
   const handleChangeWebiste = (value) => {
-    setUrlError(false);
     let finalValue = value.split("https://");
-    console.log(finalValue[1]);
+
     if (finalValue[1]) {
       setWebsite(`https://${finalValue[1]}`);
     } else {
@@ -129,9 +174,9 @@ export default function CreateCollectionContainer() {
   };
 
   const handleChangeDiscord = (value) => {
-    setUrlError(false);
+    setDiscordError(false);
     let finalValue = value.split("https://discord.gg/");
-    console.log(finalValue[1]);
+
     if (finalValue[1]) {
       setDiscord(`https://discord.gg/${finalValue[1]}`);
     } else {
@@ -140,9 +185,9 @@ export default function CreateCollectionContainer() {
   };
 
   const handleChangeTelegram = (value) => {
-    setUrlError(false);
+    setTelegramError(false);
     let finalValue = value.split("https://t.me/");
-    console.log(finalValue[1]);
+
     if (finalValue[1]) {
       setTelegram(`https://t.me/${finalValue[1]}`);
     } else {
@@ -151,9 +196,9 @@ export default function CreateCollectionContainer() {
   };
 
   const handleChangeInstagram = (value) => {
-    setUrlError(false);
+    setTelegramError(false);
     let finalValue = value.split("https://www.instagram.com/");
-    console.log(finalValue[1]);
+
     if (finalValue[1]) {
       setInstagram(`https://www.instagram.com/${finalValue[1]}`);
     } else {
@@ -162,10 +207,10 @@ export default function CreateCollectionContainer() {
   };
 
   const handleCreateCollection = async () => {
-    //Comprobar los required
-
-    //LOGO - Nombre - Descripción
+    //Comprobar el formato de la url y colecciones
     let error = false;
+    console.log("KE");
+
     if (logoImage === "") {
       error = true;
       setLogoImageError(true);
@@ -177,13 +222,65 @@ export default function CreateCollectionContainer() {
       setNameError(true);
     }
 
+    //Check if name is chosen!
+
     if (desc === "" || desc.length < 50 || desc.length > 1000) {
       error = true;
       setDescError(true);
     }
 
+    if (!checkURLFormat("https://fibbo-market.web.app/collection/", url)) {
+      error = true;
+      setUrlError(true);
+    }
+
+    if (!checkURLFormat("https://discord.gg/", discord)) {
+      error = true;
+      setDiscordError(true);
+    }
+    if (!checkURLFormat("https://t.me/", telegram)) {
+      error = true;
+      setTelegramError(true);
+    }
+    if (!checkURLFormat("https://www.instagram.com/", instagram)) {
+      error = true;
+      setInstagramError(true);
+    }
     if (!error) {
-      console.log("KEK");
+      const customURL = url.split(
+        "https://fibbo-market.web.app/collection/"
+      )[1];
+
+      try {
+        const tx = await createNFTContract(name, "FBBOART", wallet);
+        const res = await tx.wait();
+        res.events.map(async (evt) => {
+          if (
+            evt.topics[0] ===
+            "0x2d49c67975aadd2d389580b368cfff5b49965b0bd5da33c144922ce01e7a4d7b"
+          ) {
+            const address = ethers.utils.hexDataSlice(evt.data, 44);
+
+            console.log(address);
+            const created = await saveCollectionDetails(
+              address,
+              wallet,
+              name,
+              desc,
+              logoImage,
+              mainImage !== "" ? mainImage : logoImage,
+              bannerImage,
+              customURL,
+              website,
+              discord,
+              telegram,
+              instagram
+            );
+
+            navigate("/create");
+          }
+        });
+      } catch (e) {}
     } else {
     }
   };
@@ -312,6 +409,8 @@ export default function CreateCollectionContainer() {
               <div className="w-full">
                 <TextInput
                   value={discord}
+                  error={discordError}
+                  errorMessage={"Formato incorrecto"}
                   onChange={(e) => handleChangeDiscord(e.target.value)}
                 />
               </div>
@@ -321,6 +420,8 @@ export default function CreateCollectionContainer() {
               <div className="w-full">
                 <TextInput
                   value={telegram}
+                  error={telegramError}
+                  errorMessage={"Formato incorrecto"}
                   onChange={(e) => handleChangeTelegram(e.target.value)}
                 />
               </div>
@@ -330,6 +431,8 @@ export default function CreateCollectionContainer() {
               <div className="w-full">
                 <TextInput
                   value={instagram}
+                  error={instagramError}
+                  errorMessage={"Formato incorrecto"}
                   onChange={(e) => handleChangeInstagram(e.target.value)}
                 />
               </div>
