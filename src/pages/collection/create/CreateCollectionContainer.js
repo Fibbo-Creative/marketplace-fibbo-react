@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import ActionButton from "../../../components/ActionButton";
+import { ImageInput } from "../../../components/inputs/ImageInput";
 
 export default function CreateCollectionContainer() {
+  const [logoImage, setLogoImage] = useState("");
+  const [mainImage, setMainImage] = useState("");
+  const [bannerImage, setBannerImage] = useState("");
+
   return (
     <div className="flex mt-[79px] mb-[79px]  w-screen content-center justify-center">
       <div className="flex w-7/12 flex-col  ">
@@ -17,14 +22,18 @@ export default function CreateCollectionContainer() {
             <b>Logo de la colección *</b>
           </a>
           <a className="text-md pt-[20px]">
-            {" "}
             Selecciona el logo de la colección que será visible al navegar por
-            el marketplace.{" "}
+            el marketplace.
           </a>
-          <div className="flex pt-[30px]">
-            <input
-              className="flex w-[200px] h-[200px]"
-              placeholder="LOGO DE LA COLECCIÓN"
+          <div className="flex flex-col pt-[30px]">
+            <ImageInput
+              imageURL={logoImage}
+              inputId="logoImageInput"
+              className="rounded-full w-[100px] h-[100px] md:w-[150px] md:h-[150px] lg:w-[200px] lg:h-[200px]"
+              onFileSelected={null}
+              imageError={false}
+              imageMessageError={""}
+              icon={true}
             />
           </div>
         </div>
@@ -41,9 +50,14 @@ export default function CreateCollectionContainer() {
             usará el logo de la colección.
           </a>
           <div className="flex pt-[30px]">
-            <input
-              className="flex w-[400px] h-[250px]"
-              placeholder="IMAGEN DE PRESENTACIÓN"
+            <ImageInput
+              imageURL={mainImage}
+              inputId="mainImageInput"
+              className="rounded-xl w-[200px] h-[100px] md:w-[250px] md:h-[150px] lg:w-[300px] lg:h-[200px]"
+              onFileSelected={null}
+              imageError={false}
+              imageMessageError={""}
+              icon={true}
             />
           </div>
         </div>
@@ -59,9 +73,14 @@ export default function CreateCollectionContainer() {
             ya que las dimensiones cambian en diferentes dispositivos.{" "}
           </a>
           <div className="flex pt-[30px]">
-            <input
-              className="flex w-[900px] h-[250px]"
-              placeholder="PANCARTA DE LA COLECCIÓN"
+            <ImageInput
+              imageURL={bannerImage}
+              inputId="bannerImageInput"
+              className="rounded-xl w-[300px] h-[100px] md:w-[350px] md:h-[150px] lg:w-[600px] lg:h-[200px]"
+              onFileSelected={null}
+              imageError={false}
+              imageMessageError={""}
+              icon={true}
             />
           </div>
         </div>

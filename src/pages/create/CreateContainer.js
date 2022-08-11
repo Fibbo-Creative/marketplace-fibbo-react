@@ -13,6 +13,7 @@ import { NumberInput } from "../../components/inputs/NumberInput";
 import { PageWithLoading } from "../../components/basic/PageWithLoading";
 import { NotVerified } from "../../components/basic/NotVerified";
 import { Icon } from "@iconify/react";
+import { ImageInput } from "../../components/inputs/ImageInput";
 
 const validateName = (name) => {
   if (name.length > 4 && name.length < 30) return true;
@@ -66,8 +67,6 @@ export default function CreateContainer() {
           setImageError(true);
           setImageMessageError("Imagen no permitida, contiene contenido NFSW");
         } else {
-          document.getElementById("divTextImgNFT").style.visibility = "hidden";
-          document.getElementById("divImgNFT").style.padding = "0";
           setSanityImgUrl(sanity);
           setImageError(false);
         }
@@ -160,59 +159,15 @@ export default function CreateContainer() {
           <div className="h-full flex-col w-full lg:h-screen justify-center items-center dark:bg-dark-1">
             <div className="flex lg:flex-row flex-col gap-10 block p-8 justify-center items-center md:items-start">
               <div className="flex flex-col gap-20">
-                <div
-                  id="divImgNFT"
-                  tabIndex="0"
-                  bis_skin_checked="1"
-                  onClick={selectNFTImg}
-                  className={`outline-dashed dark:bg-dark-1 ${
-                    imageError && "outline-red-400"
-                  } w-[300px] h-[300px] md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px] items-center justify-center cursor-pointer`}
-                >
-                  <input
-                    id="inputNFT"
-                    onChange={(e) => onFileSelected(e)}
-                    accept="image/*"
-                    name="uploadImage"
-                    type="file"
-                    autoComplete="off"
-                    className="hidden"
-                  />
-
-                  {!imageError && sanityImgUrl !== "" && (
-                    // eslint-disable-next-line jsx-a11y/alt-text
-                    <img
-                      className="h-full w-full object-contain p-1"
-                      src={sanityImgUrl}
-                    ></img>
-                  )}
-                  <div
-                    id="divTextImgNFT"
-                    className={`flex h-full items-center justify-center text-center${
-                      imageError && "text-red-400"
-                    }`}
-                  >
-                    {loadingImage ? (
-                      <img
-                        src={fibboLogo}
-                        className="w-[128px] animate-pulse"
-                      />
-                    ) : (
-                      <>
-                        {!loadingImage && imageError ? (
-                          <div className="text-red-600">
-                            {imageMessageError}
-                          </div>
-                        ) : (
-                          <div className="text-center">
-                            Arrastra o selecciona ficheros de imágen <br></br>{" "}
-                            JPG, PNG, JPEG, GIF, SVG o WEBP.
-                          </div>
-                        )}
-                      </>
-                    )}
-                  </div>
-                </div>
+                <ImageInput
+                  imageURL={sanityImgUrl}
+                  inputId="inputNFT"
+                  onFileSelected={onFileSelected}
+                  imageError={imageError}
+                  icon={false}
+                  imageMessageError={imageMessageError}
+                  className="rounded-md w-[300px] h-[300px] md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px]"
+                />
               </div>
 
               <div className="">
