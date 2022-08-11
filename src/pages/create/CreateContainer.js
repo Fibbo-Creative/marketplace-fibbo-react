@@ -57,19 +57,17 @@ export default function CreateContainer() {
       setImageError(false);
       setLoadingImage(true);
       try {
-        const imgAddedToIPFS = await addImgToIpfs(file);
+        const { sanity, ipfs } = await uploadImgToCDN(file);
 
-        setIpfsImageUrl(`https://ipfs.infura.io/ipfs/${imgAddedToIPFS.path}`);
+        setIpfsImageUrl(`https://ipfs.infura.io/ipfs/${ipfs}`);
 
-        const imgAddedToSanity = await uploadImgToCDN(file);
-
-        if (imgAddedToSanity === "INVALID IMG") {
+        if (sanity === "INVALID IMG") {
           setImageError(true);
           setImageMessageError("Imagen no permitida, contiene contenido NFSW");
         } else {
           document.getElementById("divTextImgNFT").style.visibility = "hidden";
           document.getElementById("divImgNFT").style.padding = "0";
-          setSanityImgUrl(imgAddedToSanity);
+          setSanityImgUrl(sanity);
           setImageError(false);
         }
         setLoadingImage(false);
