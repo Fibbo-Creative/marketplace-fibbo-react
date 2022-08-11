@@ -216,6 +216,13 @@ export const useApi = () => {
     return res.data;
   };
 
+  const getCollectionDetail = async (collection) => {
+    const res = await marketplaceApi.get(
+      `collections/collectionDetail?collection=${collection}`
+    );
+    return res.data;
+  };
+
   const getCollectionsAvailable = async (owner) => {
     const res = await marketplaceApi.get(
       `collections/available?owner=${owner}`
@@ -342,6 +349,7 @@ export const useApi = () => {
     getNftInfo,
     getItemOffers,
     getCollectionInfo,
+    getCollectionDetail,
     getCollectionsAvailable,
     getNftsFromAddress,
     getNftHistory,
