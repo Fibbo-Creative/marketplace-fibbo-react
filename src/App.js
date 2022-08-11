@@ -18,6 +18,7 @@ import EditContainer from "./pages/edit/EditContainer";
 import CreateCollectionContainer from "./pages/collection/create/CreateCollectionContainer";
 import CollectionsContainer from "./pages/collection/CollectionsContainer";
 import { CollectionDetailContainer } from "./pages/collection/detail/CollectionDetailContainer";
+import MyCollectionsContainer from "./pages/collection/MyCollectionsContainer"
 
 function App() {
   const { theme } = useContext(ThemeContext);
@@ -57,6 +58,7 @@ function App() {
             <Route path="/profile/:address" element={<ProfileContainer />} />
 
             <Route path="/collections" element={<CollectionsContainer />} />
+            <Route path="/myCollections" element={<MyCollectionsContainer />} />
             <Route
               path="/collection/create"
               element={<CreateCollectionContainer />}

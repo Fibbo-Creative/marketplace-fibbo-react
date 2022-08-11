@@ -5,7 +5,9 @@ import ActionButton from "../../components/ActionButton";
 export default function CollectionsContainer() {
   return (
     <div className="flex mt-[79px] mb-[79px]  w-screen content-center justify-center">
-      <div>Collections List</div>
+      <div className="flex w-full p-[40px] content-center justify-center">
+        <a className="text-2xl"> <b>Listado de colecciones </b></a>
+      </div>
     </div>
   );
 }

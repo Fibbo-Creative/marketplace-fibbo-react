@@ -135,7 +135,7 @@ export default function Navbar() {
             </div>
             <div className="flex ">
               <NavbarItem text="Marketplace" to="/explore" />
-              <NavbarItem text="Coleciones" to="/collections" />
+              <NavbarItem text="Colecciones" to="/collections" />
 
               {!verifiedAddress && (
                 <NavbarItem text="Verifícate!" to="/verificate/request" />
@@ -215,7 +215,7 @@ export default function Navbar() {
                 </div>
               </div>
               <NavbarItemMobile text="Marketplace" to="/explore" />
-              <NavbarItemMobile text="Coleciones" to="/collections" />
+              <NavbarItemMobile text="Colecciones" to="/collections" />
               {!verifiedAddress && (
                 <NavbarItemMobile text="Verifícate!" to="/verificate/request" />
               )}
