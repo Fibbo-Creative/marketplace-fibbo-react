@@ -15,7 +15,7 @@ export const ConfirmCreateModal = ({
   wallet,
 }) => {
   const { createToken, getContractAddress } = useDefaultCollection();
-  const { saveMintedItem } = useApi();
+  const { saveMintedItem, uploadJSONMetadata } = useApi();
   const [newTokenId, setNewTokenId] = useState(0);
   const [address, setAddress] = useState("");
   const [completedAction, setCompletedAction] = useState(false);
@@ -29,8 +29,13 @@ export const ConfirmCreateModal = ({
       image: itemData.ipfsImage,
     });
     try {
-      const ipfsCID = await addJsonToIpfs(data);
-      const ipfsFileURL = `https://ipfs.infura.io/ipfs/${ipfsCID.path}`;
+      const ipfsCID = await uploadJSONMetadata(
+        itemData.name,
+        itemData.description,
+        itemData.ipfsImage
+      );
+
+      const ipfsFileURL = `https://ipfs.infura.io/ipfs/${ipfsCID}`;
 
       let newTokenId = await createToken(ipfsFileURL);
       const address = await getContractAddress();
