@@ -2,11 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import ActionButton from "../../../components/ActionButton";
 import { ImageInput } from "../../../components/inputs/ImageInput";
+import { TextInput } from "../../../components/inputs/TextInput";
+import { TextArea } from "../../../components/inputs/TextArea";
 
 export default function CreateCollectionContainer() {
   const [logoImage, setLogoImage] = useState("");
   const [mainImage, setMainImage] = useState("");
   const [bannerImage, setBannerImage] = useState("");
+  const [name, setName] = useState("");
+  const [nameError, setNameError] = useState();
 
   return (
     <div className="flex mt-[79px] mb-[79px]  w-screen content-center justify-center">
@@ -85,9 +89,16 @@ export default function CreateCollectionContainer() {
           </div>
         </div>
 
+        <TextInput
+          label={"Nombre de la colección"}
+          required
+          error={nameError}
+          errorMessage=" El nombre debe tener entre 4 y 30 carácteres"
+        />
+
         <div className="flex flex-col w-full pt-[40px] content-center justify-left">
           <a className="text-lg">
-            <b>Nombre de la colección *</b>
+            <b></b>
           </a>
           <textarea
             className={`mt-[20px] block dark:bg-dark-1 w-full px-3 py-1.5 text-md font-normal text-gray-700 bg-white bg-clip-padding 
@@ -127,7 +138,7 @@ export default function CreateCollectionContainer() {
             carácteres.{" "}
           </a>
 
-          <textarea
+          <TextInput
             className={`mt-[20px] block dark:bg-dark-1 w-full px-3 py-1.5 text-md font-normal text-gray-700 bg-white bg-clip-padding 
                             border border-solid border-black rounded transition ease-in-out m-0
                             focus:text-gray-700 focus:bg-white  dark:border-primary-2  dark:text-gray-200 focus:border-blue-600 focus:outline-none `}
