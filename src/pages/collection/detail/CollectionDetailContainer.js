@@ -5,6 +5,8 @@ import { PageWithLoading } from "../../../components/basic/PageWithLoading";
 import NftCard from "../../../components/NftCard";
 import { MoreItems } from "../../../components/MoreItems";
 import { useNavigate } from "react-router-dom";
+import { Icon } from "@iconify/react";
+
 
 
 
@@ -48,7 +50,7 @@ export const CollectionDetailContainer = () => {
       <div className="flex flex-col mt-[79px] mb-[79px] w-screen items-center gap-32 justify-center">
         <div className="flex w-full h-[300px] ">
           <img className="flex w-full h-full" src={collectionInfo?.bannerImage}></img>
-          <div className="absolute w-full h-[200px] top-[270px]">
+          <div className="absolute h-[200px] top-[270px]">
             <div className="flex flex-row ml-[50px] w-[200px]">
               <img
                 src={collectionInfo?.logoImage}
@@ -58,10 +60,9 @@ export const CollectionDetailContainer = () => {
                 <a className="flex text-2xl"><b>{collectionInfo?.name}</b></a>
               </div>
             </div>
-
           </div>
         </div>
-        
+
         <div className="flex w-full">
           <div className="flex flex-row w-full h-[60px] gap-10 ml-[50px]">
             <div className="flex flex-col gap-1 items-center">
@@ -78,18 +79,27 @@ export const CollectionDetailContainer = () => {
             </div>
           </div>
           
-          <div className="flex w-full">
-          {nfts?.map((item) => {
-            return (
-              <NftCard
-                key={item.tokenId}
-                isSmall={true}
-                item={{ ...item, collection: collectionInfo }}
-                onClick={() => redirectToItem(item)}
-              />
-            );
-          })}
-
+          <div className="flex flex-row gap-10 w-full items-center justify-end mr-[100px]">
+              <div className="flex">
+                <button>
+                  <Icon width={25} icon="dashicons:admin-site-alt3"></Icon>
+                </button>
+              </div>
+              <div className="flex">
+                <button>
+                  <Icon width={25} icon="bi:discord"></Icon>
+                </button>
+              </div>
+              <div className="flex">
+                <button>
+                  <Icon width={25} icon="bxl:telegram"></Icon>
+                </button>
+              </div>
+              <div className="flex">
+                <button >
+                  <Icon className="" width={25} icon="cib:instagram"></Icon>
+                </button>
+              </div>
           </div>
         </div>
         
