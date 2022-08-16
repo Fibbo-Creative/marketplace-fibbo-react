@@ -114,7 +114,7 @@ export const CollectionDetailContainer = () => {
         <div className="flex flex-row gap-10 w-full ml-[100px] mt-[50px] items-center">
 
           <Icon
-            icon="eva:menu-arrow-outline"
+            icon="eva:menu-arrow-outline" rotate={2}
             width="40"
             height="40"
             className="dark:text-gray-400 text-gray-400"
