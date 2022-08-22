@@ -295,7 +295,6 @@ export default function ExploreContainer() {
   const filterByOffered = () => {
     let isSelected = filtersSelected.find((item) => item === "Ofertado");
     if (isSelected) {
-      setVisibleMarketItems(marketItems.splice(0, visibleItemsCount));
       setFiltersSelected(filtersSelected.filter((item) => item !== "Ofertado"));
     } else {
       setFiltersSelected([...filtersSelected, "Ofertado"]);
@@ -305,7 +304,6 @@ export default function ExploreContainer() {
   const filterByAuctioned = () => {
     let isSelected = filtersSelected.find((item) => item === "En Subasta");
     if (isSelected) {
-      setVisibleMarketItems(marketItems.splice(0, visibleItemsCount));
       setFiltersSelected(
         filtersSelected.filter((item) => item !== "En Subasta")
       );
@@ -317,7 +315,6 @@ export default function ExploreContainer() {
   const filterByBidded = () => {
     let isSelected = filtersSelected.find((item) => item === "Pujado");
     if (isSelected) {
-      setVisibleMarketItems(marketItems.splice(0, visibleItemsCount));
       setFiltersSelected(filtersSelected.filter((item) => item !== "Pujado"));
     } else {
       setFiltersSelected([...filtersSelected, "Pujado"]);

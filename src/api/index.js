@@ -284,7 +284,11 @@ export const useApi = () => {
     );
     const result = searchResult.data;
 
-    return { items: result.items, profiles: result.profiles };
+    return {
+      items: result.items,
+      profiles: result.profiles,
+      collections: result.collections,
+    };
   };
 
   const uploadImgToCDN = async (file, uploadToIpfs) => {

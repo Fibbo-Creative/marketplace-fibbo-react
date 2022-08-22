@@ -5,6 +5,7 @@ import SearchResultItem from "./SearchResultItem";
 export default function SearchResult({
   itemsResult,
   profilesResult,
+  collectionsResult,
   setInputValue,
   setSearchResult,
   setOpenSearchResult,
@@ -16,6 +17,7 @@ export default function SearchResult({
     setInputValue("");
     setSearchResult.items([]);
     setSearchResult.profiles([]);
+    setSearchResult.collections([]);
   };
 
   const goToProfileDetail = (item) => {
@@ -23,6 +25,20 @@ export default function SearchResult({
     setInputValue("");
     setSearchResult.items([]);
     setSearchResult.profiles([]);
+    setSearchResult.collections([]);
+  };
+
+  const goToCollectionDetail = (item) => {
+    if (item.customURL) {
+      navigate(`/collection/${item.customURL}`);
+    } else {
+      navigate(`/collection/${item.contractAddress}`);
+    }
+
+    setInputValue("");
+    setSearchResult.items([]);
+    setSearchResult.profiles([]);
+    setSearchResult.collections([]);
   };
 
   useEffect(() => {
@@ -53,6 +69,19 @@ export default function SearchResult({
             onClick={(e) => goToItemDetail(item)}
             key={Math.random(999999) * 1000}
             image={item.image}
+            text={item.name}
+          />
+        );
+      })}
+      <div className="dark:bg-dark-3 uppercase cursor-pointer flex items-center px-2 py-1 gap-3 bg-gray-100 border-b ">
+        <div>Collecciones</div>
+      </div>
+      {collectionsResult.map((item) => {
+        return (
+          <SearchResultItem
+            onClick={(e) => goToCollectionDetail(item)}
+            key={Math.random(999999) * 1000}
+            image={item.logoImage}
             text={item.name}
           />
         );

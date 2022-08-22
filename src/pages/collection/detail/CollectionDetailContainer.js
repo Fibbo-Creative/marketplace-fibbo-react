@@ -12,6 +12,7 @@ import ActionButton from "../../../components/ActionButton";
 import { isMobile } from "web3modal";
 import RedirectModal from "../../../components/modals/RedirectModal";
 import { useStateContext } from "../../../context/StateProvider";
+import FiltersCollectionSidebar from "../../../components/FiltersCollectionSidebar";
 
 /* TO DO 
 
@@ -79,7 +80,7 @@ export const CollectionDetailContainer = () => {
   }, [wallet]);
   return (
     <PageWithLoading loading={loading}>
-      <div className="flex flex-col mt-[79px] mb-[79px] w-screen items-center justify-center">
+      <div className="flex flex-col mt-[79px] mb-[10px] w-screen items-center justify-center">
         <div className="flex w-full h-[300px] w-full ">
           <img
             className="flex w-full h-full"
@@ -202,66 +203,78 @@ export const CollectionDetailContainer = () => {
             </div>
           </div>
         </div>
-        <div className="flex w-full flex-col gap-10">
-          <div className="flex flex-row gap-10 w-full ml-[100px] mt-[50px] items-center">
-            <div className="w-2/6 flex border-2 rounded">
-              <div className="flex items-center justify-center px-4 border-l">
-                <Icon icon="ant-design:search-outlined" />
+        <div className="flex w-full mt-10 border-t h-full">
+          <FiltersCollectionSidebar
+            openedSidebar={true}
+            statusFilters={[
+              { name: "En Venta", filter: null },
+              { name: "Ofertado", filter: null },
+              { name: "En Subasta", filter: null },
+              { name: "Pujado", filter: null },
+            ]}
+          />
+          <div className="flex w-full flex-col gap-10 overflow-y-scroll overflow-x-hidden">
+            <div className="flex flex-row gap-10 w-full ml-[100px] mt-[50px] items-center">
+              <div className="w-2/6 flex border-2 rounded">
+                <div className="flex items-center justify-center px-4 border-l">
+                  <Icon icon="ant-design:search-outlined" />
+                </div>
+                <input
+                  type="text"
+                  className={`px-4 py-2 outline-none dark:bg-dark-1`}
+                  placeholder="Buscar Items..."
+                />
               </div>
-              <input
-                type="text"
-                className={`px-4 py-2 outline-none dark:bg-dark-1`}
-                placeholder="Buscar Items..."
-              />
+
+              <select className="cursor-pointer h-10 w-40 md:w-60 flex border border-gray-300 bg-white dark:bg-dark-1 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <option value={1}>Ordenar Por</option>
+                <option value={2}>Creados Recientemente</option>
+                <option value={3}>Mas antiguos</option>
+                <option value={4}>Listados Recientemiente</option>
+                <option value={5}>Listados mas antiguos</option>
+                <option value={6}>Mas caros</option>
+                <option value={7}>Mas baratos</option>
+                <option value={8}>Termina antes</option>
+              </select>
+
+              <button className="hover:-translate-y-1">
+                <Icon
+                  icon="akar-icons:dot-grid-fill"
+                  width="40"
+                  height="40"
+                  color="grey"
+                />
+              </button>
+              <button className="hover:-translate-y-1">
+                <Icon
+                  icon="ci:grid-big-round"
+                  width="60"
+                  height="60"
+                  color="grey"
+                />
+              </button>
             </div>
 
-            <select className="cursor-pointer h-10 w-40 md:w-60 flex border border-gray-300 bg-white dark:bg-dark-1 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-              <option value={1}>Ordenar Por</option>
-              <option value={2}>Creados Recientemente</option>
-              <option value={3}>Mas antiguos</option>
-              <option value={4}>Listados Recientemiente</option>
-              <option value={5}>Listados mas antiguos</option>
-              <option value={6}>Mas caros</option>
-              <option value={7}>Mas baratos</option>
-              <option value={8}>Termina antes</option>
-            </select>
-
-            <button className="hover:-translate-y-1">
-              <Icon
-                icon="akar-icons:dot-grid-fill"
-                width="40"
-                height="40"
-                color="grey"
-              />
-            </button>
-            <button className="hover:-translate-y-1">
-              <Icon
-                icon="ci:grid-big-round"
-                width="60"
-                height="60"
-                color="grey"
-              />
-            </button>
-          </div>
-          <div className="flex flex-wrap justify-center gap-4 w-full">
-            {collectionNfts.length > 0 ? (
-              <>
-                {collectionNfts.map((item) => {
-                  return (
-                    <NftCard
-                      ket={item._id}
-                      item={item}
-                      onClick={() => redirectToItem(item)}
-                      isSmall={true}
-                    />
-                  );
-                })}
-              </>
-            ) : (
-              <>
-                <div>La collección no tiene NFTS</div>
-              </>
-            )}
+            <div className="flex flex-wrap justify-center gap-4 w-full">
+              {collectionNfts.length > 0 ? (
+                <>
+                  {collectionNfts.map((item) => {
+                    return (
+                      <NftCard
+                        ket={item._id}
+                        item={item}
+                        onClick={() => redirectToItem(item)}
+                        isSmall={true}
+                      />
+                    );
+                  })}
+                </>
+              ) : (
+                <>
+                  <div>La collección no tiene NFTS</div>
+                </>
+              )}
+            </div>
           </div>
         </div>
         <RedirectModal

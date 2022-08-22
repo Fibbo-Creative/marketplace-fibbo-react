@@ -20,6 +20,8 @@ export default function Navbar() {
   const [{ userProfile, verifiedAddress }] = useStateContext();
   const [searchItemsData, setSearchItemsData] = useState([]);
   const [searchProfilesData, setSearchProfilesData] = useState([]);
+  const [searchCollectionsData, setSearchCollectionsData] = useState([]);
+
   const [openSearchResult, setOpenSearchResult] = useState(false);
 
   const searchInputRef = useRef(null);
@@ -35,7 +37,8 @@ export default function Navbar() {
     setSearchText(queryText);
     if (queryText.length >= 4) {
       setOpenSearchResult(true);
-      const { items, profiles } = await searchItemsAndProfiles(queryText);
+      const res = await searchItemsAndProfiles(queryText);
+      const { profiles, items, collections } = res;
       if (items.length === 0) {
         setSearchItemsData([
           {
@@ -59,9 +62,22 @@ export default function Navbar() {
       } else {
         setSearchProfilesData(profiles);
       }
+
+      if (collections.length === 0) {
+        setSearchCollectionsData([
+          {
+            username: "No Collections found",
+            profileImg:
+              "https://cdn2.iconfinder.com/data/icons/documents-and-files-v-2/100/doc-03-512.png",
+          },
+        ]);
+      } else {
+        setSearchCollectionsData(collections);
+      }
     } else {
       setSearchItemsData([]);
       setSearchProfilesData([]);
+      setSearchCollectionsData([]);
     }
   };
   const gotoHomepage = () => {
@@ -129,6 +145,7 @@ export default function Navbar() {
                     }}
                     itemsResult={searchItemsData}
                     profilesResult={searchProfilesData}
+                    collectionsResult={searchCollectionsData}
                     setOpenSearchResult={setOpenSearchResult}
                   />
                 )}
