@@ -241,7 +241,29 @@ export const useApi = () => {
     const res = await marketplaceApi.get(
       `collections/myCollections?owner=${owner}`
     );
+
     return res.data;
+  };
+
+  const checkUrlRepeated = async (customURL) => {
+    const res = await marketplaceApi.get(
+      `collections/checkUrl?customURL=${customURL}`
+    );
+    if (res.status !== 200) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const checkNameRepeated = async (name) => {
+    const res = await marketplaceApi.get(`collections/checkName?name=${name}`);
+
+    if (res.status !== 200) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   const saveCollectionDetails = async (
@@ -259,6 +281,37 @@ export const useApi = () => {
     instagramURL
   ) => {
     const res = await marketplaceApi.post(`collections/new`, {
+      contractAddress,
+      creator,
+      name,
+      description,
+      logoImage,
+      featuredImage,
+      bannerImage,
+      customURL,
+      websiteURL,
+      discordURL,
+      telegramURL,
+      instagramURL,
+    });
+    return res.data;
+  };
+
+  const editCollectionDetails = async (
+    contractAddress,
+    creator,
+    name,
+    description,
+    logoImage,
+    featuredImage,
+    bannerImage,
+    customURL,
+    websiteURL,
+    discordURL,
+    telegramURL,
+    instagramURL
+  ) => {
+    const res = await marketplaceApi.post(`collections/edit`, {
       contractAddress,
       creator,
       name,
@@ -360,6 +413,8 @@ export const useApi = () => {
     getNftInfo,
     getItemOffers,
     getCollectionInfo,
+    checkUrlRepeated,
+    checkNameRepeated,
     getCollectionDetail,
     getCollectionsAvailable,
     getNftsFromAddress,
@@ -381,5 +436,6 @@ export const useApi = () => {
     setShowRedirect,
     getMyCollections,
     editNftData,
+    editCollectionDetails,
   };
 };

@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { ConfirmCreateCollection } from "../../../components/modals/ConfirmCreateCollection";
 
 export default function CreateCollectionContainer() {
-  const { uploadImgToCDN } = useApi();
+  const { uploadImgToCDN, checkNameRepeated, checkUrlRepeated } = useApi();
   const navigate = useNavigate();
   const { wallet } = useAccount();
   const [showConfirm, setShowConfirm] = useState(false);
@@ -30,9 +30,11 @@ export default function CreateCollectionContainer() {
 
   const [name, setName] = useState("");
   const [nameError, setNameError] = useState(false);
+  const [nameErrorMessage, setNameErrorMessage] = useState("");
 
   const [url, setUrl] = useState("https://fibbo-market.web.app/collection/");
   const [urlError, setUrlError] = useState(false);
+  const [urlErrorMessage, setUrlErrorMessage] = useState("");
 
   const [desc, setDesc] = useState("");
   const [descError, setDescError] = useState(false);
@@ -221,9 +223,16 @@ export default function CreateCollectionContainer() {
     if (name === "" || name.length < 5 || name.length > 30) {
       error = true;
       setNameError(true);
+      setNameErrorMessage("El nombre debe tener entre 4 y 30 carácteres");
     }
 
-    //Check if name is chosen!
+    const isNameRepeated = await checkNameRepeated(name);
+
+    if (isNameRepeated) {
+      error = true;
+      setNameError(true);
+      setNameErrorMessage("El nombre seleccionado ya esta en uso");
+    }
 
     if (desc === "" || desc.length < 50 || desc.length > 1000) {
       error = true;
@@ -233,6 +242,24 @@ export default function CreateCollectionContainer() {
     if (!checkURLFormat("https://fibbo-market.web.app/collection/", url)) {
       error = true;
       setUrlError(true);
+      setUrlErrorMessage("El formato de URL es incorrecto");
+    }
+
+    let customURL = url.split("https://fibbo-market.web.app/collection/")[1];
+
+    if (customURL) {
+      const isUrlRepeated = await checkUrlRepeated(customURL);
+      if (isUrlRepeated) {
+        error = true;
+        setUrlError(true);
+        setUrlErrorMessage("El URL seleccionado ya esta en uso");
+      }
+    }
+
+    if (isNameRepeated) {
+      error = true;
+      setNameError(true);
+      setNameErrorMessage("El nombre seleccionado ya esta en uso");
     }
 
     if (!checkURLFormat("https://discord.gg/", discord)) {
@@ -326,7 +353,7 @@ export default function CreateCollectionContainer() {
             value={name}
             onChange={(e) => handleChangeName(e.target.value)}
             error={nameError}
-            errorMessage=" El nombre debe tener entre 4 y 30 carácteres"
+            errorMessage={nameErrorMessage}
           />
         </div>
 
@@ -337,7 +364,7 @@ export default function CreateCollectionContainer() {
             onChange={(e) => handleChangeURL(e.target.value)}
             error={urlError}
             info="Personaliza tu URL en Fibbo. Solo puede contener letras minúsculas, números y guiones"
-            errorMessage="El formato de URL es incorrecto"
+            errorMessage={urlErrorMessage}
           />
         </div>
         <div className="mt-10">
