@@ -9,12 +9,13 @@ import { ethers } from "ethers";
 import { useFactory } from "../../../contracts/factory";
 import useAccount from "../../../hooks/useAccount";
 import { useNavigate } from "react-router-dom";
+import { ConfirmCreateCollection } from "../../../components/modals/ConfirmCreateCollection";
 
 export default function CreateCollectionContainer() {
-  const { uploadImgToCDN, saveCollectionDetails } = useApi();
+  const { uploadImgToCDN } = useApi();
   const navigate = useNavigate();
-  const { createNFTContract } = useFactory();
   const { wallet } = useAccount();
+  const [showConfirm, setShowConfirm] = useState(false);
   const [logoImage, setLogoImage] = useState("");
   const [logoImageError, setLogoImageError] = useState("");
   const [logoImageMessageError, setLogoImageMessageError] = useState("");
@@ -247,40 +248,7 @@ export default function CreateCollectionContainer() {
       setInstagramError(true);
     }
     if (!error) {
-      const customURL = url.split(
-        "https://fibbo-market.web.app/collection/"
-      )[1];
-
-      try {
-        const tx = await createNFTContract(name, "FBBOART", wallet);
-        const res = await tx.wait();
-        res.events.map(async (evt) => {
-          if (
-            evt.topics[0] ===
-            "0x2d49c67975aadd2d389580b368cfff5b49965b0bd5da33c144922ce01e7a4d7b"
-          ) {
-            const address = ethers.utils.hexDataSlice(evt.data, 44);
-
-            console.log(address);
-            const created = await saveCollectionDetails(
-              address,
-              wallet,
-              name,
-              desc,
-              logoImage,
-              mainImage !== "" ? mainImage : logoImage,
-              bannerImage,
-              customURL,
-              website,
-              discord,
-              telegram,
-              instagram
-            );
-
-            navigate("/create");
-          }
-        });
-      } catch (e) {}
+      setShowConfirm(true);
     } else {
     }
   };
@@ -465,6 +433,23 @@ export default function CreateCollectionContainer() {
             buttonAction={handleCreateCollection}
           />
         </div>
+        <ConfirmCreateCollection
+          showModal={showConfirm}
+          handleCloseModal={() => setShowConfirm(false)}
+          wallet={wallet}
+          collectionData={{
+            logoImage: logoImage,
+            mainImage: mainImage,
+            bannerImage: bannerImage,
+            name: name,
+            description: desc,
+            url: url,
+            websiteURL: website,
+            discordURL: discord,
+            telegramURL: telegram,
+            instagramURL: instagram,
+          }}
+        />
       </div>
     </div>
   );

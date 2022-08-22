@@ -82,11 +82,15 @@ export const CollectionDetailContainer = () => {
     <PageWithLoading loading={loading}>
       <div className="flex flex-col mt-[79px] mb-[10px] w-screen items-center justify-center">
         <div className="flex w-full h-[300px] w-full ">
-          <img
-            className="flex w-full h-full"
-            src={collectionInfo?.bannerImage}
-            alt={`banner-${collectionInfo?._id}`}
-          ></img>
+          {collectionInfo?.bannerImage !== "" ? (
+            <img
+              className="flex w-full h-full"
+              src={collectionInfo?.bannerImage}
+              alt={`banner-${collectionInfo?._id}`}
+            ></img>
+          ) : (
+            <div className="h-full w-full bg-gray-400"></div>
+          )}
           <div className="absolute h-[200px] top-[270px]">
             <div className="flex justify-between items-end mx-[50px] w-full">
               <div className="flex">
