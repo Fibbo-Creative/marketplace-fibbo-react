@@ -54,6 +54,13 @@ export const useApi = () => {
     return res.data;
   };
 
+  const setShowRedirect = async (address) => {
+    const res = await marketplaceApi.post("users/setNotShowRedirect", {
+      wallet: address,
+    });
+    return res.data;
+  };
+
   const setProfileBanner = async (address, file) => {
     var formData = new FormData();
     formData.append("image", file);
@@ -367,6 +374,7 @@ export const useApi = () => {
     getAllPayTokens,
     getPayTokenInfo,
     setImportWFTM,
+    setShowRedirect,
     getMyCollections,
     editNftData,
   };

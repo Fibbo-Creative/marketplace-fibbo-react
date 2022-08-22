@@ -286,7 +286,6 @@ export default function ExploreContainer() {
   const filterBySelling = () => {
     let isSelected = filtersSelected.find((item) => item === "En Venta");
     if (isSelected) {
-      setVisibleMarketItems(allMarketItems);
       setFiltersSelected(filtersSelected.filter((item) => item !== "En Venta"));
     } else {
       setFiltersSelected([...filtersSelected, "En Venta"]);
@@ -296,7 +295,7 @@ export default function ExploreContainer() {
   const filterByOffered = () => {
     let isSelected = filtersSelected.find((item) => item === "Ofertado");
     if (isSelected) {
-      setVisibleMarketItems(allMarketItems);
+      setVisibleMarketItems(marketItems.splice(0, visibleItemsCount));
       setFiltersSelected(filtersSelected.filter((item) => item !== "Ofertado"));
     } else {
       setFiltersSelected([...filtersSelected, "Ofertado"]);
@@ -306,7 +305,7 @@ export default function ExploreContainer() {
   const filterByAuctioned = () => {
     let isSelected = filtersSelected.find((item) => item === "En Subasta");
     if (isSelected) {
-      setVisibleMarketItems(allMarketItems);
+      setVisibleMarketItems(marketItems.splice(0, visibleItemsCount));
       setFiltersSelected(
         filtersSelected.filter((item) => item !== "En Subasta")
       );
@@ -318,7 +317,7 @@ export default function ExploreContainer() {
   const filterByBidded = () => {
     let isSelected = filtersSelected.find((item) => item === "Pujado");
     if (isSelected) {
-      setVisibleMarketItems(allMarketItems);
+      setVisibleMarketItems(marketItems.splice(0, visibleItemsCount));
       setFiltersSelected(filtersSelected.filter((item) => item !== "Pujado"));
     } else {
       setFiltersSelected([...filtersSelected, "Pujado"]);
@@ -445,11 +444,11 @@ export default function ExploreContainer() {
       setAllMarketItems(finalFiltered);
       setVisibleMarketItems(finalFiltered.slice(0, 12));
     } else {
-      let finalFiltered = [];
+      let finalFiltered = marketItems;
       if (sortSelected !== 0 && sortSelected !== 1) {
         finalFiltered = sortMarketItems(sortSelected, marketItems);
       }
-
+      console.log(finalFiltered);
       setAllMarketItems(finalFiltered);
       setVisibleMarketItems(finalFiltered.slice(0, 12));
     }
@@ -458,174 +457,172 @@ export default function ExploreContainer() {
   return (
     <PageWithLoading loading={loading}>
       <>
-        {allMarketItems.length > 0 && (
-          <>
-            {_width > 900 && (
-              <FiltersSidebar
-                filtersSelected={filtersSelected}
-                openedSidebar={openedSidebar}
-                setFiltersSelected={setFiltersSelected}
-                setOpenedSidebar={setOpenedSidebar}
-                allMarketItems={allMarketItems}
-                setAllMarketItems={setAllMarketItems}
-                visibleMarketItems={visibleMarketItems}
-                setVisibleMarketItems={setVisibleMarketItems}
-                statusFilters={[
-                  { name: "En Venta", filter: filterBySelling },
-                  { name: "Ofertado", filter: filterByOffered },
-                  { name: "En Subasta", filter: filterByAuctioned },
-                  { name: "Pujado", filter: filterByBidded },
-                ]}
-                payTokenFilters={allErc20Tokens.map((item) => {
-                  return {
-                    ...item,
-                    filter: selectPayTokenFilter,
-                  };
-                })}
-              />
-            )}
-            <div className={`flex flex-col ${openedSidebar && "ml-[17vw]"}`}>
-              <div
-                className={`flex flex-col ${
-                  openedSidebar
-                    ? "items-start "
-                    : `${_width > 900 && "ml-20"} items-center`
-                }`}
-              >
-                <div className="mt-2 ml-5 px-5 flex flex-row justify-evenly md:justify-center w-full items-center gap-2 md:gap-5 dark:bg-dark-1  ">
-                  {_width < 900 && (
-                    <>
-                      <button
-                        onClick={() => setOpenedSidebar(true)}
-                        className="hover:-translate-y-1"
-                      >
-                        <Icon
-                          icon="akar-icons:filter"
-                          width="40"
-                          height="40"
-                          color="grey"
-                        />
-                      </button>
-                    </>
-                  )}
-                  <select
-                    className="cursor-pointer h-10 w-40 md:w-60 flex border border-gray-300 bg-white dark:bg-dark-1 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    onChange={(e) => sortItems(e.target.value)}
-                  >
-                    <option value={1}>Ordenar Por</option>
-                    <option value={2}>Creados Recientemente</option>
-                    <option value={3}>Mas antiguos</option>
-                    <option value={4}>Listados Recientemiente</option>
-                    <option value={5}>Listados mas antiguos</option>
-                    <option value={6}>Mas caros</option>
-                    <option value={7}>Mas baratos</option>
-                    <option value={8}>Termina antes</option>
-                  </select>
-                  <div className="flex flex-row items-center justify-center gap-2 md:gap-5 ">
+        <>
+          {_width > 900 && (
+            <FiltersSidebar
+              filtersSelected={filtersSelected}
+              openedSidebar={openedSidebar}
+              setFiltersSelected={setFiltersSelected}
+              setOpenedSidebar={setOpenedSidebar}
+              allMarketItems={allMarketItems}
+              setAllMarketItems={setAllMarketItems}
+              visibleMarketItems={visibleMarketItems}
+              setVisibleMarketItems={setVisibleMarketItems}
+              statusFilters={[
+                { name: "En Venta", filter: filterBySelling },
+                { name: "Ofertado", filter: filterByOffered },
+                { name: "En Subasta", filter: filterByAuctioned },
+                { name: "Pujado", filter: filterByBidded },
+              ]}
+              payTokenFilters={allErc20Tokens.map((item) => {
+                return {
+                  ...item,
+                  filter: selectPayTokenFilter,
+                };
+              })}
+            />
+          )}
+          <div className={`flex flex-col ${openedSidebar && "ml-[17vw]"}`}>
+            <div
+              className={`flex flex-col ${
+                openedSidebar
+                  ? "items-start "
+                  : `${_width > 900 && "ml-20"} items-center`
+              }`}
+            >
+              <div className="mt-2 ml-5 px-5 flex flex-row justify-evenly md:justify-center w-full items-center gap-2 md:gap-5 dark:bg-dark-1  ">
+                {_width < 900 && (
+                  <>
                     <button
-                      onClick={changeSmallDisplay}
+                      onClick={() => setOpenedSidebar(true)}
                       className="hover:-translate-y-1"
                     >
                       <Icon
-                        icon="akar-icons:dot-grid-fill"
+                        icon="akar-icons:filter"
                         width="40"
                         height="40"
                         color="grey"
                       />
                     </button>
-                    <button
-                      onClick={changeBigDisplay}
-                      className="hover:-translate-y-1"
-                    >
-                      <Icon
-                        icon="ci:grid-big-round"
-                        width="60"
-                        height="60"
-                        color="grey"
-                      />
-                    </button>
-                  </div>
-                </div>
-                <div className="mt-2 ml-5 px-5 flex gap-2 flex-wrap md:flex-row justify-start items-center ">
-                  {filtersSelected.map((filter) => {
-                    return (
-                      <div
-                        key={Math.random(1, 999999)}
-                        onClick={() => removeFilter(filter)}
-                        className="cursor-pointer text-xs md:text-sm  flex  items-center gap-2 dark:bg-dark-2 hover:bg-gray-200 hover:dark:bg-dark-4 border border-gray-200 rounded-xl px-8 py-3"
-                      >
-                        {typeof filter === "object" ? (
-                          <div className="flex gap-2 items-center">
-                            {filter.image && (
-                              <img src={filter.image} width={24} />
-                            )}
-                            {filter.name}
-                          </div>
-                        ) : (
-                          filter
-                        )}
-
-                        <Icon icon="ep:close" width={24} />
-                      </div>
-                    );
-                  })}
-                  {filtersSelected.length > 0 && (
-                    <div
-                      onClick={() => setFiltersSelected([])}
-                      className=" cursor-pointer transition ml-5 text-gray-400 dark:hover:text-white hover:text-black"
-                    >
-                      Limpiar Todos
-                    </div>
-                  )}
+                  </>
+                )}
+                <select
+                  className="cursor-pointer h-10 w-40 md:w-60 flex border border-gray-300 bg-white dark:bg-dark-1 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  onChange={(e) => sortItems(e.target.value)}
+                >
+                  <option value={1}>Ordenar Por</option>
+                  <option value={2}>Creados Recientemente</option>
+                  <option value={3}>Mas antiguos</option>
+                  <option value={4}>Listados Recientemiente</option>
+                  <option value={5}>Listados mas antiguos</option>
+                  <option value={6}>Mas caros</option>
+                  <option value={7}>Mas baratos</option>
+                  <option value={8}>Termina antes</option>
+                </select>
+                <div className="flex flex-row items-center justify-center gap-2 md:gap-5 ">
+                  <button
+                    onClick={changeSmallDisplay}
+                    className="hover:-translate-y-1"
+                  >
+                    <Icon
+                      icon="akar-icons:dot-grid-fill"
+                      width="40"
+                      height="40"
+                      color="grey"
+                    />
+                  </button>
+                  <button
+                    onClick={changeBigDisplay}
+                    className="hover:-translate-y-1"
+                  >
+                    <Icon
+                      icon="ci:grid-big-round"
+                      width="60"
+                      height="60"
+                      color="grey"
+                    />
+                  </button>
                 </div>
               </div>
+              <div className="mt-2 ml-5 px-5 flex gap-2 flex-wrap md:flex-row justify-start items-center ">
+                {filtersSelected.map((filter) => {
+                  return (
+                    <div
+                      key={Math.random(1, 999999)}
+                      onClick={() => removeFilter(filter)}
+                      className="cursor-pointer text-xs md:text-sm  flex  items-center gap-2 dark:bg-dark-2 hover:bg-gray-200 hover:dark:bg-dark-4 border border-gray-200 rounded-xl px-8 py-3"
+                    >
+                      {typeof filter === "object" ? (
+                        <div className="flex gap-2 items-center">
+                          {filter.image && (
+                            <img src={filter.image} width={24} />
+                          )}
+                          {filter.name}
+                        </div>
+                      ) : (
+                        filter
+                      )}
 
-              {!loadingInfo ? (
-                <InfiniteScroll
-                  className="flex  mt-2 flex-wrap justify-center"
-                  dataLength={visibleMarketItems.length}
-                  next={addMoreItems}
-                  hasMore={true}
-                >
-                  {visibleMarketItems.map((item) => {
-                    return (
-                      <div key={Math.random(1, 9999)} className="p-5">
-                        <NftCard
-                          onClick={() => goToNftDetail(item)}
-                          isSmall={userSmallview}
-                          item={item}
-                        />
-                      </div>
-                    );
-                  })}
-                </InfiniteScroll>
-              ) : (
-                <div className="w-screen h-[50vh] animate-pulse flex items-center justify-center">
-                  <img src={fibboLogo} className="w-[128px] animate-spin" />
-                </div>
-              )}
-            </div>
-            {_width < 900 && (
-              <FiltersSidebarModal
-                openSidebar={openedSidebar}
-                setOpenSidebar={setOpenedSidebar}
-                statusFilters={[
-                  { name: "En Venta", filter: filterBySelling },
-                  { name: "Ofertado", filter: filterByOffered },
-                  { name: "En Subasta", filter: filterByAuctioned },
-                  { name: "Pujado", filter: filterByBidded },
-                ]}
-                filtersSelected={filtersSelected}
-                payTokenFilters={allErc20Tokens.map((item) => {
-                  return {
-                    ...item,
-                    filter: selectPayTokenFilter,
-                  };
+                      <Icon icon="ep:close" width={24} />
+                    </div>
+                  );
                 })}
-              />
+                {filtersSelected.length > 0 && (
+                  <div
+                    onClick={() => setFiltersSelected([])}
+                    className=" cursor-pointer transition ml-5 text-gray-400 dark:hover:text-white hover:text-black"
+                  >
+                    Limpiar Todos
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {!loadingInfo ? (
+              <InfiniteScroll
+                className="flex  mt-2 flex-wrap justify-center"
+                dataLength={visibleMarketItems.length}
+                next={addMoreItems}
+                hasMore={true}
+              >
+                {visibleMarketItems.map((item) => {
+                  return (
+                    <div key={Math.random(1, 9999)} className="p-5">
+                      <NftCard
+                        onClick={() => goToNftDetail(item)}
+                        isSmall={userSmallview}
+                        item={item}
+                      />
+                    </div>
+                  );
+                })}
+              </InfiniteScroll>
+            ) : (
+              <div className="w-screen h-[50vh] animate-pulse flex items-center justify-center">
+                <img src={fibboLogo} className="w-[128px] animate-spin" />
+              </div>
             )}
-          </>
-        )}
+          </div>
+          {_width < 900 && (
+            <FiltersSidebarModal
+              openSidebar={openedSidebar}
+              setOpenSidebar={setOpenedSidebar}
+              statusFilters={[
+                { name: "En Venta", filter: filterBySelling },
+                { name: "Ofertado", filter: filterByOffered },
+                { name: "En Subasta", filter: filterByAuctioned },
+                { name: "Pujado", filter: filterByBidded },
+              ]}
+              filtersSelected={filtersSelected}
+              payTokenFilters={allErc20Tokens.map((item) => {
+                return {
+                  ...item,
+                  filter: selectPayTokenFilter,
+                };
+              })}
+            />
+          )}
+        </>
       </>
     </PageWithLoading>
   );

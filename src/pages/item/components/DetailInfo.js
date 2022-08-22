@@ -5,6 +5,22 @@ import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
 export default function DetailInfo({ properties, chainInfo, loading }) {
   const navigate = useNavigate();
+
+  const redirectToCollecion = () => {
+    let collectionURL = "";
+    if (properties.collection.customURL) {
+      collectionURL = properties.collection.customURL;
+    } else {
+      collectionURL = properties.collection.contractAddress;
+    }
+
+    if (isMobile) {
+      navigate(`/collection/${collectionURL}`);
+    } else {
+      window.open(`/collection/${collectionURL}`);
+    }
+  };
+
   return (
     <div className="col-span-1 flex flex-col rounded-md border-2 dark:bg-dark-2 ">
       <DropDown icon="bxs:info-square" title={"Chain Data"}>
@@ -67,11 +83,11 @@ export default function DetailInfo({ properties, chainInfo, loading }) {
               </div>
               <div>{properties?.royalty}%</div>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between items-center">
               <div>
                 <b>Recipiente</b>
               </div>
-              <div className="flex gap-3">
+              <div className="flex gap-3 items-center">
                 <img
                   src={properties?.recipient?.profileImg}
                   alt="recipient-img"
@@ -90,11 +106,24 @@ export default function DetailInfo({ properties, chainInfo, loading }) {
                 </div>
               </div>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between items-center">
               <div>
                 <b>Colección</b>
               </div>
-              <div>{properties?.collection}</div>
+              <div className="flex gap-3 items-center">
+                <img
+                  src={properties?.collection?.logoImage}
+                  alt="recipient-img"
+                  className="rounded-full"
+                  width={32}
+                />
+                <div
+                  onClick={redirectToCollecion}
+                  className="text-primary-2 underline cursor-pointer"
+                >
+                  {properties?.collection?.name}
+                </div>
+              </div>
             </div>
           </div>
         )}

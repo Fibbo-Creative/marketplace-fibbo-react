@@ -68,7 +68,7 @@ export default function ItemPage() {
     getProfileInfo,
     getNftInfo,
     getNftHistory,
-    getCollectionInfo,
+    getCollectionDetail,
     getPayTokenInfo,
   } = useApi();
   const {
@@ -155,7 +155,6 @@ export default function ItemPage() {
       nftData,
       offers: _offers,
       history,
-      nfts,
       listing: _listing,
     } = await getNftInfo(collection, tokenId);
 
@@ -170,10 +169,15 @@ export default function ItemPage() {
       }
     });
 
-    const collectionResponse = await getCollectionInfo(collection);
+    const collectionResponse = await getCollectionDetail(collection);
+    console.log(collectionResponse);
     setCollectionInfo(collectionResponse);
 
-    setMoreItems(nfts);
+    setMoreItems(
+      collectionResponse.nfts.filter(
+        (item) => item.tokenId !== parseFloat(tokenId)
+      )
+    );
     const contract = await getERC721Contract(
       collectionResponse.contractAddress
     );
@@ -208,7 +212,7 @@ export default function ItemPage() {
     setProperties({
       royalty: nftData.royalty,
       recipient: recipientInfo,
-      collection: collectionResponse.name,
+      collection: collectionResponse,
       totalItems: numberOfTokens,
     });
 

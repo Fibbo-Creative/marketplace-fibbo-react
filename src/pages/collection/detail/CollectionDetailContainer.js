@@ -9,6 +9,9 @@ import { Icon } from "@iconify/react";
 import FiltersSidebar from "../../../components/FiltersSidebar";
 import useAccount from "../../../hooks/useAccount";
 import ActionButton from "../../../components/ActionButton";
+import { isMobile } from "web3modal";
+import RedirectModal from "../../../components/modals/RedirectModal";
+import { useStateContext } from "../../../context/StateProvider";
 
 /* TO DO 
 
@@ -21,11 +24,16 @@ Faltaria Mostrarho tot guay
 export const CollectionDetailContainer = () => {
   const [loading, setLoading] = useState(true);
   const { collection } = useParams();
-  const { getCollectionDetail } = useApi();
+  const [{ userProfile }] = useStateContext();
+  const { getCollectionDetail, getProfileInfo } = useApi();
   const { wallet } = useAccount();
   const [collectionInfo, setCollectionInfo] = useState(null);
   const [collectionNfts, setCollectionNfts] = useState([]);
+  const [ownerInfo, setOwnerInfo] = useState(null);
   const [isOwner, setIsOwner] = useState(false);
+  const [detailLink, setDetailLink] = useState("");
+  const [showRedirect, setShowRedirect] = useState(false);
+
   const navigate = useNavigate();
   const redirectToItem = (item) => {
     console.log(item);
@@ -36,6 +44,16 @@ export const CollectionDetailContainer = () => {
           : item.collectionAddress
       }/${item.tokenId}`
     );
+  };
+
+  const openRedirectPopUp = (link) => {
+    //Checker si tiene lo de no mostrar
+    if (userProfile.notShowRedirect) {
+      window.open(link);
+    } else {
+      setDetailLink(link);
+      setShowRedirect(true);
+    }
   };
 
   const redirectToCreateItem = () => {
@@ -50,6 +68,9 @@ export const CollectionDetailContainer = () => {
     const fetchData = async () => {
       const collectionDetail = await getCollectionDetail(collection);
       setIsOwner(collectionDetail.creator === wallet);
+      console.log(collectionDetail);
+      const _ownerInfo = await getProfileInfo(collectionDetail.creator);
+      setOwnerInfo(_ownerInfo);
       setCollectionInfo(collectionDetail);
       setCollectionNfts(collectionDetail.nfts);
       setLoading(false);
@@ -90,12 +111,29 @@ export const CollectionDetailContainer = () => {
               </div>
             </div>
             <div></div>
-            <div className="flex items-center justify-left ml-[50px] mt-[20px] ">
+            <div className="flex items-center justify-left  gap-5 ml-[50px] mt-[20px] ">
               <div className="flex text-md ">
-                <b>By: </b>
+                <b>Creada por: </b>
               </div>
-              <div className="flex text-md ml-[10px]">
-                {collectionInfo?.creator}
+              <div className="flex gap-3 items-center">
+                <img
+                  src={ownerInfo?.profileImg}
+                  alt="recipient-img"
+                  className="rounded-full"
+                  width={32}
+                />
+                <div
+                  onClick={() =>
+                    isMobile
+                      ? navigate(`/profile/${ownerInfo?.wallet}`)
+                      : window.open(`/profile/${ownerInfo?.wallet}`)
+                  }
+                  className="text-primary-2 underline cursor-pointer"
+                >
+                  {isOwner
+                    ? `You (${ownerInfo?.username})`
+                    : ownerInfo?.username}
+                </div>
               </div>
             </div>
             <div className="flex items-center justify-center ml-[50px] mt-[20px] ">
@@ -103,7 +141,6 @@ export const CollectionDetailContainer = () => {
             </div>
           </div>
         </div>
-
         <div className="flex w-full mt-[230px]">
           <div className="flex flex-row w-full h-[60px] gap-10 ml-[50px]">
             <div className="flex flex-col gap-1 items-center">
@@ -128,22 +165,38 @@ export const CollectionDetailContainer = () => {
 
           <div className="flex flex-row gap-10 w-full items-center justify-end mr-[100px]">
             <div className="flex">
-              <button className="hover:-translate-y-1">
+              <button
+                onClick={() => openRedirectPopUp(collectionInfo.websiteURL)}
+                disabled={!collectionInfo?.websiteURL}
+                className="hover:-translate-y-1"
+              >
                 <Icon width={25} icon="dashicons:admin-site-alt3"></Icon>
               </button>
             </div>
             <div className="flex">
-              <button className="hover:-translate-y-1">
+              <button
+                onClick={() => openRedirectPopUp(collectionInfo.discordURL)}
+                disabled={!collectionInfo?.discordURL}
+                className="hover:-translate-y-1"
+              >
                 <Icon width={25} icon="bi:discord"></Icon>
               </button>
             </div>
             <div className="flex">
-              <button className="hover:-translate-y-1">
+              <button
+                onClick={() => openRedirectPopUp(collectionInfo.telegramURL)}
+                disabled={!collectionInfo?.telegramURL}
+                className="hover:-translate-y-1"
+              >
                 <Icon width={25} icon="bxl:telegram"></Icon>
               </button>
             </div>
             <div className="flex">
-              <button className="hover:-translate-y-1">
+              <button
+                onClick={() => openRedirectPopUp(collectionInfo.instagramURL)}
+                disabled={!collectionInfo?.instagramURL}
+                className="hover:-translate-y-1"
+              >
                 <Icon className="" width={25} icon="cib:instagram"></Icon>
               </button>
             </div>
@@ -151,15 +204,7 @@ export const CollectionDetailContainer = () => {
         </div>
         <div className="flex w-full flex-col gap-10">
           <div className="flex flex-row gap-10 w-full ml-[100px] mt-[50px] items-center">
-            <Icon
-              icon="eva:menu-arrow-outline"
-              rotate={2}
-              width="40"
-              height="40"
-              className="dark:text-gray-400 text-gray-400"
-            />
-
-            <div className="w-6/12 flex border-2 rounded">
+            <div className="w-2/6 flex border-2 rounded">
               <div className="flex items-center justify-center px-4 border-l">
                 <Icon icon="ant-design:search-outlined" />
               </div>
@@ -219,6 +264,12 @@ export const CollectionDetailContainer = () => {
             )}
           </div>
         </div>
+        <RedirectModal
+          wallet={wallet}
+          link={detailLink}
+          showModal={showRedirect}
+          handleCloseModal={() => setShowRedirect(false)}
+        />
       </div>
     </PageWithLoading>
   );

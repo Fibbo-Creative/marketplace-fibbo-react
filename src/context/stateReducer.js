@@ -13,6 +13,7 @@ export const actionTypes = {
   SET_PROFILE_IMAGE: "SET_PROFILE_IMAGE",
   SET_USERNAME: "SET_USERNAME",
   UPDATED_WFTM: "UPDATED_WFTM",
+  UPDATED_NOT_SHOW: "UPDATED_NOT_SHOW",
 };
 
 const stateReducer = (state, action) => {
@@ -52,6 +53,11 @@ const stateReducer = (state, action) => {
       return {
         ...state,
         updatedWFTM: !state.updatedWFTM,
+      };
+    case actionTypes.UPDATED_NOT_SHOW:
+      return {
+        ...state,
+        userProfile: { ...state.userProfile, notShowRedirect: true },
       };
 
     default:

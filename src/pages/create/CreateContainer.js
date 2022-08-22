@@ -37,6 +37,7 @@ export default function CreateContainer() {
   const [{ verifiedAddress }] = useStateContext();
   const [collectionsAvailable, setCollectionsAvailable] = useState([]);
   const [collectionSelected, setCollectionsSelected] = useState(null);
+  const [isOwner, setIsOwner] = useState(false);
 
   const [loadingImage, setLoadingImage] = useState(false);
   const [loading, setLoading] = useState(true);
