@@ -135,7 +135,7 @@ export default function Navbar() {
             </div>
             <div className="flex ">
               <NavbarItem text="Marketplace" to="/explore" />
-              <NavbarItem text="Colecciones" to="/collections" />
+              <NavbarItem text="Colecciones" to="/myCollections" />
 
               {!verifiedAddress && (
                 <NavbarItem text="Verifícate!" to="/verificate/request" />
@@ -143,7 +143,7 @@ export default function Navbar() {
               {verifiedAddress && (
                 <NavbarItem text="Comunidad" to="/community" />
               )}
-              {verifiedAddress && <NavbarItem text="Creación" to="/create" />}
+              {/* {verifiedAddress && <NavbarItem text="Creación" to="/create" />} */}
             </div>
           </div>
           <div className=" gap-10 flex flex-row justify-between items-center ">
@@ -215,16 +215,17 @@ export default function Navbar() {
                 </div>
               </div>
               <NavbarItemMobile text="Marketplace" to="/explore" />
-              <NavbarItemMobile text="Colecciones" to="/collections" />
+              <NavbarItemMobile text="Colecciones" to="/myCollections" />
               {!verifiedAddress && (
                 <NavbarItemMobile text="Verifícate!" to="/verificate/request" />
               )}
               {verifiedAddress && (
                 <NavbarItemMobile text="Comunidad" to="/community" />
               )}
-              {verifiedAddress && (
-                <NavbarItemMobile text="Creación" to="/create" />
-              )}
+              {verifiedAddress &&
+                {
+                  /* <NavbarItemMobile text="Creación" to="/create" /> */
+                }}
             </div>
           </div>
         )}

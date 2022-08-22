@@ -21,8 +21,15 @@ export default function MyCollectionsContainer() {
   const [myCollections, setMyCollections] = useState([]);
 
   const goToCreateCollection = () => {
-    console.log("eeee");
     navigate(`/collection/create`);
+  };
+
+  const redirectToColectionPage = (col) => {
+    if (col.customURL) {
+      navigate(`/collection/${col.customURL}`);
+    } else {
+      navigate(`/collection/${col.contractAddress}`);
+    }
   };
 
   useEffect(() => {
@@ -39,17 +46,17 @@ export default function MyCollectionsContainer() {
   return (
     <div className="flex flex-col mt-[79px] mb-[79px] w-screen content-center justify-center">
       <div className="flex w-full p-[40px] content-center justify-center">
-        <a className="text-2xl">
+        <div className="text-2xl">
           {" "}
           <b>Mis colecciones </b>
-        </a>
+        </div>
       </div>
       <div className="flex w-full content-center justify-center">
-        <a className="text-lg">
+        <div className="text-lg">
           {" "}
           Crea y administra tus colecciones de NFTs únicos para poder
           compartirlos y venderlos.{" "}
-        </a>
+        </div>
       </div>
       <div className="flex w-full content-center justify-center p-[40px]">
         <ActionButton
@@ -58,21 +65,32 @@ export default function MyCollectionsContainer() {
           buttonAction={() => goToCreateCollection()}
         />
       </div>
-      <div className="flex flex-row flex-wrap gap-20 w-full content-center justify-center p-[40px]">
+      <div className=" flex flex-row flex-wrap gap-20 w-full content-center justify-center p-[40px]">
         {myCollections?.map((col) => {
           return (
             <div
               key={col._id}
-              className="flex flex-col w-[400px] h-[300px] border-4 border-white"
+              className="hover:border-3 hover:-translate-y-1 cursor-pointer flex flex-col w-[400px] h-[300px] border-4 border-white"
+              onClick={() => redirectToColectionPage(col)}
             >
-              <div className="flex w-full h-[200px] items-center justify-center border-b-4 border-white ">
-                IMAGEN PRINCIPAL COLECCION
-              </div>
+              <div
+                style={{
+                  backgroundImage: `url(${col.featuredImage})`,
+                  backgroundSize: "cover",
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "center center",
+                }}
+                className="flex w-full h-[200px] items-center justify-center border-b-4 border-white "
+              ></div>
               <div className="flex w-full h-[100px]">
                 <div className="flex w-[100px] h-full border-r-4 border-white items-center justify-center ">
-                  LOGO
+                  <img
+                    src={col.logoImage}
+                    className="object-cover"
+                    alt={`colection-${col._id}`}
+                  />
                 </div>
-                <div className="flex w-[300px] h-full items-center justify-center ">
+                <div className="flex flex-col font-bold w-[300px] h-full items-center justify-evenly ">
                   {col.name}
                 </div>
               </div>

@@ -18,7 +18,7 @@ import EditContainer from "./pages/edit/EditContainer";
 import CreateCollectionContainer from "./pages/collection/create/CreateCollectionContainer";
 import CollectionsContainer from "./pages/collection/CollectionsContainer";
 import { CollectionDetailContainer } from "./pages/collection/detail/CollectionDetailContainer";
-import MyCollectionsContainer from "./pages/collection/MyCollectionsContainer"
+import MyCollectionsContainer from "./pages/collection/MyCollectionsContainer";
 
 function App() {
   const { theme } = useContext(ThemeContext);
@@ -36,7 +36,6 @@ function App() {
 
           <Routes>
             <Route path="*" element={<NotFoundContainer />} />
-            <Route path="/create" element={<CreateContainer />} />
             <Route
               path="edit/:collection/:tokenId"
               element={<EditContainer />}
@@ -48,7 +47,7 @@ function App() {
               element={<VerificationFormContainer />}
             />
 
-            <Route path="/create" element={<CreateContainer />} />
+            {/* <Route path="/create" element={<CreateContainer />} /> */}
             <Route path="/explore" element={<ExploreContainer />} />
             <Route
               path="/explore/:collection/:tokenId"
@@ -67,6 +66,11 @@ function App() {
               path="/collection/:collection"
               element={<CollectionDetailContainer />}
             />
+            <Route
+              path="/collection/:collection/create"
+              element={<CreateContainer />}
+            />
+
             <Route path="" element={<HomeContainer />} />
           </Routes>
         </>

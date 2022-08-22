@@ -5,7 +5,7 @@ import { useStateContext } from "../../context/StateProvider";
 import { useApi } from "../../api";
 import { addImgToIpfs } from "../../utils/ipfs";
 import { ConfirmCreateModal } from "../../components/modals/ConfirmCreateModal";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import fibboLogo from "../../assets/logoNavbarSmall.png";
 import { TextInput } from "../../components/inputs/TextInput";
 import { TextArea } from "../../components/inputs/TextArea";
@@ -26,6 +26,7 @@ const validateDesc = (desc) => {
 };
 export default function CreateContainer() {
   const navigate = useNavigate();
+  const { collection } = useParams();
   const { uploadImgToCDN, getCollectionsAvailable } = useApi();
   const [ipfsImageUrl, setIpfsImageUrl] = useState("");
   const [sanityImgUrl, setSanityImgUrl] = useState("");
@@ -141,12 +142,18 @@ export default function CreateContainer() {
   useEffect(() => {
     const fetchData = async () => {
       await connectToWallet();
-
       const collections = await getCollectionsAvailable(wallet);
       setCollectionsAvailable(collections);
-      setCollectionsSelected(
-        collections.find((item) => item.name === "Default Collection")
-      );
+      if (collection.startsWith("0x")) {
+        setCollectionsSelected(
+          collections.find((item) => item.contractAddress === collection)
+        );
+      } else {
+        setCollectionsSelected(
+          collections.find((item) => item.customURL === collection)
+        );
+      }
+
       setLoading(false);
     };
     fetchData();
@@ -174,6 +181,7 @@ export default function CreateContainer() {
                 <div className="form-group mb-6 flex flex-col gap-3">
                   <div className="font-bold text-lg">Colección</div>
                   <select
+                    disabled
                     value={collectionSelected?.name}
                     onChange={(e) => handleSelectCollection(e.target.value)}
                     placeholder="Collection"
