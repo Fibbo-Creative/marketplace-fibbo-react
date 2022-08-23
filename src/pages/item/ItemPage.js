@@ -70,6 +70,7 @@ export default function ItemPage() {
     getNftHistory,
     getCollectionDetail,
     getPayTokenInfo,
+    getCollectionInfo,
   } = useApi();
   const {
     getListingInfo,
@@ -181,6 +182,10 @@ export default function ItemPage() {
     const contract = await getERC721Contract(
       collectionResponse.contractAddress
     );
+
+    const isFreezed = await contract.isFreezedMetadata(tokenId);
+    console.log(isFreezed);
+    setIsFreezedMetadata(isFreezed);
     if (wallet) {
       const res = await contract.ownerOf(tokenId);
 
@@ -216,13 +221,11 @@ export default function ItemPage() {
       totalItems: numberOfTokens,
     });
 
-    let freezed = await getIsFreezedMetadata(tokenId);
-    setIsFreezedMetadata(freezed);
-
     setLoading(false);
   };
 
   const getAuctions = async () => {
+    const collectionInfo = await getCollectionInfo(collection);
     try {
       const _auction = await getAuction(
         collectionInfo.contractAddress,
@@ -277,6 +280,7 @@ export default function ItemPage() {
   };
 
   const handleListItem = async (price, payToken) => {
+    //TO DO -> Si el item no tiene la metadata congelada, hacerlo
     await listItem(collectionInfo.contractAddress, tokenId, price, payToken);
 
     let listingInfo = await getListingInfo(
@@ -350,6 +354,7 @@ export default function ItemPage() {
   };
 
   const handleAcceptOffer = async (from) => {
+    //TO DO -> Si el item no tiene la metadata congelada, hacerlo
     await acceptOffer(collectionInfo.contractAddress, tokenId, from);
 
     listing.current = null;
@@ -399,6 +404,8 @@ export default function ItemPage() {
     endTime,
     payToken
   ) => {
+    //TO DO -> Si el item no tiene la metadata congelada, hacerlo
+
     await createAuction(
       wallet,
       collectionInfo.contractAddress,
@@ -544,6 +551,7 @@ export default function ItemPage() {
         ) : (
           <>
             <DetailImage
+              isFreezedMetadata={isFreezedMetadata}
               tokenImage={tokenInfo?.current.image}
               tokenName={tokenInfo?.current.name}
               loading={loading}

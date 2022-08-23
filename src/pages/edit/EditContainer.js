@@ -13,6 +13,7 @@ import { NumberInput } from "../../components/inputs/NumberInput";
 import { PageWithLoading } from "../../components/basic/PageWithLoading";
 import { NotVerified } from "../../components/basic/NotVerified";
 import { Icon } from "@iconify/react";
+import FreezeMetadataModal from "../../components/modals/FreezeMetadataModal";
 
 const validateName = (name) => {
   if (name.length > 4 && name.length < 30) return true;
@@ -27,8 +28,11 @@ export default function EditContainer() {
   const navigate = useNavigate();
   let { collection, tokenId } = useParams();
 
-  const { uploadImgToCDN, getNftInfo, editNftData } = useApi();
+  const { uploadImgToCDN, getNftInfo, editNftData, getCollectionInfo } =
+    useApi();
   const [ipfsImageUrl, setIpfsImageUrl] = useState("");
+  const [ipfsMetadata, setIpfsMetadata] = useState("");
+
   const [sanityImgUrl, setSanityImgUrl] = useState("");
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
@@ -48,6 +52,11 @@ export default function EditContainer() {
   const [descError, setDescError] = useState(false);
   const [royaltyError, setRoyaltyError] = useState(false);
 
+  const [collectionSelected, setCollectionSelected] = useState(null);
+
+  const [freezeMetadata, setFreezedMetadata] = useState(false);
+  const [showFreeze, setShowFreeze] = useState(false);
+
   const selectNFTImg = () => {
     const inputRef = document.getElementById("inputNFT");
     inputRef.click();
@@ -65,8 +74,13 @@ export default function EditContainer() {
     setName(nftData.name);
     setDesc(nftData.description);
     setRoyalty(nftData.royalty);
-    setIpfsImageUrl(nftData.image);
+    setIpfsImageUrl(nftData.ipfsImage);
+    setIpfsMetadata(nftData.ipfsMetadata);
     setSanityImgUrl(nftData.image);
+
+    const collectionInfo = await getCollectionInfo(collection);
+
+    setCollectionSelected(collectionInfo);
 
     if (nftData.additionalContent) {
       setShowHiddenContent(true);
@@ -140,7 +154,6 @@ export default function EditContainer() {
     }
 
     if (!error) {
-      console.log("EDITING");
       await editNftData(
         name,
         desc,
@@ -148,11 +161,17 @@ export default function EditContainer() {
         tokenId,
         royalty,
         sanityImgUrl,
-        collection,
+        ipfsImageUrl,
+        ipfsMetadata,
+        collectionSelected.contractAddress,
         hiddenContent
       );
-      console.log("edited");
-      navigate(`/explore/${collection}/${tokenId}`);
+
+      if (freezeMetadata) {
+        setShowFreeze(true);
+      } else {
+        navigate(`/explore/${collection}/${tokenId}`);
+      }
     }
   };
 
@@ -169,6 +188,10 @@ export default function EditContainer() {
   const handleChangeRoyalty = (value) => {
     setRoyaltyError(false);
     setRoyalty(value);
+  };
+
+  const handleFreezeMetadata = () => {
+    console.log("Freezing");
   };
 
   useEffect(() => {
@@ -224,17 +247,15 @@ export default function EditContainer() {
                   <div className="font-bold text-lg">Colección</div>
                   <select
                     type="text"
-                    /*  value={}
-                onChange={} */
                     disabled={true}
+                    value={collectionSelected?.name}
                     placeholder="Collection"
                     id="collectionInput"
                     className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 
               bg-white bg-clip-padding border border-solid border-black rounded transition ease-in-out m-0
               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                   >
-                    <option value={1}>Default Collection</option>
-                    <option value={2}>Other</option>
+                    <option value={1}>{collectionSelected?.name}</option>
                   </select>
                 </div>
                 <div className="flex flex-col gap-3  mb-4">
@@ -319,24 +340,33 @@ export default function EditContainer() {
                     </abbr>
                   </div>
                 </div>
-                <div className="flex flex-col gap-3 pt-5">
+                <div className="flex flex-col gap-3 pt-5 w-full">
                   <div className="flex flex-row gap-2">
-                    <label className="">
-                      <input type="checkbox" className="" value="" />
-
+                    <div
+                      onClick={() => setFreezedMetadata(!freezeMetadata)}
+                      className={` cursor-pointer flex items-center gap-5`}
+                    >
+                      {!freezeMetadata ? (
+                        <div className="flex p-2 items-center justify-start w-[64px] h-[32px] bg-gray-400 dark:bg-gray-300 rounded-xl ">
+                          <Icon
+                            width={28}
+                            icon="emojione-monotone:prohibited"
+                            className="text-gray-700"
+                          />
+                        </div>
+                      ) : (
+                        <div className="flex p-2 items-center justify-end w-[64px] h-[32px] bg-primary-3  rounded-xl ">
+                          <Icon
+                            width={28}
+                            icon="subway:tick"
+                            className="text-gray-700"
+                          />
+                        </div>
+                      )}
                       <span className="font-bold text-lg text-gray-700 dark:text-gray-400 border-gray-300 p-3 flex-row ">
                         Congelar Metadata
                       </span>
-                    </label>
-                    <abbr
-                      className="cursor-pointer "
-                      title="Si el contenido és explícito o sensible, como pornografía o contenido 'not safe for work' (NSFW), protegerá a los usuarios de FIBBO que realicen búsquedas seguras y no les mostrará el contenido."
-                    >
-                      <Icon
-                        className="w-auto h-auto flex m-0"
-                        icon="akar-icons:info"
-                      />{" "}
-                    </abbr>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -349,6 +379,22 @@ export default function EditContainer() {
                 buttonAction={handleEdit}
               />
             </div>
+            <FreezeMetadataModal
+              wallet={wallet}
+              showModal={showFreeze}
+              tokenId={tokenId}
+              handleCloseModal={() => setShowFreeze(false)}
+              collectionInfo={collectionSelected}
+              itemData={{
+                image: sanityImgUrl,
+                name: name,
+                description: desc,
+                royalty: royalty,
+                hiddenContent: hiddenContent,
+                ipfsImage: ipfsImageUrl,
+                ipfsMetadata: ipfsMetadata,
+              }}
+            />
           </div>
         ) : (
           <NotVerified

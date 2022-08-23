@@ -50,6 +50,8 @@ export const ConfirmCreateModal = ({
         newTokenId,
         itemData.royalty ? itemData.royalty : 0,
         itemData.image,
+        itemData.ipfsImageUrl,
+        ipfsFileURL,
         collection.contractAddress,
         itemData.hiddenContent
       );

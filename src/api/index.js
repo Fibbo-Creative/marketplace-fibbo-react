@@ -159,6 +159,8 @@ export const useApi = () => {
     tokenId,
     royalty,
     image,
+    ipfsImage,
+    ipfsMetadata,
     collection,
     additionalContent
   ) => {
@@ -169,6 +171,8 @@ export const useApi = () => {
       tokenId: tokenId,
       royalty: royalty,
       sanityImgUrl: image,
+      ipfsImgUrl: ipfsImage,
+      ipfsMetadataUrl: ipfsMetadata,
       collection: collection,
       additionalContent: additionalContent,
     });
@@ -181,6 +185,8 @@ export const useApi = () => {
     tokenId,
     royalty,
     image,
+    ipfsImgUrl,
+    ipfsMetadataUrl,
     collection,
     additionalContent
   ) => {
@@ -192,8 +198,22 @@ export const useApi = () => {
         tokenId: tokenId,
         royalty: royalty,
         sanityImgUrl: image,
+        ipfsImgUrl: ipfsImgUrl,
+        ipfsMetadataUrl: ipfsMetadataUrl,
         collection: collection,
         additionalContent: additionalContent,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const registerNftRoyalties = async (collection, tokenId, royalties) => {
+    try {
+      await marketplaceApi.post("nfts/registerRoyalties", {
+        collection: collection,
+        tokenId: tokenId,
+        royalty: royalties,
       });
     } catch (e) {
       console.log(e);
@@ -420,6 +440,7 @@ export const useApi = () => {
     getNftsFromAddress,
     getNftHistory,
     saveMintedItem,
+    registerNftRoyalties,
     saveCollectionDetails,
     searchItemsAndProfiles,
     uploadImgToCDN,
