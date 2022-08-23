@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAccount from "../../hooks/useAccount";
 import { useApi } from "../../api";
+import { Icon } from "@iconify/react";
+
 
 /* TO DO 
 
@@ -65,12 +67,12 @@ export default function MyCollectionsContainer() {
           buttonAction={() => goToCreateCollection()}
         />
       </div>
-      <div className=" flex flex-row flex-wrap gap-20 w-full content-center justify-center p-[40px]">
+      <div className="flex flex-row flex-wrap gap-20 w-full content-center justify-center p-[40px]">
         {myCollections?.map((col) => {
           return (
             <div
               key={col._id}
-              className="hover:border-3 hover:-translate-y-1 cursor-pointer flex flex-col w-[400px] h-[300px] border-4 border-white"
+              className="hover:-translate-y-1 rounded-lg cursor-pointer flex flex-col w-[400px] h-[300px] bg-slate-100"
               onClick={() => redirectToColectionPage(col)}
             >
               <div
@@ -80,18 +82,21 @@ export default function MyCollectionsContainer() {
                   backgroundRepeat: "no-repeat",
                   backgroundPosition: "center center",
                 }}
-                className="flex w-full h-[200px] items-center justify-center border-b-4 border-white "
+                className="flex w-full h-[200px] items-center rounded-lg justify-center "
               ></div>
-              <div className="flex w-full h-[100px]">
-                <div className="flex w-[100px] h-full border-r-4 border-white items-center justify-center ">
+              <div className="flex gap-4 items-center w-full h-[100px] p-4">
+                <div className=" flex w-[100px] h-full items-center justify-center">
                   <img
                     src={col.logoImage}
-                    className="object-cover"
+                    className="object-cover rounded-lg"
                     alt={`colection-${col._id}`}
                   />
                 </div>
-                <div className="flex flex-col font-bold w-[300px] h-full items-center justify-evenly ">
-                  {col.name}
+                <div className="flex flex-col w-[300px] h-full items-center justify-evenly text-black ">
+                  <b>{col.name}</b>
+                </div>
+                <div className="flexflex-col font-bold items-center justify-center hover:-translate-y-1   ">
+                  <Icon color="black" width="40px" icon="carbon:add-filled" />
                 </div>
               </div>
             </div>
