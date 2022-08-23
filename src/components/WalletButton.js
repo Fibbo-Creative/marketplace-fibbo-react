@@ -23,7 +23,7 @@ export default function WalletButton({
           <div className="flex justify-evenly items-center py-1 px-2">
             <div>
               <img
-                className="w-[32px] md:w-[48px] rounded-full"
+                className="w-[32px] h-[32px] md:w-[48px] md:h-[48px] rounded-full"
                 src={userProfile.profileImg}
                 alt=""
               />

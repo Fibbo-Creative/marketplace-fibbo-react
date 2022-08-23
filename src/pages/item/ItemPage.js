@@ -238,7 +238,6 @@ export default function ItemPage() {
           payToken: payTokenInfo,
         };
       }
-      setLoading(false);
     } catch (e) {
       console.log(e);
     }
@@ -536,7 +535,8 @@ export default function ItemPage() {
       let data = await CoinGeckoClient.simple.price({ ids: ["fantom"] });
       setCoinPrice(data.data.fantom.usd);
 
-      hasAnOffer();
+      await hasAnOffer();
+      setLoading(false);
     };
     fetchData();
   }, [collection, tokenId, wallet]);
