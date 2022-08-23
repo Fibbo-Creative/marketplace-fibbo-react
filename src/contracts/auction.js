@@ -3,7 +3,6 @@ import { ChainId } from "@sushiswap/sdk";
 import useContract from "../hooks/useContract";
 import { AUCTION_ABI } from "./abi";
 import { useAddressRegistry } from "./addressRegistry";
-import { useDefaultCollection } from "./collection";
 import { Contracts } from "../constants/networks";
 import { formatEther, parseEther } from "ethers/lib/utils";
 import { useTokens } from "./token";
@@ -34,7 +33,6 @@ export const useAuction = () => {
   const { getERC20Contract, getERC721Contract } = useTokens();
   const { getAuctionAddress } = useAddressRegistry();
 
-  const { getDefaultCollectionContract } = useDefaultCollection();
   const { getContract } = useContract();
 
   const getContractAddress = async () => await getAuctionAddress();
@@ -65,16 +63,6 @@ export const useAuction = () => {
     );
 
     return formatHighestBid(highestBid);
-  };
-
-  const setApproval = async () => {
-    const collectionContract = await getDefaultCollectionContract();
-    const auctionAddress = await getAuctionAddress();
-    const approveTx = await collectionContract.setApprovalForAll(
-      auctionAddress,
-      true
-    );
-    await approveTx.wait();
   };
 
   const createAuction = async (

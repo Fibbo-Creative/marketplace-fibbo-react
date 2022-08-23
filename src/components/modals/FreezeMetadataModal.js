@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useApi } from "../../api";
 import { useStateContext } from "../../context/StateProvider";
 import { actionTypes } from "../../context/stateReducer";
+import { useCollections } from "../../contracts/collection";
 import { useTokens } from "../../contracts/token";
 import ActionButton from "../ActionButton";
 import { ActionModal } from "./ActionModal";
@@ -16,10 +17,8 @@ export default function FreezeMetadataModal({
   itemData,
   wallet,
 }) {
-  const { uploadJSONMetadata, registerNftRoyalties } = useApi();
-  const { getERC721Contract } = useTokens();
+  const { setFreezedMetadata } = useCollections();
   const navigate = useNavigate();
-  const [{ userProfile }, dispatch] = useStateContext();
   const [secure, setSecure] = useState(false);
 
   const goToItem = () => {
@@ -30,34 +29,7 @@ export default function FreezeMetadataModal({
     }
   };
   const handleFreezeMetadata = async () => {
-    // TO DO -> Realizar la acción en el contrato de
-    const contract = await getERC721Contract(collectionInfo.contractAddress);
-    console.log(contract);
-    const ipfsCID = await uploadJSONMetadata(
-      itemData.name,
-      itemData.description,
-      itemData.ipfsImage
-    );
-
-    const ipfsFileURL = `https://ipfs.io/ipfs/${ipfsCID}`;
-
-    // Actualizar tokenURI
-    let setTokenUriTx = await contract.setTokenUri(tokenId, ipfsFileURL);
-    await setTokenUriTx.wait();
-
-    // Congelar metadata
-    let freezeMetadataTx = await contract.setFreezedMetadata(
-      tokenId,
-      ipfsFileURL
-    );
-    await freezeMetadataTx.wait();
-
-    // Actualizar royalties
-    await registerNftRoyalties(
-      collectionInfo.contractAddress,
-      tokenId,
-      itemData.royalty
-    );
+    await setFreezedMetadata(collectionInfo.contractAddress, itemData, tokenId);
   };
 
   return (

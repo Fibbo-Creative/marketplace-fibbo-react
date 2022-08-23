@@ -9,7 +9,6 @@ import DetailInfo from "./components/DetailInfo";
 import { useApi } from "../../api";
 import { useMarketplace } from "../../contracts/market";
 import fibboLogo from "../../assets/logoNavbarSmall.png";
-import { useDefaultCollection } from "../../contracts/collection";
 import { useAuction } from "../../contracts/auction";
 import PutForSaleModal from "../../components/modals/PutForSaleModal";
 import CreateAuctionModal from "../../components/modals/CreateAuctionModal";
@@ -35,6 +34,8 @@ import { useTokens } from "../../contracts/token";
 import { useFactory } from "../../contracts/factory";
 import { ethers } from "ethers";
 import { MoreItems } from "../../components/MoreItems";
+import { formatEther } from "ethers/lib/utils";
+import { useCollections } from "../../contracts/collection";
 
 const formatPriceInUsd = (price) => {
   let priceStr = price.toString().split(".");
@@ -83,7 +84,6 @@ export default function ItemPage() {
     buyItem,
     acceptOffer,
   } = useMarketplace();
-  const { getTotalItems, getIsFreezedMetadata } = useDefaultCollection();
   const { getERC721Contract } = useTokens();
 
   const {
@@ -98,7 +98,7 @@ export default function ItemPage() {
     buyNow,
   } = useAuction();
 
-  const { createNFTContract } = useFactory();
+  const { setFreezedMetadata } = useCollections();
 
   const [openConnectionModal, setOpenConnectionModal] = useState(false);
   const [openSellModal, setOpenSellModal] = useState(false);
@@ -212,16 +212,14 @@ export default function ItemPage() {
 
     const recipientInfo = await getProfileInfo(nftData.creator);
 
-    const numberOfTokens = await getTotalItems();
+    const numberOfTokens = await contract.getCurrentTokenID();
 
     setProperties({
       royalty: nftData.royalty,
       recipient: recipientInfo,
       collection: collectionResponse,
-      totalItems: numberOfTokens,
+      totalItems: numberOfTokens.toNumber(),
     });
-
-    setLoading(false);
   };
 
   const getAuctions = async () => {
@@ -240,6 +238,7 @@ export default function ItemPage() {
           payToken: payTokenInfo,
         };
       }
+      setLoading(false);
     } catch (e) {
       console.log(e);
     }
@@ -280,7 +279,13 @@ export default function ItemPage() {
   };
 
   const handleListItem = async (price, payToken) => {
-    //TO DO -> Si el item no tiene la metadata congelada, hacerlo
+    if (!isFreezedMetadata) {
+      await setFreezedMetadata(
+        collectionInfo.contractAddress,
+        tokenInfo.current,
+        tokenId
+      );
+    }
     await listItem(collectionInfo.contractAddress, tokenId, price, payToken);
 
     let listingInfo = await getListingInfo(
@@ -293,6 +298,7 @@ export default function ItemPage() {
       ...listingInfo,
       payToken: payTokenInfo,
     };
+    setFreezedMetadata(true);
     setIsForSale(true);
     setActionMade(1);
   };
@@ -354,7 +360,13 @@ export default function ItemPage() {
   };
 
   const handleAcceptOffer = async (from) => {
-    //TO DO -> Si el item no tiene la metadata congelada, hacerlo
+    if (!isFreezedMetadata) {
+      await setFreezedMetadata(
+        collectionInfo.contractAddress,
+        tokenInfo.current,
+        tokenId
+      );
+    }
     await acceptOffer(collectionInfo.contractAddress, tokenId, from);
 
     listing.current = null;
@@ -363,6 +375,7 @@ export default function ItemPage() {
     const profile = await getProfileInfo(from);
     profileOwnerData.current = profile;
     setIsOwner(false);
+    setIsFreezedMetadata(true);
     setIsForSale(false);
     setActionMade(1);
   };
@@ -404,7 +417,13 @@ export default function ItemPage() {
     endTime,
     payToken
   ) => {
-    //TO DO -> Si el item no tiene la metadata congelada, hacerlo
+    if (!isFreezedMetadata) {
+      await setFreezedMetadata(
+        collectionInfo.contractAddress,
+        tokenInfo.current,
+        tokenId
+      );
+    }
 
     await createAuction(
       wallet,
@@ -424,6 +443,7 @@ export default function ItemPage() {
       ..._auction,
       payToken: payTokenInfo,
     };
+    setIsFreezedMetadata(true);
     setIsOnAuction(true);
   };
 

@@ -4,15 +4,6 @@ import { useNavigate } from "react-router-dom";
 import useAccount from "../../hooks/useAccount";
 import { useApi } from "../../api";
 
-/* TO DO 
-
-Ja es recuperen les coleccions de la wallet
-Faltaria:
-- Mostrar les imatges
-- Al clickar redirigir a /collection/<contract_address>
-
-*/
-
 export default function MyCollectionsContainer() {
   const navigate = useNavigate();
   const { getMyCollections } = useApi();

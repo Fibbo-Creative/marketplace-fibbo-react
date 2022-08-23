@@ -14,14 +14,6 @@ import RedirectModal from "../../../components/modals/RedirectModal";
 import { useStateContext } from "../../../context/StateProvider";
 import FiltersCollectionSidebar from "../../../components/FiltersCollectionSidebar";
 
-/* TO DO 
-
-Ja es recuperen la info de la colleció es guarda a collectionInfo
-
-Faltaria Mostrarho tot guay
-
-*/
-
 export const CollectionDetailContainer = () => {
   const [loading, setLoading] = useState(true);
   const { collection } = useParams();

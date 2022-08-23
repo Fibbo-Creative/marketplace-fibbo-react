@@ -1,9 +1,6 @@
-import { Icon } from "@iconify/react";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useApi } from "../../api";
-import { useDefaultCollection } from "../../contracts/collection";
-import { addJsonToIpfs } from "../../utils/ipfs";
 import ActionButton from "../ActionButton";
 import { Check } from "../lottie/Check";
 import { BasicModal } from "./BasicModal";
@@ -50,7 +47,7 @@ export const ConfirmCreateModal = ({
         newTokenId,
         itemData.royalty ? itemData.royalty : 0,
         itemData.image,
-        itemData.ipfsImageUrl,
+        itemData.ipfsImage,
         ipfsFileURL,
         collection.contractAddress,
         itemData.hiddenContent

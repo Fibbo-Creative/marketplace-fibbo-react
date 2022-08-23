@@ -6,7 +6,12 @@ import { saveAs } from "file-saver";
 import ReactTooltip from "react-tooltip";
 import { ThemeContext } from "../../../context/ThemeContext";
 
-export default function DetailImage({ tokenImage, tokenName, loading }) {
+export default function DetailImage({
+  isFreezedMetadata,
+  tokenImage,
+  tokenName,
+  loading,
+}) {
   const [imgOrQR, setImgOrQr] = useState(tokenImage);
   const [qrcode, setQrcode] = useState("");
   const { theme } = useContext(ThemeContext);
@@ -74,23 +79,25 @@ export default function DetailImage({ tokenImage, tokenName, loading }) {
                     multiline={true}
                   />
                 </div>
-                <div
-                  data-for="freezed-icon"
-                  data-tip="El item tiene sus datos congelados"
-                >
-                  <Icon
-                    width={28}
-                    className="flex w-[32px] "
-                    icon="material-symbols:severe-cold-rounded"
-                  />
-                  <ReactTooltip
-                    id="freezed-icon"
-                    place="top"
-                    type={theme === "dark" ? "light" : "dark"}
-                    effect="solid"
-                    multiline={true}
-                  />
-                </div>
+                {isFreezedMetadata && (
+                  <div
+                    data-for="freezed-icon"
+                    data-tip="El item tiene sus datos congelados"
+                  >
+                    <Icon
+                      width={28}
+                      className="flex w-[32px] "
+                      icon="material-symbols:severe-cold-rounded"
+                    />
+                    <ReactTooltip
+                      id="freezed-icon"
+                      place="top"
+                      type={theme === "dark" ? "light" : "dark"}
+                      effect="solid"
+                      multiline={true}
+                    />
+                  </div>
+                )}
               </div>
             </div>
             <img

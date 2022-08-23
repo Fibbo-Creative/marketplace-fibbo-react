@@ -1,15 +1,7 @@
-import { Icon } from "@iconify/react";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useApi } from "../../api";
-import { useDefaultCollection } from "../../contracts/collection";
-import { addJsonToIpfs } from "../../utils/ipfs";
-import ActionButton from "../ActionButton";
-import { Check } from "../lottie/Check";
-import { BasicModal } from "./BasicModal";
 import { ActionModal } from "./ActionModal";
-
-import { useTokens } from "../../contracts/token";
 import { useFactory } from "../../contracts/factory";
 import { ethers } from "ethers";
 export const ConfirmCreateCollection = ({

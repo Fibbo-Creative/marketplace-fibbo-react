@@ -1,23 +1,17 @@
 import { ethers } from "ethers";
-import { ChainId } from "@sushiswap/sdk";
 import useContract from "../hooks/useContract";
 import { MARKETPLACE_ABI } from "./abi";
 import { useAddressRegistry } from "./addressRegistry";
-import { useDefaultCollection } from "./collection";
-import { Contracts } from "../constants/networks";
+
 import { formatEther, parseEther } from "ethers/lib/utils";
 import { useTokens } from "./token";
 import useAccount from "../hooks/useAccount";
-
-const CHAIN = ChainId.FANTOM_TESTNET;
-const WFTM_ADDRESS = Contracts[CHAIN].wftmAddress;
 
 export const useMarketplace = () => {
   const { getERC20Contract, getERC721Contract } = useTokens();
   const { getMarketplaceAddress } = useAddressRegistry();
   const { wallet } = useAccount();
 
-  const { setApproval, getDefaultCollectionContract } = useDefaultCollection();
   const { getContract } = useContract();
 
   const getContractAddress = async () => await getMarketplaceAddress();
