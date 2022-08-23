@@ -72,7 +72,7 @@ export const CollectionDetailContainer = () => {
   return (
     <PageWithLoading loading={loading}>
       <div className="flex flex-col mt-[79px] mb-[10px] w-screen items-center justify-center">
-        <div className="flex w-full h-[300px] w-full ">
+        <div className="flex w-full h-[270px] w-full ">
           {collectionInfo?.bannerImage !== "" ? (
             <img
               className="flex w-full h-full"
@@ -82,27 +82,34 @@ export const CollectionDetailContainer = () => {
           ) : (
             <div className="h-full w-full bg-gray-400"></div>
           )}
-          <div className="absolute h-[200px] top-[270px]">
-            <div className="flex justify-between items-end mx-[50px] w-full">
-              <div className="flex">
+          <div className="absolute w-full top-[300px]">
+            <div className="flex justify-between items-end pl-10 w-full">
+              <div className="flex w-[200px]">
                 <img
                   src={collectionInfo?.logoImage}
                   alt={`col-${collection._id}`}
-                  className="w-[200px]"
+                  className=""
                 />
-                <div className="flex items-end ml-[50px] mb-[20px]">
+                <div className="flex items-end ml-[50px] mb-[20px] w-full">
                   <div className="flex text-2xl">
                     <b>{collectionInfo?.name}</b>
                   </div>
                 </div>
               </div>
-              <div>
+              <div className="w-auto pr-4">
                 {isOwner && (
+                  <div className="flex flex-row p-4 gap-8 justify-center">
                   <ActionButton
                     text="Crear Item"
                     size="large"
                     buttonAction={redirectToCreateItem}
                   />
+                  <ActionButton
+                  text="Editar Colección"
+                  size="large"
+                  buttonAction={redirectToCreateItem}
+                />
+                </div>
                 )}
               </div>
             </div>
@@ -132,8 +139,9 @@ export const CollectionDetailContainer = () => {
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-center ml-[50px] mt-[20px] ">
-              <p className="flex text-lg">{collectionInfo?.description}</p>
+            <div className="flex  flex-col items-center justify-center ">
+              <a className=" "><b> DESCRIPCION </b></a>
+              <p className="flex text-lg mt-[20px]">{collectionInfo?.description}</p>
             </div>
           </div>
         </div>
