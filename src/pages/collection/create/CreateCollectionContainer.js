@@ -286,8 +286,8 @@ export default function CreateCollectionContainer() {
   };
 
   return (
-    <div className="flex mt-[79px] mb-[79px]  w-screen content-center justify-center">
-      <div className="flex w-7/12 flex-col  ">
+    <div className="flex mt-[79px] mb-[79px] w-screen content-center justify-center">
+      <div className="flex w-11/12 md:w-9/12 w-7/11 flex-col  ">
         <div className="flex w-full p-[40px] content-center justify-center">
           <div id="top" className="text-2xl">
             <b>CREAR COLECCIÓN</b>
@@ -304,7 +304,7 @@ export default function CreateCollectionContainer() {
               imageURL={logoImage}
               onFileSelected={onSelectLogoImage}
               inputId="logoImageInput"
-              className="rounded-full w-[100px] h-[100px] md:w-[150px] md:h-[150px] lg:w-[200px] lg:h-[200px]"
+              className="rounded-full w-[200px] h-[200px]"
               imageError={logoImageError}
               imageMessageError={logoImageMessageError}
               icon={true}
@@ -323,7 +323,7 @@ export default function CreateCollectionContainer() {
               label="Imagen principal de la colección"
               inputId="mainImageInput"
               backgroundImage={true}
-              className="rounded-xl w-[200px] h-[100px] md:w-[250px] md:h-[150px] lg:w-[300px] lg:h-[200px]"
+              className="rounded-xl w-[300px] h-[200px]"
               onFileSelected={onSelectMainImage}
               imageError={mainImageError}
               imageMessageError={mainImageMessageError}
@@ -342,7 +342,7 @@ export default function CreateCollectionContainer() {
               label="Pancarta de la colección"
               backgroundImage={true}
               inputId="bannerImageInput"
-              className="rounded-xl w-[300px] h-[100px] md:w-[350px] md:h-[150px] lg:w-[600px] lg:h-[200px]"
+              className="rounded-xl w-11/12 h-[130px] sm:w-[600px] sm:h-[200px]"
               onFileSelected={onSelectBannerImage}
               imageError={bannerImageError}
               imageMessageError={bannerImageMessageError}
@@ -458,7 +458,7 @@ export default function CreateCollectionContainer() {
           </div>
         </div>
 
-        <div className="flex flex-col w-full pt-[40px] content-center justify-center">
+        <div className="flex flex-col w-full pt-[40px] content-center justify-center ">
           <ActionButton
             text="Crear Colección"
             size="large"
