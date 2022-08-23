@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import fibboLogo from "../../assets/logoNavbarSmall.png";
 export const ImageInput = ({
   imageURL,
@@ -27,6 +27,14 @@ export const ImageInput = ({
     document.getElementById(`div-${inputId}`).style.padding = "0";
     setLoadingImage(false);
   };
+
+  useEffect(() => {
+    if (imageURL !== "") {
+      document.getElementById(`divText-${inputId}`).style.visibility = "hidden";
+      document.getElementById(`div-${inputId}`).style.padding = "0";
+    }
+  }, []);
+
   return (
     <div className="flex flex-col gap-3  mb-4">
       <div className="font-bold text-lg flex ">

@@ -61,7 +61,6 @@ export const CollectionDetailContainer = () => {
     const fetchData = async () => {
       const collectionDetail = await getCollectionDetail(collection);
       setIsOwner(collectionDetail.creator === wallet);
-      console.log(collectionDetail);
       const _ownerInfo = await getProfileInfo(collectionDetail.creator);
       setOwnerInfo(_ownerInfo);
       setCollectionInfo(collectionDetail);
