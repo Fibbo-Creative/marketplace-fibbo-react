@@ -76,7 +76,7 @@ export const ConfirmCreateCollection = ({
   };
 
   return (
-    <BasicModal
+    <ActionModal
       size="large"
       title="Confirma tu creación"
       showModal={showModal}
@@ -129,6 +129,6 @@ export const ConfirmCreateCollection = ({
           size="small"
         />
       </div>
-    </BasicModal>
+    </ActionModal>
   );
 };

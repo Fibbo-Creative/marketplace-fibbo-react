@@ -15,10 +15,6 @@ export const useCollections = () => {
 
     const ipfsFileURL = `https://ipfs.io/ipfs/${ipfsCID}`;
 
-    // Actualizar tokenURI
-    let setTokenUriTx = await contract.setTokenUri(tokenId, ipfsFileURL);
-    await setTokenUriTx.wait();
-
     // Congelar metadata
     let freezeMetadataTx = await contract.setFreezedMetadata(
       tokenId,
