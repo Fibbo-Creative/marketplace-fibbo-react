@@ -473,17 +473,17 @@ export const CollectionDetailContainer = () => {
                 </div>
               </div>
             </div>
-            <div className="flex  flex-col items-center justify-center ">
-              <div className="flex w-auto">
-                <a className="text-xl ">
-                  <b> DESCRIPCIÓN </b>
+            <div className="flex flex-col mt-[25px] mr-[50px] ml-[50px]">
+              <div className="flex w-auto font-bold">
+                <a className="text-md ">
+                  DESCRIPCIÓN 
                 </a>
               </div>
               <p className="flex text-lg">{collectionInfo?.description}</p>
             </div>
           </div>
         </div>
-        <div className="flex w-full mt-[230px]">
+        <div className="flex w-full mt-[240px]">
           <div className="flex flex-row w-full h-[60px] gap-10 ml-[50px]">
             <div className="flex flex-col gap-1 items-center">
               <div className="flex text-xl">
