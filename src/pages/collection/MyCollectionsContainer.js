@@ -4,12 +4,13 @@ import { useNavigate } from "react-router-dom";
 import useAccount from "../../hooks/useAccount";
 import { useApi } from "../../api";
 import { Icon } from "@iconify/react";
-
+import { PageWithLoading } from "../../components/basic/PageWithLoading";
 
 export default function MyCollectionsContainer() {
   const navigate = useNavigate();
   const { getMyCollections } = useApi();
   const { wallet, connectToWallet } = useAccount();
+  const [loading, setLoading] = useState(true);
 
   const [myCollections, setMyCollections] = useState([]);
 
@@ -30,14 +31,18 @@ export default function MyCollectionsContainer() {
       await connectToWallet();
 
       const collections = await getMyCollections(wallet);
-      console.log(collections);
+
       setMyCollections(collections);
+      setLoading(false);
     };
     fetchData();
   }, [wallet, connectToWallet]);
 
   return (
-    <div className="flex flex-col mt-[79px] mb-[79px] w-screen content-center justify-center">
+    <PageWithLoading
+      loading={loading}
+      className="flex flex-col mt-[79px] mb-[79px] w-screen content-center justify-center"
+    >
       <div className="flex w-full p-[40px] content-center justify-center">
         <div className="text-2xl">
           {" "}
@@ -94,6 +99,6 @@ export default function MyCollectionsContainer() {
           );
         })}
       </div>
-    </div>
+    </PageWithLoading>
   );
 }

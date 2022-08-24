@@ -284,6 +284,7 @@ export default function ItemPage() {
         tokenInfo.current,
         tokenId
       );
+      setFreezedMetadata(true);
     }
     await listItem(collectionInfo.contractAddress, tokenId, price, payToken);
 
@@ -297,7 +298,7 @@ export default function ItemPage() {
       ...listingInfo,
       payToken: payTokenInfo,
     };
-    setFreezedMetadata(true);
+
     setIsForSale(true);
     setActionMade(1);
   };
