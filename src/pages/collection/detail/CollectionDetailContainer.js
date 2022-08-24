@@ -72,6 +72,13 @@ export const CollectionDetailContainer = () => {
       setShowRedirect(true);
     }
   };
+  const redirectToEditCollection = () => {
+    if (collectionInfo.customURL) {
+      navigate(`/collection/${collectionInfo.customURL}/edit`);
+    } else {
+      navigate(`/collection/${collectionInfo.contractAddress}/edit`);
+    }
+  };
 
   const redirectToCreateItem = () => {
     if (collectionInfo.customURL) {
@@ -423,7 +430,7 @@ export const CollectionDetailContainer = () => {
                   </div>
                 </div>
               </div>
-              <div className="w-auto pr-4">
+              <div className="w-auto pr-4 hidden lg:flex">
                 {isOwner && (
                   <div className="flex flex-row p-4 gap-8 justify-center">
                     <ActionButton
@@ -434,14 +441,14 @@ export const CollectionDetailContainer = () => {
                     <ActionButton
                       text="Editar Colección"
                       size="large"
-                      buttonAction={redirectToCreateItem}
+                      buttonAction={redirectToEditCollection}
                     />
                   </div>
                 )}
               </div>
             </div>
             <div></div>
-            <div className="flex items-center justify-left  gap-5 ml-[50px] mt-[20px] ">
+            <div className="flex items-center justify-left gap-5 ml-[50px] mt-[20px] ">
               <div className="flex text-md ">
                 <b>Creada por: </b>
               </div>
@@ -467,12 +474,12 @@ export const CollectionDetailContainer = () => {
               </div>
             </div>
             <div className="flex  flex-col items-center justify-center ">
-              <a className=" ">
-                <b> DESCRIPCION </b>
-              </a>
-              <p className="flex text-lg mt-[20px]">
-                {collectionInfo?.description}
-              </p>
+              <div className="flex w-auto">
+                <a className="text-xl ">
+                  <b> DESCRIPCIÓN </b>
+                </a>
+              </div>
+              <p className="flex text-lg">{collectionInfo?.description}</p>
             </div>
           </div>
         </div>
