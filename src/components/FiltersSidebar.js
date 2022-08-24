@@ -16,20 +16,6 @@ export default function FiltersSidebar({
   statusFilters,
   payTokenFilters,
 }) {
-  const [min_state, setMinState] = useState(0);
-  const [max_state, setMaxState] = useState(100);
-
-  const applyRangeFilter = () => {
-    let visiblefilterArray = allMarketItems.filter((item) => {
-      let price = item.price;
-      if (price <= max_state && price >= min_state) {
-        return item;
-      }
-    });
-
-    setVisibleMarketItems(visiblefilterArray);
-  };
-
   const handleShowSidebar = (show) => {
     setOpenedSidebar(show);
   };

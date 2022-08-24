@@ -75,7 +75,6 @@ export default function ExploreContainer() {
   };
 
   const goToNftDetail = (item) => {
-    console.log(item.collection);
     navigate(
       `/explore/${
         item.collection.customURL
@@ -345,10 +344,17 @@ export default function ExploreContainer() {
   };
 
   const selectPayTokenFilter = (token) => {
-    let isSelected = filtersSelected.find((item) => item === token);
+    let isSelected = filtersSelected.find(
+      (item) => item.contractAddress === token.contractAddress
+    );
+    console.log(isSelected);
     if (isSelected) {
       setVisibleMarketItems(allMarketItems);
-      setFiltersSelected(filtersSelected.filter((item) => item !== token));
+      setFiltersSelected(
+        filtersSelected.filter(
+          (item) => item.contractAddress !== token.contractAddress
+        )
+      );
     } else {
       setFiltersSelected([...filtersSelected, token]);
     }
@@ -433,11 +439,9 @@ export default function ExploreContainer() {
       });
       finalFiltered = finalFiltered.filter((item) => item !== undefined);
 
-      console.log(typeof sortSelected);
       if (sortSelected !== 0 && sortSelected !== 1) {
         finalFiltered = sortMarketItems(sortSelected, finalFiltered);
       }
-      console.log(finalFiltered);
       setAllMarketItems(finalFiltered);
       setVisibleMarketItems(finalFiltered.slice(0, 12));
     } else {
@@ -445,7 +449,7 @@ export default function ExploreContainer() {
       if (sortSelected !== 0 && sortSelected !== 1) {
         finalFiltered = sortMarketItems(sortSelected, marketItems);
       }
-      console.log(finalFiltered);
+
       setAllMarketItems(finalFiltered);
       setVisibleMarketItems(finalFiltered.slice(0, 12));
     }

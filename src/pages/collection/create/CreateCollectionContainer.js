@@ -212,8 +212,7 @@ export default function CreateCollectionContainer() {
   const handleCreateCollection = async () => {
     //Comprobar el formato de la url y colecciones
     let error = false;
-    console.log("KE");
-
+    setShowConfirm(true);
     if (logoImage === "") {
       error = true;
       setLogoImageError(true);
@@ -460,23 +459,25 @@ export default function CreateCollectionContainer() {
             buttonAction={handleCreateCollection}
           />
         </div>
-        <ConfirmCreateCollection
-          showModal={showConfirm}
-          handleCloseModal={() => setShowConfirm(false)}
-          wallet={wallet}
-          collectionData={{
-            logoImage: logoImage,
-            mainImage: mainImage,
-            bannerImage: bannerImage,
-            name: name,
-            description: desc,
-            url: url,
-            websiteURL: website,
-            discordURL: discord,
-            telegramURL: telegram,
-            instagramURL: instagram,
-          }}
-        />
+        {wallet && (
+          <ConfirmCreateCollection
+            showModal={showConfirm}
+            handleCloseModal={() => setShowConfirm(false)}
+            wallet={wallet}
+            collectionData={{
+              logoImage: logoImage,
+              mainImage: mainImage,
+              bannerImage: bannerImage,
+              name: name,
+              description: desc,
+              url: url,
+              websiteURL: website,
+              discordURL: discord,
+              telegramURL: telegram,
+              instagramURL: instagram,
+            }}
+          />
+        )}
       </div>
     </div>
   );

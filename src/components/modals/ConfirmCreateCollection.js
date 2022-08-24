@@ -4,6 +4,8 @@ import { useApi } from "../../api";
 import { ActionModal } from "./ActionModal";
 import { useFactory } from "../../contracts/factory";
 import { ethers } from "ethers";
+import { BasicModal } from "./BasicModal";
+import ActionButton from "../ActionButton";
 export const ConfirmCreateCollection = ({
   showModal,
   handleCloseModal,
@@ -74,7 +76,7 @@ export const ConfirmCreateCollection = ({
   };
 
   return (
-    <ActionModal
+    <BasicModal
       size="large"
       title="Confirma tu creación"
       showModal={showModal}
@@ -121,7 +123,12 @@ export const ConfirmCreateCollection = ({
             )}
           </div>
         </div>
+        <ActionButton
+          buttonAction={createCollection}
+          text="CREATE"
+          size="small"
+        />
       </div>
-    </ActionModal>
+    </BasicModal>
   );
 };

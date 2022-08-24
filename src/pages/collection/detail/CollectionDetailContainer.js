@@ -13,15 +13,32 @@ import { isMobile } from "web3modal";
 import RedirectModal from "../../../components/modals/RedirectModal";
 import { useStateContext } from "../../../context/StateProvider";
 import FiltersCollectionSidebar from "../../../components/FiltersCollectionSidebar";
+import {
+  orderByHighestP,
+  orderByLowestP,
+  orderByNearestEnd,
+  orderByOldest,
+  orderByOldestListed,
+  orderByRecently,
+  orderByRecentlyListed,
+  sortMarketItems,
+} from "../../../utils/sort";
 
 export const CollectionDetailContainer = () => {
   const [loading, setLoading] = useState(true);
   const { collection } = useParams();
   const [{ userProfile }] = useStateContext();
-  const { getCollectionDetail, getProfileInfo } = useApi();
+  const { getCollectionDetail, getProfileInfo, getAllPayTokens } = useApi();
   const { wallet } = useAccount();
   const [collectionInfo, setCollectionInfo] = useState(null);
   const [collectionNfts, setCollectionNfts] = useState([]);
+  const [filteredNfts, setFilteredNfts] = useState([]);
+  const [filtersSelected, setFiltersSelected] = useState([]);
+  const [sortSelected, setSortSelected] = useState(0);
+  const [userSmallview, setSmallViewUser] = useState(false);
+
+  const [allErc20Tokens, setAllErc20Tokens] = useState([]);
+
   const [ownerInfo, setOwnerInfo] = useState(null);
   const [isOwner, setIsOwner] = useState(false);
   const [detailLink, setDetailLink] = useState("");
@@ -29,7 +46,6 @@ export const CollectionDetailContainer = () => {
 
   const navigate = useNavigate();
   const redirectToItem = (item) => {
-    console.log(item);
     navigate(
       `/explore/${
         collectionInfo.customURL
@@ -37,6 +53,13 @@ export const CollectionDetailContainer = () => {
           : item.collectionAddress
       }/${item.tokenId}`
     );
+  };
+
+  const changeSmallDisplay = () => {
+    setSmallViewUser(true);
+  };
+  const changeBigDisplay = () => {
+    setSmallViewUser(false);
   };
 
   const openRedirectPopUp = (link) => {
@@ -57,18 +80,301 @@ export const CollectionDetailContainer = () => {
     }
   };
 
+  const sortItems = (value) => {
+    setSortSelected(value);
+    if (value === "2") {
+      //recentyl created
+      const sortedArray = collectionNfts.sort(orderByRecently);
+      setFilteredNfts(sortedArray);
+    }
+    if (value === "3") {
+      //oldest created
+      const sortedArray = collectionNfts.sort(orderByOldest);
+      setFilteredNfts(sortedArray);
+    }
+    if (value === "4") {
+      let toSortAll = [];
+      const forSaleAll = collectionNfts.filter(
+        (item) => item.price !== undefined
+      );
+      const auctionAll = collectionNfts.filter(
+        (item) => item.auction !== undefined
+      );
+      let leftItemsAll = collectionNfts.filter((item) => {
+        return !forSaleAll.find((forSaleItem) => forSaleItem === item);
+      });
+      leftItemsAll = leftItemsAll.filter((item) => {
+        return !auctionAll.find((auctioned) => auctioned === item);
+      });
+
+      toSortAll = [...forSaleAll, ...auctionAll];
+
+      const sortedArrayAll = toSortAll.sort(orderByRecentlyListed);
+
+      let finalArrayAll = sortedArrayAll.concat(leftItemsAll);
+
+      setFilteredNfts(finalArrayAll);
+    }
+    if (value === "5") {
+      //Lowest price
+      let toSortAll = [];
+      const forSaleAll = collectionNfts.filter(
+        (item) => item.price !== undefined
+      );
+      const auctionAll = collectionNfts.filter(
+        (item) => item.auction !== undefined
+      );
+      let leftItemsAll = collectionNfts.filter((item) => {
+        return !forSaleAll.find((forSaleItem) => forSaleItem === item);
+      });
+      leftItemsAll = leftItemsAll.filter((item) => {
+        return !auctionAll.find((auctioned) => auctioned === item);
+      });
+
+      toSortAll = [...forSaleAll, ...auctionAll];
+
+      const sortedArrayAll = toSortAll.sort(orderByOldestListed);
+
+      let finalArrayAll = sortedArrayAll.concat(leftItemsAll);
+
+      setFilteredNfts(finalArrayAll);
+    }
+    if (value === "6") {
+      //highest price
+      let toOrderAll = [];
+      const forSaleAll = collectionNfts.filter(
+        (item) => item.price !== undefined
+      );
+      const offeredAll = collectionNfts.filter(
+        (item) => item.offer !== undefined
+      );
+      const auctionAll = collectionNfts.filter(
+        (item) => item.auction !== undefined
+      );
+
+      toOrderAll = [...forSaleAll, ...offeredAll, ...auctionAll];
+
+      let leftItemsAll = collectionNfts.filter((item) => {
+        return !forSaleAll.find((forSaleItem) => forSaleItem === item);
+      });
+      leftItemsAll = leftItemsAll.filter((item) => {
+        return !offeredAll.find((offered) => offered === item);
+      });
+      leftItemsAll = leftItemsAll.filter((item) => {
+        return !auctionAll.find((auctioned) => auctioned === item);
+      });
+
+      const sortedArrayAll = toOrderAll.sort(orderByHighestP);
+
+      let finalArrayAll = sortedArrayAll.concat(leftItemsAll);
+
+      setFilteredNfts(finalArrayAll);
+    }
+    if (value === "7") {
+      //Lowest price
+      const sortedArray = collectionNfts.sort(orderByLowestP);
+      setFilteredNfts(sortedArray);
+    }
+    if (value === "8") {
+      const auctionsAll = collectionNfts.filter(
+        (item) => item.auction !== undefined
+      );
+      const leftItemsAll = collectionNfts.filter((item) => {
+        return !auctionsAll.find((auction) => auction === item);
+      });
+
+      const sortedArrayAll = auctionsAll.sort(orderByNearestEnd);
+
+      let finalArrayAll = sortedArrayAll.concat(leftItemsAll);
+
+      setFilteredNfts(finalArrayAll);
+    }
+  };
+
+  const filterBySelling = () => {
+    let isSelected = filtersSelected.find((item) => item === "En Venta");
+    if (isSelected) {
+      setFiltersSelected(filtersSelected.filter((item) => item !== "En Venta"));
+    } else {
+      setFiltersSelected([...filtersSelected, "En Venta"]);
+    }
+  };
+
+  const filterByOffered = () => {
+    let isSelected = filtersSelected.find((item) => item === "Ofertado");
+    if (isSelected) {
+      setFiltersSelected(filtersSelected.filter((item) => item !== "Ofertado"));
+    } else {
+      setFiltersSelected([...filtersSelected, "Ofertado"]);
+    }
+  };
+
+  const filterByAuctioned = () => {
+    let isSelected = filtersSelected.find((item) => item === "En Subasta");
+    if (isSelected) {
+      setFiltersSelected(
+        filtersSelected.filter((item) => item !== "En Subasta")
+      );
+    } else {
+      setFiltersSelected([...filtersSelected, "En Subasta"]);
+    }
+  };
+
+  const filterByBidded = () => {
+    let isSelected = filtersSelected.find((item) => item === "Pujado");
+    if (isSelected) {
+      setFiltersSelected(filtersSelected.filter((item) => item !== "Pujado"));
+    } else {
+      setFiltersSelected([...filtersSelected, "Pujado"]);
+    }
+  };
+
+  const removeFilter = (filter) => {
+    if (typeof filter === "object") {
+      selectPayTokenFilter(filter);
+    } else {
+      switch (filter) {
+        case "En Venta":
+          filterBySelling();
+          break;
+        case "Ofertado":
+          filterByOffered();
+          break;
+        case "En Subasta":
+          filterByAuctioned();
+          break;
+        case "Pujado":
+          filterByBidded();
+          break;
+        default:
+          break;
+      }
+    }
+  };
+
+  const selectPayTokenFilter = (token) => {
+    let isSelected = filtersSelected.find(
+      (item) => item.contractAddress === token.contractAddress
+    );
+    console.log(isSelected);
+    if (isSelected) {
+      setFilteredNfts(collectionNfts);
+      setFiltersSelected(
+        filtersSelected.filter(
+          (item) => item.contractAddress !== token.contractAddress
+        )
+      );
+    } else {
+      setFiltersSelected([...filtersSelected, token]);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       const collectionDetail = await getCollectionDetail(collection);
       setIsOwner(collectionDetail.creator === wallet);
       const _ownerInfo = await getProfileInfo(collectionDetail.creator);
       setOwnerInfo(_ownerInfo);
+      const _payTokens = await getAllPayTokens();
+      setAllErc20Tokens(_payTokens);
       setCollectionInfo(collectionDetail);
       setCollectionNfts(collectionDetail.nfts);
+      setFilteredNfts(collectionDetail.nfts);
       setLoading(false);
     };
     fetchData();
   }, [wallet]);
+
+  useEffect(() => {
+    if (filtersSelected.length > 0) {
+      let filtered = [];
+      filtersSelected.forEach((filter) => {
+        if (filter === "En Venta") {
+          let result = collectionNfts.filter(
+            (item) => item.price !== undefined
+          );
+          filtered = [...filtered, ...result];
+        }
+        if (filter === "Ofertado") {
+          let result = collectionNfts.filter(
+            (item) => item.offer !== undefined
+          );
+          filtered = [...filtered, ...result];
+        }
+        if (filter === "En Subasta") {
+          let result = collectionNfts.filter(
+            (item) => item.auction !== undefined
+          );
+          filtered = [...filtered, ...result];
+        }
+        if (filter === "Pujado") {
+          let result = collectionNfts.filter(
+            (item) => item.auction?.topBid !== undefined
+          );
+          filtered = [...filtered, ...result];
+        }
+        if (filter.contractAddress) {
+          let _result = [];
+          if (filtersSelected.includes("En Venta")) {
+            _result = collectionNfts.filter(
+              (item) =>
+                item.payToken?.contractAddress === filter.contractAddress
+            );
+          } else if (filtersSelected.includes("Ofertado")) {
+            _result = collectionNfts.filter(
+              (item) =>
+                item.offer?.payToken.contractAddress === filter.contractAddress
+            );
+          } else if (filtersSelected.includes("En Subasta")) {
+            _result = collectionNfts.filter(
+              (item) =>
+                item.auction?.payToken.contractAddress ===
+                filter.contractAddress
+            );
+          } else if (filtersSelected.includes("Pujado")) {
+            _result = collectionNfts.filter(
+              (item) =>
+                item.auction?.topBid !== undefined &&
+                item.auction?.payToken.contractAddress ===
+                  filter.contractAddress
+            );
+          } else {
+            _result = collectionNfts.filter(
+              (item) =>
+                item.payToken?.contractAddress === filter.contractAddress ||
+                item.offer?.payToken.contractAddress ===
+                  filter.contractAddress ||
+                item.auction?.payToken.contractAddress ===
+                  filter.contractAddress
+            );
+          }
+
+          filtered = [...filtered, ..._result];
+        }
+      });
+      //remove duplicates
+      let ids = [];
+
+      let finalFiltered = filtered.map((filter) => {
+        if (!ids.includes(filter._id)) {
+          ids.push(filter._id);
+          return filter;
+        }
+      });
+      finalFiltered = finalFiltered.filter((item) => item !== undefined);
+
+      if (sortSelected !== 0 && sortSelected !== 1) {
+        finalFiltered = sortMarketItems(sortSelected, finalFiltered);
+      }
+      setFilteredNfts(finalFiltered);
+    } else {
+      let finalFiltered = collectionNfts;
+      if (sortSelected !== 0 && sortSelected !== 1) {
+        finalFiltered = sortMarketItems(sortSelected, collectionNfts);
+      }
+      setFilteredNfts(finalFiltered);
+    }
+  }, [filtersSelected]);
   return (
     <PageWithLoading loading={loading}>
       <div className="flex flex-col mt-[79px] mb-[10px] w-screen items-center justify-center">
@@ -99,17 +405,17 @@ export const CollectionDetailContainer = () => {
               <div className="w-auto pr-4">
                 {isOwner && (
                   <div className="flex flex-row p-4 gap-8 justify-center">
-                  <ActionButton
-                    text="Crear Item"
-                    size="large"
-                    buttonAction={redirectToCreateItem}
-                  />
-                  <ActionButton
-                  text="Editar Colección"
-                  size="large"
-                  buttonAction={redirectToCreateItem}
-                />
-                </div>
+                    <ActionButton
+                      text="Crear Item"
+                      size="large"
+                      buttonAction={redirectToCreateItem}
+                    />
+                    <ActionButton
+                      text="Editar Colección"
+                      size="large"
+                      buttonAction={redirectToCreateItem}
+                    />
+                  </div>
                 )}
               </div>
             </div>
@@ -140,8 +446,12 @@ export const CollectionDetailContainer = () => {
               </div>
             </div>
             <div className="flex  flex-col items-center justify-center ">
-              <a className=" "><b> DESCRIPCION </b></a>
-              <p className="flex text-lg mt-[20px]">{collectionInfo?.description}</p>
+              <a className=" ">
+                <b> DESCRIPCION </b>
+              </a>
+              <p className="flex text-lg mt-[20px]">
+                {collectionInfo?.description}
+              </p>
             </div>
           </div>
         </div>
@@ -206,17 +516,25 @@ export const CollectionDetailContainer = () => {
             </div>
           </div>
         </div>
-        <div className="flex w-full mt-10 border-t h-full">
+        <div className="flex w-full mt-10 border-t h-full ">
           <FiltersCollectionSidebar
             openedSidebar={true}
+            items={filteredNfts}
+            filtersSelected={filtersSelected}
             statusFilters={[
-              { name: "En Venta", filter: null },
-              { name: "Ofertado", filter: null },
-              { name: "En Subasta", filter: null },
-              { name: "Pujado", filter: null },
+              { name: "En Venta", filter: filterBySelling },
+              { name: "Ofertado", filter: filterByOffered },
+              { name: "En Subasta", filter: filterByAuctioned },
+              { name: "Pujado", filter: filterByBidded },
             ]}
+            payTokenFilters={allErc20Tokens.map((item) => {
+              return {
+                ...item,
+                filter: selectPayTokenFilter,
+              };
+            })}
           />
-          <div className="flex w-full flex-col gap-10 overflow-y-scroll overflow-x-hidden">
+          <div className="h-[800px]  flex w-full flex-col gap-4 overflow-y-scroll overflow-x-hidden">
             <div className="flex flex-row gap-10 w-full ml-[100px] mt-[50px] items-center">
               <div className="w-2/6 flex border-2 rounded">
                 <div className="flex items-center justify-center px-4 border-l">
@@ -229,7 +547,10 @@ export const CollectionDetailContainer = () => {
                 />
               </div>
 
-              <select className="cursor-pointer h-10 w-40 md:w-60 flex border border-gray-300 bg-white dark:bg-dark-1 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+              <select
+                onChange={(e) => sortItems(e.target.value)}
+                className="cursor-pointer h-10 w-40 md:w-60 flex border border-gray-300 bg-white dark:bg-dark-1 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              >
                 <option value={1}>Ordenar Por</option>
                 <option value={2}>Creados Recientemente</option>
                 <option value={3}>Mas antiguos</option>
@@ -240,7 +561,10 @@ export const CollectionDetailContainer = () => {
                 <option value={8}>Termina antes</option>
               </select>
 
-              <button className="hover:-translate-y-1">
+              <button
+                onClick={changeSmallDisplay}
+                className="hover:-translate-y-1"
+              >
                 <Icon
                   icon="akar-icons:dot-grid-fill"
                   width="40"
@@ -248,7 +572,10 @@ export const CollectionDetailContainer = () => {
                   color="grey"
                 />
               </button>
-              <button className="hover:-translate-y-1">
+              <button
+                onClick={changeBigDisplay}
+                className="hover:-translate-y-1"
+              >
                 <Icon
                   icon="ci:grid-big-round"
                   width="60"
@@ -257,17 +584,46 @@ export const CollectionDetailContainer = () => {
                 />
               </button>
             </div>
+            <div className="mt-2 ml-5 px-5 flex gap-2 flex-wrap md:flex-row justify-start items-center ">
+              {filtersSelected.map((filter) => {
+                return (
+                  <div
+                    key={Math.random(1, 999999)}
+                    onClick={() => removeFilter(filter)}
+                    className="cursor-pointer text-xs md:text-sm  flex  items-center gap-2 dark:bg-dark-2 hover:bg-gray-200 hover:dark:bg-dark-4 border border-gray-200 rounded-xl px-8 py-3"
+                  >
+                    {typeof filter === "object" ? (
+                      <div className="flex gap-2 items-center">
+                        {filter.image && <img src={filter.image} width={24} />}
+                        {filter.name}
+                      </div>
+                    ) : (
+                      filter
+                    )}
 
-            <div className="flex flex-wrap justify-center gap-4 w-full">
-              {collectionNfts.length > 0 ? (
+                    <Icon icon="ep:close" width={24} />
+                  </div>
+                );
+              })}
+              {filtersSelected.length > 0 && (
+                <div
+                  onClick={() => setFiltersSelected([])}
+                  className=" cursor-pointer transition ml-5 text-gray-400 dark:hover:text-white hover:text-black"
+                >
+                  Limpiar Todos
+                </div>
+              )}
+            </div>
+            <div className="flex flex-wrap justify-center gap-4 w-full pb-10">
+              {filteredNfts.length > 0 ? (
                 <>
-                  {collectionNfts.map((item) => {
+                  {filteredNfts.map((item) => {
                     return (
                       <NftCard
                         ket={item._id}
                         item={item}
                         onClick={() => redirectToItem(item)}
-                        isSmall={true}
+                        isSmall={userSmallview}
                       />
                     );
                   })}
