@@ -11,6 +11,7 @@ import useAccount from "../../../hooks/useAccount";
 import { useNavigate, useParams } from "react-router-dom";
 import { ConfirmCreateCollection } from "../../../components/modals/ConfirmCreateCollection";
 import { PageWithLoading } from "../../../components/basic/PageWithLoading";
+import { NotOwner } from "../../../components/basic/NotOwner";
 
 export default function EditCollectionContainer() {
   const {
@@ -346,185 +347,192 @@ export default function EditCollectionContainer() {
       loading={loading}
       className="flex content-center  justify-center mb-10 "
     >
-      <div className="flex w-11/12 md:w-9/12 w-7/11 flex-col  ">
-        <div className="flex w-full p-[40px]  justify-center">
-          <div id="top" className="text-2xl">
-            <b>Editar COLECCIÓN</b>
+      {isOwner ? (
+        <div className="flex w-11/12 md:w-9/12 w-7/11 flex-col  ">
+          <div className="flex w-full p-[40px]  justify-center">
+            <div id="top" className="text-2xl">
+              <b>Editar COLECCIÓN</b>
+            </div>
           </div>
-        </div>
 
-        <div className="flex flex-col w-full content-center justify-left">
-          <div className="flex flex-col pt-[30px]">
-            <ImageInput
-              required
-              info="Selecciona el logo de la colección que será visible al navegar por
+          <div className="flex flex-col w-full content-center justify-left">
+            <div className="flex flex-col pt-[30px]">
+              <ImageInput
+                required
+                info="Selecciona el logo de la colección que será visible al navegar por
               el marketplace."
-              label="Logo de la colección"
-              imageURL={logoImage}
-              onFileSelected={onSelectLogoImage}
-              inputId="logoImageInput"
-              className="rounded-full w-[200px] h-[200px]"
-              imageError={logoImageError}
-              imageMessageError={logoImageMessageError}
-              icon={true}
-            />
+                label="Logo de la colección"
+                imageURL={logoImage}
+                onFileSelected={onSelectLogoImage}
+                inputId="logoImageInput"
+                className="rounded-full w-[200px] h-[200px]"
+                imageError={logoImageError}
+                imageMessageError={logoImageMessageError}
+                icon={true}
+              />
+            </div>
           </div>
-        </div>
 
-        <div className="flex flex-col w-full  content-center justify-left">
-          <div className="flex pt-[30px]">
-            <ImageInput
-              imageURL={mainImage}
-              info=" Selecciona la imagen de presentación de la colección. Esta imagen se
+          <div className="flex flex-col w-full  content-center justify-left">
+            <div className="flex pt-[30px]">
+              <ImageInput
+                imageURL={mainImage}
+                info=" Selecciona la imagen de presentación de la colección. Esta imagen se
               utilizará para presentar su colección en la página de inicio u otras
               áreas promocionales de Fibbo. Si no se selecciona ninguna imagen, se
               usará el logo de la colección."
-              label="Imagen principal de la colección"
-              inputId="mainImageInput"
-              backgroundImage={true}
-              className="rounded-xl w-[300px] h-[200px]"
-              onFileSelected={onSelectMainImage}
-              imageError={mainImageError}
-              imageMessageError={mainImageMessageError}
-              icon={true}
-            />
+                label="Imagen principal de la colección"
+                inputId="mainImageInput"
+                backgroundImage={true}
+                className="rounded-xl w-[300px] h-[200px]"
+                onFileSelected={onSelectMainImage}
+                imageError={mainImageError}
+                imageMessageError={mainImageMessageError}
+                icon={true}
+              />
+            </div>
           </div>
-        </div>
 
-        <div className="flex flex-col w-full  content-center justify-left">
-          <div className="flex pt-[30px]">
-            <ImageInput
-              imageURL={bannerImage}
-              info="Esta imagen aparecerá en la parte superior de la página de tu
+          <div className="flex flex-col w-full  content-center justify-left">
+            <div className="flex pt-[30px]">
+              <ImageInput
+                imageURL={bannerImage}
+                info="Esta imagen aparecerá en la parte superior de la página de tu
               colección. Evite incluir demasiado texto en esta imagen de banner,
               ya que las dimensiones cambian en diferentes dispositivos."
-              label="Pancarta de la colección"
-              backgroundImage={true}
-              inputId="bannerImageInput"
-              className="rounded-xl w-11/12 h-[130px] sm:w-[600px] sm:h-[200px]"
-              onFileSelected={onSelectBannerImage}
-              imageError={bannerImageError}
-              imageMessageError={bannerImageMessageError}
-              icon={true}
+                label="Pancarta de la colección"
+                backgroundImage={true}
+                inputId="bannerImageInput"
+                className="rounded-xl w-11/12 h-[130px] sm:w-[600px] sm:h-[200px]"
+                onFileSelected={onSelectBannerImage}
+                imageError={bannerImageError}
+                imageMessageError={bannerImageMessageError}
+                icon={true}
+              />
+            </div>
+          </div>
+
+          <div className="mt-10">
+            <TextInput
+              label={"Nombre de la colección"}
+              required
+              value={name}
+              onChange={(e) => handleChangeName(e.target.value)}
+              error={nameError}
+              errorMessage={nameErrorMessage}
+            />
+          </div>
+
+          <div className="mt-10">
+            <TextInput
+              label={"URL"}
+              value={url}
+              onChange={(e) => handleChangeURL(e.target.value)}
+              error={urlError}
+              info="Personaliza tu URL en Fibbo. Solo puede contener letras minúsculas, números y guiones"
+              errorMessage={urlErrorMessage}
+            />
+          </div>
+          <div className="mt-10">
+            <TextArea
+              label="Descripción"
+              required
+              info="La descripción de la colección debe contener un máximo de 1000 carácteres."
+              error={descError}
+              value={desc}
+              rows={"6"}
+              errorMessage={
+                "La descripción debe tener entre 50 y 1000 carácteres"
+              }
+              onChange={(e) => handleChangeDesc(e.target.value)}
+            />
+          </div>
+          <div className="flex flex-col w-full pt-[20px] ">
+            <div className="text-lg">
+              <b>Links</b>
+            </div>
+            <div className="flex flex-col w-full items-center">
+              <div className="flex flex-row w-full items-center ">
+                <Icon
+                  className="flex  mr-[20px]"
+                  icon="dashicons:admin-site-alt3"
+                />
+                <div className="w-full">
+                  <TextInput
+                    value={website}
+                    onChange={(e) => handleChangeWebiste(e.target.value)}
+                    placeholder="tuPaginaWeb.com"
+                  />
+                </div>
+              </div>
+              <div className="flex flex-row w-full  items-center">
+                <Icon className="flex  mr-[20px]" icon="bi:discord" />
+                <div className="w-full">
+                  <TextInput
+                    value={discord}
+                    error={discordError}
+                    errorMessage={"Formato incorrecto"}
+                    onChange={(e) => handleChangeDiscord(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="flex flex-row w-full  items-center">
+                <Icon className="flex mr-[20px]" icon="bxl:telegram" />
+                <div className="w-full">
+                  <TextInput
+                    value={telegram}
+                    error={telegramError}
+                    errorMessage={"Formato incorrecto"}
+                    onChange={(e) => handleChangeTelegram(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="flex flex-row w-full  items-center">
+                <Icon className="flex mr-[20px] " icon="cib:instagram" />
+                <div className="w-full">
+                  <TextInput
+                    value={instagram}
+                    error={instagramError}
+                    errorMessage={"Formato incorrecto"}
+                    onChange={(e) => handleChangeInstagram(e.target.value)}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col w-full pt-[40px] content-center justify-left">
+            <div className="flex flex-row gap-2">
+              <label className="">
+                <input type="checkbox" className="" value="" />
+
+                <span className="font-bold text-lg text-gray-700 dark:text-gray-400 border-gray-300 p-3 flex-row ">
+                  Contenido Explícito o Sensible
+                </span>
+              </label>
+              <abbr
+                className="cursor-pointer "
+                title="Si el contenido és explícito o sensible, como pornografía o contenido 'not safe for work' (NSFW), protegerá a los usuarios de FIBBO que realicen búsquedas seguras y no les mostrará el contenido."
+              >
+                <Icon
+                  className="w-auto h-auto flex m-0"
+                  icon="akar-icons:info"
+                />
+              </abbr>
+            </div>
+          </div>
+
+          <div className="flex flex-col w-full pt-[40px] content-center justify-center ">
+            <ActionButton
+              text="Editar Colección"
+              size="large"
+              buttonAction={handleCreateCollection}
             />
           </div>
         </div>
-
-        <div className="mt-10">
-          <TextInput
-            label={"Nombre de la colección"}
-            required
-            value={name}
-            onChange={(e) => handleChangeName(e.target.value)}
-            error={nameError}
-            errorMessage={nameErrorMessage}
-          />
-        </div>
-
-        <div className="mt-10">
-          <TextInput
-            label={"URL"}
-            value={url}
-            onChange={(e) => handleChangeURL(e.target.value)}
-            error={urlError}
-            info="Personaliza tu URL en Fibbo. Solo puede contener letras minúsculas, números y guiones"
-            errorMessage={urlErrorMessage}
-          />
-        </div>
-        <div className="mt-10">
-          <TextArea
-            label="Descripción"
-            required
-            info="La descripción de la colección debe contener un máximo de 1000 carácteres."
-            error={descError}
-            value={desc}
-            rows={"6"}
-            errorMessage={
-              "La descripción debe tener entre 50 y 1000 carácteres"
-            }
-            onChange={(e) => handleChangeDesc(e.target.value)}
-          />
-        </div>
-        <div className="flex flex-col w-full pt-[20px] ">
-          <div className="text-lg">
-            <b>Links</b>
-          </div>
-          <div className="flex flex-col w-full items-center">
-            <div className="flex flex-row w-full items-center ">
-              <Icon
-                className="flex  mr-[20px]"
-                icon="dashicons:admin-site-alt3"
-              />
-              <div className="w-full">
-                <TextInput
-                  value={website}
-                  onChange={(e) => handleChangeWebiste(e.target.value)}
-                  placeholder="tuPaginaWeb.com"
-                />
-              </div>
-            </div>
-            <div className="flex flex-row w-full  items-center">
-              <Icon className="flex  mr-[20px]" icon="bi:discord" />
-              <div className="w-full">
-                <TextInput
-                  value={discord}
-                  error={discordError}
-                  errorMessage={"Formato incorrecto"}
-                  onChange={(e) => handleChangeDiscord(e.target.value)}
-                />
-              </div>
-            </div>
-            <div className="flex flex-row w-full  items-center">
-              <Icon className="flex mr-[20px]" icon="bxl:telegram" />
-              <div className="w-full">
-                <TextInput
-                  value={telegram}
-                  error={telegramError}
-                  errorMessage={"Formato incorrecto"}
-                  onChange={(e) => handleChangeTelegram(e.target.value)}
-                />
-              </div>
-            </div>
-            <div className="flex flex-row w-full  items-center">
-              <Icon className="flex mr-[20px] " icon="cib:instagram" />
-              <div className="w-full">
-                <TextInput
-                  value={instagram}
-                  error={instagramError}
-                  errorMessage={"Formato incorrecto"}
-                  onChange={(e) => handleChangeInstagram(e.target.value)}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex flex-col w-full pt-[40px] content-center justify-left">
-          <div className="flex flex-row gap-2">
-            <label className="">
-              <input type="checkbox" className="" value="" />
-
-              <span className="font-bold text-lg text-gray-700 dark:text-gray-400 border-gray-300 p-3 flex-row ">
-                Contenido Explícito o Sensible
-              </span>
-            </label>
-            <abbr
-              className="cursor-pointer "
-              title="Si el contenido és explícito o sensible, como pornografía o contenido 'not safe for work' (NSFW), protegerá a los usuarios de FIBBO que realicen búsquedas seguras y no les mostrará el contenido."
-            >
-              <Icon className="w-auto h-auto flex m-0" icon="akar-icons:info" />
-            </abbr>
-          </div>
-        </div>
-
-        <div className="flex flex-col w-full pt-[40px] content-center justify-center ">
-          <ActionButton
-            text="Editar Colección"
-            size="large"
-            buttonAction={handleCreateCollection}
-          />
-        </div>
-      </div>
+      ) : (
+        <NotOwner text="No puedes editar la colección, no eres su propietario!" />
+      )}
     </PageWithLoading>
   );
 }

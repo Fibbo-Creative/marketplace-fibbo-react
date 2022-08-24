@@ -7,7 +7,6 @@ export const useCollections = () => {
 
   const setFreezedMetadata = async (collection, tokenInfo, tokenId) => {
     const contract = await getERC721Contract(collection);
-    console.log(tokenInfo);
     const ipfsCID = await uploadJSONMetadata(
       tokenInfo.name,
       tokenInfo.description,
@@ -31,7 +30,14 @@ export const useCollections = () => {
     await registerNftRoyalties(contract.address, tokenId, tokenInfo.royalty);
   };
 
+  const checkFreezedMetadata = async (collection, tokenId) => {
+    const contract = await getERC721Contract(collection);
+
+    return contract.isFreezedMetadata(tokenId);
+  };
+
   return {
     setFreezedMetadata,
+    checkFreezedMetadata,
   };
 };
