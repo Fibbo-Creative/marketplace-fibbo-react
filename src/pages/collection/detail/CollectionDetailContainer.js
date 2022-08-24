@@ -37,6 +37,7 @@ export const CollectionDetailContainer = () => {
   const [sortSelected, setSortSelected] = useState(0);
   const [userSmallview, setSmallViewUser] = useState(false);
 
+  const [queryText, setQueryText] = useState("");
   const [allErc20Tokens, setAllErc20Tokens] = useState([]);
 
   const [ownerInfo, setOwnerInfo] = useState(null);
@@ -78,6 +79,10 @@ export const CollectionDetailContainer = () => {
     } else {
       navigate(`/collection/${collectionInfo.contractAddress}/create`);
     }
+  };
+
+  const searchItems = (query) => {
+    setQueryText(query);
   };
 
   const sortItems = (value) => {
@@ -363,18 +368,34 @@ export const CollectionDetailContainer = () => {
       });
       finalFiltered = finalFiltered.filter((item) => item !== undefined);
 
+      if (queryText.length >= 1) {
+        finalFiltered = finalFiltered.filter((item) => {
+          if (item.name.toLowerCase().includes(queryText.toLowerCase())) {
+            return item;
+          }
+        });
+      }
+
       if (sortSelected !== 0 && sortSelected !== 1) {
         finalFiltered = sortMarketItems(sortSelected, finalFiltered);
       }
       setFilteredNfts(finalFiltered);
     } else {
       let finalFiltered = collectionNfts;
+      if (queryText.length >= 1) {
+        finalFiltered = finalFiltered.filter((item) => {
+          if (item.name.toLowerCase().includes(queryText.toLowerCase())) {
+            return item;
+          }
+        });
+      }
+
       if (sortSelected !== 0 && sortSelected !== 1) {
         finalFiltered = sortMarketItems(sortSelected, collectionNfts);
       }
       setFilteredNfts(finalFiltered);
     }
-  }, [filtersSelected]);
+  }, [filtersSelected, queryText]);
   return (
     <PageWithLoading loading={loading}>
       <div className="flex flex-col mt-[79px] mb-[10px] w-screen items-center justify-center">
@@ -541,7 +562,9 @@ export const CollectionDetailContainer = () => {
                   <Icon icon="ant-design:search-outlined" />
                 </div>
                 <input
+                  onChange={(e) => searchItems(e.target.value)}
                   type="text"
+                  value={queryText}
                   className={`px-4 py-2 outline-none dark:bg-dark-1`}
                   placeholder="Buscar Items..."
                 />
@@ -614,7 +637,7 @@ export const CollectionDetailContainer = () => {
                 </div>
               )}
             </div>
-            <div className="flex flex-wrap justify-center gap-4 w-full pb-10">
+            <div className="flex  flex-wrap justify-center gap-4 w-full pb-10">
               {filteredNfts.length > 0 ? (
                 <>
                   {filteredNfts.map((item) => {
@@ -630,7 +653,12 @@ export const CollectionDetailContainer = () => {
                 </>
               ) : (
                 <>
-                  <div>La collección no tiene NFTS</div>
+                  <div>
+                    {" "}
+                    {filtersSelected.length > 0 || queryText.length > 0
+                      ? "No se han encontrado items"
+                      : "La collección no tiene NFTS"}
+                  </div>
                 </>
               )}
             </div>
