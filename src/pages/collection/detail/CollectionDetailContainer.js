@@ -48,7 +48,14 @@ export const CollectionDetailContainer = () => {
       setShowRedirect(true);
     }
   };
-
+  const redirectToEditCollection = () => {
+    if (collectionInfo.customURL) {
+      navigate(`/collection/${collectionInfo.customURL}/edit`);
+    } else {
+      navigate(`/collection/${collectionInfo.contractAddress}/edit`);
+    }
+  };
+  
   const redirectToCreateItem = () => {
     if (collectionInfo.customURL) {
       navigate(`/collection/${collectionInfo.customURL}/create`);
@@ -96,7 +103,7 @@ export const CollectionDetailContainer = () => {
                   </div>
                 </div>
               </div>
-              <div className="w-auto pr-4">
+              <div className="w-auto pr-4 hidden lg:flex">
                 {isOwner && (
                   <div className="flex flex-row p-4 gap-8 justify-center">
                   <ActionButton
@@ -107,14 +114,14 @@ export const CollectionDetailContainer = () => {
                   <ActionButton
                   text="Editar Colección"
                   size="large"
-                  buttonAction={redirectToCreateItem}
+                  buttonAction={redirectToEditCollection}
                 />
                 </div>
                 )}
               </div>
             </div>
             <div></div>
-            <div className="flex items-center justify-left  gap-5 ml-[50px] mt-[20px] ">
+            <div className="flex items-center justify-left gap-5 ml-[50px] mt-[20px] ">
               <div className="flex text-md ">
                 <b>Creada por: </b>
               </div>
@@ -139,13 +146,17 @@ export const CollectionDetailContainer = () => {
                 </div>
               </div>
             </div>
-            <div className="flex  flex-col items-center justify-center ">
-              <a className=" "><b> DESCRIPCION </b></a>
-              <p className="flex text-lg mt-[20px]">{collectionInfo?.description}</p>
-            </div>
+            
           </div>
+          
         </div>
-        <div className="flex w-full mt-[230px]">
+        <div className="flex  flex-col items-center justify-center lg:mt-[150px] mt-[170px]">
+          <div className="flex w-auto">
+            <a className="text-xl "><b> DESCRIPCIÓN </b></a>
+          </div>
+          <p className="flex text-lg m-[20px]">{collectionInfo?.description}</p>
+          </div>
+        <div className="flex flex-col md:flex-row w-full mt-[20px]">
           <div className="flex flex-row w-full h-[60px] gap-10 ml-[50px]">
             <div className="flex flex-col gap-1 items-center">
               <div className="flex text-xl">
