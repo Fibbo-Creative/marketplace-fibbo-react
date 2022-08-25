@@ -5,10 +5,12 @@ import useAccount from "../../hooks/useAccount";
 import { useApi } from "../../api";
 import { Icon } from "@iconify/react";
 import { PageWithLoading } from "../../components/basic/PageWithLoading";
+import { useStateContext } from "../../context/StateProvider";
 
 export default function MyCollectionsContainer() {
   const navigate = useNavigate();
   const { getMyCollections } = useApi();
+  const [{ verifiedAddress }] = useStateContext();
   const { wallet, connectToWallet } = useAccount();
   const [loading, setLoading] = useState(true);
 
@@ -57,11 +59,13 @@ export default function MyCollectionsContainer() {
         </div>
       </div>
       <div className="flex w-full content-center justify-center p-[40px]">
-        <ActionButton
-          text="Crear Colección"
-          size="large"
-          buttonAction={() => goToCreateCollection()}
-        />
+        {verifiedAddress && (
+          <ActionButton
+            text="Crear Colección"
+            size="large"
+            buttonAction={() => goToCreateCollection()}
+          />
+        )}
       </div>
       <div className="flex flex-row flex-wrap gap-20 w-full content-center justify-center p-[40px]">
         {myCollections?.map((col) => {

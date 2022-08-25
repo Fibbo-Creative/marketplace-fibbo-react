@@ -5,6 +5,7 @@ import { Icon } from "@iconify/react";
 import { saveAs } from "file-saver";
 import ReactTooltip from "react-tooltip";
 import { ThemeContext } from "../../../context/ThemeContext";
+import SeeImageInDetailModal from "../../../components/modals/SeeImageInDetailModal";
 
 export default function DetailImage({
   isFreezedMetadata,
@@ -14,6 +15,9 @@ export default function DetailImage({
 }) {
   const [imgOrQR, setImgOrQr] = useState(tokenImage);
   const [qrcode, setQrcode] = useState("");
+  const [showingQr, setShowingQr] = useState(false);
+  const [showImageDetail, setShowImageDetail] = useState(false);
+
   const { theme } = useContext(ThemeContext);
 
   const downloadQR = () => {
@@ -35,7 +39,9 @@ export default function DetailImage({
         qrFlag.style.display = "block";
         nftIcon.style.display = "block";
         qrIcon.style.display = "none";
+        setShowingQr(true);
       } else {
+        setShowingQr(false);
         var qrFlag = document.getElementById("boton_descargar");
         var nftIcon = document.getElementById("nftIcon");
         setImgOrQr(tokenImage);
@@ -100,10 +106,19 @@ export default function DetailImage({
                 )}
               </div>
             </div>
+
             <img
-              className="object-contain w-full h-5/6 "
+              onClick={() => !showingQr && setShowImageDetail(true)}
+              className={`  ${
+                !showingQr && "cursor-pointer"
+              } w-full h-5/6  object-contain`}
               src={imgOrQR}
               alt={tokenName}
+            />
+            <SeeImageInDetailModal
+              image={tokenImage}
+              showModal={showImageDetail}
+              handleCloseModal={() => setShowImageDetail(false)}
             />
           </>
         )}

@@ -7,7 +7,7 @@ import { ThemeContext } from "../context/ThemeContext";
 export const UserMenu = ({ setOpenStation, setOpenMenu, disconnectWallet }) => {
   const ref = useRef(null);
   const { theme, setTheme } = React.useContext(ThemeContext);
-  const [{ userProfile }] = useStateContext();
+  const [{ userProfile, verifiedAddress }] = useStateContext();
 
   const navigate = useNavigate();
   const goToProfile = () => {
@@ -17,6 +17,11 @@ export const UserMenu = ({ setOpenStation, setOpenMenu, disconnectWallet }) => {
   const goToMyCollections = () => {
     setOpenMenu(false);
     navigate(`/myCollections`);
+  };
+
+  const goToCommunity = () => {
+    setOpenMenu(false);
+    navigate(`/community`);
   };
 
   const goToSettings = () => {
@@ -54,15 +59,24 @@ export const UserMenu = ({ setOpenStation, setOpenMenu, disconnectWallet }) => {
           icon="healthicons:ui-user-profile"
           onClick={() => goToProfile()}
         />
-        <UserMenuItem
-          text="Mis colecciones"
-          icon="ic:outline-collections"
-          onClick={() => goToMyCollections()}
-        />
+        {verifiedAddress && (
+          <UserMenuItem
+            text="Mis colecciones"
+            icon="ic:outline-collections"
+            onClick={() => goToMyCollections()}
+          />
+        )}
+
         <UserMenuItem
           text="Configuración"
+          disabled
           icon="ci:settings"
           onClick={() => goToSettings()}
+        />
+        <UserMenuItem
+          text="Comunidad"
+          icon="fluent:people-community-16-filled"
+          onClick={() => goToCommunity()}
         />
         <UserMenuItem
           text="Estación wFTM"

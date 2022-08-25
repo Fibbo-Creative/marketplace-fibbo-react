@@ -152,14 +152,16 @@ export default function Navbar() {
             </div>
             <div className="flex ">
               <NavbarItem text="Marketplace" to="/explore" />
-              <NavbarItem text="Colecciones" to="/myCollections" />
+              {verifiedAddress && (
+                <NavbarItem text="Colecciones" to="/myCollections" />
+              )}
 
               {!verifiedAddress && (
                 <NavbarItem text="Verifícate!" to="/verificate/request" />
               )}
-              {verifiedAddress && (
+              {/* {verifiedAddress && (
                 <NavbarItem text="Comunidad" to="/community" />
-              )}
+              )} */}
               {/* {verifiedAddress && <NavbarItem text="Creación" to="/create" />} */}
             </div>
           </div>
@@ -232,13 +234,15 @@ export default function Navbar() {
                 </div>
               </div>
               <NavbarItemMobile text="Marketplace" to="/explore" />
-              <NavbarItemMobile text="Colecciones" to="/myCollections" />
+              {verifiedAddress && (
+                <NavbarItemMobile text="Colecciones" to="/myCollections" />
+              )}
               {!verifiedAddress && (
                 <NavbarItemMobile text="Verifícate!" to="/verificate/request" />
               )}
-              {verifiedAddress && (
+              {/*  {verifiedAddress && (
                 <NavbarItemMobile text="Comunidad" to="/community" />
-              )}
+              )} */}
               {verifiedAddress &&
                 {
                   /* <NavbarItemMobile text="Creación" to="/create" /> */
