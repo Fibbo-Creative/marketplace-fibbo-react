@@ -130,7 +130,7 @@ export default function MakeBidModal({
                     className="text-primary-2 underline cursor-pointer"
                     onClick={() =>
                       isMobile
-                        ? navigate(`/profile/${highestBid.bidder.wallet}`)
+                        ? navigate(`/account/${highestBid.bidder.wallet}`)
                         : window.open(
                             `/profile/${highestBid.bidder.wallet}`,
                             "_blank"

@@ -20,6 +20,8 @@ import CollectionsContainer from "./pages/collection/CollectionsContainer";
 import { CollectionDetailContainer } from "./pages/collection/detail/CollectionDetailContainer";
 import MyCollectionsContainer from "./pages/collection/MyCollectionsContainer";
 import EditCollectionContainer from "./pages/collection/edit/EditCollectionContainer";
+import ConfigContainer from "./pages/config/ConfigContainer";
+import ConfigProfileContainer from "./pages/config/ConfigProfileContainer";
 
 function App() {
   const { theme } = useContext(ThemeContext);
@@ -55,7 +57,11 @@ function App() {
               element={<ItemPage />}
             />
 
-            <Route path="/profile/:address" element={<ProfileContainer />} />
+            <Route path="/account/settings" element={<ConfigContainer />}>
+              <Route path="profile" element={<ConfigProfileContainer />} />
+            </Route>
+
+            <Route path="/account/:address" element={<ProfileContainer />} />
 
             <Route path="/collections" element={<CollectionsContainer />} />
             <Route path="/myCollections" element={<MyCollectionsContainer />} />

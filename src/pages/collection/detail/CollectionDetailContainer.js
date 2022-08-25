@@ -462,7 +462,7 @@ export const CollectionDetailContainer = () => {
                 <div
                   onClick={() =>
                     isMobile
-                      ? navigate(`/profile/${ownerInfo?.wallet}`)
+                      ? navigate(`/account/${ownerInfo?.wallet}`)
                       : window.open(`/profile/${ownerInfo?.wallet}`)
                   }
                   className="text-primary-2 underline cursor-pointer"

@@ -97,7 +97,7 @@ export default function DetailInfo({ properties, chainInfo, loading }) {
                 <div
                   onClick={() =>
                     isMobile
-                      ? navigate(`/profile/${properties?.recipient?.wallet}`)
+                      ? navigate(`/account/${properties?.recipient?.wallet}`)
                       : window.open(`/profile/${properties?.recipient?.wallet}`)
                   }
                   className="text-primary-2 underline cursor-pointer"

@@ -139,7 +139,7 @@ export default function ItemPage() {
     new Date().getTime() / 1000 >= auctionInfo?.current?.startTime;
 
   const redirectToProfile = () => {
-    navigate(`/profile/${profileOwnerData.current.wallet}`);
+    navigate(`/account/${profileOwnerData.current.wallet}`);
   };
 
   const goToEdit = () => {

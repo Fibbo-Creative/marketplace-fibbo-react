@@ -21,7 +21,7 @@ export default function SearchResult({
   };
 
   const goToProfileDetail = (item) => {
-    navigate(`/profile/${item.wallet}`);
+    navigate(`/account/${item.wallet}`);
     setInputValue("");
     setSearchResult.items([]);
     setSearchResult.profiles([]);

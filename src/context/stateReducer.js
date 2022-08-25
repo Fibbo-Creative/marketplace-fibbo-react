@@ -1,5 +1,20 @@
+import { engLiterals, espLiterals } from "./lang";
+
+const getLiterals = (lang) => {
+  switch (lang) {
+    case "eng":
+      return engLiterals;
+    case "esp":
+      return espLiterals;
+    default:
+      return engLiterals;
+  }
+};
+
 export const initialState = {
   userProfile: {},
+  lang: "esp",
+  literals: espLiterals,
   wallet: "",
   verifiedAddress: false,
   balance: 0,
@@ -8,6 +23,7 @@ export const initialState = {
 };
 
 export const actionTypes = {
+  SET_LANGUAGE: "SET_LANGUAGE",
   SET_USER_PROFILE: "SET_USER_PROFILE",
   SET_PROFILE_BANNER: "SET_PROFILE_BANNER",
   SET_PROFILE_IMAGE: "SET_PROFILE_IMAGE",
@@ -18,6 +34,12 @@ export const actionTypes = {
 
 const stateReducer = (state, action) => {
   switch (action.type) {
+    case actionTypes.SET_LANGUAGE:
+      return {
+        ...state,
+        lang: action.lang,
+        literals: getLiterals(action.lang),
+      };
     case actionTypes.SET_USER_PROFILE:
       return {
         ...state,

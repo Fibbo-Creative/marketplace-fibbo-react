@@ -190,7 +190,7 @@ export default function ItemHistory({ historyItems }) {
                             className="text-primary-2 underline cursor-pointer"
                             onClick={() =>
                               isMobile
-                                ? navigate(`/profile/${item.from?.wallet}`)
+                                ? navigate(`/account/${item.from?.wallet}`)
                                 : window.open(
                                     `/profile/${item.from?.wallet}`,
                                     "_blank"
@@ -217,7 +217,7 @@ export default function ItemHistory({ historyItems }) {
                             className="text-primary-2 underline cursor-pointer"
                             onClick={() =>
                               isMobile
-                                ? navigate(`/profile/${item.from?.wallet}`)
+                                ? navigate(`/account/${item.from?.wallet}`)
                                 : window.open(
                                     `/profile/${item.to?.wallet}`,
                                     "_blank"

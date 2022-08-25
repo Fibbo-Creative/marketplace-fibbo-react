@@ -41,7 +41,7 @@ export default function RemoveOfferModal({
                 className="text-primary-2 underline cursor-pointer"
                 onClick={() =>
                   isMobile
-                    ? navigate(`/profile/${offer?.creator?.wallet}`)
+                    ? navigate(`/account/${offer?.creator?.wallet}`)
                     : window.open(
                         `/profile/${offer?.creator?.wallet}`,
                         "_blank"

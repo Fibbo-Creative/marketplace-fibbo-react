@@ -12,11 +12,16 @@ export const UserMenu = ({ setOpenStation, setOpenMenu, disconnectWallet }) => {
   const navigate = useNavigate();
   const goToProfile = () => {
     setOpenMenu(false);
-    navigate(`profile/${userProfile.wallet}`);
+    navigate(`/account/${userProfile.wallet}`);
   };
   const goToMyCollections = () => {
     setOpenMenu(false);
-    navigate(`myCollections`);
+    navigate(`/myCollections`);
+  };
+
+  const goToSettings = () => {
+    setOpenMenu(false);
+    navigate(`/account/settings`);
   };
 
   const handleDisconnect = () => {
@@ -57,8 +62,7 @@ export const UserMenu = ({ setOpenStation, setOpenMenu, disconnectWallet }) => {
         <UserMenuItem
           text="Configuración"
           icon="ci:settings"
-          disabled
-          onClick={() => goToProfile()}
+          onClick={() => goToSettings()}
         />
         <UserMenuItem
           text="Estación wFTM"

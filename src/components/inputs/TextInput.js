@@ -6,6 +6,7 @@ export const TextInput = ({
   error,
   value,
   onChange,
+  disabled,
   errorMessage,
   placeholder,
   info,
@@ -20,6 +21,7 @@ export const TextInput = ({
         value={value}
         onChange={onChange}
         type="text"
+        disabled={disabled}
         placeholder={placeholder}
         className={`w-full dark:bg-dark-1 px-3 py-1.5 text-base font-normal text-gray-700 dark:text-gray-200 
         bg-white bg-clip-padding border border-solid border-black dark:border-primary-2 rounded transition ease-in-out m-0
