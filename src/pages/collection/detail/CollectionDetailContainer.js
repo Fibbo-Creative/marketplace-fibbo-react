@@ -409,7 +409,7 @@ export const CollectionDetailContainer = () => {
         
           {collectionInfo?.bannerImage !== "" ? (
             <img
-              className="flex w-full h-[300px]"
+              className="flex w-full h-[200px] md:h-[300px]"
               src={collectionInfo?.bannerImage}
               alt={`banner-${collectionInfo?._id}`}
             ></img>
@@ -486,7 +486,7 @@ export const CollectionDetailContainer = () => {
                 </a>
               </div>
               <div className="flex mt-[20px]"> 
-                <p className=" text-lg">{collectionInfo?.description}</p>
+                <p className="text-md justify-center sm:text-lg">{collectionInfo?.description}</p>
               </div>
             </div>
       
@@ -567,7 +567,7 @@ export const CollectionDetailContainer = () => {
          
           <div className="flex flex-row gap-10 w-full items-center justify-end mr-[100px]">
             
-        <div className="flex w-full mt-10 border-t h-full ">
+        <div className="flex w-full mt-10 border-t h-full">
           <FiltersCollectionSidebar
             openedSidebar={true}
             items={filteredNfts}
@@ -585,9 +585,10 @@ export const CollectionDetailContainer = () => {
               };
             })}
           />
-          <div className="h-[800px]  flex w-full flex-col gap-4 overflow-y-scroll overflow-x-hidden">
-            <div className="flex flex-row gap-10 w-full ml-[100px] mt-[50px] items-center">
-              <div className="w-2/6 flex border-2 rounded">
+          <div className="h-[800px] flex w-full flex-col gap-4 overflow-y-scroll overflow-x-hidden ">
+            <div className="flex flex-col md:flex-row gap-4 sm:gap-10 w-full mt-[30px] sm:mt-[50px] items-center justify-center">
+              
+              <div className="w-80 flex border-2 rounded">
                 <div className="flex items-center justify-center px-4 border-l">
                   <Icon icon="ant-design:search-outlined" />
                 </div>
@@ -599,7 +600,7 @@ export const CollectionDetailContainer = () => {
                   placeholder="Buscar Items..."
                 />
               </div>
-
+              <div className="flex flex-row items-center">
               <select
                 onChange={(e) => sortItems(e.target.value)}
                 className="cursor-pointer h-10 w-40 md:w-60 flex border border-gray-300 bg-white dark:bg-dark-1 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -616,7 +617,7 @@ export const CollectionDetailContainer = () => {
 
               <button
                 onClick={changeSmallDisplay}
-                className="hover:-translate-y-1"
+                className="hover:-translate-y-1 ml-[60px]"
               >
                 <Icon
                   icon="akar-icons:dot-grid-fill"
@@ -627,7 +628,7 @@ export const CollectionDetailContainer = () => {
               </button>
               <button
                 onClick={changeBigDisplay}
-                className="hover:-translate-y-1"
+                className="hover:-translate-y-1 ml-[30px]"
               >
                 <Icon
                   icon="ci:grid-big-round"
@@ -636,6 +637,7 @@ export const CollectionDetailContainer = () => {
                   color="grey"
                 />
               </button>
+              </div>
             </div>
             <div className="mt-2 ml-5 px-5 flex gap-2 flex-wrap md:flex-row justify-start items-center ">
               {filtersSelected.map((filter) => {
