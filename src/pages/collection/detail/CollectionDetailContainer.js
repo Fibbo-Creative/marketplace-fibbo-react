@@ -406,30 +406,28 @@ export const CollectionDetailContainer = () => {
   return (
     <PageWithLoading loading={loading}>
       <div className="flex flex-col mt-[79px] mb-[10px] w-screen items-center justify-center">
-        <div className="flex w-full h-[270px] w-full ">
+        
           {collectionInfo?.bannerImage !== "" ? (
             <img
-              className="flex w-full h-full"
+              className="flex w-full h-[200px] md:h-[300px]"
               src={collectionInfo?.bannerImage}
               alt={`banner-${collectionInfo?._id}`}
             ></img>
           ) : (
-            <div className="h-full w-full bg-gray-400"></div>
+            <div className="h-full w-full bg-gray-400 items-center"></div>
           )}
-          <div className="absolute w-full top-[300px]">
-            <div className="flex justify-between items-end pl-10 w-full">
+            <div className="flex flex-col md:flex-row w-full items-center"> 
+
+            
+            <div className="flex items-end md:pl-10 ">
               <div className="flex w-[200px]">
                 <img
                   src={collectionInfo?.logoImage}
                   alt={`col-${collection._id}`}
                   className=""
                 />
-                <div className="flex items-end ml-[50px] mb-[20px] w-full">
-                  <div className="flex text-2xl">
-                    <b>{collectionInfo?.name}</b>
-                  </div>
-                </div>
               </div>
+ 
               <div className="w-auto pr-4 hidden lg:flex">
                 {isOwner && (
                   <div className="flex flex-row p-4 gap-8 justify-center">
@@ -446,9 +444,17 @@ export const CollectionDetailContainer = () => {
                   </div>
                 )}
               </div>
+              
             </div>
-            <div></div>
-            <div className="flex items-center justify-left gap-5 ml-[50px] mt-[20px] ">
+            <div className="flex md:items-end md:ml-[50px] mb-[20px] md:w-full mt-[20px] ">
+                <div className="flex text-2xl">
+                  <b>{collectionInfo?.name}</b>
+                </div>
+              </div>
+
+              </div>
+        </div>
+        <div className="flex items-center justify-left gap-5 ml-[50px] mt-[20px] ">
               <div className="flex text-md ">
                 <b>Creada por: </b>
               </div>
@@ -473,78 +479,95 @@ export const CollectionDetailContainer = () => {
                 </div>
               </div>
             </div>
-            <div className="flex  flex-col items-center justify-center ">
-              <div className="flex w-auto">
-                <a className="text-xl ">
-                  <b> DESCRIPCIÓN </b>
+            <div className="flex flex-col mt-[30px] mr-[50px] ml-[50px]">
+              <div className="flex w-auto font-bold">
+                <a className="text-md ">
+                  DESCRIPCIÓN: 
                 </a>
               </div>
-              <p className="flex text-lg">{collectionInfo?.description}</p>
-            </div>
-          </div>
-        </div>
-        <div className="flex w-full mt-[230px]">
-          <div className="flex flex-row w-full h-[60px] gap-10 ml-[50px]">
-            <div className="flex flex-col gap-1 items-center">
-              <div className="flex text-xl">
-                <b>{collectionNfts.length}</b>
+              <div className="flex mt-[20px]"> 
+                <p className="text-md justify-center sm:text-lg">{collectionInfo?.description}</p>
               </div>
-              <div className="flex items-end">Articulos</div>
             </div>
-            <div className="flex flex-col gap-1 items-center">
-              <div className="flex text-xl">
-                <b>{collectionNfts.length}</b>
-              </div>
-              <div className="flex items-end">Propietarios</div>
-            </div>
-            <div className="flex flex-col gap-1 items-center">
-              <div className="flex text-xl">
-                <b>0</b>
-              </div>
-              <div className="flex items-end">Volumen total</div>
-            </div>
-          </div>
+      
+        
 
+
+        
+            <div className="flex flex-col md:flex-row mt-[50px] sm:mr-[50px] sm:ml-[50px] mr-0 ml-0 items-center place-content-between gap-8">
+              
+              <div className="flex gap-8 ">
+                
+                <div className="flex flex-col gap-3 items-center">
+                  <div className="flex text-xl">
+                    <b>{collectionNfts.length}</b>
+                  </div>
+                  <div className="flex items-end">Articulos</div>
+                </div>
+                <div className="flex flex-col gap-3 items-center">
+                  <div className="flex text-xl">
+                    <b>{collectionNfts.length}</b>
+                  </div>
+                  <div className="flex items-end">Propietarios</div>
+                </div>
+                <div className="flex flex-col gap-3 items-center">
+                  <div className="flex text-xl">
+                    <b>0</b>
+                  </div>
+                  <div className="flex items-end">Volumen total</div>
+                </div>
+              </div>
+                
+
+              <div className="flex flex-row ">
+                <div className="flex mr-4 sm:m-[30px] mt-[40px] ">
+                <button
+                  onClick={() => openRedirectPopUp(collectionInfo.websiteURL)}
+                  disabled={!collectionInfo?.websiteURL}
+                  className="hover:-translate-y-1"
+                >
+                  <Icon width={25} icon="dashicons:admin-site-alt3"></Icon>
+                </button>
+              </div>
+              <div className="flex mr-4 sm:m-[30px] mt-[40px]">
+                <button
+                  onClick={() => openRedirectPopUp(collectionInfo.discordURL)}
+                  disabled={!collectionInfo?.discordURL}
+                  className="hover:-translate-y-1"
+                >
+                  <Icon width={25} icon="bi:discord"></Icon>
+                </button>
+              </div>
+              <div className="flex mr-4 sm:m-[30px] mt-[40px]">
+                <button
+                  onClick={() => openRedirectPopUp(collectionInfo.telegramURL)}
+                  disabled={!collectionInfo?.telegramURL}
+                  className="hover:-translate-y-1"
+                >
+                  <Icon width={25} icon="bxl:telegram"></Icon>
+                </button>
+              </div>
+              <div className="flex mr-4 sm:m-[30px] mt-[40px]">
+                <button
+                  onClick={() => openRedirectPopUp(collectionInfo.instagramURL)}
+                  disabled={!collectionInfo?.instagramURL}
+                  className="hover:-translate-y-1"
+                >
+                  <Icon className="" width={25} icon="cib:instagram"></Icon>
+                </button>
+              </div>
+            </div>
+
+            </div>
+            
+            
+            
+    
+            
+         
           <div className="flex flex-row gap-10 w-full items-center justify-end mr-[100px]">
-            <div className="flex">
-              <button
-                onClick={() => openRedirectPopUp(collectionInfo.websiteURL)}
-                disabled={!collectionInfo?.websiteURL}
-                className="hover:-translate-y-1"
-              >
-                <Icon width={25} icon="dashicons:admin-site-alt3"></Icon>
-              </button>
-            </div>
-            <div className="flex">
-              <button
-                onClick={() => openRedirectPopUp(collectionInfo.discordURL)}
-                disabled={!collectionInfo?.discordURL}
-                className="hover:-translate-y-1"
-              >
-                <Icon width={25} icon="bi:discord"></Icon>
-              </button>
-            </div>
-            <div className="flex">
-              <button
-                onClick={() => openRedirectPopUp(collectionInfo.telegramURL)}
-                disabled={!collectionInfo?.telegramURL}
-                className="hover:-translate-y-1"
-              >
-                <Icon width={25} icon="bxl:telegram"></Icon>
-              </button>
-            </div>
-            <div className="flex">
-              <button
-                onClick={() => openRedirectPopUp(collectionInfo.instagramURL)}
-                disabled={!collectionInfo?.instagramURL}
-                className="hover:-translate-y-1"
-              >
-                <Icon className="" width={25} icon="cib:instagram"></Icon>
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="flex w-full mt-10 border-t h-full ">
+            
+        <div className="flex w-full mt-10 border-t h-full">
           <FiltersCollectionSidebar
             openedSidebar={true}
             items={filteredNfts}
@@ -562,9 +585,10 @@ export const CollectionDetailContainer = () => {
               };
             })}
           />
-          <div className="h-[800px]  flex w-full flex-col gap-4 overflow-y-scroll overflow-x-hidden">
-            <div className="flex flex-row gap-10 w-full ml-[100px] mt-[50px] items-center">
-              <div className="w-2/6 flex border-2 rounded">
+          <div className="h-[800px] flex w-full flex-col gap-4 overflow-y-scroll overflow-x-hidden ">
+            <div className="flex flex-col md:flex-row gap-4 sm:gap-10 w-full mt-[30px] sm:mt-[50px] items-center justify-center">
+              
+              <div className="w-80 flex border-2 rounded">
                 <div className="flex items-center justify-center px-4 border-l">
                   <Icon icon="ant-design:search-outlined" />
                 </div>
@@ -576,7 +600,7 @@ export const CollectionDetailContainer = () => {
                   placeholder="Buscar Items..."
                 />
               </div>
-
+              <div className="flex flex-row items-center">
               <select
                 onChange={(e) => sortItems(e.target.value)}
                 className="cursor-pointer h-10 w-40 md:w-60 flex border border-gray-300 bg-white dark:bg-dark-1 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -593,7 +617,7 @@ export const CollectionDetailContainer = () => {
 
               <button
                 onClick={changeSmallDisplay}
-                className="hover:-translate-y-1"
+                className="hover:-translate-y-1 ml-[60px]"
               >
                 <Icon
                   icon="akar-icons:dot-grid-fill"
@@ -604,7 +628,7 @@ export const CollectionDetailContainer = () => {
               </button>
               <button
                 onClick={changeBigDisplay}
-                className="hover:-translate-y-1"
+                className="hover:-translate-y-1 ml-[30px]"
               >
                 <Icon
                   icon="ci:grid-big-round"
@@ -613,6 +637,7 @@ export const CollectionDetailContainer = () => {
                   color="grey"
                 />
               </button>
+              </div>
             </div>
             <div className="mt-2 ml-5 px-5 flex gap-2 flex-wrap md:flex-row justify-start items-center ">
               {filtersSelected.map((filter) => {
