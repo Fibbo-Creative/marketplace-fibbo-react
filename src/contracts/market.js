@@ -68,6 +68,7 @@ export const useMarketplace = () => {
       await tx.wait();
     }
     const ERC721contract = await getERC721Contract(collection);
+    console.log(await ERC721contract.uri(tokenId));
 
     let buyItemTx = await marketContract.buyItem(
       collection,

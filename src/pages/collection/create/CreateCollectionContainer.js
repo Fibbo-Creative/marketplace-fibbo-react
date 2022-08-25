@@ -212,7 +212,7 @@ export default function CreateCollectionContainer() {
   const handleCreateCollection = async () => {
     //Comprobar el formato de la url y colecciones
     let error = false;
-    setShowConfirm(true);
+
     if (logoImage === "") {
       error = true;
       setLogoImageError(true);

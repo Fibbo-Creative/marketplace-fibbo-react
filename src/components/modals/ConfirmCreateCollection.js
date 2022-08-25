@@ -123,11 +123,6 @@ export const ConfirmCreateCollection = ({
             )}
           </div>
         </div>
-        <ActionButton
-          buttonAction={createCollection}
-          text="CREATE"
-          size="small"
-        />
       </div>
     </ActionModal>
   );

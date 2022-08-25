@@ -17,6 +17,7 @@ export const useFactory = () => {
 
   const createNFTContract = async (name, symbol, from) => {
     const factoryContract = await getFactoryContract();
+    console.log(await factoryContract.owner());
     const args = [name, symbol];
 
     const options = {

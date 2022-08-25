@@ -125,6 +125,7 @@ export default function ItemPage() {
   const [isOnAuction, setIsOnAuction] = useState(false);
   const [highestBid, setHighestBid] = useState(null);
   const [actionMade, setActionMade] = useState(0);
+  const [isCreator, setIsCreator] = useState(false);
   const [isFreezedMetadata, setIsFreezedMetadata] = useState(false);
 
   const tokenInfo = useRef({});
@@ -170,6 +171,7 @@ export default function ItemPage() {
       }
     });
 
+    setIsCreator(wallet === nftData.creator);
     const collectionResponse = await getCollectionDetail(collection);
     console.log(collectionResponse);
     setCollectionInfo(collectionResponse);
@@ -278,14 +280,14 @@ export default function ItemPage() {
   };
 
   const handleListItem = async (price, payToken) => {
-    if (!isFreezedMetadata) {
+    /*  if (!isFreezedMetadata) {
       await setFreezedMetadata(
         collectionInfo.contractAddress,
         tokenInfo.current,
         tokenId
       );
-      setFreezedMetadata(true);
-    }
+      setIsFreezedMetadata(true);
+    } */
     await listItem(collectionInfo.contractAddress, tokenId, price, payToken);
 
     let listingInfo = await getListingInfo(
@@ -360,13 +362,14 @@ export default function ItemPage() {
   };
 
   const handleAcceptOffer = async (from) => {
-    if (!isFreezedMetadata) {
+    /* if (!isFreezedMetadata) {
       await setFreezedMetadata(
         collectionInfo.contractAddress,
         tokenInfo.current,
         tokenId
       );
-    }
+      setIsFreezedMetadata(true);
+    } */
     await acceptOffer(collectionInfo.contractAddress, tokenId, from);
 
     listing.current = null;
@@ -375,7 +378,7 @@ export default function ItemPage() {
     const profile = await getProfileInfo(from);
     profileOwnerData.current = profile;
     setIsOwner(false);
-    setIsFreezedMetadata(true);
+
     setIsForSale(false);
     setActionMade(1);
   };
@@ -404,6 +407,7 @@ export default function ItemPage() {
     profileOwnerData.current = profile;
 
     setIsOwner(true);
+    setIsFreezedMetadata(true);
     setIsForSale(false);
 
     setActionMade(1);
@@ -417,13 +421,14 @@ export default function ItemPage() {
     endTime,
     payToken
   ) => {
-    if (!isFreezedMetadata) {
+    /*  if (!isFreezedMetadata) {
       await setFreezedMetadata(
         collectionInfo.contractAddress,
         tokenInfo.current,
         tokenId
       );
-    }
+      setIsFreezedMetadata(true);
+    } */
 
     await createAuction(
       wallet,
@@ -587,15 +592,19 @@ export default function ItemPage() {
                     <p className="text-3xl">
                       <b>{tokenInfo?.current.name}</b>
                     </p>
-                    {!isFreezedMetadata && isOwner && (
-                      <div className="flex gap-3">
-                        <ActionButton
-                          text="EDIT"
-                          size="smaller"
-                          buttonAction={goToEdit}
-                        />
-                      </div>
-                    )}
+                    {!isFreezedMetadata &&
+                      isOwner &&
+                      !isForSale &&
+                      !isOnAuction &&
+                      isCreator && (
+                        <div className="flex gap-3">
+                          <ActionButton
+                            text="EDIT"
+                            size="smaller"
+                            buttonAction={goToEdit}
+                          />
+                        </div>
+                      )}
                   </div>
                 </div>
               )}
