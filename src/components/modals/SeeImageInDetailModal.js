@@ -33,8 +33,8 @@ export default function SeeImageInDetailModal({
   };
   return (
     <BigModal showModal={showModal} handleCloseModal={handleCloseModal}>
-      <div className="my-10 mx-3 md:mx-8 flex flex-col gap-10">
-        <img src={image} className="object-contain" />
+      <div className="my-2 mx-3 md:mx-8 flex flex-col gap-10">
+        <img src={image} className="w-full h-screen object-contain" />
       </div>
     </BigModal>
   );

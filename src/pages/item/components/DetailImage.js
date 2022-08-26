@@ -12,6 +12,7 @@ export default function DetailImage({
   tokenImage,
   tokenName,
   loading,
+  collectionInfo,
 }) {
   const [imgOrQR, setImgOrQr] = useState(tokenImage);
   const [qrcode, setQrcode] = useState("");
@@ -69,7 +70,7 @@ export default function DetailImage({
                 />
               </div>
 
-              <div className="flex">
+              <div className="flex items-center">
                 <div data-for="chain-icon" data-tip="Red de Fantom">
                   <img
                     width={28}
@@ -97,6 +98,25 @@ export default function DetailImage({
                     />
                     <ReactTooltip
                       id="freezed-icon"
+                      place="top"
+                      type={theme === "dark" ? "light" : "dark"}
+                      effect="solid"
+                      multiline={true}
+                    />
+                  </div>
+                )}
+                {collectionInfo.explicitContent && (
+                  <div
+                    data-for="nfsw-icon"
+                    data-tip="Este item tiene contenido explicito"
+                  >
+                    <Icon
+                      width={28}
+                      className="flex w-[32px] "
+                      icon="uil:18-plus"
+                    />
+                    <ReactTooltip
+                      id="nfsw-icon"
                       place="top"
                       type={theme === "dark" ? "light" : "dark"}
                       effect="solid"
