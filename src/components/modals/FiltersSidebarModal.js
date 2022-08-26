@@ -25,7 +25,7 @@ export const FiltersSidebarModal = ({
           <div className="mt-[79px] dark:bg-dark-3 dark:text-white ml-auto relative max-w-lg w-full h-screen shadow-xl py-4 pb-12 flex flex-col gap-3 overflow-y-auto bg-white text-black">
             <div className="px-4 flex items-center justify-between">
               <h2 className="text-sm uppercase font-600 tracking-wide">
-                Filters
+                <div className="text-2xl font-semibold ">Filtros</div>
               </h2>
               <button
                 type="button"

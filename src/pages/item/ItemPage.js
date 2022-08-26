@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { configData } from "../../chainData/configData";
 import useAccount from "../../hooks/useAccount";
+import ReactTooltip from "react-tooltip";
 
 import ItemHistory from "../../components/ItemHistory";
 import DetailImage from "./components/DetailImage";
@@ -36,6 +37,8 @@ import { ethers } from "ethers";
 import { MoreItems } from "../../components/MoreItems";
 import { formatEther } from "ethers/lib/utils";
 import { useCollections } from "../../contracts/collection";
+import { ThemeContext, ThemeProvider } from "../../context/ThemeContext";
+import useResponsive from "../../hooks/useResponsive";
 
 const formatPriceInUsd = (price) => {
   let priceStr = price.toString().split(".");
@@ -63,6 +66,7 @@ const formatDate = (datetime) => {
 
 export default function ItemPage() {
   const navigate = useNavigate();
+  const { _width } = useResponsive();
   let { collection, tokenId } = useParams();
   const { wallet, connectToWallet } = useAccount();
   const {
@@ -128,6 +132,8 @@ export default function ItemPage() {
   const [isCreator, setIsCreator] = useState(false);
   const [isFreezedMetadata, setIsFreezedMetadata] = useState(false);
 
+  const [refreshMetadata, setRefreshMetadata] = useState(false);
+
   const tokenInfo = useRef({});
   const profileOwnerData = useRef({});
   const tokenHistoryInfo = useRef([]);
@@ -143,12 +149,31 @@ export default function ItemPage() {
     navigate(`/account/${profileOwnerData.current.wallet}`);
   };
 
+  const redirectToCollecion = () => {
+    let collectionURL = "";
+    if (collectionInfo.customURL) {
+      collectionURL = collectionInfo.customURL;
+    } else {
+      collectionURL = collectionInfo.contractAddress;
+    }
+
+    if (isMobile) {
+      navigate(`/collection/${collectionURL}`);
+    } else {
+      window.open(`/collection/${collectionURL}`);
+    }
+  };
+
   const goToEdit = () => {
     navigate(
       `/edit/${
         collectionInfo.customURL ? collectionInfo.customURL : collection
       }/${tokenId}`
     );
+  };
+
+  const goToExternalLink = () => {
+    window.open(tokenInfo.current.externalLink, "_blank");
   };
 
   const getItemDetails = async () => {
@@ -173,7 +198,6 @@ export default function ItemPage() {
 
     setIsCreator(wallet === nftData.creator);
     const collectionResponse = await getCollectionDetail(collection);
-    console.log(collectionResponse);
     setCollectionInfo(collectionResponse);
 
     setMoreItems(
@@ -184,6 +208,8 @@ export default function ItemPage() {
     const contract = await getERC721Contract(
       collectionResponse.contractAddress
     );
+
+    console.log(await contract.uri(tokenId));
 
     const isFreezed = await contract.isFreezedMetadata(tokenId);
     console.log(isFreezed);
@@ -545,7 +571,7 @@ export default function ItemPage() {
       setLoading(false);
     };
     fetchData();
-  }, [collection, tokenId, wallet]);
+  }, [collection, tokenId, wallet, refreshMetadata]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -586,26 +612,118 @@ export default function ItemPage() {
               {loading ? (
                 <div className="w-full h-full animate-pulse bg-gray-300"></div>
               ) : (
-                <div className="flex flex-col items-start gap-2">
-                  <div>{collectionInfo?.name}</div>
-                  <div className="flex justify-between items-center w-full">
-                    <p className="text-3xl">
-                      <b>{tokenInfo?.current.name}</b>
-                    </p>
-                    {!isFreezedMetadata &&
-                      isOwner &&
-                      !isForSale &&
-                      !isOnAuction &&
-                      isCreator && (
-                        <div className="flex gap-3">
-                          <ActionButton
-                            text="EDIT"
-                            size="smaller"
-                            buttonAction={goToEdit}
+                <div className="flex w-full justify-between">
+                  <div className="flex flex-col  items-start gap-2 w-full">
+                    {_width < 900 && (
+                      <div className="flex w-full justify-center mb-2">
+                        <div className="flex border  border-2 h-fit rounded-xl dark:text-white">
+                          <ItemPageOption
+                            icon="charm:refresh"
+                            tooltip="refresh-item"
+                            onClick={() => setRefreshMetadata(!refreshMetadata)}
+                            tooltipText="Refrescar Metadata"
+                          />
+                          {!isFreezedMetadata &&
+                            isOwner &&
+                            !isForSale &&
+                            !isOnAuction &&
+                            isCreator && (
+                              <ItemPageOption
+                                onClick={goToEdit}
+                                icon="bxs:edit-alt"
+                                tooltip="edit-item"
+                                tooltipText="Editar Item"
+                              />
+                            )}
+                          {tokenInfo?.current.externalLink &&
+                            tokenInfo?.current.externalLink !== "" && (
+                              <ItemPageOption
+                                onClick={goToExternalLink}
+                                icon="ooui:new-window-ltr"
+                                tooltip="external-item"
+                                tooltipText="Ver enlace externo"
+                              />
+                            )}
+                          <ItemPageOption
+                            disabled
+                            icon="bi:share-fill"
+                            tooltip="share-item"
+                            tooltipText="Compartir"
+                          />
+                          <ItemPageOption
+                            disabled
+                            position="last"
+                            icon="akar-icons:more-vertical"
+                            tooltip="more-item"
+                            tooltipText="Mas opciones"
                           />
                         </div>
-                      )}
+                      </div>
+                    )}
+                    <div className="flex gap-3 items-center">
+                      <img
+                        src={properties?.collection?.logoImage}
+                        alt="recipient-img"
+                        className="rounded-full"
+                        width={32}
+                      />
+                      <div
+                        onClick={redirectToCollecion}
+                        className="text-primary-2 cursor-pointer"
+                      >
+                        {properties?.collection?.name}
+                      </div>
+                    </div>
+                    <div className="flex  items-centerl">
+                      <p className="text-3xl">
+                        <b>{tokenInfo?.current.name}</b>
+                      </p>
+                    </div>
                   </div>
+                  {_width > 900 && (
+                    <div className="flex border border-2 h-fit rounded-xl dark:text-white">
+                      <ItemPageOption
+                        icon="charm:refresh"
+                        tooltip="refresh-item"
+                        onClick={() => setRefreshMetadata(!refreshMetadata)}
+                        tooltipText="Refrescar Metadata"
+                      />
+                      {!isFreezedMetadata &&
+                        isOwner &&
+                        !isForSale &&
+                        !isOnAuction &&
+                        isCreator && (
+                          <ItemPageOption
+                            onClick={goToEdit}
+                            icon="bxs:edit-alt"
+                            tooltip="edit-item"
+                            tooltipText="Editar Item"
+                          />
+                        )}
+                      {tokenInfo?.current.externalLink &&
+                        tokenInfo?.current.externalLink !== "" && (
+                          <ItemPageOption
+                            onClick={goToExternalLink}
+                            icon="ooui:new-window-ltr"
+                            tooltip="external-item"
+                            tooltipText="Ver enlace externo"
+                          />
+                        )}
+                      <ItemPageOption
+                        disabled
+                        icon="bi:share-fill"
+                        tooltip="share-item"
+                        tooltipText="Compartir"
+                      />
+                      <ItemPageOption
+                        disabled
+                        position="last"
+                        icon="akar-icons:more-vertical"
+                        tooltip="more-item"
+                        tooltipText="Mas opciones"
+                      />
+                    </div>
+                  )}
                 </div>
               )}
               {loading ? (
@@ -1126,3 +1244,40 @@ export default function ItemPage() {
     </div>
   );
 }
+
+const ItemPageOption = ({
+  position,
+  icon,
+  tooltip,
+  tooltipText,
+  tooltipPlacement,
+  onClick,
+  disabled,
+}) => {
+  const { theme } = useContext(ThemeContext);
+  return (
+    <div
+      className={`${
+        disabled ? "cursor-not-allowed" : "cursor-pointer"
+      } p-2 hover b ${position === "last" ? "" : "border-r"} ${
+        disabled
+          ? "dark:text-gray-600 text-gray-200"
+          : "dark:hover:text-gray-400 hover:text-gray-400"
+      }`}
+      data-for={tooltip}
+      onClick={() => !disabled && onClick()}
+      data-tip={tooltipText}
+    >
+      <Icon icon={icon} width={28} />
+      {tooltip && !disabled && (
+        <ReactTooltip
+          id={tooltip}
+          place={tooltipPlacement ? tooltipPlacement : "top"}
+          type={theme === "dark" ? "light" : "dark"}
+          effect="solid"
+          multiline={true}
+        />
+      )}
+    </div>
+  );
+};

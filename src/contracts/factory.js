@@ -1,12 +1,16 @@
+import axios from "axios";
 import { ethers } from "ethers";
 import useContract from "../hooks/useContract";
+import useProvider from "../hooks/useProvider";
 import { calculateGasMargin, getHigherGWEI } from "../utils/gas";
 import { COLLECTION_ABI, FACTORY_ABI } from "./abi";
 import { useAddressRegistry } from "./addressRegistry";
-
+import { createForwarderInstance } from "./forwarder";
+import { signMetaTxRequest } from "./signer";
 export const useFactory = () => {
   const { getFactoryAddress } = useAddressRegistry();
   const { getContract } = useContract();
+  /*   const { createProvider } = useProvider(); */
 
   const getContractAddress = async () => await getFactoryAddress();
 
@@ -15,9 +19,41 @@ export const useFactory = () => {
     return await getContract(address, FACTORY_ABI);
   };
 
+  /* const sendMetaTx = async (factory, provider, signer, name, symbol) => {
+    console.log(`Sending register meta-tx to create=${name}`);
+    const url = process.env.REACT_APP_WEBHOOK_URL;
+    if (!url) throw new Error(`Missing relayer url`);
+
+    const forwarder = createForwarderInstance(provider);
+
+    console.log(forwarder.address);
+    const from = await signer.getAddress();
+    const data = factory.interface.encodeFunctionData("createNFTContract", [
+      name,
+      symbol,
+      from,
+    ]);
+    console.log(from);
+    const to = factory.address;
+
+    const request = await signMetaTxRequest(signer.provider, forwarder, {
+      to,
+      from,
+      data,
+    });
+
+    const res = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify(request),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    console.log(res);
+    return res.data;
+  }; */
+
   const createNFTContract = async (name, symbol, from) => {
     const factoryContract = await getFactoryContract();
-    console.log(await factoryContract.owner());
     const args = [name, symbol];
 
     const options = {
@@ -33,9 +69,21 @@ export const useFactory = () => {
     return await factoryContract.createNFTContract(...args, options);
   };
 
+  /* const createNFTContractGasless = async (name, symbol) => {
+    const factoryContract = await getFactoryContract();
+    const provider = createProvider();
+    await window.ethereum.enable();
+    const userProvider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = userProvider.getSigner();
+    const from = await signer.getAddress();
+
+    return await sendMetaTx(factoryContract, provider, signer, name, symbol);
+  }; */
+
   return {
     getContractAddress,
     getFactoryContract,
     createNFTContract,
+    //createNFTContractGasless,
   };
 };

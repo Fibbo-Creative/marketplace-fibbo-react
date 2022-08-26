@@ -30,6 +30,7 @@ export const ConfirmCreateCollection = ({
       discordURL,
       telegramURL,
       instagramURL,
+      explicitContent,
     } = collectionData;
     const customURL = url.split("https://fibbo-market.web.app/collection/")[1];
 
@@ -56,11 +57,14 @@ export const ConfirmCreateCollection = ({
             websiteURL,
             discordURL,
             telegramURL,
-            instagramURL
+            instagramURL,
+            explicitContent
           );
         }
       });
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const seeResult = async () => {

@@ -4423,6 +4423,19 @@ export const FACTORY_ABI = [
     inputs: [
       {
         internalType: "address",
+        name: "tokenContractAddress",
+        type: "address",
+      },
+    ],
+    name: "disableTokenContract",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
         name: "",
         type: "address",
       },

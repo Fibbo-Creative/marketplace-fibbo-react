@@ -25,7 +25,8 @@ export const ConfirmCreateModal = ({
       const ipfsCID = await uploadJSONMetadata(
         itemData.name,
         itemData.description,
-        itemData.ipfsImage
+        itemData.ipfsImage,
+        itemData.externalLink
       );
 
       const ipfsFileURL = `https://ipfs.io/ipfs/${ipfsCID}`;
@@ -50,6 +51,7 @@ export const ConfirmCreateModal = ({
         itemData.ipfsImage,
         ipfsFileURL,
         collection.contractAddress,
+        itemData.externalLink,
         itemData.hiddenContent
       );
       setNewTokenId(newTokenId);

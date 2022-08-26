@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import ActionButton from "../../../components/ActionButton";
 import { ImageInput } from "../../../components/inputs/ImageInput";
@@ -10,11 +10,14 @@ import { useFactory } from "../../../contracts/factory";
 import useAccount from "../../../hooks/useAccount";
 import { useNavigate } from "react-router-dom";
 import { ConfirmCreateCollection } from "../../../components/modals/ConfirmCreateCollection";
+import ReactTooltip from "react-tooltip";
+import { ThemeContext } from "../../../context/ThemeContext";
 
 export default function CreateCollectionContainer() {
   const { uploadImgToCDN, checkNameRepeated, checkUrlRepeated } = useApi();
+  const { theme } = useContext(ThemeContext);
   const navigate = useNavigate();
-  const { wallet } = useAccount();
+  const { wallet, connectToWallet } = useAccount();
   const [showConfirm, setShowConfirm] = useState(false);
   const [logoImage, setLogoImage] = useState("");
   const [logoImageError, setLogoImageError] = useState("");
@@ -50,6 +53,8 @@ export default function CreateCollectionContainer() {
 
   const [instagram, setInstagram] = useState("https://www.instagram.com/");
   const [instagramError, setInstagramError] = useState(false);
+
+  const [explicitContent, setExplicitContent] = useState(false);
 
   const checkURLFormat = (base, state) => {
     const stateValue = state.split(base);
@@ -279,6 +284,10 @@ export default function CreateCollectionContainer() {
     }
   };
 
+  useEffect(() => {
+    connectToWallet();
+  }, []);
+
   return (
     <div className="flex mt-[79px] mb-[79px] w-screen content-center justify-center">
       <div className="flex w-11/12 md:w-9/12 w-7/11 flex-col  ">
@@ -288,12 +297,12 @@ export default function CreateCollectionContainer() {
           </div>
         </div>
 
-        <div className="flex flex-col w-full content-center justify-left">
-          <div className="flex flex-col pt-[30px]">
+        <div className="text-justify flex flex-col w-full content-center justify-left">
+          <div className="flex flex-col pt-[30px] mr-5 md:mr-0">
             <ImageInput
               required
               info="Selecciona el logo de la colección que será visible al navegar por
-              el marketplace."
+              el marketplace. El tamaño recomendado és 350 x 350."
               label="Logo de la colección"
               imageURL={logoImage}
               onFileSelected={onSelectLogoImage}
@@ -306,14 +315,14 @@ export default function CreateCollectionContainer() {
           </div>
         </div>
 
-        <div className="flex flex-col w-full  content-center justify-left">
-          <div className="flex pt-[30px]">
+        <div className="text-justify flex flex-col w-full  content-center justify-left">
+          <div className="flex pt-[30px] mr-5 md:mr-0">
             <ImageInput
               imageURL={mainImage}
               info=" Selecciona la imagen de presentación de la colección. Esta imagen se
               utilizará para presentar su colección en la página de inicio u otras
               áreas promocionales de Fibbo. Si no se selecciona ninguna imagen, se
-              usará el logo de la colección."
+              usará el logo de la colección. El tamaño recomendado és 600 x 400."
               label="Imagen principal de la colección"
               inputId="mainImageInput"
               backgroundImage={true}
@@ -326,13 +335,13 @@ export default function CreateCollectionContainer() {
           </div>
         </div>
 
-        <div className="flex flex-col w-full  content-center justify-left">
-          <div className="flex pt-[30px]">
+        <div className=" text-justify flex flex-col w-full  content-center justify-left">
+          <div className="flex pt-[30px] mr-5 md:mr-0">
             <ImageInput
               imageURL={bannerImage}
               info="Esta imagen aparecerá en la parte superior de la página de tu
               colección. Evite incluir demasiado texto en esta imagen de banner,
-              ya que las dimensiones cambian en diferentes dispositivos."
+              ya que las dimensiones cambian en diferentes dispositivos. El tamaño recomendado és 1400 x 350."
               label="Pancarta de la colección"
               backgroundImage={true}
               inputId="bannerImageInput"
@@ -347,6 +356,7 @@ export default function CreateCollectionContainer() {
 
         <div className="mt-10">
           <TextInput
+            placeholder={"Ejemplo: Pinturas rupestres"}
             label={"Nombre de la colección"}
             required
             value={name}
@@ -368,6 +378,7 @@ export default function CreateCollectionContainer() {
         </div>
         <div className="mt-10">
           <TextArea
+            placeholder={"Cuenta todo detalle acerca de tu colección!"}
             label="Descripción"
             required
             info="La descripción de la colección debe contener un máximo de 1000 carácteres."
@@ -437,18 +448,30 @@ export default function CreateCollectionContainer() {
         <div className="flex flex-col w-full pt-[40px] content-center justify-left">
           <div className="flex flex-row gap-2">
             <label className="">
-              <input type="checkbox" className="" value="" />
+              <input
+                type="checkbox"
+                className=""
+                onChange={() => setExplicitContent(!explicitContent)}
+                checked={explicitContent}
+              />
 
               <span className="font-bold text-lg text-gray-700 dark:text-gray-400 border-gray-300 p-3 flex-row ">
                 Contenido Explícito o Sensible
               </span>
             </label>
-            <abbr
-              className="cursor-pointer "
-              title="Si el contenido és explícito o sensible, como pornografía o contenido 'not safe for work' (NSFW), protegerá a los usuarios de FIBBO que realicen búsquedas seguras y no les mostrará el contenido."
+            <div
+              data-for="explicit-info"
+              data-tip="Si el contenido és explícito o sensible, como pornografía <br/> o contenido 'not safe for work' (NSFW),  protegerá a los usuarios <br/> de FIBBO que realicen búsquedas seguras y no les mostrará el contenido."
             >
-              <Icon className="w-auto h-auto flex m-0" icon="akar-icons:info" />
-            </abbr>
+              <Icon className="text-gray-500" icon="ci:help-circle-outline" />
+              <ReactTooltip
+                id="explicit-info"
+                place="right"
+                type={theme === "dark" ? "light" : "dark"}
+                effect="solid"
+                multiline={true}
+              />
+            </div>
           </div>
         </div>
 
@@ -475,6 +498,7 @@ export default function CreateCollectionContainer() {
               discordURL: discord,
               telegramURL: telegram,
               instagramURL: instagram,
+              explicitContent: explicitContent,
             }}
           />
         )}

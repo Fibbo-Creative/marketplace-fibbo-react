@@ -39,6 +39,7 @@ export default function EditContainer() {
 
   const [sanityImgUrl, setSanityImgUrl] = useState("");
   const [name, setName] = useState("");
+  const [externalLink, setExternalLink] = useState("");
   const [desc, setDesc] = useState("");
   const [royalty, setRoyalty] = useState("");
   const { connectToWallet, wallet } = useAccount();
@@ -84,6 +85,7 @@ export default function EditContainer() {
     setIpfsImageUrl(nftData.ipfsImage);
     setIpfsMetadata(nftData.ipfsMetadata);
     setSanityImgUrl(nftData.image);
+    setExternalLink(nftData.externalLink);
 
     const collectionInfo = await getCollectionInfo(collection);
 
@@ -180,6 +182,7 @@ export default function EditContainer() {
         ipfsImageUrl,
         ipfsMetadata,
         collectionSelected.contractAddress,
+        externalLink,
         hiddenContent
       );
 
@@ -194,6 +197,10 @@ export default function EditContainer() {
   const handleChangeName = (value) => {
     setNameError(false);
     setName(value);
+  };
+
+  const handleChangeLink = (value) => {
+    setExternalLink(value);
   };
 
   const handleChangeDescription = (value) => {
@@ -275,6 +282,13 @@ export default function EditContainer() {
                       "La descripción debe tener entre 50 y 500 carácteres"
                     }
                     onChange={(e) => handleChangeDescription(e.target.value)}
+                  />
+                  <TextInput
+                    label="Enlace externo"
+                    info="Fibbo incluirá un enlace a este enlace en el detalle del item. Así los usuarios podrán tener mas información."
+                    value={externalLink}
+                    placeholder="https://tuweb.com"
+                    onChange={(e) => handleChangeLink(e.target.value)}
                   />
                   <NumberInput
                     label="Royalties"
@@ -388,6 +402,7 @@ export default function EditContainer() {
                   hiddenContent: hiddenContent,
                   ipfsImage: ipfsImageUrl,
                   ipfsMetadata: ipfsMetadata,
+                  externalLink: externalLink,
                 }}
               />
             </div>

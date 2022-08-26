@@ -18,5 +18,14 @@ export default () => {
     return formatEther(walletBalance);
   };
 
-  return { getWalletBalance };
+  const createProvider = () => {
+    return new ethers.providers.JsonRpcProvider(
+      isMainnet
+        ? "https://rpc.ftm.tools/"
+        : "https://rpc.testnet.fantom.network/",
+      isMainnet ? 250 : 4002
+    );
+  };
+
+  return { getWalletBalance, createProvider };
 };

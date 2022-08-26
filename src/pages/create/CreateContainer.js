@@ -32,6 +32,7 @@ export default function CreateContainer() {
   const [ipfsImageUrl, setIpfsImageUrl] = useState("");
   const [sanityImgUrl, setSanityImgUrl] = useState("");
   const [name, setName] = useState("");
+  const [externalLink, setExternalLink] = useState("");
   const [desc, setDesc] = useState("");
   const [royalty, setRoyalty] = useState("");
   const { connectToWallet, wallet } = useAccount();
@@ -63,10 +64,15 @@ export default function CreateContainer() {
       setImageError(false);
       setLoadingImage(true);
       try {
-        const { sanity, ipfs } = await uploadImgToCDN(file, true);
+        const isExplicit = collectionSelected.explicitContent;
+        const { sanity, ipfs, error } = await uploadImgToCDN(
+          file,
+          true,
+          isExplicit
+        );
         setIpfsImageUrl(`https://ipfs.io/ipfs/${ipfs}`);
 
-        if (sanity === "INVALID IMG") {
+        if (error) {
           setImageError(true);
           setImageMessageError("Imagen no permitida, contiene contenido NFSW");
         } else {
@@ -123,6 +129,10 @@ export default function CreateContainer() {
   const handleChangeName = (value) => {
     setNameError(false);
     setName(value);
+  };
+
+  const handleChangeLink = (value) => {
+    setExternalLink(value);
   };
 
   const handleChangeDescription = (value) => {
@@ -214,6 +224,7 @@ export default function CreateContainer() {
                     <TextInput
                       label={"Nombre"}
                       required
+                      value={name}
                       error={nameError}
                       onChange={(e) => handleChangeName(e.target.value)}
                       errorMessage=" El nombre debe tener entre 4 y 30 carácteres"
@@ -224,7 +235,7 @@ export default function CreateContainer() {
                   <TextArea
                     label="Descripción"
                     required
-                    info={"De 50 a 500 carácteres"}
+                    info="De 50 a 500 carácteres"
                     error={descError}
                     value={desc}
                     errorMessage={
@@ -232,6 +243,16 @@ export default function CreateContainer() {
                     }
                     onChange={(e) => handleChangeDescription(e.target.value)}
                   />
+                  <TextInput
+                    label="Enlace externo"
+                    info="Fibbo incluirá un enlace a este enlace en el detalle del item. Así los usuarios podrán tener mas información."
+                    value={externalLink}
+                    placeholder="https://tuweb.com"
+                    onChange={(e) => handleChangeLink(e.target.value)}
+                  />
+
+                  {nameError && <div className="text-xs text-red-400 "></div>}
+
                   <NumberInput
                     label="Royalties"
                     placeholder="ej. 2.5%"
@@ -311,6 +332,7 @@ export default function CreateContainer() {
                   description: desc,
                   royalty: royalty,
                   hiddenContent: hiddenContent,
+                  externalLink: externalLink,
                   ipfsImage: ipfsImageUrl,
                 }}
                 wallet={wallet}

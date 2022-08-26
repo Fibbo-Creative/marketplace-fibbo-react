@@ -23,8 +23,7 @@ export const ImageInput = ({
   const handleOnFileSelected = async (e) => {
     setLoadingImage(true);
     await onFileSelected(e);
-    document.getElementById(`divText-${inputId}`).style.visibility = "hidden";
-    document.getElementById(`div-${inputId}`).style.padding = "0";
+
     setLoadingImage(false);
   };
 
@@ -34,6 +33,13 @@ export const ImageInput = ({
       document.getElementById(`div-${inputId}`).style.padding = "0";
     }
   }, []);
+
+  useEffect(() => {
+    if (imageError) {
+      document.getElementById(`divText-${inputId}`).style.visibility = "flex";
+      document.getElementById(`div-${inputId}`).style.padding = "0";
+    }
+  }, [imageError]);
 
   return (
     <div className="flex flex-col gap-3  mb-4">
@@ -60,7 +66,7 @@ export const ImageInput = ({
           className="hidden"
         />
 
-        {!imageError && imageURL !== "" && (
+        {!imageError && imageURL !== "" ? (
           <>
             {backgroundImage ? (
               <div
@@ -80,51 +86,54 @@ export const ImageInput = ({
               />
             )}
           </>
+        ) : (
+          <>
+            {!icon ? (
+              <>
+                <div
+                  id={`divText-${inputId}`}
+                  className={`flex h-full items-center justify-center text-center${
+                    imageError && "text-red-400"
+                  } `}
+                >
+                  {loadingImage ? (
+                    <img src={fibboLogo} className="w-[128px] animate-pulse" />
+                  ) : (
+                    <>
+                      {!loadingImage && imageError ? (
+                        <div className="text-red-600">{imageMessageError}</div>
+                      ) : (
+                        <div className="text-center">
+                          Arrastra o selecciona ficheros de imágen <br></br>{" "}
+                          JPG, PNG, JPEG, GIF, SVG o WEBP.
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+              </>
+            ) : (
+              <div
+                id={`divText-${inputId}`}
+                className={`flex h-full items-center justify-center text-center${
+                  imageError && "text-red-400"
+                } `}
+              >
+                {loadingImage ? (
+                  <img src={fibboLogo} className="w-[128px] animate-pulse" />
+                ) : (
+                  <>
+                    {!loadingImage && imageError ? (
+                      <div className="text-red-600">{imageMessageError}</div>
+                    ) : (
+                      <Icon icon="bi:image-fill" width={48} />
+                    )}
+                  </>
+                )}
+              </div>
+            )}{" "}
+          </>
         )}
-        <>
-          {!icon ? (
-            <div
-              id={`divText-${inputId}`}
-              className={`flex h-full items-center justify-center text-center${
-                imageError && "text-red-400"
-              } `}
-            >
-              {loadingImage ? (
-                <img src={fibboLogo} className="w-[128px] animate-pulse" />
-              ) : (
-                <>
-                  {!loadingImage && imageError ? (
-                    <div className="text-red-600">{imageMessageError}</div>
-                  ) : (
-                    <div className="text-center">
-                      Arrastra o selecciona ficheros de imágen <br></br> JPG,
-                      PNG, JPEG, GIF, SVG o WEBP.
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-          ) : (
-            <div
-              id={`divText-${inputId}`}
-              className={`flex h-full items-center justify-center text-center${
-                imageError && "text-red-400"
-              } `}
-            >
-              {loadingImage ? (
-                <img src={fibboLogo} className="w-[128px] animate-pulse" />
-              ) : (
-                <>
-                  {!loadingImage && imageError ? (
-                    <div className="text-red-600">{imageMessageError}</div>
-                  ) : (
-                    <Icon icon="bi:image-fill" width={48} />
-                  )}
-                </>
-              )}
-            </div>
-          )}{" "}
-        </>
       </div>
     </div>
   );

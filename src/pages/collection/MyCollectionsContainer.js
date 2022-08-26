@@ -72,7 +72,7 @@ export default function MyCollectionsContainer() {
           return (
             <div
               key={col._id}
-              className="hover:-translate-y-1 rounded-lg cursor-pointer flex flex-col w-[400px] h-[300px] bg-slate-100"
+              className="hover:-translate-y-1 rounded-lg cursor-pointer flex flex-col w-[400px] h-[300px]  bg-slate-300"
               onClick={() => redirectToColectionPage(col)}
             >
               <div

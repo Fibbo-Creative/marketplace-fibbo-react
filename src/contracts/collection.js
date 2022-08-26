@@ -10,7 +10,8 @@ export const useCollections = () => {
     const ipfsCID = await uploadJSONMetadata(
       tokenInfo.name,
       tokenInfo.description,
-      tokenInfo.ipfsImage
+      tokenInfo.ipfsImage,
+      tokenInfo.externalLink
     );
 
     const ipfsFileURL = `https://ipfs.io/ipfs/${ipfsCID}`;

@@ -36,12 +36,17 @@ export const ActionModal = ({
     completedAction();
   };
 
+  const closeModal = () => {
+    setCompleted(false);
+    handleCloseModal();
+  };
+
   return (
     <Dialog
       as="div"
       open={showModal}
       className="fixed inset-0 z-10 overflow-y-auto "
-      onClose={() => !loadingAction && handleCloseModal()}
+      onClose={() => !loadingAction && closeModal()}
     >
       <div className="min-h-screen px-4 text-center">
         <div className="fixed inset-0 bg-black/50" aria-hidden="true" />
@@ -60,10 +65,7 @@ export const ActionModal = ({
               className="dark:text-white text-lg font-medium leading-6 text-gray-900 flex justify-between"
             >
               <div className="font-bold">{title}</div>
-              <div
-                className="cursor-pointer"
-                onClick={() => handleCloseModal()}
-              >
+              <div className="cursor-pointer" onClick={() => closeModal()}>
                 <Icon className="text-2xl" icon="ant-design:close-outlined" />
               </div>
             </Dialog.Title>

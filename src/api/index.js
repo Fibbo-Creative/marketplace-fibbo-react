@@ -162,6 +162,7 @@ export const useApi = () => {
     ipfsImage,
     ipfsMetadata,
     collection,
+    externalLink,
     additionalContent
   ) => {
     await marketplaceApi.post("nfts/newItem", {
@@ -174,6 +175,7 @@ export const useApi = () => {
       ipfsImgUrl: ipfsImage,
       ipfsMetadataUrl: ipfsMetadata,
       collection: collection,
+      externalLink: externalLink,
       additionalContent: additionalContent,
     });
   };
@@ -188,6 +190,7 @@ export const useApi = () => {
     ipfsImgUrl,
     ipfsMetadataUrl,
     collection,
+    externalLink,
     additionalContent
   ) => {
     try {
@@ -201,6 +204,7 @@ export const useApi = () => {
         ipfsImgUrl: ipfsImgUrl,
         ipfsMetadataUrl: ipfsMetadataUrl,
         collection: collection,
+        externalLink: externalLink,
         additionalContent: additionalContent,
       });
     } catch (e) {
@@ -298,7 +302,8 @@ export const useApi = () => {
     websiteURL,
     discordURL,
     telegramURL,
-    instagramURL
+    instagramURL,
+    explicitContent
   ) => {
     const res = await marketplaceApi.post(`collections/new`, {
       contractAddress,
@@ -313,6 +318,7 @@ export const useApi = () => {
       discordURL,
       telegramURL,
       instagramURL,
+      explicitContent,
     });
     return res.data;
   };
@@ -329,7 +335,8 @@ export const useApi = () => {
     websiteURL,
     discordURL,
     telegramURL,
-    instagramURL
+    instagramURL,
+    explicitContent
   ) => {
     const res = await marketplaceApi.post(`collections/edit`, {
       contractAddress,
@@ -344,6 +351,7 @@ export const useApi = () => {
       discordURL,
       telegramURL,
       instagramURL,
+      explicitContent,
     });
     return res.data;
   };
@@ -364,10 +372,11 @@ export const useApi = () => {
     };
   };
 
-  const uploadImgToCDN = async (file, uploadToIpfs) => {
+  const uploadImgToCDN = async (file, uploadToIpfs, isExplicit = false) => {
     var formData = new FormData();
     formData.append("image", file);
     formData.append("uploadToIpfs", uploadToIpfs);
+    formData.append("isExplicit", isExplicit);
 
     const imgAddedToSanity = await marketplaceApi.post(
       "api/uploadImg",
@@ -378,14 +387,19 @@ export const useApi = () => {
         },
       }
     );
-    return imgAddedToSanity.data;
+    if (imgAddedToSanity.status !== 200) {
+      return { sanity: "", ipfsImgUrl: "", error: true };
+    } else {
+      return { ...imgAddedToSanity.data, error: false };
+    }
   };
 
-  const uploadJSONMetadata = async (name, desc, image) => {
+  const uploadJSONMetadata = async (name, desc, image, externalLink) => {
     const imgAddedToSanity = await marketplaceApi.post("api/uploadJson", {
       name: name,
       description: desc,
       image: image,
+      externalLink: externalLink,
     });
     return imgAddedToSanity.data;
   };
