@@ -29,10 +29,14 @@ export const ImageInput = ({
 
   useEffect(() => {
     if (imageURL !== "") {
-      document.getElementById(`divText-${inputId}`).style.visibility = "hidden";
+      let divText = document.getElementById(`divText-${inputId}`);
+      if (divText) {
+        divText.style.visibility = "hidden";
+      }
+
       document.getElementById(`div-${inputId}`).style.padding = "0";
     }
-  }, []);
+  }, [inputId]);
 
   useEffect(() => {
     if (imageError) {
