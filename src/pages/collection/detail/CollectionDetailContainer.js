@@ -473,6 +473,7 @@ export const CollectionDetailContainer = () => {
                     <ItemPageOption
                       icon="carbon:add-alt"
                       tooltip="add-item"
+                      onClick={redirectToCreateItem}
                       tooltipText="Crear NFT"
                     />
                   )}
@@ -480,6 +481,7 @@ export const CollectionDetailContainer = () => {
                     <ItemPageOption
                       icon="bxs:edit-alt"
                       tooltip="edit-item"
+                      onClick={redirectToEditCollection}
                       tooltipText="Editar coleccion"
                     />
                   )}

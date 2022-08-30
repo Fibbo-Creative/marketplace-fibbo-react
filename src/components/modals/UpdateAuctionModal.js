@@ -62,18 +62,20 @@ export default function UpdateAuctionModal({
       <div className="my-10 mx-8 flex flex-col gap-10">
         <div className="flex flex-col gap-4">
           {!auctionStarted && (
-            <Erc20AmountInput
-              value={newReservePrice}
-              onChange={setNewReservePrice}
-              label={"Precio Reservado"}
-              error={
-                parseFloat(newReservePrice) ===
-                parseFloat(auctionInfo.reservePrice)
-              }
-              errorMessage={"El nuevo precio reservado debe ser diferente"}
-              selectedToken={payTokenSelected}
-              setSelectedToken={setPayTokenSelected}
-            />
+            <div className="flex flex-col items-center">
+              <Erc20AmountInput
+                value={newReservePrice}
+                onChange={setNewReservePrice}
+                label={"Precio Reservado"}
+                error={
+                  parseFloat(newReservePrice) ===
+                  parseFloat(auctionInfo.reservePrice)
+                }
+                errorMessage={"El nuevo precio reservado debe ser diferente"}
+                selectedToken={payTokenSelected}
+                setSelectedToken={setPayTokenSelected}
+              />
+            </div>
           )}
           {!auctionStarted && (
             <DateTimeInput

@@ -646,7 +646,7 @@ export default function ItemPage() {
     <div className="h-screen w-screen dark:bg-dark-1">
       <div className=" dark:bg- mt-[79px] pt-10 mb-[50px] mx-[50px] grid grid-cols-1  md:grid-cols-[400px_minmax(300px,_0.9fr)] md:grid-rows-[auto_auto] gap-7">
         {loading ? (
-          <div className="w-screen h-[50vh] animate-pulse flex items-center justify-center">
+          <div className="w-screen h-[50vh] w-[80vw] md:w-[100vw] animate-pulse flex items-center justify-center">
             <img src={fibboLogo} className="w-[128px] animate-spin" />
           </div>
         ) : (

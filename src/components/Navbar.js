@@ -243,10 +243,6 @@ export default function Navbar() {
               {/*  {verifiedAddress && (
                 <NavbarItemMobile text="Comunidad" to="/community" />
               )} */}
-              {verifiedAddress &&
-                {
-                  /* <NavbarItemMobile text="Creación" to="/create" /> */
-                }}
             </div>
           </div>
         )}

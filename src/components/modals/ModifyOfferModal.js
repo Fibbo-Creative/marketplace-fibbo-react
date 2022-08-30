@@ -78,16 +78,18 @@ export default function ModifyOfferModal({
     >
       <div className="my-10 mx-8 flex flex-col gap-10">
         <div className="flex flex-col gap-4">
-          <Erc20AmountInput
-            label={"Que precio quieres ofertar?"}
-            value={offerPrice}
-            onChange={setOfferPrice}
-            error={parseFloat(wftmBalance) < parseFloat(offerPrice)}
-            errorMessage={"No tienes suficientes WFTM"}
-            selectedToken={payTokenSelected}
-            setSelectedToken={setPayTokenSelected}
-            showBalance={true}
-          />
+          <div className="flex flex-col items-center">
+            <Erc20AmountInput
+              label={"Que precio quieres ofertar?"}
+              value={offerPrice}
+              onChange={setOfferPrice}
+              error={parseFloat(wftmBalance) < parseFloat(offerPrice)}
+              errorMessage={"No tienes suficientes WFTM"}
+              selectedToken={payTokenSelected}
+              setSelectedToken={setPayTokenSelected}
+              showBalance={true}
+            />
+          </div>
           <DateTimeInput
             label={"Fecha de Expiración"}
             valueDate={expireDate}

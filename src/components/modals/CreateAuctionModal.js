@@ -31,24 +31,21 @@ export default function CreateAuctionModal({
   const { getWFTMBalance } = useWFTMContract();
 
   const handleCreateAuction = async () => {
-    try {
-      var startTime = new Date(`${startDate}T${startHour}`);
-      var endTime = new Date(`${endDate}T${endHour}`);
+    var startTime = new Date(`${startDate}T${startHour}`);
+    var endTime = new Date(`${endDate}T${endHour}`);
 
-      startTime = Math.floor(startTime.getTime() / 1000);
-      endTime = Math.floor(endTime.getTime() / 1000);
+    startTime = Math.floor(startTime.getTime() / 1000);
+    endTime = Math.floor(endTime.getTime() / 1000);
 
-      await onCreateAuction(
-        reservePrice,
-        buyNowPrice,
-        minimumBid,
-        startTime,
-        endTime,
-        payTokenSelected
-      );
-    } catch (e) {
-      console.log(e);
-    }
+    await onCreateAuction(
+      reservePrice,
+      buyNowPrice,
+      minimumBid,
+      startTime,
+      endTime,
+      payTokenSelected
+    );
+    return "OK";
   };
 
   useEffect(() => {
@@ -79,38 +76,40 @@ export default function CreateAuctionModal({
       completedAction={handleCloseModal}
       submitDisabled={actionError || buyNowPrice < reservePrice * 2}
     >
-      <div className="my-10 mx-8 flex flex-col gap-10">
-        <Erc20AmountInput
-          label={"Que precio quieres asegurar?"}
-          value={reservePrice}
-          onChange={setReservePrice}
-          selectedToken={payTokenSelected}
-          setSelectedToken={setPayTokenSelected}
-        />
-        <div className="flex items-center gap-2">
-          <span className="font-bold text-sm text-gray-700 dark:text-gray-400 border-gray-300 p-3">
-            Quieres que la puja mínima sea el precio reservado?
-          </span>
-          <label className="">
-            <input
-              type="checkbox"
-              checked={minimumBid}
-              onChange={() => setMinimumBid(!minimumBid)}
-            />
-          </label>
+      <div className="my-10 mx-2 md:mx-8 flex flex-col gap-8">
+        <div className="flex flex-col gap-4 items-center">
+          <Erc20AmountInput
+            label={"Que precio quieres asegurar?"}
+            value={reservePrice}
+            onChange={setReservePrice}
+            selectedToken={payTokenSelected}
+            setSelectedToken={setPayTokenSelected}
+          />
+          <div className="flex items-center gap-2">
+            <span className="font-bold text-sm text-gray-700 dark:text-gray-400 border-gray-300 p-3">
+              Quieres que la puja mínima sea el precio reservado?
+            </span>
+            <label className="">
+              <input
+                type="checkbox"
+                checked={minimumBid}
+                onChange={() => setMinimumBid(!minimumBid)}
+              />
+            </label>
+          </div>
+          <Erc20AmountInput
+            label={"Que precio de compra ahora?"}
+            value={buyNowPrice}
+            onChange={setBuyNowPrice}
+            error={buyNowPrice < reservePrice * 2}
+            selectedToken={payTokenSelected}
+            selectDisabled={true}
+            setSelectedToken={setPayTokenSelected}
+            errorMessage={
+              "El precio de compra tiene que ser mínimo el doble de reserva"
+            }
+          />
         </div>
-        <Erc20AmountInput
-          label={"Que precio de compra ahora?"}
-          value={buyNowPrice}
-          onChange={setBuyNowPrice}
-          error={buyNowPrice < reservePrice * 2}
-          selectedToken={payTokenSelected}
-          selectDisabled={true}
-          setSelectedToken={setPayTokenSelected}
-          errorMessage={
-            "El precio de compra tiene que ser mínimo el doble de reserva"
-          }
-        />
         <DateTimeInput
           label={"Fecha de Inicio"}
           valueDate={startDate}

@@ -51,7 +51,7 @@ export default function MyCollectionsContainer() {
           <b>Mis colecciones </b>
         </div>
       </div>
-      <div className="flex w-full content-center justify-center">
+      <div className="flex w-full px-8 md:mx-0  justify-center">
         <div className="text-lg">
           {" "}
           Crea y administra tus colecciones de NFTs únicos para poder
@@ -67,12 +67,12 @@ export default function MyCollectionsContainer() {
           />
         )}
       </div>
-      <div className="flex flex-row flex-wrap gap-20 w-full content-center justify-center p-[40px]">
+      <div className="flex flex-row flex-wrap px-10 md:px-0  gap-20 w-full content-center justify-center p-[40px]">
         {myCollections?.map((col) => {
           return (
             <div
               key={col._id}
-              className="hover:-translate-y-1 rounded-lg cursor-pointer flex flex-col w-[400px] h-[300px]  bg-slate-300"
+              className="hover:-translate-y-1 rounded-lg cursor-pointer flex flex-col  w-[350px] md:w-[400px] h-[300px] md:h-[300px]  bg-slate-300"
               onClick={() => redirectToColectionPage(col)}
             >
               <div

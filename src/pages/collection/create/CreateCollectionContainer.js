@@ -298,7 +298,7 @@ export default function CreateCollectionContainer() {
         </div>
 
         <div className="text-justify flex flex-col w-full content-center justify-left">
-          <div className="flex flex-col pt-[30px] mr-5 md:mr-0">
+          <div className="flex flex-col pt-[2px] md:pt-[30px] mr-5 md:mr-0">
             <ImageInput
               required
               info="Selecciona el logo de la colección que será visible al navegar por

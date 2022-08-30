@@ -27,7 +27,7 @@ export default function HomeContainer() {
   };
 
   const goToCreate = () => {
-    navigate("/create");
+    navigate("/myCollections");
   };
   return (
     <PageWithLoading loading={false}>

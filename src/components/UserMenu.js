@@ -59,13 +59,6 @@ export const UserMenu = ({ setOpenStation, setOpenMenu, disconnectWallet }) => {
           icon="healthicons:ui-user-profile"
           onClick={() => goToProfile()}
         />
-        {verifiedAddress && (
-          <UserMenuItem
-            text="Mis colecciones"
-            icon="ic:outline-collections"
-            onClick={() => goToMyCollections()}
-          />
-        )}
 
         <UserMenuItem
           text="Configuración"

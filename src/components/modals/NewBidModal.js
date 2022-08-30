@@ -140,32 +140,34 @@ export default function MakeBidModal({
               </div>
             )}
           </div>
-          <Erc20AmountInput
-            label={"Que precio quieres pujar?"}
-            value={bidAmmount}
-            onChange={setBidAmmount}
-            error={
-              highestBid
-                ? bidAmmount < parseFloat(highestBid.bid) + 1 ||
-                  (highestBid && bidAmmount < highestBid.bid) ||
-                  parseFloat(bidAmmount) > parseFloat(wftmBalance)
-                : parseFloat(bidAmmount) > parseFloat(wftmBalance)
-            }
-            errorMessage={`${
-              highestBid
-                ? parseFloat(bidAmmount) < parseFloat(highestBid.bid)
-                  ? "La puja debe ser mayor a la actual"
-                  : bidAmmount < parseFloat(highestBid.bid) + 1
-                  ? "La diferencia con la puja actual debe ser 1 o mayor"
+          <div className="flex flex-col items-center">
+            <Erc20AmountInput
+              label={"Que precio quieres pujar?"}
+              value={bidAmmount}
+              onChange={setBidAmmount}
+              error={
+                highestBid
+                  ? bidAmmount < parseFloat(highestBid.bid) + 1 ||
+                    (highestBid && bidAmmount < highestBid.bid) ||
+                    parseFloat(bidAmmount) > parseFloat(wftmBalance)
+                  : parseFloat(bidAmmount) > parseFloat(wftmBalance)
+              }
+              errorMessage={`${
+                highestBid
+                  ? parseFloat(bidAmmount) < parseFloat(highestBid.bid)
+                    ? "La puja debe ser mayor a la actual"
+                    : bidAmmount < parseFloat(highestBid.bid) + 1
+                    ? "La diferencia con la puja actual debe ser 1 o mayor"
+                    : "No tienes suficientes WFTM"
+                  : parseFloat(auctionInfo?.minBid) > parseFloat(bidAmmount)
+                  ? "La puja debe ser mayor o igual que el precio reservado"
                   : "No tienes suficientes WFTM"
-                : parseFloat(auctionInfo?.minBid) > parseFloat(bidAmmount)
-                ? "La puja debe ser mayor o igual que el precio reservado"
-                : "No tienes suficientes WFTM"
-            }`}
-            selectedToken={payTokenSelected}
-            setSelectedToken={setPayTokenSelected}
-            showBalance={true}
-          />
+              }`}
+              selectedToken={payTokenSelected}
+              setSelectedToken={setPayTokenSelected}
+              showBalance={true}
+            />
+          </div>
         </div>
       </div>
     </ActionModal>
