@@ -569,13 +569,13 @@ export const CollectionDetailContainer = () => {
           </div>
           <div className="flex flex-col gap-3 items-center">
             <div className="flex text-xl">
-              <b>{collectionNfts.length}</b>
+              <b>{collectionInfo?.owners.length}</b>
             </div>
             <div className="flex items-end">Propietarios</div>
           </div>
           <div className="flex flex-col gap-3 items-center">
             <div className="flex text-xl">
-              <b>0</b>
+              <b>{parseFloat(collectionInfo?.volumen)} WFTM</b>
             </div>
             <div className="flex items-end">Volumen total</div>
           </div>
