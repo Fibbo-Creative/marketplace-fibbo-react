@@ -54,7 +54,7 @@ export const useApi = () => {
     return res.data;
   };
 
-  const setShowRedirect = async (address) => {
+  const setShowRedirectProfile = async (address) => {
     const res = await marketplaceApi.post("users/setNotShowRedirect", {
       wallet: address,
     });
@@ -356,6 +356,29 @@ export const useApi = () => {
     return res.data;
   };
 
+  const createUserCollectionOptions = async (contractAddress, user) => {
+    const res = await marketplaceApi.post(`collections/newOptions`, {
+      contractAddress,
+      user,
+    });
+    return res.data;
+  };
+
+  const setShowRedirectToLink = async (contractAddress, user) => {
+    const res = await marketplaceApi.post(`collections/setShowRedirect`, {
+      contractAddress,
+      user,
+    });
+    return res.data;
+  };
+
+  const getUserCollectionOptions = async (contractAddress, user) => {
+    const res = await marketplaceApi.get(
+      `collections/collectionUserOptions?contractAddress=${contractAddress}&user=${user}`
+    );
+    return res.data;
+  };
+
   //#endregion
 
   //#region General
@@ -449,7 +472,10 @@ export const useApi = () => {
     getCollectionInfo,
     checkUrlRepeated,
     checkNameRepeated,
+    getUserCollectionOptions,
     getCollectionDetail,
+    createUserCollectionOptions,
+    setShowRedirectToLink,
     getCollectionsAvailable,
     getNftsFromAddress,
     getNftHistory,
@@ -468,7 +494,7 @@ export const useApi = () => {
     getAllPayTokens,
     getPayTokenInfo,
     setImportWFTM,
-    setShowRedirect,
+    setShowRedirectProfile,
     getMyCollections,
     editNftData,
     editCollectionDetails,

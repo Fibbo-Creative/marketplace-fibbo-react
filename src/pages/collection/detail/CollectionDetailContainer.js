@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useApi } from "../../../api";
 import { PageWithLoading } from "../../../components/basic/PageWithLoading";
@@ -28,7 +28,14 @@ export const CollectionDetailContainer = () => {
   const [loading, setLoading] = useState(true);
   const { collection } = useParams();
   const [{ userProfile }] = useStateContext();
-  const { getCollectionDetail, getProfileInfo, getAllPayTokens } = useApi();
+  const {
+    getCollectionDetail,
+    getProfileInfo,
+    getAllPayTokens,
+    getUserCollectionOptions,
+    createUserCollectionOptions,
+    setShowRedirectToLink,
+  } = useApi();
   const { wallet } = useAccount();
   const [collectionInfo, setCollectionInfo] = useState(null);
   const [collectionNfts, setCollectionNfts] = useState([]);
@@ -43,6 +50,8 @@ export const CollectionDetailContainer = () => {
   const [ownerInfo, setOwnerInfo] = useState(null);
   const [isOwner, setIsOwner] = useState(false);
   const [detailLink, setDetailLink] = useState("");
+
+  const collectionUserOptions = useRef(null);
   const [showRedirect, setShowRedirect] = useState(false);
 
   const navigate = useNavigate();
@@ -65,12 +74,17 @@ export const CollectionDetailContainer = () => {
 
   const openRedirectPopUp = (link) => {
     //Checker si tiene lo de no mostrar
-    if (userProfile.notShowRedirect) {
+    if (collectionUserOptions.current.notShowRedirect) {
       window.open(link);
     } else {
       setDetailLink(link);
       setShowRedirect(true);
     }
+  };
+
+  const handleSaveOptions = async () => {
+    await setShowRedirectToLink(collectionInfo.contractAddress, wallet);
+    collectionUserOptions.current.notShowRedirect = true;
   };
   const redirectToEditCollection = () => {
     if (collectionInfo.customURL) {
@@ -285,7 +299,21 @@ export const CollectionDetailContainer = () => {
     const fetchData = async () => {
       const collectionDetail = await getCollectionDetail(collection);
       setIsOwner(collectionDetail.creator === wallet);
-      console.log(collectionDetail);
+      if (collectionDetail.creator !== wallet) {
+        let collOptions = await getUserCollectionOptions(
+          collectionDetail.contractAddress,
+          wallet
+        );
+        if (collOptions) {
+          collectionUserOptions.current = collOptions;
+        } else {
+          let created = await createUserCollectionOptions(
+            collectionDetail.contractAddress,
+            wallet
+          );
+          collectionUserOptions.current = created;
+        }
+      }
       const _ownerInfo = await getProfileInfo(collectionDetail.creator);
       setOwnerInfo(_ownerInfo);
       const _payTokens = await getAllPayTokens();
@@ -676,7 +704,9 @@ export const CollectionDetailContainer = () => {
           </div>
         </div>
         <RedirectModal
+          onSaveOptions={handleSaveOptions}
           wallet={wallet}
+          userCollectionOptions={collectionUserOptions.current}
           link={detailLink}
           showModal={showRedirect}
           handleCloseModal={() => setShowRedirect(false)}

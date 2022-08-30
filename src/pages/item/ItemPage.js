@@ -39,6 +39,9 @@ import { formatEther } from "ethers/lib/utils";
 import { useCollections } from "../../contracts/collection";
 import { ThemeContext, ThemeProvider } from "../../context/ThemeContext";
 import useResponsive from "../../hooks/useResponsive";
+import { useStateContext } from "../../context/StateProvider";
+import { actionTypes } from "../../context/stateReducer";
+import RedirectModal from "../../components/modals/RedirectModal";
 
 const formatPriceInUsd = (price) => {
   let priceStr = price.toString().split(".");
@@ -67,6 +70,7 @@ const formatDate = (datetime) => {
 export default function ItemPage() {
   const navigate = useNavigate();
   const { _width } = useResponsive();
+  const [{ userProfile }, dispatch] = useStateContext();
   let { collection, tokenId } = useParams();
   const { wallet, connectToWallet } = useAccount();
   const {
@@ -76,6 +80,7 @@ export default function ItemPage() {
     getCollectionDetail,
     getPayTokenInfo,
     getCollectionInfo,
+    setShowRedirectProfile,
   } = useApi();
   const {
     getListingInfo,
@@ -131,6 +136,7 @@ export default function ItemPage() {
   const [actionMade, setActionMade] = useState(0);
   const [isCreator, setIsCreator] = useState(false);
   const [isFreezedMetadata, setIsFreezedMetadata] = useState(false);
+  const [showRedirect, setShowRedirect] = useState(false);
 
   const [refreshMetadata, setRefreshMetadata] = useState(false);
 
@@ -172,8 +178,19 @@ export default function ItemPage() {
     );
   };
 
+  const handleSaveRedirect = async () => {
+    await setShowRedirectProfile(wallet);
+    dispatch({
+      type: actionTypes.UPDATED_NOT_SHOW,
+    });
+  };
+
   const goToExternalLink = () => {
-    window.open(tokenInfo.current.externalLink, "_blank");
+    if (!userProfile.notShowRedirect) {
+      setShowRedirect(true);
+    } else {
+      window.open(tokenInfo.current.externalLink, "_blank");
+    }
   };
 
   const getItemDetails = async () => {
@@ -209,10 +226,7 @@ export default function ItemPage() {
       collectionResponse.contractAddress
     );
 
-    console.log(await contract.uri(tokenId));
-
     const isFreezed = await contract.isFreezedMetadata(tokenId);
-    console.log(isFreezed);
     setIsFreezedMetadata(isFreezed);
     if (wallet) {
       const res = await contract.ownerOf(tokenId);
@@ -1115,6 +1129,13 @@ export default function ItemPage() {
           </>
         )}
       </div>
+      <RedirectModal
+        onSaveOptions={handleSaveRedirect}
+        wallet={wallet}
+        link={tokenInfo?.current.externalLink}
+        showModal={showRedirect}
+        handleCloseModal={() => setShowRedirect(false)}
+      />
       <ConnectionModal
         showModal={openConnectionModal}
         handleCloseModal={() => setOpenConnectionModal(false)}

@@ -10,17 +10,18 @@ export default function RedirectModal({
   showModal,
   handleCloseModal,
   wallet,
+  collectionUserOptions,
+  onSaveOptions,
   link,
 }) {
-  const { setShowRedirect } = useApi();
   const [{ userProfile }, dispatch] = useStateContext();
   const [notShow, setNowShow] = useState(false);
 
   const redirectToModal = async () => {
     if (notShow) {
       //Guardar en el perfil lo de no mostrar
-      await setShowRedirect(wallet);
-      dispatch({ type: actionTypes.UPDATED_NOT_SHOW });
+      console.log("LEGGO");
+      await onSaveOptions();
     }
     window.open(link);
     handleCloseModal();
