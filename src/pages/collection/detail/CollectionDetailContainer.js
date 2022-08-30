@@ -420,7 +420,7 @@ export const CollectionDetailContainer = () => {
 
             
             <div className="flex items-end md:pl-10 ">
-              <div className="flex w-[200px]">
+              <div className="flex justify-center items-center rounded-full m-4 -mt-20 w-[200px]">
                 <img
                   src={collectionInfo?.logoImage}
                   alt={`col-${collection._id}`}
