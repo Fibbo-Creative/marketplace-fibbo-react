@@ -453,7 +453,7 @@ export const CollectionDetailContainer = () => {
             alt={`banner-${collectionInfo?._id}`}
           ></img>
         ) : (
-          <div className="h-full w-full bg-gray-400 items-center"></div>
+          <div className="h-full w-full dark:bg-dark-4 bg-gray-300 h-[200px] md:h-[300px] items-center"></div>
         )}
         <div className="flex flex-col md:flex-row w-full items-center">
           <div className="flex items-end md:pl-10 ">
@@ -469,16 +469,20 @@ export const CollectionDetailContainer = () => {
             <div className="flex text-2xl flex-col md:flex-row items-center gap-4">
               {_width < 900 && (
                 <div className="flex border border-2 h-fit rounded-xl dark:text-white">
-                  <ItemPageOption
-                    icon="carbon:add-alt"
-                    tooltip="add-item"
-                    tooltipText="Crear NFT"
-                  />
-                  <ItemPageOption
-                    icon="bxs:edit-alt"
-                    tooltip="edit-item"
-                    tooltipText="Editar coleccion"
-                  />
+                  {isOwner && (
+                    <ItemPageOption
+                      icon="carbon:add-alt"
+                      tooltip="add-item"
+                      tooltipText="Crear NFT"
+                    />
+                  )}
+                  {isOwner && (
+                    <ItemPageOption
+                      icon="bxs:edit-alt"
+                      tooltip="edit-item"
+                      tooltipText="Editar coleccion"
+                    />
+                  )}
                   <ItemPageOption
                     disabled
                     icon="bi:share-fill"
@@ -499,18 +503,22 @@ export const CollectionDetailContainer = () => {
           </div>
           {_width > 900 && (
             <div className="flex border border-2 h-fit mr-10 rounded-xl dark:text-white">
-              <ItemPageOption
-                icon="carbon:add-alt"
-                tooltip="add-item"
-                onClick={redirectToCreateItem}
-                tooltipText="Crear NFT"
-              />
-              <ItemPageOption
-                icon="bxs:edit-alt"
-                tooltip="edit-item"
-                onClick={redirectToEditCollection}
-                tooltipText="Editar coleccion"
-              />
+              {isOwner && (
+                <ItemPageOption
+                  icon="carbon:add-alt"
+                  tooltip="add-item"
+                  onClick={redirectToCreateItem}
+                  tooltipText="Crear NFT"
+                />
+              )}
+              {isOwner && (
+                <ItemPageOption
+                  icon="bxs:edit-alt"
+                  tooltip="edit-item"
+                  onClick={redirectToEditCollection}
+                  tooltipText="Editar coleccion"
+                />
+              )}
               <ItemPageOption
                 disabled
                 icon="bi:share-fill"

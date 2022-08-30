@@ -30,6 +30,7 @@ export default function FreezeMetadataModal({
   };
   const handleFreezeMetadata = async () => {
     await setFreezedMetadata(collectionInfo.contractAddress, itemData, tokenId);
+    return "OK";
   };
 
   return (

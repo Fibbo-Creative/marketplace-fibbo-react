@@ -13,6 +13,7 @@ export default function AcceptOfferModal({
 
   const handleAcceptOffer = async () => {
     await onAcceptOffer(offer.creator.wallet);
+    return "OK";
   };
   return (
     <ActionModal

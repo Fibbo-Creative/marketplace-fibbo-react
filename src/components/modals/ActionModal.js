@@ -22,13 +22,19 @@ export const ActionModal = ({
 
   const handleSumbit = async () => {
     setLoadingAction(true);
-    try {
-      await onSubmit();
-      setCompleted(true);
-      setLoadingAction(false);
-    } catch (e) {
-      console.log(e);
-    }
+
+    await onSubmit()
+      .then((res) => {
+        if (res !== "OK") {
+          setCompleted(false);
+        } else {
+          setCompleted(true);
+        }
+      })
+      .catch((e) => {
+        setCompleted(false);
+      });
+    setLoadingAction(false);
   };
 
   const handleCompleteAction = () => {

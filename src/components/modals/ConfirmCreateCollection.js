@@ -62,6 +62,7 @@ export const ConfirmCreateCollection = ({
           );
         }
       });
+      return "OK";
     } catch (e) {
       console.log(e);
     }

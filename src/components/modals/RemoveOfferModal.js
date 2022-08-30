@@ -13,6 +13,7 @@ export default function RemoveOfferModal({
 
   const handleRemoveOffer = async () => {
     await onCancelOffer();
+    return "OK";
   };
   return (
     <ActionModal

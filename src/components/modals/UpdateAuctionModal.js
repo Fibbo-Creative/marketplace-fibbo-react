@@ -25,14 +25,11 @@ export default function UpdateAuctionModal({
   const auctionStarted = new Date().getTime() / 1000 >= auctionInfo?.startTime;
 
   const handleUpdateAuction = async () => {
-    try {
-      var _startTime = new Date(`${startDate}T${startHour}`);
-      var _endTime = new Date(`${endDate}T${endHour}`);
+    var _startTime = new Date(`${startDate}T${startHour}`);
+    var _endTime = new Date(`${endDate}T${endHour}`);
 
-      await onUpdateAuction(_startTime, _endTime, newReservePrice);
-    } catch (e) {
-      console.log(e);
-    }
+    await onUpdateAuction(_startTime, _endTime, newReservePrice);
+    return "OK";
   };
 
   useEffect(() => {

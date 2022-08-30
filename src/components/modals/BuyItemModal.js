@@ -20,11 +20,8 @@ export default function BuyItemModal({
   const { getWFTMBalance } = useWFTMContract();
 
   const handleBuyItem = async () => {
-    try {
-      await onBuyItem();
-    } catch (e) {
-      console.log(e);
-    }
+    await onBuyItem();
+    return "OK";
   };
 
   useEffect(() => {

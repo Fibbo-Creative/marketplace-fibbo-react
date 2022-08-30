@@ -42,6 +42,7 @@ import useResponsive from "../../hooks/useResponsive";
 import { useStateContext } from "../../context/StateProvider";
 import { actionTypes } from "../../context/stateReducer";
 import RedirectModal from "../../components/modals/RedirectModal";
+import ModifyOfferModal from "../../components/modals/ModifyOfferModal";
 
 const formatPriceInUsd = (price) => {
   let priceStr = price.toString().split(".");
@@ -92,6 +93,7 @@ export default function ItemPage() {
     cancelOffer,
     buyItem,
     acceptOffer,
+    modifyOrder,
   } = useMarketplace();
   const { getERC721Contract } = useTokens();
 
@@ -117,6 +119,8 @@ export default function ItemPage() {
   const [openUnlistItemModal, setOpenUnlistItemModal] = useState(false);
   const [openAdditionalModal, setOpenAdditionalModal] = useState(false);
   const [openCancelOfferModal, setOpenCancelOfferModal] = useState(false);
+  const [openModifyOfferModal, setOpenModifyOfferModal] = useState(false);
+
   const [openCreateAuction, setOpenCreateAuction] = useState(false);
   const [openBidModal, setOpenBidModal] = useState(false);
   const [openCancelAuctionModal, setOpenCancelAuctionModal] = useState(false);
@@ -205,6 +209,7 @@ export default function ItemPage() {
     tokenInfo.current = nftData;
     tokenHistoryInfo.current = history;
 
+    console.log(_offers);
     offers.current = _offers.sort((a, b) => {
       if (a.price > b.price) {
         return -1;
@@ -432,6 +437,37 @@ export default function ItemPage() {
     setMyOffer(null);
   };
 
+  const handleModifyOffer = async (offerPrice, deadline, payToken) => {
+    await modifyOrder(
+      wallet,
+      collectionInfo.contractAddress,
+      tokenId,
+      offerPrice,
+      deadline,
+      payToken
+    );
+
+    let newOffer = await getOffer(
+      collectionInfo.contractAddress,
+      tokenId,
+      wallet
+    );
+
+    newOffer = {
+      ...newOffer,
+      creator: userProfile,
+    };
+
+    offers.current = offers.current.filter(
+      (offer) => offer.creator.wallet !== wallet
+    );
+
+    offers.current.push(newOffer);
+
+    return "OK";
+    //Modify offer!
+  };
+
   const handleBuyItem = async () => {
     await buyItem(
       wallet,
@@ -576,13 +612,12 @@ export default function ItemPage() {
       await getItemDetails();
       getAuctions().then(() => {
         getBid();
+        hasAnOffer();
+        setLoading(false);
       });
       const CoinGeckoClient = new CoinGecko();
       let data = await CoinGeckoClient.simple.price({ ids: ["fantom"] });
       setCoinPrice(data.data.fantom.usd);
-
-      await hasAnOffer();
-      setLoading(false);
     };
     fetchData();
   }, [collection, tokenId, wallet, refreshMetadata]);
@@ -959,15 +994,26 @@ export default function ItemPage() {
                             text="Realizar Oferta"
                           />
                         ) : (
-                          <ActionButton
-                            size="small"
-                            buttonAction={() =>
-                              !wallet
-                                ? setOpenConnectionModal(true)
-                                : setOpenCancelOfferModal(true)
-                            }
-                            text="Cancelar Oferta"
-                          />
+                          <>
+                            <ActionButton
+                              size="small"
+                              buttonAction={() =>
+                                !wallet
+                                  ? setOpenConnectionModal(true)
+                                  : setOpenModifyOfferModal(true)
+                              }
+                              text="Modificar oferta"
+                            />
+                            <ActionButton
+                              size="small"
+                              buttonAction={() =>
+                                !wallet
+                                  ? setOpenConnectionModal(true)
+                                  : setOpenCancelOfferModal(true)
+                              }
+                              text="Cancelar Oferta"
+                            />
+                          </>
                         )}
                       </>
                     )}
@@ -1181,13 +1227,22 @@ export default function ItemPage() {
         />
 
         {myOffer && (
-          <RemoveOfferModal
-            showModal={openCancelOfferModal}
-            handleCloseModal={() => setOpenCancelOfferModal(false)}
-            offer={myOffer}
-            wallet={wallet}
-            onCancelOffer={handleCancelOffer}
-          />
+          <>
+            <RemoveOfferModal
+              showModal={openCancelOfferModal}
+              handleCloseModal={() => setOpenCancelOfferModal(false)}
+              offer={myOffer}
+              wallet={wallet}
+              onCancelOffer={handleCancelOffer}
+            />
+            <ModifyOfferModal
+              showModal={openModifyOfferModal}
+              handleCloseModal={() => setOpenModifyOfferModal(false)}
+              offer={myOffer}
+              wallet={wallet}
+              onModifyOffer={handleModifyOffer}
+            />
+          </>
         )}
       </>
 

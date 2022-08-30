@@ -19,11 +19,8 @@ export default function BuyNowModal({
   const { getWFTMBalance } = useWFTMContract();
 
   const handleBuyNow = async () => {
-    try {
-      await onBuyNow();
-    } catch (e) {
-      console.log(e);
-    }
+    await onBuyNow();
+    return "OK";
   };
 
   useEffect(() => {

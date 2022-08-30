@@ -90,7 +90,7 @@ export default function ActionButton({
           <h1
             className={`${
               !disabled &&
-              "hover:bg-clip-text hover:text-transparent hover:bg-gradient-to-r hover:from-[#7E29F1] hover:to-[#8BC3FD]"
+              "hover:bg-clip-text hover:text-transparent hover:bg-gradient-to-r  hover:from-[#7E29F1] hover:to-[#8BC3FD]"
             }`}
           >
             {text}

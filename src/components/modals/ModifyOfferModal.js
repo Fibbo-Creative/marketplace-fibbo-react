@@ -6,11 +6,12 @@ import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
 import { DateTimeInput } from "../inputs/DateTimeInput";
 import { ActionModal } from "./ActionModal";
 import { useStateContext } from "../../context/StateProvider";
-export default function MakeOfferModal({
+export default function ModifyOfferModal({
   showModal,
   handleCloseModal,
   wallet,
-  onMakeOffer,
+  offer,
+  onModifyOffer,
 }) {
   const [offerPrice, setOfferPrice] = useState(0);
   const [wftmBalance, setWftmBalance] = useState(0);
@@ -25,17 +26,21 @@ export default function MakeOfferModal({
     var endTime = new Date(`${expireDate}T${expireHour}`);
     const deadline = Math.floor(endTime.getTime() / 1000);
 
-    await onMakeOffer(offerPrice, deadline, payTokenSelected);
+    await onModifyOffer(offerPrice, deadline, payTokenSelected);
+
     return "OK";
   };
 
   useEffect(() => {
     const fetchData = async () => {
-      const today = new Date();
-      const date = today.setDate(today.getDate() + 1);
-      let valueDate = new Date(date);
-      setExpireDate(valueDate.toISOString().split("T")[0]);
-      setExpireHour("23:59");
+      const date = new Date(offer.deadline * 1000);
+      let day = date.toLocaleDateString("sv-SE");
+      let hours = date.toTimeString().split(" ")[0];
+
+      setExpireDate(day);
+      setExpireHour(hours);
+
+      setOfferPrice(offer.price);
 
       if (wallet) {
         const walletBalanceWFTM = await getWFTMBalance(wallet);
@@ -43,7 +48,7 @@ export default function MakeOfferModal({
       }
     };
     fetchData();
-  }, [wallet]);
+  }, [wallet, offer]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,13 +61,13 @@ export default function MakeOfferModal({
   }, [updatedWFTM]);
   return (
     <ActionModal
-      title={"Realizar oferta"}
+      title={"Modificar oferta"}
       size="large"
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       onSubmit={() => handleMakeOffer()}
-      submitLabel={"Realizar Oferta"}
-      completedText={`Oferta por ${offerPrice} wFTM creada correctamente`}
+      submitLabel={"Actualizar"}
+      completedText={`Oferta actualizada correctamente`}
       completedLabel={`Ver tu oferta`}
       completedAction={handleCloseModal}
       submitDisabled={

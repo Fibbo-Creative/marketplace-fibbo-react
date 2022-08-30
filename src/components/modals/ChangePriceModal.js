@@ -16,6 +16,7 @@ export default function ChangePriceModal({
     if (priceFor > 0) {
       //en el contrato del marketplace -> createMarketItem
       await onUpdatePrice(priceFor, payTokenSelected);
+      return "OK";
     }
   };
   return (

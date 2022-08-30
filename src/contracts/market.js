@@ -171,6 +171,38 @@ export const useMarketplace = () => {
     await makeOfferTx.wait();
   };
 
+  const modifyOrder = async (
+    buyer,
+    collection,
+    tokenId,
+    offerPrice,
+    deadline,
+    payToken
+  ) => {
+    const marketContract = await getMarketContract();
+    const tokenAddress = payToken.contractAddress;
+    const erc20 = await getERC20Contract(tokenAddress);
+
+    const allowance = await erc20.allowance(buyer, marketContract.address);
+    if (allowance.lt(offerPrice)) {
+      const tx = await erc20.approve(
+        marketContract.address,
+        parseEther(offerPrice.toString())
+      );
+      await tx.wait();
+    }
+
+    let makeOfferTx = await marketContract.modifyOffer(
+      collection,
+      ethers.BigNumber.from(tokenId),
+      tokenAddress,
+      parseEther(offerPrice.toString()),
+      ethers.BigNumber.from(deadline)
+    );
+
+    await makeOfferTx.wait();
+  };
+
   const acceptOffer = async (collection, tokenId, creator) => {
     const marketContract = await getMarketContract();
     const ERC721contract = await getERC721Contract(collection);
@@ -229,5 +261,6 @@ export const useMarketplace = () => {
     cancelOffer,
     acceptOffer,
     getOffer,
+    modifyOrder,
   };
 };
