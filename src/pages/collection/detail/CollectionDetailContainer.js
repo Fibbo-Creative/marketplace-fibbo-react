@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useApi } from "../../../api";
 import { PageWithLoading } from "../../../components/basic/PageWithLoading";
@@ -12,6 +12,7 @@ import ActionButton from "../../../components/ActionButton";
 import { isMobile } from "web3modal";
 import RedirectModal from "../../../components/modals/RedirectModal";
 import { useStateContext } from "../../../context/StateProvider";
+import { FiltersSidebarModal } from "../../../components/modals/FiltersSidebarModal";
 import FiltersCollectionSidebar from "../../../components/FiltersCollectionSidebar";
 import {
   orderByHighestP,
@@ -23,10 +24,14 @@ import {
   orderByRecentlyListed,
   sortMarketItems,
 } from "../../../utils/sort";
+import useResponsive from "../../../hooks/useResponsive";
+import ReactTooltip from "react-tooltip";
+import { ThemeContext } from "../../../context/ThemeContext";
 
 export const CollectionDetailContainer = () => {
   const [loading, setLoading] = useState(true);
   const { collection } = useParams();
+  const { _width } = useResponsive();
   const [{ userProfile }] = useStateContext();
   const {
     getCollectionDetail,
@@ -43,6 +48,8 @@ export const CollectionDetailContainer = () => {
   const [filtersSelected, setFiltersSelected] = useState([]);
   const [sortSelected, setSortSelected] = useState(0);
   const [userSmallview, setSmallViewUser] = useState(false);
+
+  const [openedSidebar, setOpenedSidebar] = useState(false);
 
   const [queryText, setQueryText] = useState("");
   const [allErc20Tokens, setAllErc20Tokens] = useState([]);
@@ -74,11 +81,15 @@ export const CollectionDetailContainer = () => {
 
   const openRedirectPopUp = (link) => {
     //Checker si tiene lo de no mostrar
-    if (collectionUserOptions.current.notShowRedirect) {
+    if (isOwner) {
       window.open(link);
     } else {
-      setDetailLink(link);
-      setShowRedirect(true);
+      if (collectionUserOptions.current.notShowRedirect) {
+        window.open(link);
+      } else {
+        setDetailLink(link);
+        setShowRedirect(true);
+      }
     }
   };
 
@@ -446,36 +457,75 @@ export const CollectionDetailContainer = () => {
         )}
         <div className="flex flex-col md:flex-row w-full items-center">
           <div className="flex items-end md:pl-10 ">
-            <div className="flex w-[200px]">
+            <div className="flex w-[200px] mt-[-80px]">
               <img
                 src={collectionInfo?.logoImage}
                 alt={`col-${collection._id}`}
                 className=""
               />
             </div>
-
-            <div className="w-auto pr-4 hidden lg:flex">
-              {isOwner && (
-                <div className="flex flex-row p-4 gap-8 justify-center">
-                  <ActionButton
-                    text="Crear Item"
-                    size="large"
-                    buttonAction={redirectToCreateItem}
+          </div>
+          <div className="flex md:items-end md:ml-[50px] mb-[20px] md:w-full mt-[20px] ">
+            <div className="flex text-2xl flex-col md:flex-row items-center gap-4">
+              {_width < 900 && (
+                <div className="flex border border-2 h-fit rounded-xl dark:text-white">
+                  <ItemPageOption
+                    icon="carbon:add-alt"
+                    tooltip="add-item"
+                    tooltipText="Crear NFT"
                   />
-                  <ActionButton
-                    text="Editar Colección"
-                    size="large"
-                    buttonAction={redirectToEditCollection}
+                  <ItemPageOption
+                    icon="bxs:edit-alt"
+                    tooltip="edit-item"
+                    tooltipText="Editar coleccion"
+                  />
+                  <ItemPageOption
+                    disabled
+                    icon="bi:share-fill"
+                    tooltip="share-item"
+                    tooltipText="Compartir"
+                  />
+                  <ItemPageOption
+                    disabled
+                    position="last"
+                    icon="akar-icons:more-vertical"
+                    tooltip="more-item"
+                    tooltipText="Mas opciones"
                   />
                 </div>
               )}
-            </div>
-          </div>
-          <div className="flex md:items-end md:ml-[50px] mb-[20px] md:w-full mt-[20px] ">
-            <div className="flex text-2xl">
               <b>{collectionInfo?.name}</b>
             </div>
           </div>
+          {_width > 900 && (
+            <div className="flex border border-2 h-fit mr-10 rounded-xl dark:text-white">
+              <ItemPageOption
+                icon="carbon:add-alt"
+                tooltip="add-item"
+                onClick={redirectToCreateItem}
+                tooltipText="Crear NFT"
+              />
+              <ItemPageOption
+                icon="bxs:edit-alt"
+                tooltip="edit-item"
+                onClick={redirectToEditCollection}
+                tooltipText="Editar coleccion"
+              />
+              <ItemPageOption
+                disabled
+                icon="bi:share-fill"
+                tooltip="share-item"
+                tooltipText="Compartir"
+              />
+              <ItemPageOption
+                disabled
+                position="last"
+                icon="akar-icons:more-vertical"
+                tooltip="more-item"
+                tooltipText="Mas opciones"
+              />
+            </div>
+          )}
         </div>
       </div>
       <div className="flex items-center justify-left gap-5 ml-[50px] mt-[20px] ">
@@ -502,9 +552,6 @@ export const CollectionDetailContainer = () => {
         </div>
       </div>
       <div className="flex flex-col mt-[30px] mr-[50px] ml-[50px]">
-        <div className="flex w-auto font-bold">
-          <a className="text-md ">DESCRIPCIÓN:</a>
-        </div>
         <div className="flex mt-[20px]">
           <p className="text-md justify-center sm:text-lg">
             {collectionInfo?.description}
@@ -535,65 +582,75 @@ export const CollectionDetailContainer = () => {
         </div>
 
         <div className="flex flex-row ">
-          <div className="flex mr-4 sm:m-[30px] mt-[40px] ">
-            <button
-              onClick={() => openRedirectPopUp(collectionInfo.websiteURL)}
-              disabled={!collectionInfo?.websiteURL}
-              className="hover:-translate-y-1"
-            >
-              <Icon width={25} icon="dashicons:admin-site-alt3"></Icon>
-            </button>
-          </div>
-          <div className="flex mr-4 sm:m-[30px] mt-[40px]">
-            <button
-              onClick={() => openRedirectPopUp(collectionInfo.discordURL)}
-              disabled={!collectionInfo?.discordURL}
-              className="hover:-translate-y-1"
-            >
-              <Icon width={25} icon="bi:discord"></Icon>
-            </button>
-          </div>
-          <div className="flex mr-4 sm:m-[30px] mt-[40px]">
-            <button
-              onClick={() => openRedirectPopUp(collectionInfo.telegramURL)}
-              disabled={!collectionInfo?.telegramURL}
-              className="hover:-translate-y-1"
-            >
-              <Icon width={25} icon="bxl:telegram"></Icon>
-            </button>
-          </div>
-          <div className="flex mr-4 sm:m-[30px] mt-[40px]">
-            <button
-              onClick={() => openRedirectPopUp(collectionInfo.instagramURL)}
-              disabled={!collectionInfo?.instagramURL}
-              className="hover:-translate-y-1"
-            >
-              <Icon className="" width={25} icon="cib:instagram"></Icon>
-            </button>
-          </div>
+          {collectionInfo?.websiteURL !== "" && (
+            <div className="flex mr-4 sm:m-[30px] mt-[40px] ">
+              <button
+                onClick={() => openRedirectPopUp(collectionInfo.websiteURL)}
+                disabled={!collectionInfo?.websiteURL}
+                className="hover:-translate-y-1"
+              >
+                <Icon width={25} icon="dashicons:admin-site-alt3"></Icon>
+              </button>
+            </div>
+          )}
+          {collectionInfo?.discordURL !== "" && (
+            <div className="flex mr-4 sm:m-[30px] mt-[40px]">
+              <button
+                onClick={() => openRedirectPopUp(collectionInfo.discordURL)}
+                disabled={!collectionInfo?.discordURL}
+                className="hover:-translate-y-1"
+              >
+                <Icon width={25} icon="bi:discord"></Icon>
+              </button>
+            </div>
+          )}
+          {collectionInfo?.telegramURL !== "" && (
+            <div className="flex mr-4 sm:m-[30px] mt-[40px]">
+              <button
+                onClick={() => openRedirectPopUp(collectionInfo.telegramURL)}
+                disabled={!collectionInfo?.telegramURL}
+                className="hover:-translate-y-1"
+              >
+                <Icon width={25} icon="bxl:telegram"></Icon>
+              </button>
+            </div>
+          )}
+          {collectionInfo?.instagramURL !== "" && (
+            <div className="flex mr-4 sm:m-[30px] mt-[40px]">
+              <button
+                onClick={() => openRedirectPopUp(collectionInfo.instagramURL)}
+                disabled={!collectionInfo?.instagramURL}
+                className="hover:-translate-y-1"
+              >
+                <Icon className="" width={25} icon="cib:instagram"></Icon>
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
       <div className="flex flex-row gap-10 w-full items-center justify-end mr-[100px]">
         <div className="flex w-full mt-10 border-t h-full">
-          <FiltersCollectionSidebar
-            openedSidebar={true}
-            items={filteredNfts}
-            filtersSelected={filtersSelected}
-            statusFilters={[
-              { name: "En Venta", filter: filterBySelling },
-              { name: "Ofertado", filter: filterByOffered },
-              { name: "En Subasta", filter: filterByAuctioned },
-              { name: "Pujado", filter: filterByBidded },
-            ]}
-            payTokenFilters={allErc20Tokens.map((item) => {
-              return {
-                ...item,
-                filter: selectPayTokenFilter,
-              };
-            })}
-          />
-          <div className="h-[800px] flex w-full flex-col gap-4 overflow-y-scroll overflow-x-hidden ">
+          {_width > 900 && (
+            <FiltersCollectionSidebar
+              openedSidebar={true}
+              items={filteredNfts}
+              filtersSelected={filtersSelected}
+              statusFilters={[
+                { name: "En Venta", filter: filterBySelling },
+                { name: "Ofertado", filter: filterByOffered },
+                { name: "En Subasta", filter: filterByAuctioned },
+                { name: "Pujado", filter: filterByBidded },
+              ]}
+              payTokenFilters={allErc20Tokens.map((item) => {
+                return {
+                  ...item,
+                  filter: selectPayTokenFilter,
+                };
+              })}
+            />
+          )}
+          <div className="h-full md:h-[800px] overflow-y-hidden flex w-full flex-col gap-4 md:overflow-y-scroll overflow-x-hidden ">
             <div className="flex flex-col md:flex-row gap-4 sm:gap-10 w-full mt-[30px] sm:mt-[50px] items-center justify-center">
               <div className="w-80 flex border-2 rounded">
                 <div className="flex items-center justify-center px-4 border-l">
@@ -607,7 +664,22 @@ export const CollectionDetailContainer = () => {
                   placeholder="Buscar Items..."
                 />
               </div>
-              <div className="flex flex-row items-center">
+              <div className="flex flex-row items-center gap-2">
+                {_width < 900 && (
+                  <>
+                    <button
+                      onClick={() => setOpenedSidebar(true)}
+                      className="hover:-translate-y-1"
+                    >
+                      <Icon
+                        icon="akar-icons:filter"
+                        width="40"
+                        height="40"
+                        color="grey"
+                      />
+                    </button>
+                  </>
+                )}
                 <select
                   onChange={(e) => sortItems(e.target.value)}
                   className="cursor-pointer h-10 w-40 md:w-60 flex border border-gray-300 bg-white dark:bg-dark-1 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -624,7 +696,7 @@ export const CollectionDetailContainer = () => {
 
                 <button
                   onClick={changeSmallDisplay}
-                  className="hover:-translate-y-1 ml-[60px]"
+                  className="hover:-translate-y-1"
                 >
                   <Icon
                     icon="akar-icons:dot-grid-fill"
@@ -635,7 +707,7 @@ export const CollectionDetailContainer = () => {
                 </button>
                 <button
                   onClick={changeBigDisplay}
-                  className="hover:-translate-y-1 ml-[30px]"
+                  className="hover:-translate-y-1 "
                 >
                   <Icon
                     icon="ci:grid-big-round"
@@ -702,6 +774,25 @@ export const CollectionDetailContainer = () => {
               )}
             </div>
           </div>
+          {_width < 900 && (
+            <FiltersSidebarModal
+              openSidebar={openedSidebar}
+              setOpenSidebar={setOpenedSidebar}
+              statusFilters={[
+                { name: "En Venta", filter: filterBySelling },
+                { name: "Ofertado", filter: filterByOffered },
+                { name: "En Subasta", filter: filterByAuctioned },
+                { name: "Pujado", filter: filterByBidded },
+              ]}
+              filtersSelected={filtersSelected}
+              payTokenFilters={allErc20Tokens.map((item) => {
+                return {
+                  ...item,
+                  filter: selectPayTokenFilter,
+                };
+              })}
+            />
+          )}
         </div>
         <RedirectModal
           onSaveOptions={handleSaveOptions}
@@ -713,5 +804,42 @@ export const CollectionDetailContainer = () => {
         />
       </div>
     </PageWithLoading>
+  );
+};
+
+const ItemPageOption = ({
+  position,
+  icon,
+  tooltip,
+  tooltipText,
+  tooltipPlacement,
+  onClick,
+  disabled,
+}) => {
+  const { theme } = useContext(ThemeContext);
+  return (
+    <div
+      className={`${
+        disabled ? "cursor-not-allowed" : "cursor-pointer"
+      } p-2 hover b ${position === "last" ? "" : "border-r"} ${
+        disabled
+          ? "dark:text-gray-600 text-gray-200"
+          : "dark:hover:text-gray-400 hover:text-gray-400"
+      }`}
+      data-for={tooltip}
+      onClick={() => !disabled && onClick()}
+      data-tip={tooltipText}
+    >
+      <Icon icon={icon} width={28} />
+      {tooltip && !disabled && (
+        <ReactTooltip
+          id={tooltip}
+          place={tooltipPlacement ? tooltipPlacement : "top"}
+          type={theme === "dark" ? "light" : "dark"}
+          effect="solid"
+          multiline={true}
+        />
+      )}
+    </div>
   );
 };
