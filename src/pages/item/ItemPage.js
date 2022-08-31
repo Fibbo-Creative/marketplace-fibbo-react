@@ -1313,7 +1313,7 @@ export default function ItemPage() {
           <AdditionalContentModal
             showModal={openAdditionalModal}
             handleCloseModal={() => setOpenAdditionalModal(false)}
-            additionalContent={tokenInfo.additionalContent}
+            additionalContent={tokenInfo.current.additionalContent}
           />
         </>
       )}
