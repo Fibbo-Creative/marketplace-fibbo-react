@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react";
 import React from "react";
 import { isMobile, isChrome, isSafari } from "react-device-detect";
 import { BasicModal } from "./BasicModal";
+import { useStateContext } from "../../context/StateProvider";
 
 export default function ConnectionModal({
   children,
@@ -13,6 +14,7 @@ export default function ConnectionModal({
     await connectToWallet();
     handleCloseModal();
   };
+  const [{literals}] = useStateContext();
   const redirectToMetamaskApp = async () => {
     window.location = `https://metamask.app.link/dapp/${window.location.href}`;
   };
@@ -31,7 +33,7 @@ export default function ConnectionModal({
   };
   return (
     <BasicModal
-      title={"Conectarse a una billetera"}
+      title={literals.modals.connectSentence}
       showModal={showModal}
       handleCloseModal={handleCloseModal}
     >
@@ -40,7 +42,7 @@ export default function ConnectionModal({
           onClick={() => metamaskConnect()}
           className="flex w-full gap-5 justify-between bg-gray-300 hover:bg-gray-400 dark:bg-gray-700 hover:dark:bg-gray-600 items-center hover:bg-gray-300 p-5 border-2 shadow-lg rounded-xl"
         >
-          <div>Connectar con Metamask</div>
+          <div>{literals.modals.connectMetamask}</div>
           <div>
             <Icon className="text-3xl" icon="logos:metamask-icon" />
           </div>

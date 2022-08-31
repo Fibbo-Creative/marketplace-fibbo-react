@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import FilterBottomDropDown from "./FilterBottomDropDown";
 import FilterButtons from "./FilterButtons";
 import FilterRange from "./FilterRange";
+import { useStateContext } from "../context/StateProvider";
 
 export default function FiltersSidebar({
   allMarketItems,
@@ -19,6 +20,7 @@ export default function FiltersSidebar({
   const handleShowSidebar = (show) => {
     setOpenedSidebar(show);
   };
+  const [{literals}] = useStateContext();
 
   return (
     <div className="hidden md:flex ">
@@ -32,7 +34,7 @@ export default function FiltersSidebar({
             className="flex flex-row px-4 py-5  justify-between items-center cursor-pointer"
             onClick={() => handleShowSidebar(!openedSidebar)}
           >
-            <div className="text-2xl font-semibold ">Filtros</div>
+            <div className="text-2xl font-semibold ">{literals.filters.filters}</div>
             <button>
               <Icon
                 icon="eva:menu-arrow-outline"
@@ -43,7 +45,7 @@ export default function FiltersSidebar({
             </button>
           </div>
           <div className="flex flex-col font-medium w-full">
-            <FilterBottomDropDown name="Estado">
+            <FilterBottomDropDown name={literals.filters.state}>
               <FilterButtons
                 options={statusFilters}
                 filtersSelected={filtersSelected}

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
 import { ActionModal } from "./ActionModal";
+import { useStateContext } from "../../context/StateProvider";
 
 export default function ChangePriceModal({
   children,
@@ -9,6 +10,7 @@ export default function ChangePriceModal({
   onUpdatePrice,
   wallet,
 }) {
+  const [{literals}] = useStateContext();
   const [priceFor, setPriceFor] = useState(0);
   const [payTokenSelected, setPayTokenSelected] = useState(null);
 
@@ -33,7 +35,7 @@ export default function ChangePriceModal({
     >
       <div className="my-10 mx-8 flex flex-col gap-10 pb-10">
         <Erc20AmountInput
-          label={"Precio"}
+          label={literals.detailNFT.price}
           value={priceFor}
           onChange={setPriceFor}
           selectedToken={payTokenSelected}

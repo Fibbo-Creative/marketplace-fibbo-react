@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import AcceptOfferModal from "./modals/AcceptOfferModal";
 import useAccount from "../hooks/useAccount";
 import RemoveOfferModal from "./modals/RemoveOfferModal";
+import { useStateContext } from "../context/StateProvider";
 
 export const ItemDirectOffers = ({
   offers,
@@ -21,7 +22,7 @@ export const ItemDirectOffers = ({
   const [detailOffer, setDetailOffer] = useState({});
   const { _width } = useRespnsive();
   const navigate = useNavigate();
-
+  const [{literals}] = useStateContext();
   const handleShowAcceptOffer = (offer) => {
     setDetailOffer(offer);
     setShowAcceptOffer(true);
@@ -54,7 +55,7 @@ export const ItemDirectOffers = ({
       opened={true}
       className={`mb-5 dark:bg-dark-2`}
       icon="ri:price-tag-2-fill"
-      title="Ofertas"
+      title={literals.itemPage.offers}
     >
       <div
         className={`${
@@ -70,7 +71,7 @@ export const ItemDirectOffers = ({
                     Oferta de
                   </th>
                   <th cope="col" className="px-6 py-3">
-                    Precio
+                    detailNFT
                   </th>
                   <th cope="col" className="px-6 py-3">
                     Expira
@@ -192,7 +193,7 @@ export const ItemDirectOffers = ({
                   </div>
                   <div className="flex justify-between">
                     <div>
-                      <b>Precio</b>
+                      <b>{literals.detailNFT.price}</b>
                     </div>
                     <div>
                       <div className="flex items-center gap-2">

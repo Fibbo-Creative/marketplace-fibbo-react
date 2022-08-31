@@ -1,6 +1,9 @@
 import React from "react";
+import { useStateContext } from "../context/StateProvider";
 
 export default function NftCard({ item, onClick, isSmall }) {
+  const [{literals}] = useStateContext();
+  
   const formatDate = () => {
     const now = new Date();
     const auctionInfo = item.auction;
@@ -65,7 +68,7 @@ export default function NftCard({ item, onClick, isSmall }) {
         {item.price && (
           <div className="pt-2 pb-1 flex flex-col gap-1 items-end">
             <p className="text-xs text-gray-400">
-              <i>Precio</i>
+              <i>{literals.detailNFT.price}</i>
             </p>
             <div className="flex gap-2 flex gap-2 items-center">
               <img src={item?.payToken?.image} width={22} />
@@ -76,7 +79,7 @@ export default function NftCard({ item, onClick, isSmall }) {
         {item.offer && !item.price && (
           <div className="pt-2 pb-1 flex flex-col gap-1 items-end">
             <p className="text-xs text-gray-400">
-              <i>Precio</i>
+              <i>{literals.detailNFT.price}</i>
             </p>
             <div className="flex gap-2 flex gap-2 items-center">
               <div
@@ -84,7 +87,7 @@ export default function NftCard({ item, onClick, isSmall }) {
                   isSmall && "text-xs"
                 } text-gray-500 dark:text-gray-300`}
               >
-                {isSmall ? "Oferta" : "Ofertado por"}
+                {isSmall ? "Oferta" : literals.detailNFT.offer}
               </div>
               <img src={item?.offer?.payToken.image} width={22} />
               <div>{item.offer.price} </div>

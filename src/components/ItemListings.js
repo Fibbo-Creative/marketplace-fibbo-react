@@ -16,10 +16,10 @@ export const ItemListings = ({ listings }) => {
                 Listado por
               </th>
               <th cope="col" className="px-6 py-3">
-                Precio
+                {literals.detailNFT.price}
               </th>
               <th cope="col" className="px-6 py-3">
-                Estado
+                {literals.filters.state}
               </th>
               <th cope="col" className="px-6 py-3"></th>
             </tr>

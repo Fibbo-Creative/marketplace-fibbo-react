@@ -1,11 +1,13 @@
 import React from "react";
 import DropDown from "../../../components/DropDown";
+import { useStateContext } from "../../../context/StateProvider";
 import { truncateWallet } from "../../../utils/wallet";
 import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
+
 export default function DetailInfo({ properties, chainInfo, loading }) {
   const navigate = useNavigate();
-
+  const [{literals}]= useStateContext();
   const redirectToCollecion = () => {
     let collectionURL = "";
     if (properties.collection.customURL) {
@@ -23,7 +25,7 @@ export default function DetailInfo({ properties, chainInfo, loading }) {
 
   return (
     <div className="col-span-1 flex flex-col rounded-md border-2 dark:bg-dark-2 ">
-      <DropDown icon="bxs:info-square" title={"Chain Data"}>
+      <DropDown icon="bxs:info-square" title={literals.itemPage.chainData}>
         {loading ? (
           <div className="w-full h-full animate-pulse bg-gray-300"></div>
         ) : (
@@ -72,7 +74,7 @@ export default function DetailInfo({ properties, chainInfo, loading }) {
         )}
       </DropDown>
 
-      <DropDown icon="dashicons:tag" title={"Propiedades"}>
+      <DropDown icon="dashicons:tag" title={literals.itemPage.properties}>
         {loading ? (
           <div className="w-full h-full animate-pulse bg-gray-300"></div>
         ) : (

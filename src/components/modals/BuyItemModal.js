@@ -18,7 +18,7 @@ export default function BuyItemModal({
   const [wftmBalance, setWftmBalance] = useState(0);
   const [{ updatedWFTM }] = useStateContext();
   const { getWFTMBalance } = useWFTMContract();
-
+  const [{literals}] = useStateContext();
   const handleBuyItem = async () => {
     await onBuyItem();
     return "OK";
@@ -84,7 +84,7 @@ export default function BuyItemModal({
                   </div>
 
                   <div className="flex gap-2">
-                    <b>Precio:</b>
+                    <b>{literals.detailNFT.price2}</b>
                     <img src={listing?.payToken.image} width={26} />
                     <p>{listing?.price}</p>
                     <p>{listing?.payToken.name}</p>

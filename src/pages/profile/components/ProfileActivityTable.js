@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import React, { useEffect, useRef, useState } from "react";
-
+import { useStateContext } from "../../../context/StateProvider";
 import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
 import { ADDRESS_ZERO } from "../../../constants/networks";
@@ -37,6 +37,7 @@ export default function ProfileActivityTable({ historyItems }) {
   const [filtersSelected, setFiltersSelected] = useState([]);
   const [openFilters, setOpenFilters] = useState(false);
   const filtersRef = useRef();
+  const [{literals}] = useStateContext();
 
   const filterByType = (type) => {
     let isSelected = filtersSelected.find((item) => item === type);
@@ -148,7 +149,7 @@ export default function ProfileActivityTable({ historyItems }) {
                   Item
                 </th>
                 <th cope="col" className="px-6 py-3">
-                  Precio
+                  {literals.detailNFT.price}
                 </th>
                 <th cope="col" className="px-6 py-3">
                   Iniciador
@@ -315,7 +316,7 @@ export default function ProfileActivityTable({ historyItems }) {
                   </div>
                   <div className="flex justify-between">
                     <div>
-                      <b>Precio</b>
+                      <b>{literals.detailNFT.price}</b>
                     </div>
                     <div>
                       {" "}

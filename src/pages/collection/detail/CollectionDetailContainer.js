@@ -26,6 +26,7 @@ import ReactTooltip from "react-tooltip";
 import { ThemeContext } from "../../../context/ThemeContext";
 
 export const CollectionDetailContainer = () => {
+  const [{ literals }] = useStateContext();
   const [loading, setLoading] = useState(true);
   const { collection } = useParams();
   const { _width } = useResponsive();
@@ -667,7 +668,7 @@ export const CollectionDetailContainer = () => {
                   type="text"
                   value={queryText}
                   className={`px-4 py-2 outline-none dark:bg-dark-1`}
-                  placeholder="Buscar Items..."
+                  placeholder={literals.navbar.searchItems}
                 />
               </div>
               <div className="flex flex-row items-center gap-2">

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { engLiterals } from "../context/lang";
 import WrappedFTMModal from "./modals/WrappedFTMModal";
 import { UserMenu } from "./UserMenu";
+import { useStateContext } from "../context/StateProvider";
 
 export default function WalletButton({
   userProfile,
@@ -8,6 +10,7 @@ export default function WalletButton({
   disconnectWallet,
   openModal,
 }) {
+  const [{literals}] = useStateContext();
   const [openMenu, setOpenMenu] = useState(false);
   const [openStation, setOpenStation] = useState(false);
   const showMenu = (e) => {
@@ -39,7 +42,7 @@ export default function WalletButton({
             </div>
           </div>
         ) : (
-          <div className="py-3 px-2">Connect Wallet</div>
+          <div className="py-3 px-2">{literals.navbar.connectWallet}</div>
         )}
       </button>
       {openMenu && (

@@ -31,6 +31,7 @@ export default function ProfileContainer() {
     getWalletOffers,
   } = useApi();
   const navigate = useNavigate();
+  const [{literals}] = useStateContext();
   const { address } = useParams();
   const [userItems, setUserItems] = useState([]);
   const [userSmallview, setSmallViewUser] = useState(true);
@@ -356,7 +357,7 @@ export default function ProfileContainer() {
                     }
                   />
                   <ProfileTab
-                    title={"Actividad"}
+                    title={literals.itemPage.properties}
                     count={activity.length}
                     type={{ type: "Activity", viewAs: "table" }}
                     selectedType={itemsType}
@@ -365,7 +366,7 @@ export default function ProfileContainer() {
                     }
                   />
                   <ProfileTab
-                    title={"Ofertas"}
+                    title={literals.itemPage.offers}
                     count={offers.length}
                     type={{ type: "Offers", viewAs: "table" }}
                     selectedType={itemsType}
