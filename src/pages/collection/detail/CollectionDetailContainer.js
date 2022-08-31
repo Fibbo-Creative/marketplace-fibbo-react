@@ -45,6 +45,7 @@ export const CollectionDetailContainer = () => {
   const [sortSelected, setSortSelected] = useState(0);
   const [userSmallview, setSmallViewUser] = useState(false);
 
+  const [expandedDesc, setExpandedDesc] = useState(false);
   const [openedSidebar, setOpenedSidebar] = useState(false);
 
   const [queryText, setQueryText] = useState("");
@@ -533,7 +534,7 @@ export const CollectionDetailContainer = () => {
           )}
         </div>
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col w-full">
         <div className="flex items-center justify-left gap-5 ml-[50px] mt-[20px] ">
           <div className="flex text-md ">
             <b>Creada por: </b>
@@ -557,12 +558,27 @@ export const CollectionDetailContainer = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col mt-[30px] mr-[50px] ml-[50px]">
-          <div className="flex">
-            <p className="text-md justify-center sm:text-lg">
-              {collectionInfo?.description}
+        <div className="flex flex-col w-full md:w-[60vw]  mt-[30px] mr-[50px] ml-[50px]">
+          <p className="text-md justify-center md:text-lg ">
+            {expandedDesc
+              ? collectionInfo?.description
+              : `${collectionInfo.description.substring(0, 70)}...`}
+          </p>
+          {expandedDesc ? (
+            <p
+              onClick={() => setExpandedDesc(!expandedDesc)}
+              className="text-gray-400 mt-2 flex items-center gap-3 cursor-pointer"
+            >
+              Ver menos <Icon icon="akar-icons:chevron-up" />
             </p>
-          </div>
+          ) : (
+            <p
+              onClick={() => setExpandedDesc(!expandedDesc)}
+              className=" text-gray-400 mt-2 flex items-center gap-3 cursor-pointer"
+            >
+              Ver más <Icon icon="akar-icons:chevron-down" />
+            </p>
+          )}
         </div>
         <div className="flex flex-col md:flex-row mt-2 sm:mr-[50px] sm:ml-[50px] mr-0 ml-0 items-center place-content-between gap-8">
           <div className="flex gap-8 ">
