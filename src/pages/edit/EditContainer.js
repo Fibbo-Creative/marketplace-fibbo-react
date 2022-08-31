@@ -289,7 +289,7 @@ export default function EditContainer() {
                         <input
                           type="checkbox"
                           className=""
-                          value=""
+                          checked={showHiddenContent}
                           onChange={() =>
                             setShowHiddenContent(!showHiddenContent)
                           }
