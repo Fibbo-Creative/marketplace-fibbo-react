@@ -32,11 +32,6 @@ export default function MakeBidModal({
     return "OK";
   };
 
-  const handleChange = (value) => {
-    console.log(typeof wftmBalance);
-    setBidAmmount(value);
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       if (wallet) {

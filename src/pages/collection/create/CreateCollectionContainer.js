@@ -5,10 +5,7 @@ import { ImageInput } from "../../../components/inputs/ImageInput";
 import { TextInput } from "../../../components/inputs/TextInput";
 import { TextArea } from "../../../components/inputs/TextArea";
 import { useApi } from "../../../api";
-import { ethers } from "ethers";
-import { useFactory } from "../../../contracts/factory";
 import useAccount from "../../../hooks/useAccount";
-import { useNavigate } from "react-router-dom";
 import { ConfirmCreateCollection } from "../../../components/modals/ConfirmCreateCollection";
 import ReactTooltip from "react-tooltip";
 import { ThemeContext } from "../../../context/ThemeContext";
@@ -16,7 +13,6 @@ import { ThemeContext } from "../../../context/ThemeContext";
 export default function CreateCollectionContainer() {
   const { uploadImgToCDN, checkNameRepeated, checkUrlRepeated } = useApi();
   const { theme } = useContext(ThemeContext);
-  const navigate = useNavigate();
   const { wallet, connectToWallet } = useAccount();
   const [showConfirm, setShowConfirm] = useState(false);
   const [logoImage, setLogoImage] = useState("");
@@ -94,7 +90,7 @@ export default function CreateCollectionContainer() {
     if (file.type.includes("image")) {
       setLogoImageError(false);
       try {
-        const { sanity, ipfs } = await uploadImgToCDN(file, false);
+        const { sanity } = await uploadImgToCDN(file, false);
         if (sanity === "INVALID IMG") {
           setLogoImageError(true);
           setLogoImageError("Imagen no permitida, contiene contenido NFSW");
@@ -113,7 +109,7 @@ export default function CreateCollectionContainer() {
     if (file.type.includes("image")) {
       setMainImageError(false);
       try {
-        const { sanity, ipfs } = await uploadImgToCDN(file, false);
+        const { sanity } = await uploadImgToCDN(file, false);
         if (sanity === "INVALID IMG") {
           setMainImageError(true);
           setMainImageMessageError(
@@ -134,7 +130,7 @@ export default function CreateCollectionContainer() {
     if (file.type.includes("image")) {
       setBannerImageError(false);
       try {
-        const { sanity, ipfs } = await uploadImgToCDN(file, false);
+        const { sanity } = await uploadImgToCDN(file, false);
         if (sanity === "INVALID IMG") {
           setBannerImageError(true);
           setBannerImageMessageError(
@@ -286,7 +282,7 @@ export default function CreateCollectionContainer() {
 
   useEffect(() => {
     connectToWallet();
-  }, []);
+  }, [wallet]);
 
   return (
     <div className="flex mt-[79px] mb-[79px] w-screen content-center justify-center">

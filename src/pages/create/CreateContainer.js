@@ -3,16 +3,13 @@ import useAccount from "../../hooks/useAccount";
 import ActionButton from "../../components/ActionButton";
 import { useStateContext } from "../../context/StateProvider";
 import { useApi } from "../../api";
-import { addImgToIpfs } from "../../utils/ipfs";
 import { ConfirmCreateModal } from "../../components/modals/ConfirmCreateModal";
-import { useNavigate, useParams } from "react-router-dom";
-import fibboLogo from "../../assets/logoNavbarSmall.png";
+import { useParams } from "react-router-dom";
 import { TextInput } from "../../components/inputs/TextInput";
 import { TextArea } from "../../components/inputs/TextArea";
 import { NumberInput } from "../../components/inputs/NumberInput";
 import { PageWithLoading } from "../../components/basic/PageWithLoading";
 import { NotVerified } from "../../components/basic/NotVerified";
-import { Icon } from "@iconify/react";
 import { ImageInput } from "../../components/inputs/ImageInput";
 import { NotOwner } from "../../components/basic/NotOwner";
 
@@ -26,7 +23,6 @@ const validateDesc = (desc) => {
   else return false;
 };
 export default function CreateContainer() {
-  const navigate = useNavigate();
   const { collection } = useParams();
   const { uploadImgToCDN, getCollectionsAvailable } = useApi();
   const [ipfsImageUrl, setIpfsImageUrl] = useState("");
@@ -41,7 +37,6 @@ export default function CreateContainer() {
   const [collectionSelected, setCollectionsSelected] = useState(null);
   const [isOwner, setIsOwner] = useState(false);
 
-  const [loadingImage, setLoadingImage] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [showHiddenContent, setShowHiddenContent] = useState(false);
@@ -53,16 +48,10 @@ export default function CreateContainer() {
   const [descError, setDescError] = useState(false);
   const [royaltyError, setRoyaltyError] = useState(false);
 
-  const selectNFTImg = () => {
-    const inputRef = document.getElementById("inputNFT");
-    inputRef.click();
-  };
-
   const onFileSelected = async (e) => {
     const file = e.target.files[0];
     if (file.type.includes("image")) {
       setImageError(false);
-      setLoadingImage(true);
       try {
         const isExplicit = collectionSelected.explicitContent;
         const { sanity, ipfs, error } = await uploadImgToCDN(
@@ -79,7 +68,6 @@ export default function CreateContainer() {
           setSanityImgUrl(sanity);
           setImageError(false);
         }
-        setLoadingImage(false);
       } catch (error) {
         console.log("Error uploading file: ", error);
       }
@@ -157,7 +145,6 @@ export default function CreateContainer() {
       const collections = await getCollectionsAvailable(wallet);
       setCollectionsAvailable(collections);
       let _collection;
-      console.log(collection);
       if (collection.startsWith("0x")) {
         _collection = collections.find(
           (item) => item.contractAddress === collection

@@ -78,7 +78,6 @@ export default function ProfileActivityTable({ historyItems }) {
         }
       });
       setFilteredItems(filtered);
-      console.log(filtered);
     } else {
       setFilteredItems(historyItems);
     }

@@ -68,7 +68,6 @@ export const useMarketplace = () => {
       await tx.wait();
     }
     const ERC721contract = await getERC721Contract(collection);
-    console.log(await ERC721contract.uri(tokenId));
 
     let buyItemTx = await marketContract.buyItem(
       collection,
@@ -126,10 +125,6 @@ export const useMarketplace = () => {
       tokenId,
       owner
     );
-
-    const startingTime = await listingInfo[2];
-
-    console.log(new Date(startingTime * 1000));
 
     const formatted = {
       payToken: listingInfo[0],

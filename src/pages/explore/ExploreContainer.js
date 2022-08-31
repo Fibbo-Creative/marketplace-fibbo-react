@@ -25,12 +25,11 @@ import {
 
 export default function ExploreContainer() {
   const navigate = useNavigate();
-  const { getNftsForSale, getAllTokens, getAllPayTokens } = useApi();
+  const { getAllTokens, getAllPayTokens } = useApi();
   const { wallet } = useAccount();
   const [marketItems, setMarketItems] = useState([]);
   const [allMarketItems, setAllMarketItems] = useState([]);
   const [visibleMarketItems, setVisibleMarketItems] = useState([]);
-  const [filteredMarketItems, setFilteredMarketItems] = useState([]);
   const { _width } = useResponsive();
   const [visibleItemsCount, setVisibleItemsCount] = useState(12);
   const [userSmallview, setSmallViewUser] = useState(false);
@@ -347,7 +346,6 @@ export default function ExploreContainer() {
     let isSelected = filtersSelected.find(
       (item) => item.contractAddress === token.contractAddress
     );
-    console.log(isSelected);
     if (isSelected) {
       setVisibleMarketItems(allMarketItems);
       setFiltersSelected(

@@ -32,12 +32,9 @@ import { Icon } from "@iconify/react";
 import CoinGecko from "coingecko-api";
 import { isMobile } from "react-device-detect";
 import { useTokens } from "../../contracts/token";
-import { useFactory } from "../../contracts/factory";
-import { ethers } from "ethers";
 import { MoreItems } from "../../components/MoreItems";
-import { formatEther } from "ethers/lib/utils";
 import { useCollections } from "../../contracts/collection";
-import { ThemeContext, ThemeProvider } from "../../context/ThemeContext";
+import { ThemeContext } from "../../context/ThemeContext";
 import useResponsive from "../../hooks/useResponsive";
 import { useStateContext } from "../../context/StateProvider";
 import { actionTypes } from "../../context/stateReducer";
@@ -108,8 +105,6 @@ export default function ItemPage() {
     makeBid,
     buyNow,
   } = useAuction();
-
-  const { setFreezedMetadata } = useCollections();
 
   const [openConnectionModal, setOpenConnectionModal] = useState(false);
   const [openSellModal, setOpenSellModal] = useState(false);
@@ -209,7 +204,6 @@ export default function ItemPage() {
     tokenInfo.current = nftData;
     tokenHistoryInfo.current = history;
 
-    console.log(_offers);
     offers.current = _offers.sort((a, b) => {
       if (a.price > b.price) {
         return -1;

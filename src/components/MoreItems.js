@@ -7,7 +7,6 @@ import NftCard from "./NftCard";
 export const MoreItems = ({ nfts, collectionInfo }) => {
   const navigate = useNavigate();
   const redirectToItem = (item) => {
-    console.log(item);
     navigate(
       `/explore/${
         collectionInfo.customURL

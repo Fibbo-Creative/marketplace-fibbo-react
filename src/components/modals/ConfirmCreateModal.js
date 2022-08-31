@@ -31,12 +31,10 @@ export const ConfirmCreateModal = ({
 
       const ipfsFileURL = `https://ipfs.io/ipfs/${ipfsCID}`;
 
-      console.log(ipfsFileURL);
       const contract = await getERC721Contract(collection.contractAddress);
       let mintTx = await contract.mint(wallet, ipfsFileURL);
       let tx = await mintTx.wait();
 
-      console.log(tx);
       let event = tx.events[0];
       let value = event.args[2];
       let newTokenId = value.toNumber();

@@ -4,9 +4,7 @@ import ActionButton from "../../components/ActionButton";
 import { useStateContext } from "../../context/StateProvider";
 import { useApi } from "../../api";
 import { addImgToIpfs } from "../../utils/ipfs";
-import { ConfirmCreateModal } from "../../components/modals/ConfirmCreateModal";
 import { useNavigate, useParams } from "react-router-dom";
-import fibboLogo from "../../assets/logoNavbarSmall.png";
 import { TextInput } from "../../components/inputs/TextInput";
 import { TextArea } from "../../components/inputs/TextArea";
 import { NumberInput } from "../../components/inputs/NumberInput";
@@ -45,7 +43,6 @@ export default function EditContainer() {
   const { connectToWallet, wallet } = useAccount();
   const [{ verifiedAddress }] = useStateContext();
 
-  const [loadingImage, setLoadingImage] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [showHiddenContent, setShowHiddenContent] = useState(false);
@@ -65,19 +62,9 @@ export default function EditContainer() {
   const [freezeMetadata, setFreezedMetadata] = useState(false);
   const [showFreeze, setShowFreeze] = useState(false);
 
-  const selectNFTImg = () => {
-    const inputRef = document.getElementById("inputNFT");
-    inputRef.click();
-  };
-
   const getItemDetails = async () => {
     setLoading(true);
-    const {
-      nftData,
-      offers: _offers,
-      history,
-      listing: _listing,
-    } = await getNftInfo(collection, tokenId);
+    const { nftData } = await getNftInfo(collection, tokenId);
 
     setName(nftData.name);
     setDesc(nftData.description);
@@ -100,8 +87,6 @@ export default function EditContainer() {
       collectionInfo.contractAddress,
       tokenId
     );
-
-    console.log(isFreezed);
     setHasMetadataFreezed(isFreezed);
     setIsOwner(collectionInfo.creator === wallet);
 
@@ -112,7 +97,7 @@ export default function EditContainer() {
     const file = e.target.files[0];
     if (file.type.includes("image")) {
       setImageError(false);
-      setLoadingImage(true);
+
       try {
         const imgAddedToIPFS = await addImgToIpfs(file);
 
@@ -129,7 +114,6 @@ export default function EditContainer() {
           setSanityImgUrl(imgAddedToSanity);
           setImageError(false);
         }
-        setLoadingImage(false);
       } catch (error) {
         console.log("Error uploading file: ", error);
       }
@@ -213,12 +197,9 @@ export default function EditContainer() {
     setRoyalty(value);
   };
 
-  const handleFreezeMetadata = () => {
-    console.log("Freezing");
-  };
-
   useEffect(() => {
     const fetchData = async () => {
+      await connectToWallet();
       getItemDetails();
     };
     fetchData();

@@ -20,7 +20,7 @@ export default function RedirectModal({
   const redirectToModal = async () => {
     if (notShow) {
       //Guardar en el perfil lo de no mostrar
-      console.log("LEGGO");
+
       await onSaveOptions();
     }
     window.open(link);

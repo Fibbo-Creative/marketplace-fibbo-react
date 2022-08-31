@@ -3,12 +3,9 @@ import { useParams } from "react-router-dom";
 import { useApi } from "../../../api";
 import { PageWithLoading } from "../../../components/basic/PageWithLoading";
 import NftCard from "../../../components/NftCard";
-import { MoreItems } from "../../../components/MoreItems";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
-import FiltersSidebar from "../../../components/FiltersSidebar";
 import useAccount from "../../../hooks/useAccount";
-import ActionButton from "../../../components/ActionButton";
 import { isMobile } from "web3modal";
 import RedirectModal from "../../../components/modals/RedirectModal";
 import { useStateContext } from "../../../context/StateProvider";
@@ -32,7 +29,6 @@ export const CollectionDetailContainer = () => {
   const [loading, setLoading] = useState(true);
   const { collection } = useParams();
   const { _width } = useResponsive();
-  const [{ userProfile }] = useStateContext();
   const {
     getCollectionDetail,
     getProfileInfo,
@@ -293,7 +289,6 @@ export const CollectionDetailContainer = () => {
     let isSelected = filtersSelected.find(
       (item) => item.contractAddress === token.contractAddress
     );
-    console.log(isSelected);
     if (isSelected) {
       setFilteredNfts(collectionNfts);
       setFiltersSelected(
