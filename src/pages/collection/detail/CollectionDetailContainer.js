@@ -565,7 +565,7 @@ export const CollectionDetailContainer = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col w-full md:w-[60vw]  mt-[30px] mr-[50px] ml-[50px]">
+        <div className="flex flex-col w-[80vw] md:w-[60vw]  mt-[30px] mr-[50px] ml-[50px]">
           <p className="text-md justify-center md:text-lg ">
             {expandedDesc
               ? collectionInfo?.description
@@ -790,7 +790,7 @@ export const CollectionDetailContainer = () => {
                   {filteredNfts.map((item) => {
                     return (
                       <NftCard
-                        ket={item._id}
+                        key={item._id}
                         item={item}
                         onClick={() => redirectToItem(item)}
                         isSmall={userSmallview}
