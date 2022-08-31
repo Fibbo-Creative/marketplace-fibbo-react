@@ -61,7 +61,11 @@ export const ConfirmCreateModal = ({
   };
 
   const seeResult = async () => {
-    navigate(`/explore/${collection.contractAddress}/${newTokenId}`);
+    if (collection.customURL) {
+      navigate(`/explore/${collection.customURL}/${newTokenId}`);
+    } else {
+      navigate(`/explore/${collection.contractAddress}/${newTokenId}`);
+    }
   };
 
   return (
