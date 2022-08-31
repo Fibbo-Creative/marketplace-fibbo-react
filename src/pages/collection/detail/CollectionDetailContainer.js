@@ -457,7 +457,7 @@ export const CollectionDetailContainer = () => {
         )}
         <div className="flex flex-col md:flex-row w-full items-center">
           <div className="flex items-end md:pl-10 ">
-            <div className="flex w-[200px] mt-[-80px]">
+            <div className="flex w-[200px] mt-[-80px] border-2 dark:border-dark-2">
               <img
                 src={collectionInfo?.logoImage}
                 alt={`col-${collection._id}`}
@@ -538,104 +538,105 @@ export const CollectionDetailContainer = () => {
           )}
         </div>
       </div>
-      <div className="flex items-center justify-left gap-5 ml-[50px] mt-[20px] ">
-        <div className="flex text-md ">
-          <b>Creada por: </b>
-        </div>
-        <div className="flex gap-3 items-center">
-          <img
-            src={ownerInfo?.profileImg}
-            alt="recipient-img"
-            className="rounded-full"
-            width={32}
-          />
-          <div
-            onClick={() =>
-              isMobile
-                ? navigate(`/account/${ownerInfo?.wallet}`)
-                : window.open(`/profile/${ownerInfo?.wallet}`)
-            }
-            className="text-primary-2 underline cursor-pointer"
-          >
-            {isOwner ? `You (${ownerInfo?.username})` : ownerInfo?.username}
+      <div className="flex flex-col">
+        <div className="flex items-center justify-left gap-5 ml-[50px] mt-[20px] ">
+          <div className="flex text-md ">
+            <b>Creada por: </b>
+          </div>
+          <div className="flex gap-3 items-center">
+            <img
+              src={ownerInfo?.profileImg}
+              alt="recipient-img"
+              className="rounded-full"
+              width={32}
+            />
+            <div
+              onClick={() =>
+                isMobile
+                  ? navigate(`/account/${ownerInfo?.wallet}`)
+                  : window.open(`/profile/${ownerInfo?.wallet}`)
+              }
+              className="text-primary-2 underline cursor-pointer"
+            >
+              {isOwner ? `You (${ownerInfo?.username})` : ownerInfo?.username}
+            </div>
           </div>
         </div>
-      </div>
-      <div className="flex flex-col mt-[30px] mr-[50px] ml-[50px]">
-        <div className="flex mt-[20px]">
-          <p className="text-md justify-center sm:text-lg">
-            {collectionInfo?.description}
-          </p>
+        <div className="flex flex-col mt-[30px] mr-[50px] ml-[50px]">
+          <div className="flex">
+            <p className="text-md justify-center sm:text-lg">
+              {collectionInfo?.description}
+            </p>
+          </div>
         </div>
-      </div>
+        <div className="flex flex-col md:flex-row mt-2 sm:mr-[50px] sm:ml-[50px] mr-0 ml-0 items-center place-content-between gap-8">
+          <div className="flex gap-8 ">
+            <div className="flex flex-col gap-3 items-center">
+              <div className="flex text-xl">
+                <b>{collectionNfts.length}</b>
+              </div>
+              <div className="flex items-end">Articulos</div>
+            </div>
+            <div className="flex flex-col gap-3 items-center">
+              <div className="flex text-xl">
+                <b>{collectionInfo?.owners.length}</b>
+              </div>
+              <div className="flex items-end">Propietarios</div>
+            </div>
+            <div className="flex flex-col gap-3 items-center">
+              <div className="flex text-xl">
+                <b>{parseFloat(collectionInfo?.volumen)} WFTM</b>
+              </div>
+              <div className="flex items-end">Volumen total</div>
+            </div>
+          </div>
 
-      <div className="flex flex-col md:flex-row mt-[50px] sm:mr-[50px] sm:ml-[50px] mr-0 ml-0 items-center place-content-between gap-8">
-        <div className="flex gap-8 ">
-          <div className="flex flex-col gap-3 items-center">
-            <div className="flex text-xl">
-              <b>{collectionNfts.length}</b>
-            </div>
-            <div className="flex items-end">Articulos</div>
+          <div className="flex flex-row ">
+            {collectionInfo?.websiteURL !== "" && (
+              <div className="flex mr-4 sm:m-[30px] mt-[40px] ">
+                <button
+                  onClick={() => openRedirectPopUp(collectionInfo.websiteURL)}
+                  disabled={!collectionInfo?.websiteURL}
+                  className="hover:-translate-y-1"
+                >
+                  <Icon width={25} icon="dashicons:admin-site-alt3"></Icon>
+                </button>
+              </div>
+            )}
+            {collectionInfo?.discordURL !== "" && (
+              <div className="flex mr-4 sm:m-[30px] mt-[40px]">
+                <button
+                  onClick={() => openRedirectPopUp(collectionInfo.discordURL)}
+                  disabled={!collectionInfo?.discordURL}
+                  className="hover:-translate-y-1"
+                >
+                  <Icon width={25} icon="bi:discord"></Icon>
+                </button>
+              </div>
+            )}
+            {collectionInfo?.telegramURL !== "" && (
+              <div className="flex mr-4 sm:m-[30px] mt-[40px]">
+                <button
+                  onClick={() => openRedirectPopUp(collectionInfo.telegramURL)}
+                  disabled={!collectionInfo?.telegramURL}
+                  className="hover:-translate-y-1"
+                >
+                  <Icon width={25} icon="bxl:telegram"></Icon>
+                </button>
+              </div>
+            )}
+            {collectionInfo?.instagramURL !== "" && (
+              <div className="flex mr-4 sm:m-[30px] mt-[40px]">
+                <button
+                  onClick={() => openRedirectPopUp(collectionInfo.instagramURL)}
+                  disabled={!collectionInfo?.instagramURL}
+                  className="hover:-translate-y-1"
+                >
+                  <Icon className="" width={25} icon="cib:instagram"></Icon>
+                </button>
+              </div>
+            )}
           </div>
-          <div className="flex flex-col gap-3 items-center">
-            <div className="flex text-xl">
-              <b>{collectionInfo?.owners.length}</b>
-            </div>
-            <div className="flex items-end">Propietarios</div>
-          </div>
-          <div className="flex flex-col gap-3 items-center">
-            <div className="flex text-xl">
-              <b>{parseFloat(collectionInfo?.volumen)} WFTM</b>
-            </div>
-            <div className="flex items-end">Volumen total</div>
-          </div>
-        </div>
-
-        <div className="flex flex-row ">
-          {collectionInfo?.websiteURL !== "" && (
-            <div className="flex mr-4 sm:m-[30px] mt-[40px] ">
-              <button
-                onClick={() => openRedirectPopUp(collectionInfo.websiteURL)}
-                disabled={!collectionInfo?.websiteURL}
-                className="hover:-translate-y-1"
-              >
-                <Icon width={25} icon="dashicons:admin-site-alt3"></Icon>
-              </button>
-            </div>
-          )}
-          {collectionInfo?.discordURL !== "" && (
-            <div className="flex mr-4 sm:m-[30px] mt-[40px]">
-              <button
-                onClick={() => openRedirectPopUp(collectionInfo.discordURL)}
-                disabled={!collectionInfo?.discordURL}
-                className="hover:-translate-y-1"
-              >
-                <Icon width={25} icon="bi:discord"></Icon>
-              </button>
-            </div>
-          )}
-          {collectionInfo?.telegramURL !== "" && (
-            <div className="flex mr-4 sm:m-[30px] mt-[40px]">
-              <button
-                onClick={() => openRedirectPopUp(collectionInfo.telegramURL)}
-                disabled={!collectionInfo?.telegramURL}
-                className="hover:-translate-y-1"
-              >
-                <Icon width={25} icon="bxl:telegram"></Icon>
-              </button>
-            </div>
-          )}
-          {collectionInfo?.instagramURL !== "" && (
-            <div className="flex mr-4 sm:m-[30px] mt-[40px]">
-              <button
-                onClick={() => openRedirectPopUp(collectionInfo.instagramURL)}
-                disabled={!collectionInfo?.instagramURL}
-                className="hover:-translate-y-1"
-              >
-                <Icon className="" width={25} icon="cib:instagram"></Icon>
-              </button>
-            </div>
-          )}
         </div>
       </div>
 
