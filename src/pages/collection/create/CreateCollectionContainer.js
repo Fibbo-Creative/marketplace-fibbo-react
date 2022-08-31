@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import ActionButton from "../../../components/ActionButton";
 import { ImageInput } from "../../../components/inputs/ImageInput";
@@ -7,12 +7,11 @@ import { TextArea } from "../../../components/inputs/TextArea";
 import { useApi } from "../../../api";
 import useAccount from "../../../hooks/useAccount";
 import { ConfirmCreateCollection } from "../../../components/modals/ConfirmCreateCollection";
-import ReactTooltip from "react-tooltip";
-import { ThemeContext } from "../../../context/ThemeContext";
+import { HelpTooltip } from "../../../components/tooltips/HelpTooltip";
 
 export default function CreateCollectionContainer() {
   const { uploadImgToCDN, checkNameRepeated, checkUrlRepeated } = useApi();
-  const { theme } = useContext(ThemeContext);
+
   const { wallet, connectToWallet } = useAccount();
   const [showConfirm, setShowConfirm] = useState(false);
   const [logoImage, setLogoImage] = useState("");
@@ -455,19 +454,11 @@ export default function CreateCollectionContainer() {
                 Contenido Explícito o Sensible
               </span>
             </label>
-            <div
-              data-for="explicit-info"
-              data-tip="Si el contenido és explícito o sensible, como pornografía <br/> o contenido 'not safe for work' (NSFW),  protegerá a los usuarios <br/> de FIBBO que realicen búsquedas seguras y no les mostrará el contenido."
-            >
-              <Icon className="text-gray-500" icon="ci:help-circle-outline" />
-              <ReactTooltip
-                id="explicit-info"
-                place="right"
-                type={theme === "dark" ? "light" : "dark"}
-                effect="solid"
-                multiline={true}
-              />
-            </div>
+            <HelpTooltip
+              tooltip="explicit-info"
+              tooltipPlacement="right"
+              tooltipText="Si el contenido és explícito o sensible, como pornografía <br/> o contenido 'not safe for work' (NSFW),  protegerá a los usuarios <br/> de FIBBO que realicen búsquedas seguras y no les mostrará el contenido."
+            />
           </div>
         </div>
 

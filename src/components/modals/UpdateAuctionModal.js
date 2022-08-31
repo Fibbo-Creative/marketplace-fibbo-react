@@ -1,8 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { ethers } from "ethers";
-import { parseEther } from "ethers/lib/utils";
-import { useAuction } from "../../contracts/auction";
 import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
 import { DateTimeInput } from "../inputs/DateTimeInput";
 import { ActionModal } from "./ActionModal";
@@ -13,7 +9,6 @@ export default function UpdateAuctionModal({
   auctionInfo,
   onUpdateAuction,
 }) {
-  const { updateReservePrice, updateStartTime, updateEndTime } = useAuction();
   const [newReservePrice, setNewReservePrice] = useState(0);
   const [startDate, setStartDate] = useState(0);
   const [startHour, setStartHour] = useState(0);

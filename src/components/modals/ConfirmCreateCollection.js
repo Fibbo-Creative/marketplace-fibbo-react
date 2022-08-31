@@ -4,15 +4,13 @@ import { useApi } from "../../api";
 import { ActionModal } from "./ActionModal";
 import { useFactory } from "../../contracts/factory";
 import { ethers } from "ethers";
-import { BasicModal } from "./BasicModal";
-import ActionButton from "../ActionButton";
 export const ConfirmCreateCollection = ({
   showModal,
   handleCloseModal,
   collectionData,
   wallet,
 }) => {
-  const { createNFTContract, approveCollection } = useFactory();
+  const { createNFTContract } = useFactory();
   const { saveCollectionDetails } = useApi();
   const [address, setAddress] = useState("");
 
@@ -45,7 +43,7 @@ export const ConfirmCreateCollection = ({
           const address = ethers.utils.hexDataSlice(evt.data, 44);
 
           setAddress(address);
-          const created = await saveCollectionDetails(
+          await saveCollectionDetails(
             address,
             wallet,
             name,

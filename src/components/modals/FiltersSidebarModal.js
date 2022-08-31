@@ -1,5 +1,4 @@
 import { Dialog } from "@headlessui/react";
-import { Icon } from "@iconify/react";
 import React from "react";
 import FilterBottomDropDown from "../FilterBottomDropDown";
 import FilterButtons from "../FilterButtons";

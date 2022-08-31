@@ -8,7 +8,6 @@ import { Icon } from "@iconify/react";
 import useAccount from "../../../hooks/useAccount";
 import { isMobile } from "web3modal";
 import RedirectModal from "../../../components/modals/RedirectModal";
-import { useStateContext } from "../../../context/StateProvider";
 import { FiltersSidebarModal } from "../../../components/modals/FiltersSidebarModal";
 import FiltersCollectionSidebar from "../../../components/FiltersCollectionSidebar";
 import {
@@ -24,6 +23,7 @@ import {
 import useResponsive from "../../../hooks/useResponsive";
 import ReactTooltip from "react-tooltip";
 import { ThemeContext } from "../../../context/ThemeContext";
+import { ButtonTooltip } from "../../../components/tooltips/ButtonTooltip";
 
 export const CollectionDetailContainer = () => {
   const [loading, setLoading] = useState(true);
@@ -74,6 +74,12 @@ export const CollectionDetailContainer = () => {
   };
   const changeBigDisplay = () => {
     setSmallViewUser(false);
+  };
+
+  const goToScan = () => {
+    window.open(
+      `https://testnet.ftmscan.com/address/${collectionInfo.contractAddress}`
+    );
   };
 
   const openRedirectPopUp = (link) => {
@@ -581,7 +587,7 @@ export const CollectionDetailContainer = () => {
             </p>
           )}
         </div>
-        <div className="flex flex-col md:flex-row mt-2 sm:mr-[50px] sm:ml-[50px] mr-0 ml-0 items-center place-content-between gap-8">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between mt-2 sm:mr-[50px] sm:ml-[50px] mr-0 ml-0 items-center place-content-between gap-8">
           <div className="flex gap-8 ">
             <div className="flex flex-col gap-3 items-center">
               <div className="flex text-xl">
@@ -603,50 +609,57 @@ export const CollectionDetailContainer = () => {
             </div>
           </div>
 
-          <div className="flex flex-row ">
-            {collectionInfo?.websiteURL !== "" && (
-              <div className="flex mr-4 sm:m-[30px] mt-[40px] ">
-                <button
-                  onClick={() => openRedirectPopUp(collectionInfo.websiteURL)}
-                  disabled={!collectionInfo?.websiteURL}
-                  className="hover:-translate-y-1"
-                >
-                  <Icon width={25} icon="dashicons:admin-site-alt3"></Icon>
-                </button>
+          <div className="flex flex-row items-center gap-10 mt-10 md:mt-0 md:mr-5">
+            <ButtonTooltip
+              tooltip="scan-tooltip"
+              tooltipPlacement="top"
+              tooltipText="Ver en scaner"
+              onClick={goToScan}
+            >
+              <div className="flex">
+                <Icon width={25} icon="bi:upc-scan"></Icon>
               </div>
+            </ButtonTooltip>
+
+            {collectionInfo?.websiteURL !== "" && (
+              <ButtonTooltip
+                tooltip="web-tooltip"
+                tooltipPlacement="top"
+                tooltipText="Ver página web"
+                onClick={() => openRedirectPopUp(collectionInfo.websiteURL)}
+              >
+                <Icon width={25} icon="dashicons:admin-site-alt3"></Icon>
+              </ButtonTooltip>
             )}
             {collectionInfo?.discordURL !== "" && (
-              <div className="flex mr-4 sm:m-[30px] mt-[40px]">
-                <button
-                  onClick={() => openRedirectPopUp(collectionInfo.discordURL)}
-                  disabled={!collectionInfo?.discordURL}
-                  className="hover:-translate-y-1"
-                >
-                  <Icon width={25} icon="bi:discord"></Icon>
-                </button>
-              </div>
+              <ButtonTooltip
+                tooltip="ds-tooltip"
+                tooltipPlacement="top"
+                tooltipText="Ver discord"
+                onClick={() => openRedirectPopUp(collectionInfo.discordURL)}
+              >
+                <Icon width={25} icon="bi:discord"></Icon>
+              </ButtonTooltip>
             )}
             {collectionInfo?.telegramURL !== "" && (
-              <div className="flex mr-4 sm:m-[30px] mt-[40px]">
-                <button
-                  onClick={() => openRedirectPopUp(collectionInfo.telegramURL)}
-                  disabled={!collectionInfo?.telegramURL}
-                  className="hover:-translate-y-1"
-                >
-                  <Icon width={25} icon="bxl:telegram"></Icon>
-                </button>
-              </div>
+              <ButtonTooltip
+                tooltip="telegram-tooltip"
+                tooltipPlacement="top"
+                tooltipText="Ver telegram"
+                onClick={() => openRedirectPopUp(collectionInfo.telegramURL)}
+              >
+                <Icon width={25} icon="bxl:telegram"></Icon>
+              </ButtonTooltip>
             )}
             {collectionInfo?.instagramURL !== "" && (
-              <div className="flex mr-4 sm:m-[30px] mt-[40px]">
-                <button
-                  onClick={() => openRedirectPopUp(collectionInfo.instagramURL)}
-                  disabled={!collectionInfo?.instagramURL}
-                  className="hover:-translate-y-1"
-                >
-                  <Icon className="" width={25} icon="cib:instagram"></Icon>
-                </button>
-              </div>
+              <ButtonTooltip
+                tooltip="insta-tooltip"
+                tooltipPlacement="top"
+                tooltipText="Ver Instagram"
+                onClick={() => openRedirectPopUp(collectionInfo.telegramURL)}
+              >
+                <Icon width={25} icon="cib:instagram"></Icon>
+              </ButtonTooltip>
             )}
           </div>
         </div>

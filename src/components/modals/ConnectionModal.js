@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import React from "react";
-import { isMobile, isChrome, isSafari } from "react-device-detect";
+import { isMobile } from "react-device-detect";
 import { BasicModal } from "./BasicModal";
 
 export default function ConnectionModal({

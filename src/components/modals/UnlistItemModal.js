@@ -1,4 +1,3 @@
-import { Icon } from "@iconify/react";
 import React from "react";
 import { ActionModal } from "./ActionModal";
 
@@ -42,11 +41,14 @@ export default function UnlistItemModal({
               <div className="flex gap-2">
                 <b>Royalties:</b>
                 <p>{tokenInfo?.royalty}</p>
-                <Icon className="text-gray-500" icon="ci:help-circle-outline" />
               </div>
               <div className="flex gap-2">
                 <b>Precio:</b>
-                <img src={listing?.payToken.image} width={26} />
+                <img
+                  src={listing?.payToken.image}
+                  width={26}
+                  alt={`token-${listing?.payToken._id}`}
+                />
                 <p>{listing?.price}</p>
                 <p>{listing?.payToken.name}</p>
               </div>

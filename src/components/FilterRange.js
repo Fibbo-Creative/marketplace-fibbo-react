@@ -21,7 +21,6 @@ export default function FilterRange({
             onChange={(e) => setMinState(e.target.value)}
           />
           <div className="absolute inset-y-0 left-0 flex items-center">
-            {" "}
             <img
               width={28}
               src="https://assets.trustwalletapp.com/blockchains/fantom/info/logo.png"

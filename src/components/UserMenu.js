@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useStateContext } from "../context/StateProvider";
 import { ThemeContext } from "../context/ThemeContext";
@@ -7,16 +7,12 @@ import { ThemeContext } from "../context/ThemeContext";
 export const UserMenu = ({ setOpenStation, setOpenMenu, disconnectWallet }) => {
   const ref = useRef(null);
   const { theme, setTheme } = React.useContext(ThemeContext);
-  const [{ userProfile, verifiedAddress }] = useStateContext();
+  const [{ userProfile }] = useStateContext();
 
   const navigate = useNavigate();
   const goToProfile = () => {
     setOpenMenu(false);
     navigate(`/account/${userProfile.wallet}`);
-  };
-  const goToMyCollections = () => {
-    setOpenMenu(false);
-    navigate(`/myCollections`);
   };
 
   const goToCommunity = () => {
@@ -108,7 +104,7 @@ const UserMenuItem = ({ text, icon, disabled, onClick }) => {
 };
 
 const UserMenuItemToggle = ({ text, disabled, onClick }) => {
-  const { theme, setTheme } = React.useContext(ThemeContext);
+  const { theme } = React.useContext(ThemeContext);
   return (
     <div
       onClick={disabled ? null : onClick}

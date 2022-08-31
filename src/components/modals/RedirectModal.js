@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { useApi } from "../../api";
 import { useStateContext } from "../../context/StateProvider";
-import { actionTypes } from "../../context/stateReducer";
 import ActionButton from "../ActionButton";
 import { BasicModal } from "./BasicModal";
 
@@ -14,7 +12,6 @@ export default function RedirectModal({
   onSaveOptions,
   link,
 }) {
-  const [{ userProfile }, dispatch] = useStateContext();
   const [notShow, setNowShow] = useState(false);
 
   const redirectToModal = async () => {

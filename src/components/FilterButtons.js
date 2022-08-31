@@ -57,7 +57,7 @@ const FilterButton = ({ option, filtersSelected, onSelection }) => {
           src={option.image}
           width={24}
         />
-      )}{" "}
+      )}
       {option.name}
     </button>
   );

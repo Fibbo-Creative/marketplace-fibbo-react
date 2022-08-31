@@ -1,8 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { formatEther } from "ethers/lib/utils";
-import { useWFTMContract } from "../../contracts/wftm";
-import { useAuction } from "../../contracts/auction";
 import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
 import { DateTimeInput } from "../inputs/DateTimeInput";
 import { ActionModal } from "./ActionModal";
@@ -27,8 +23,6 @@ export default function CreateAuctionModal({
   const [endDate, setEndDate] = useState(0);
   const [endHour, setEndHour] = useState(0);
   const [actionError, setActionError] = useState(false);
-
-  const { getWFTMBalance } = useWFTMContract();
 
   const handleCreateAuction = async () => {
     try {

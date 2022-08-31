@@ -1,8 +1,6 @@
-import React, { useState } from "react";
-import useRespnsive from "../hooks/useResponsive";
+import React from "react";
 import DropDown from "./DropDown";
 import { useNavigate } from "react-router-dom";
-import useAccount from "../hooks/useAccount";
 import NftCard from "./NftCard";
 export const MoreItems = ({ nfts, collectionInfo }) => {
   const navigate = useNavigate();

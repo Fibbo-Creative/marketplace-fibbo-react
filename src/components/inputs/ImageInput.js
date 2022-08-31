@@ -101,7 +101,11 @@ export const ImageInput = ({
                   } `}
                 >
                   {loadingImage ? (
-                    <img src={fibboLogo} className="w-[128px] animate-pulse" />
+                    <img
+                      src={fibboLogo}
+                      className="w-[128px] animate-pulse"
+                      alt={`loading-${inputId}`}
+                    />
                   ) : (
                     <>
                       {!loadingImage && imageError ? (
@@ -124,7 +128,11 @@ export const ImageInput = ({
                 } `}
               >
                 {loadingImage ? (
-                  <img src={fibboLogo} className="w-[128px] animate-pulse" />
+                  <img
+                    src={fibboLogo}
+                    className="w-[128px] animate-pulse"
+                    alt={`loading-${inputId}`}
+                  />
                 ) : (
                   <>
                     {!loadingImage && imageError ? (

@@ -1,10 +1,9 @@
-import { Icon } from "@iconify/react";
 import React, { useEffect, useState } from "react";
 import { formatEther } from "ethers/lib/utils";
-import ReactTooltip from "react-tooltip";
 import { useWFTMContract } from "../../contracts/wftm";
 import { ActionModal } from "./ActionModal";
 import { useStateContext } from "../../context/StateProvider";
+import { HelpTooltip } from "../tooltips/HelpTooltip";
 
 export default function BuyItemModal({
   children,
@@ -66,32 +65,25 @@ export default function BuyItemModal({
                     <b>Nombre:</b>
                     <p>{tokenInfo?.name}</p>
                   </div>
-                  <div className="flex gap-2">
-                    <b>Royalties:</b>
-                    <p>{tokenInfo?.royalty}</p>
-                    <div
-                      data-for="royalty-info"
-                      data-tip={`Un ${tokenInfo?.royalty}% del precio de compra <br/> será enviado al creador del item <br/>`}
-                    >
-                      <Icon
-                        className="text-gray-500"
-                        icon="ci:help-circle-outline"
-                      />
-                    </div>
-                    <ReactTooltip
-                      id="royalty-info"
-                      place="right"
-                      type="dark"
-                      effect="solid"
-                      multiline={true}
-                    />
-                  </div>
 
                   <div className="flex gap-2">
                     <b>Precio:</b>
-                    <img src={listing?.payToken.image} width={26} />
+                    <img
+                      src={listing?.payToken.image}
+                      width={26}
+                      alt={`token-${listing?.payToken._id}`}
+                    />
                     <p>{listing?.price}</p>
                     <p>{listing?.payToken.name}</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <b>Royalties:</b>
+                    <p>{tokenInfo?.royalty}</p>
+                    <HelpTooltip
+                      tooltip="royalty-info"
+                      tooltipPlacement="bottom"
+                      tooltipText={`Un ${tokenInfo?.royalty}% del precio de compra <br/> será enviado al creador del item <br/>`}
+                    />
                   </div>
                   {wftmBalance < tokenInfo?.price && (
                     <div className="text-xs text-red-700">

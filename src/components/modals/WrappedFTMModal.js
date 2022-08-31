@@ -5,7 +5,6 @@ import { BasicModal } from "./BasicModal";
 import { Check } from "../lottie/Check";
 import { useWFTMContract } from "../../contracts/wftm";
 import { ethers } from "ethers";
-import { useNavigate } from "react-router-dom";
 import useProvider from "../../hooks/useProvider";
 import { formatEther } from "ethers/lib/utils";
 import CoinGecko from "coingecko-api";
@@ -19,8 +18,7 @@ export default function WrappedFTMModal({
   wallet,
 }) {
   const { getWFTMBalance, wrapFTM, unwrapFTM } = useWFTMContract();
-  const [{ userProfile, updatedWFTM }, dispatch] = useStateContext();
-  const navigate = useNavigate();
+  const [{ userProfile }, dispatch] = useStateContext();
   const [ftmAmount, setFtmAmount] = useState(0);
   const [completedAction, setCompletedAction] = useState(false);
   const [fromFTM, setFromFTM] = useState(true);
@@ -83,13 +81,6 @@ export default function WrappedFTMModal({
     } catch (e) {
       console.log(e);
     }
-  };
-
-  const handleGoToMarket = () => {
-    setFromFTM(true);
-    setCompletedAction(false);
-    handleCloseModal();
-    navigate("/explore");
   };
 
   useEffect(() => {

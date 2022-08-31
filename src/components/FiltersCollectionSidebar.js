@@ -1,8 +1,7 @@
 import { Icon } from "@iconify/react";
-import React, { useState } from "react";
+import React from "react";
 import FilterBottomDropDown from "./FilterBottomDropDown";
 import FilterButtons from "./FilterButtons";
-import FilterRange from "./FilterRange";
 
 export default function FiltersCollectionSidebar({
   items,

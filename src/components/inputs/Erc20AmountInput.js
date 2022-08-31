@@ -5,7 +5,7 @@ import { useApi } from "../../api/index";
 import { Icon } from "@iconify/react";
 import { useWFTMContract } from "../../contracts/wftm";
 import useAccount from "../../hooks/useAccount";
-import { formatEther, parseEther } from "ethers/lib/utils";
+import { formatEther } from "ethers/lib/utils";
 export const Erc20AmountInput = ({
   label,
   value,
@@ -92,7 +92,11 @@ export const Erc20AmountInput = ({
           } items-center `}
         >
           <div className="flex items-center">
-            <img width={32} src={selectedToken?.image} />
+            <img
+              width={32}
+              src={selectedToken?.image}
+              alt={`token-${selectedToken?._id}`}
+            />
             <div className="px-2">{selectedToken?.name}</div>
           </div>
           {openSelect && (
@@ -118,6 +122,7 @@ export const Erc20AmountInput = ({
                         width={32}
                         src={token?.image}
                         className={`${token.disabled && "opacity-50"}`}
+                        alt={`option-${token._id}`}
                       />
                       <div className="px-2 ">{token?.name}</div>
                     </div>

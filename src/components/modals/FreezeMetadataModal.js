@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useApi } from "../../api";
-import { useStateContext } from "../../context/StateProvider";
-import { actionTypes } from "../../context/stateReducer";
 import { useCollections } from "../../contracts/collection";
-import { useTokens } from "../../contracts/token";
-import ActionButton from "../ActionButton";
 import { ActionModal } from "./ActionModal";
 
 export default function FreezeMetadataModal({

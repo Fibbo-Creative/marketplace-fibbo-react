@@ -1,19 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import ActionButton from "../../../components/ActionButton";
 import { ImageInput } from "../../../components/inputs/ImageInput";
 import { TextInput } from "../../../components/inputs/TextInput";
 import { TextArea } from "../../../components/inputs/TextArea";
 import { useApi } from "../../../api";
-import { ethers } from "ethers";
-import { useFactory } from "../../../contracts/factory";
 import useAccount from "../../../hooks/useAccount";
 import { useNavigate, useParams } from "react-router-dom";
-import { ConfirmCreateCollection } from "../../../components/modals/ConfirmCreateCollection";
 import { PageWithLoading } from "../../../components/basic/PageWithLoading";
 import { NotOwner } from "../../../components/basic/NotOwner";
-import ReactTooltip from "react-tooltip";
-import { ThemeContext } from "../../../context/ThemeContext";
+import { HelpTooltip } from "../../../components/tooltips/HelpTooltip";
 
 export default function EditCollectionContainer() {
   const {
@@ -23,7 +19,6 @@ export default function EditCollectionContainer() {
     getCollectionDetail,
     editCollectionDetails,
   } = useApi();
-  const { theme } = useContext(ThemeContext);
   const navigate = useNavigate();
   const { collection } = useParams();
   const { wallet, connectToWallet } = useAccount();
@@ -522,19 +517,11 @@ export default function EditCollectionContainer() {
                   Contenido Explícito o Sensible
                 </span>
               </label>
-              <div
-                data-for="explicit-info"
-                data-tip="Si el contenido és explícito o sensible, como pornografía <br/> o contenido 'not safe for work' (NSFW),  protegerá a los usuarios <br/> de FIBBO que realicen búsquedas seguras y no les mostrará el contenido."
-              >
-                <Icon className="text-gray-500" icon="ci:help-circle-outline" />
-                <ReactTooltip
-                  id="explicit-info"
-                  place="right"
-                  type={theme === "dark" ? "light" : "dark"}
-                  effect="solid"
-                  multiline={true}
-                />
-              </div>
+              <HelpTooltip
+                tooltip="explicit-info"
+                tooltipPlacement="right"
+                tooltipText="Si el contenido és explícito o sensible, como pornografía <br/> o contenido 'not safe for work' (NSFW),  protegerá a los usuarios <br/> de FIBBO que realicen búsquedas seguras y no les mostrará el contenido."
+              />
             </div>
           </div>
 

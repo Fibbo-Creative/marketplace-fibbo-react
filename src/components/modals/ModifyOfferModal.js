@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { BasicModal } from "./BasicModal";
 import { formatEther } from "ethers/lib/utils";
 import { useWFTMContract } from "../../contracts/wftm";
 import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
