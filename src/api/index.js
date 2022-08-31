@@ -4,7 +4,7 @@ const localURL = "http://localhost:9000/";
 const localDevURL = "http://192.168.43.135.sslip.io:9000";
 const herokuDevURL = "https://market-api-dev.herokuapp.com/";
 
-const marketplaceApi = axios.create({ baseURL: localDevURL });
+const marketplaceApi = axios.create({ baseURL: localURL });
 const isMainnet = false;
 
 export const useApi = () => {

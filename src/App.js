@@ -21,6 +21,7 @@ import MyCollectionsContainer from "./pages/collection/MyCollectionsContainer";
 import EditCollectionContainer from "./pages/collection/edit/EditCollectionContainer";
 import ConfigContainer from "./pages/config/ConfigContainer";
 import ConfigProfileContainer from "./pages/config/ConfigProfileContainer";
+import ConfigNotificationsContainer from "./pages/config/ConfigNotifiactionsContainer";
 
 function App() {
   const { theme } = useContext(ThemeContext);
@@ -58,6 +59,11 @@ function App() {
 
             <Route path="/account/settings" element={<ConfigContainer />}>
               <Route path="profile" element={<ConfigProfileContainer />} />
+              <Route
+                path="notifications"
+                element={<ConfigNotificationsContainer />}
+              />
+              <Route path="appareance" element={<ConfigProfileContainer />} />
             </Route>
 
             <Route path="/account/:address" element={<ProfileContainer />} />

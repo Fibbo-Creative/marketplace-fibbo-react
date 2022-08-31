@@ -68,7 +68,7 @@ const formatDate = (datetime) => {
 export default function ItemPage() {
   const navigate = useNavigate();
   const { _width } = useResponsive();
-  const [{ userProfile }, dispatch] = useStateContext();
+  const [{ userProfile, literals }, dispatch] = useStateContext();
   let { collection, tokenId } = useParams();
   const { wallet, connectToWallet } = useAccount();
   const {
@@ -986,7 +986,7 @@ export default function ItemPage() {
                                 ? setOpenConnectionModal(true)
                                 : setOpenOfferModal(true)
                             }
-                            text="Realizar Oferta"
+                            text={literals.actions.makeOffer}
                           />
                         ) : (
                           <>

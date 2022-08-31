@@ -26,7 +26,7 @@ export const UserMenu = ({ setOpenStation, setOpenMenu, disconnectWallet }) => {
 
   const goToSettings = () => {
     setOpenMenu(false);
-    navigate(`/account/settings`);
+    navigate(`/account/settings/profile`);
   };
 
   const handleDisconnect = () => {
@@ -62,7 +62,6 @@ export const UserMenu = ({ setOpenStation, setOpenMenu, disconnectWallet }) => {
 
         <UserMenuItem
           text="Configuración"
-          disabled
           icon="ci:settings"
           onClick={() => goToSettings()}
         />

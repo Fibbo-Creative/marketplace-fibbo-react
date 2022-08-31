@@ -1,9 +1,19 @@
 const engLiterals = {
-  slogan: "FIBBO : The art of expressing youre art",
+  home: {
+    slogan: "FIBBO : The art of expressing youre art",
+  },
+  actions: {
+    makeOffer: "Make Offer",
+  },
 };
 
 const espLiterals = {
-  slogan: "FIBBO : El Arte de expresar tu Arte",
+  home: {
+    slogan: "FIBBO : El Arte de expresar tu Arte",
+  },
+  actions: {
+    makeOffer: "Realizar Oferta",
+  },
 };
 
 export { engLiterals, espLiterals };

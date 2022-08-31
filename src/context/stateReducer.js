@@ -13,8 +13,8 @@ const getLiterals = (lang) => {
 
 export const initialState = {
   userProfile: {},
-  lang: "esp",
-  literals: espLiterals,
+  lang: "eng",
+  literals: engLiterals,
   wallet: "",
   verifiedAddress: false,
   balance: 0,
