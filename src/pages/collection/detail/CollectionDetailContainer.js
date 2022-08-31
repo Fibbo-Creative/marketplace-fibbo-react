@@ -304,6 +304,7 @@ export const CollectionDetailContainer = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const collectionDetail = await getCollectionDetail(collection);
       setIsOwner(collectionDetail.creator === wallet);
       if (collectionDetail.creator !== wallet) {
@@ -562,7 +563,7 @@ export const CollectionDetailContainer = () => {
           <p className="text-md justify-center md:text-lg ">
             {expandedDesc
               ? collectionInfo?.description
-              : `${collectionInfo.description.substring(0, 70)}...`}
+              : `${collectionInfo?.description.substring(0, 70)}...`}
           </p>
           {expandedDesc ? (
             <p

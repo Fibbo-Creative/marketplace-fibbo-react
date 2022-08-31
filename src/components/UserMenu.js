@@ -61,6 +61,7 @@ export const UserMenu = ({ setOpenStation, setOpenMenu, disconnectWallet }) => {
         />
 
         <UserMenuItem
+          disabled
           text="Configuración"
           icon="ci:settings"
           onClick={() => goToSettings()}
