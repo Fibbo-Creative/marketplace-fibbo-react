@@ -12,9 +12,13 @@ export default function PutForSaleModal({
   const [priceFor, setPriceFor] = useState(0);
   const [payTokenSelected, setPayTokenSelected] = useState(null);
   const putItemForSale = async () => {
-    if (priceFor > 0) {
-      await onListItem(priceFor, payTokenSelected);
-      return "OK";
+    try {
+      if (priceFor > 0) {
+        await onListItem(priceFor, payTokenSelected);
+        return "OK";
+      }
+    } catch (e) {
+      return "ERROR";
     }
   };
   return (

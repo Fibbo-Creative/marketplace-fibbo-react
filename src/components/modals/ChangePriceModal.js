@@ -13,10 +13,14 @@ export default function ChangePriceModal({
   const [payTokenSelected, setPayTokenSelected] = useState(null);
 
   const changeListingPrice = async () => {
-    if (priceFor > 0) {
-      //en el contrato del marketplace -> createMarketItem
-      await onUpdatePrice(priceFor, payTokenSelected);
-      return "OK";
+    try {
+      if (priceFor > 0) {
+        //en el contrato del marketplace -> createMarketItem
+        await onUpdatePrice(priceFor, payTokenSelected);
+        return "OK";
+      }
+    } catch (e) {
+      return "ERROR";
     }
   };
   return (

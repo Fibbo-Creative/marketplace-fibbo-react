@@ -23,12 +23,16 @@ export default function ModifyOfferModal({
 
   const { getWFTMBalance } = useWFTMContract();
   const handleMakeOffer = async () => {
-    var endTime = new Date(`${expireDate}T${expireHour}`);
-    const deadline = Math.floor(endTime.getTime() / 1000);
+    try {
+      var endTime = new Date(`${expireDate}T${expireHour}`);
+      const deadline = Math.floor(endTime.getTime() / 1000);
 
-    await onModifyOffer(offerPrice, deadline, payTokenSelected);
+      await onModifyOffer(offerPrice, deadline, payTokenSelected);
 
-    return "OK";
+      return "OK";
+    } catch (e) {
+      return "ERROR";
+    }
   };
 
   useEffect(() => {

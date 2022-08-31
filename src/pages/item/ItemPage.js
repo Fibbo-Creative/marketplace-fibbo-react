@@ -433,33 +433,37 @@ export default function ItemPage() {
   };
 
   const handleModifyOffer = async (offerPrice, deadline, payToken) => {
-    await modifyOrder(
-      wallet,
-      collectionInfo.contractAddress,
-      tokenId,
-      offerPrice,
-      deadline,
-      payToken
-    );
+    try {
+      await modifyOrder(
+        wallet,
+        collectionInfo.contractAddress,
+        tokenId,
+        offerPrice,
+        deadline,
+        payToken
+      );
 
-    let newOffer = await getOffer(
-      collectionInfo.contractAddress,
-      tokenId,
-      wallet
-    );
+      let newOffer = await getOffer(
+        collectionInfo.contractAddress,
+        tokenId,
+        wallet
+      );
 
-    newOffer = {
-      ...newOffer,
-      creator: userProfile,
-    };
+      newOffer = {
+        ...newOffer,
+        creator: userProfile,
+      };
 
-    offers.current = offers.current.filter(
-      (offer) => offer.creator.wallet !== wallet
-    );
+      offers.current = offers.current.filter(
+        (offer) => offer.creator.wallet !== wallet
+      );
 
-    offers.current.push(newOffer);
+      offers.current.push(newOffer);
 
-    return "OK";
+      return "OK";
+    } catch (e) {
+      return "ERROR";
+    }
     //Modify offer!
   };
 

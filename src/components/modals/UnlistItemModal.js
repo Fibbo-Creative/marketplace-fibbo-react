@@ -12,8 +12,12 @@ export default function UnlistItemModal({
   onUnlistItem,
 }) {
   const unlistItem = async () => {
-    await onUnlistItem();
-    return "OK";
+    try {
+      await onUnlistItem();
+      return "OK";
+    } catch (e) {
+      return "ERROR";
+    }
   };
   return (
     <ActionModal

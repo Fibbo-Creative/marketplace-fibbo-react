@@ -14,8 +14,12 @@ export default function CancelAuctionModal({
   const navigate = useNavigate();
 
   const handleCancelAuction = async () => {
-    await onCancelAuction();
-    return "OK";
+    try {
+      await onCancelAuction();
+      return "OK";
+    } catch (e) {
+      return "ERROR";
+    }
   };
 
   return (

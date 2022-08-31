@@ -28,8 +28,12 @@ export default function MakeBidModal({
   const { getWFTMBalance } = useWFTMContract();
 
   const handleMakeBid = async () => {
-    await onMakeBid(bidAmmount, payTokenSelected);
-    return "OK";
+    try {
+      await onMakeBid(bidAmmount, payTokenSelected);
+      return "OK";
+    } catch (e) {
+      return "ERROR";
+    }
   };
 
   useEffect(() => {

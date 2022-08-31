@@ -12,8 +12,12 @@ export default function RemoveOfferModal({
   const navigate = useNavigate();
 
   const handleRemoveOffer = async () => {
-    await onCancelOffer();
-    return "OK";
+    try {
+      await onCancelOffer();
+      return "OK";
+    } catch (e) {
+      return "ERROR";
+    }
   };
   return (
     <ActionModal

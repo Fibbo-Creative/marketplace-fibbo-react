@@ -12,8 +12,12 @@ export default function AcceptOfferModal({
   const navigate = useNavigate();
 
   const handleAcceptOffer = async () => {
-    await onAcceptOffer(offer.creator.wallet);
-    return "OK";
+    try {
+      await onAcceptOffer(offer.creator.wallet);
+      return "OK";
+    } catch (e) {
+      return "ERROR";
+    }
   };
   return (
     <ActionModal

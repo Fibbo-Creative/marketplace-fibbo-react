@@ -31,21 +31,25 @@ export default function CreateAuctionModal({
   const { getWFTMBalance } = useWFTMContract();
 
   const handleCreateAuction = async () => {
-    var startTime = new Date(`${startDate}T${startHour}`);
-    var endTime = new Date(`${endDate}T${endHour}`);
+    try {
+      var startTime = new Date(`${startDate}T${startHour}`);
+      var endTime = new Date(`${endDate}T${endHour}`);
 
-    startTime = Math.floor(startTime.getTime() / 1000);
-    endTime = Math.floor(endTime.getTime() / 1000);
+      startTime = Math.floor(startTime.getTime() / 1000);
+      endTime = Math.floor(endTime.getTime() / 1000);
 
-    await onCreateAuction(
-      reservePrice,
-      buyNowPrice,
-      minimumBid,
-      startTime,
-      endTime,
-      payTokenSelected
-    );
-    return "OK";
+      await onCreateAuction(
+        reservePrice,
+        buyNowPrice,
+        minimumBid,
+        startTime,
+        endTime,
+        payTokenSelected
+      );
+      return "OK";
+    } catch (e) {
+      return "ERROR";
+    }
   };
 
   useEffect(() => {

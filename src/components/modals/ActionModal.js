@@ -19,21 +19,20 @@ export const ActionModal = ({
 }) => {
   const [loadingAction, setLoadingAction] = useState(false);
   const [completed, setCompleted] = useState(false);
+  const [error, setError] = useState(false);
 
   const handleSumbit = async () => {
     setLoadingAction(true);
-
-    await onSubmit()
-      .then((res) => {
-        if (res !== "OK") {
-          setCompleted(false);
-        } else {
-          setCompleted(true);
-        }
-      })
-      .catch((e) => {
+    setError(false);
+    await onSubmit().then((res) => {
+      if (res !== "OK") {
         setCompleted(false);
-      });
+        setError(true);
+      } else {
+        setCompleted(true);
+      }
+    });
+
     setLoadingAction(false);
   };
 
@@ -78,7 +77,7 @@ export const ActionModal = ({
             {!completed ? (
               <>
                 {children}
-                <div className="w-full flex items-center justify-center">
+                <div className="w-full flex flex-col gap-2 items-center justify-center">
                   <ActionButton
                     disabled={submitDisabled}
                     variant="contained"
@@ -86,6 +85,11 @@ export const ActionModal = ({
                     text={submitLabel}
                     buttonAction={handleSumbit}
                   />
+                  {error && (
+                    <p className="text-red-600">
+                      Ha ocurrido un error al realizar la acción
+                    </p>
+                  )}
                 </div>
               </>
             ) : (
@@ -94,7 +98,7 @@ export const ActionModal = ({
                   <Check />
                   <p>{completedText}</p>
                 </div>
-                <div className="w-full flex items-center justify-center">
+                <div className="w-full flex flex-col  gap-2 items-center justify-center">
                   <ActionButton
                     variant="contained"
                     size="large"
