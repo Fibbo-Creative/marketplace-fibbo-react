@@ -232,7 +232,6 @@ export default function EditCollectionContainer() {
   const handleCreateCollection = async () => {
     //Comprobar el formato de la url y colecciones
     let error = false;
-    console.log("KE");
 
     if (logoImage === "") {
       error = true;

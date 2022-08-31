@@ -292,9 +292,10 @@ export default function ItemPage() {
 
   const getBid = async () => {
     try {
+      const _collection = await getCollectionInfo(collection);
       if (auctionInfo.current) {
         const bid = await getHighestBid(
-          collectionInfo.contractAddress,
+          _collection.contractAddress,
           tokenId,
           auctionInfo.current.payToken
         );
@@ -610,14 +611,14 @@ export default function ItemPage() {
   useEffect(() => {
     const fetchData = async () => {
       await getItemDetails();
-      getAuctions().then(() => {
+      await getAuctions().then(() => {
         getBid();
         hasAnOffer();
-        setLoading(false);
       });
       const CoinGeckoClient = new CoinGecko();
       let data = await CoinGeckoClient.simple.price({ ids: ["fantom"] });
       setCoinPrice(data.data.fantom.usd);
+      setLoading(false);
     };
     fetchData();
   }, [collection, tokenId, wallet, refreshMetadata]);

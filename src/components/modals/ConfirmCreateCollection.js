@@ -12,7 +12,7 @@ export const ConfirmCreateCollection = ({
   collectionData,
   wallet,
 }) => {
-  const { createNFTContract } = useFactory();
+  const { createNFTContract, approveCollection } = useFactory();
   const { saveCollectionDetails } = useApi();
   const [address, setAddress] = useState("");
 

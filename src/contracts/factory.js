@@ -7,9 +7,12 @@ import { COLLECTION_ABI, FACTORY_ABI } from "./abi";
 import { useAddressRegistry } from "./addressRegistry";
 import { createForwarderInstance } from "./forwarder";
 import { signMetaTxRequest } from "./signer";
+import { useTokens } from "./token";
 export const useFactory = () => {
-  const { getFactoryAddress } = useAddressRegistry();
+  const { getFactoryAddress, getAuctionAddress, getMarketplaceAddress } =
+    useAddressRegistry();
   const { getContract } = useContract();
+  const { getERC721Contract } = useTokens();
   /*   const { createProvider } = useProvider(); */
 
   const getContractAddress = async () => await getFactoryAddress();
@@ -69,6 +72,40 @@ export const useFactory = () => {
     return await factoryContract.createNFTContract(...args, options);
   };
 
+  const approveCollection = async (wallet, contractAddress) => {
+    const contract = await getERC721Contract(contractAddress);
+    const auctionAddress = await getAuctionAddress();
+    const marketAddress = await getMarketplaceAddress();
+
+    const isApprovedAuctionForAll = await contract.isApprovedForAll(
+      wallet,
+      auctionAddress
+    );
+
+    console.log(isApprovedAuctionForAll);
+
+    if (!isApprovedAuctionForAll) {
+      const approveAuctionTx = await contract.setApprovalForAll(
+        auctionAddress,
+        true
+      );
+      await approveAuctionTx.wait();
+    }
+
+    const isApprovedMarkerForAll = await contract.isApprovedForAll(
+      wallet,
+      marketAddress
+    );
+
+    if (!isApprovedMarkerForAll) {
+      const approveMarketTx = await contract.setApprovalForAll(
+        marketAddress,
+        true
+      );
+      await approveMarketTx.wait();
+    }
+  };
+
   /* const createNFTContractGasless = async (name, symbol) => {
     const factoryContract = await getFactoryContract();
     const provider = createProvider();
@@ -84,6 +121,7 @@ export const useFactory = () => {
     getContractAddress,
     getFactoryContract,
     createNFTContract,
+    approveCollection,
     //createNFTContractGasless,
   };
 };
