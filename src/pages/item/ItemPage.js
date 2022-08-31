@@ -1308,7 +1308,7 @@ export default function ItemPage() {
         />
       </>
 
-      {!loading && tokenInfo.additionalContent && isOwner && (
+      {tokenInfo.current.additionalContent && isOwner && (
         <>
           <AdditionalContentModal
             showModal={openAdditionalModal}
