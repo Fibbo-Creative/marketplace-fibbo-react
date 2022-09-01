@@ -315,7 +315,11 @@ export default function ItemPage() {
       (offer) => offer.creator.wallet === wallet
     );
     if (hasMyOffer) {
-      setMyOffer(hasMyOffer);
+      const now = new Date().getTime();
+      const deadline = new Date(hasMyOffer.deadline * 1000).getTime();
+      if (now < deadline) {
+        setMyOffer(hasMyOffer);
+      }
     }
   };
 

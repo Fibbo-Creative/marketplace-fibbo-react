@@ -9,11 +9,13 @@ export const ProfileOffersTable = ({ offers }) => {
   const navigate = useNavigate();
 
   const formatDate = (offer) => {
+    const now = new Date().getTime();
     const deadline = offer.deadline;
 
     const date = new Date(deadline * 1000).toLocaleString();
 
-    return date;
+    const isExpired = now > new Date(deadline * 1000).getTime();
+    return isExpired ? "EXPIRED" : date;
   };
 
   return (
