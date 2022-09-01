@@ -656,7 +656,7 @@ export const CollectionDetailContainer = () => {
                 tooltip="insta-tooltip"
                 tooltipPlacement="top"
                 tooltipText="Ver Instagram"
-                onClick={() => openRedirectPopUp(collectionInfo.telegramURL)}
+                onClick={() => openRedirectPopUp(collectionInfo.instagramURL)}
               >
                 <Icon width={25} icon="cib:instagram"></Icon>
               </ButtonTooltip>
