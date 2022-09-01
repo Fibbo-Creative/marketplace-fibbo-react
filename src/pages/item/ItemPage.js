@@ -411,9 +411,8 @@ export default function ItemPage() {
       );
       setIsFreezedMetadata(true);
     } */
-    await acceptOffer(collectionInfo.contractAddress, tokenId, from);
-
     await setAcceptedOffer(collectionInfo.contractAddress, tokenId, from);
+    await acceptOffer(collectionInfo.contractAddress, tokenId, from);
 
     listing.current = null;
     offers.current = [];

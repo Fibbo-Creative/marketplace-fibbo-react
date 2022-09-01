@@ -144,15 +144,14 @@ export const ItemDirectOffers = ({
               wallet={wallet}
               onCancelOffer={onCancelOffer}
             />
-            {isOwner && (
-              <AcceptOfferModal
-                showModal={showAcceptOffer}
-                handleCloseModal={() => setShowAcceptOffer(false)}
-                offer={detailOffer}
-                wallet={wallet}
-                onAcceptOffer={onAcceptOffer}
-              />
-            )}
+
+            <AcceptOfferModal
+              showModal={showAcceptOffer}
+              handleCloseModal={() => setShowAcceptOffer(false)}
+              offer={detailOffer}
+              wallet={wallet}
+              onAcceptOffer={onAcceptOffer}
+            />
           </>
         ) : (
           <div className="flex flex-col gap-10">
