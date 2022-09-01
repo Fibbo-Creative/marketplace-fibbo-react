@@ -10,9 +10,11 @@ import { useStateContext } from "../context/StateProvider";
 import useRespnsive from "../hooks/useResponsive";
 import SearchResult from "./SearchResult";
 import { useApi } from "../api";
+import { NotificationsMenu } from "./NotificationsMenu";
 
 export default function Navbar() {
-  const { searchItemsAndProfiles } = useApi();
+  const { searchItemsAndProfiles, getUserNotifications, deleteNotification } =
+    useApi();
   const [searchText, setSearchText] = useState("");
   const { wallet, connectToWallet, disconnectWallet } = useAccount();
   const [openModal, setOpenModal] = useState(false);
@@ -21,6 +23,9 @@ export default function Navbar() {
   const [searchItemsData, setSearchItemsData] = useState([]);
   const [searchProfilesData, setSearchProfilesData] = useState([]);
   const [searchCollectionsData, setSearchCollectionsData] = useState([]);
+
+  const [notifications, setNotifications] = useState([]);
+  const [showNotificationsMenu, setShowNotificationsMenu] = useState(false);
 
   const [openSearchResult, setOpenSearchResult] = useState(false);
 
@@ -93,6 +98,17 @@ export default function Navbar() {
     setOpenedMenu(false);
   };
 
+  const openNotifications = () => {
+    setShowNotificationsMenu(true);
+  };
+
+  const removeNotification = async (notificationId) => {
+    await deleteNotification(notificationId);
+
+    let filtered = notifications.filter((item) => item._id !== notificationId);
+    setNotifications(filtered);
+  };
+
   useEffect(() => {
     if (_width >= 1024) {
       setOpenedMenu(false);
@@ -100,8 +116,16 @@ export default function Navbar() {
   }, [_width]);
 
   useEffect(() => {
-    setOpenedMenu(false);
-  }, [location.pathname]);
+    const fetchData = async () => {
+      setOpenedMenu(false);
+      if (wallet !== "") {
+        const userNotifications = await getUserNotifications(wallet);
+        console.log(userNotifications);
+        setNotifications(userNotifications);
+      }
+    };
+    fetchData();
+  }, [location.pathname, wallet]);
   return (
     <header className="fixed top-0 w-full h-[81px] bg-gradient-to-r from-[#7E29F1] z-10 to-[#b9dafe] ">
       <div className="h-[79px] bg-white dark:bg-dark-1 flex flex-row justify-between w-full items-center px-2">
@@ -159,13 +183,35 @@ export default function Navbar() {
               {!verifiedAddress && (
                 <NavbarItem text="Verifícate!" to="/verificate/request" />
               )}
+
               {/* {verifiedAddress && (
                 <NavbarItem text="Comunidad" to="/community" />
               )} */}
               {/* {verifiedAddress && <NavbarItem text="Creación" to="/create" />} */}
             </div>
           </div>
-          <div className=" gap-10 flex flex-row justify-between items-center ">
+          <div className=" gap-5 flex flex-row justify-between items-center ">
+            {wallet !== "" && (
+              <div className="flex flex-col">
+                <div className="flex" onClick={() => openNotifications()}>
+                  <Icon
+                    className="text-3xl text-gray-600 dark:text-gray-300 cursor-pointer"
+                    icon="ic:baseline-notifications"
+                    width={32}
+                  />
+                  <div className="rounded-lg absolute w-4 h-4 bg-red-400 text-xs flex items-center justify-center">
+                    {notifications.length}
+                  </div>
+                </div>
+                {showNotificationsMenu && (
+                  <NotificationsMenu
+                    notifications={notifications}
+                    setOpenMenu={setShowNotificationsMenu}
+                    removeNotification={removeNotification}
+                  />
+                )}
+              </div>
+            )}
             <WalletButton
               userProfile={userProfile}
               openModal={handleOpenModal}
@@ -173,6 +219,7 @@ export default function Navbar() {
               connectToWallet={connectToWallet}
               disconnectWallet={disconnectWallet}
             />
+
             <div className="flex">
               <div id="iconOpenBurguer" className="lg:hidden flex w-auto">
                 {!openedMenu ? (

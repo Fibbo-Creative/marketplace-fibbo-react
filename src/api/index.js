@@ -470,6 +470,21 @@ export const useApi = () => {
 
   //#endregion
 
+  //#region Notifications
+
+  const getUserNotifications = async (wallet) => {
+    const res = await marketplaceApi.get(`api/notifications?=address${wallet}`);
+    return res.data;
+  };
+
+  const deleteNotification = async (notificationId) => {
+    const res = await marketplaceApi.post(`api/deleteNotification`, {
+      notificationId: notificationId,
+    });
+    return res.data;
+  };
+
+  //#endregion
   return {
     getProfileInfo,
     createNewProfile,
@@ -510,5 +525,7 @@ export const useApi = () => {
     getMyCollections,
     editNftData,
     editCollectionDetails,
+    getUserNotifications,
+    deleteNotification,
   };
 };
