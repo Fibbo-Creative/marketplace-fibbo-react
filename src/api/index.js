@@ -236,6 +236,17 @@ export const useApi = () => {
     return offersResult;
   };
 
+  const setAcceptedOffer = async (collection, tokenId, creator) => {
+    const offers = await marketplaceApi.post(`/offers/accept`, {
+      collection: collection,
+      tokenId: tokenId,
+      creator: creator,
+    });
+    const offersResult = offers.data;
+
+    return offersResult;
+  };
+
   //#endregion
 
   //#region Collections
@@ -491,6 +502,7 @@ export const useApi = () => {
     getNftsFromCreator,
     getWalletHistory,
     getWalletOffers,
+    setAcceptedOffer,
     getAllPayTokens,
     getPayTokenInfo,
     setImportWFTM,
