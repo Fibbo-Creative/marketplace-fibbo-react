@@ -146,6 +146,7 @@ export const useMarketplace = () => {
     const tokenAddress = payToken.contractAddress;
     const erc20 = await getERC20Contract(tokenAddress);
 
+    console.log(await marketContract.offers(collection, tokenId, buyer));
     const allowance = await erc20.allowance(buyer, marketContract.address);
     console.log(formatEther(allowance));
     if (allowance.lt(parseEther(offerPrice).toString())) {

@@ -316,7 +316,12 @@ export default function ItemPage() {
       (offer) => offer.creator.wallet === wallet
     );
     if (hasMyOffer) {
-      setMyOffer(hasMyOffer);
+      const now = new Date().getTime();
+      const deadline = new Date(hasMyOffer.deadline * 1000);
+      console.log(now < deadline);
+      if (now < deadline) {
+        setMyOffer(hasMyOffer);
+      }
     }
   };
 
@@ -435,37 +440,32 @@ export default function ItemPage() {
   };
 
   const handleModifyOffer = async (offerPrice, deadline, payToken) => {
-    try {
-      await modifyOrder(
-        wallet,
-        collectionInfo.contractAddress,
-        tokenId,
-        offerPrice,
-        deadline,
-        payToken
-      );
+    await modifyOrder(
+      wallet,
+      collectionInfo.contractAddress,
+      tokenId,
+      offerPrice,
+      deadline,
+      payToken
+    );
 
-      let newOffer = await getOffer(
-        collectionInfo.contractAddress,
-        tokenId,
-        wallet
-      );
+    let newOffer = await getOffer(
+      collectionInfo.contractAddress,
+      tokenId,
+      wallet
+    );
 
-      newOffer = {
-        ...newOffer,
-        creator: userProfile,
-      };
+    newOffer = {
+      ...newOffer,
+      creator: userProfile,
+    };
 
-      offers.current = offers.current.filter(
-        (offer) => offer.creator.wallet !== wallet
-      );
+    offers.current = offers.current.filter(
+      (offer) => offer.creator.wallet !== wallet
+    );
 
-      offers.current.push(newOffer);
+    offers.current.push(newOffer);
 
-      return "OK";
-    } catch (e) {
-      return "ERROR";
-    }
     //Modify offer!
   };
 

@@ -93,7 +93,7 @@ export default function MakeOfferModal({
             valueDate={expireDate}
             valueHour={expireHour}
             onChangeDate={setExpireDate}
-            onChange={setExpireHour}
+            onChangeHour={setExpireHour}
             errorType={{
               type: "AFTER",
               params: {

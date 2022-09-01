@@ -30,6 +30,7 @@ export default function ModifyOfferModal({
 
       return "OK";
     } catch (e) {
+      console.log(e);
       return "ERROR";
     }
   };
@@ -98,7 +99,7 @@ export default function ModifyOfferModal({
             valueDate={expireDate}
             valueHour={expireHour}
             onChangeDate={setExpireDate}
-            onChange={setExpireHour}
+            onChangeHour={setExpireHour}
             errorType={{
               type: "AFTER",
               params: {

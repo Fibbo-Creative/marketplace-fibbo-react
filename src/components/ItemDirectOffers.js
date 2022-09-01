@@ -33,20 +33,21 @@ export const ItemDirectOffers = ({
   };
 
   const formatDate = (offer) => {
+    const now = new Date().getTime();
     const deadline = offer.deadline;
 
     const date = new Date(deadline * 1000).toLocaleString();
 
-    return date;
+    const isExpired = now > new Date(deadline * 1000).getTime();
+    return isExpired ? "EXPIRED" : date;
   };
 
   const hasExpired = (offer) => {
+    const now = new Date().getTime();
     const deadline = offer.deadline;
 
-    const deadLineDate = new Date(deadline * 1000).getTime();
-    const nowDate = new Date().getTime();
-
-    return nowDate > deadLineDate;
+    const isExpired = now > new Date(deadline * 1000).getTime();
+    return isExpired;
   };
 
   return (
@@ -114,23 +115,31 @@ export const ItemDirectOffers = ({
                         </div>
                       </td>
                       <td className="px-6 py-4">{formatDate(offer)}</td>
-                      {isOwner && (
-                        <td className="px-6 py-4 flex flex-col gap-2 text-xs">
-                          <ActionButton
-                            text="Acceptar"
-                            size="smaller"
-                            buttonAction={() => handleShowAcceptOffer(offer)}
-                          />
-                        </td>
-                      )}
-                      {wallet === offer.creator.wallet && (
-                        <td className="px-6 py-4 flex flex-col gap-2 text-xs">
-                          <ActionButton
-                            text="Cancelar"
-                            size="smaller"
-                            buttonAction={() => handleShowRemoveOffer(offer)}
-                          />
-                        </td>
+                      {!hasExpired(offer) && (
+                        <>
+                          {isOwner && (
+                            <td className="px-6 py-4 flex flex-col gap-2 text-xs">
+                              <ActionButton
+                                text="Acceptar"
+                                size="smaller"
+                                buttonAction={() =>
+                                  handleShowAcceptOffer(offer)
+                                }
+                              />
+                            </td>
+                          )}
+                          {wallet === offer.creator.wallet && (
+                            <td className="px-6 py-4 flex flex-col gap-2 text-xs">
+                              <ActionButton
+                                text="Cancelar"
+                                size="smaller"
+                                buttonAction={() =>
+                                  handleShowRemoveOffer(offer)
+                                }
+                              />
+                            </td>
+                          )}
+                        </>
                       )}
                     </tr>
                   );
