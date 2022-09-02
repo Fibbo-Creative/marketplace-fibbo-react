@@ -119,6 +119,7 @@ export default function Navbar() {
     const fetchData = async () => {
       setOpenedMenu(false);
       if (wallet !== "") {
+        console.log(wallet);
         const userNotifications = await getUserNotifications(wallet);
         console.log(userNotifications);
         setNotifications(userNotifications);
@@ -192,14 +193,14 @@ export default function Navbar() {
           </div>
           <div className=" gap-5 flex flex-row justify-between items-center ">
             {wallet !== "" && (
-              <div className="flex flex-col">
+              <div className="flex flex-col  cursor-pointer">
                 <div className="flex" onClick={() => openNotifications()}>
                   <Icon
-                    className="text-3xl text-gray-600 dark:text-gray-300 cursor-pointer"
+                    className="text-3xl text-gray-600 dark:text-gray-300"
                     icon="ic:baseline-notifications"
                     width={32}
                   />
-                  <div className="rounded-lg absolute w-4 h-4 bg-red-400 text-xs flex items-center justify-center">
+                  <div className="rounded-lg absolute text-white w-4 h-4 bg-red-400 text-xs flex items-center justify-center">
                     {notifications.length}
                   </div>
                 </div>

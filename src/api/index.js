@@ -473,7 +473,7 @@ export const useApi = () => {
   //#region Notifications
 
   const getUserNotifications = async (wallet) => {
-    const res = await marketplaceApi.get(`api/notifications?=address${wallet}`);
+    const res = await marketplaceApi.get(`api/notifications?address=${wallet}`);
     return res.data;
   };
 
