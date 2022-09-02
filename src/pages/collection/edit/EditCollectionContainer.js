@@ -365,6 +365,7 @@ export default function EditCollectionContainer() {
               el marketplace."
                 label="Logo de la colección"
                 imageURL={logoImage}
+                setImageURL={setLogoImage}
                 onFileSelected={onSelectLogoImage}
                 inputId="logoImageInput"
                 className="rounded-full w-[200px] h-[200px]"
@@ -379,6 +380,7 @@ export default function EditCollectionContainer() {
             <div className="flex pt-[30px]">
               <ImageInput
                 imageURL={mainImage}
+                setImageURL={setMainImage}
                 info=" Selecciona la imagen de presentación de la colección. Esta imagen se
               utilizará para presentar su colección en la página de inicio u otras
               áreas promocionales de Fibbo. Si no se selecciona ninguna imagen, se
@@ -399,6 +401,7 @@ export default function EditCollectionContainer() {
             <div className="flex pt-[30px]">
               <ImageInput
                 imageURL={bannerImage}
+                setImageURL={setBannerImage}
                 info="Esta imagen aparecerá en la parte superior de la página de tu
               colección. Evite incluir demasiado texto en esta imagen de banner,
               ya que las dimensiones cambian en diferentes dispositivos."

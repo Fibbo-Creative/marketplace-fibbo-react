@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import fibboLogo from "../../assets/logoNavbarSmall.png";
 export const ImageInput = ({
   imageURL,
+  setImageURL,
   required,
   info,
   label,
@@ -14,13 +15,15 @@ export const ImageInput = ({
   className,
   icon,
 }) => {
+  const [loadingImage, setLoadingImage] = useState(false);
+
   const selectImage = () => {
     const inputRef = document.getElementById(inputId);
     inputRef.click();
   };
-  const [loadingImage, setLoadingImage] = useState(false);
 
   const handleOnFileSelected = async (e) => {
+    setImageURL("");
     setLoadingImage(true);
     await onFileSelected(e);
 

@@ -99,19 +99,19 @@ export default function EditContainer() {
       setImageError(false);
 
       try {
-        const imgAddedToIPFS = await addImgToIpfs(file);
+        const isExplicit = collectionSelected.explicitContent;
+        const { sanity, ipfs, error } = await uploadImgToCDN(
+          file,
+          true,
+          isExplicit
+        );
+        setIpfsImageUrl(`https://ipfs.io/ipfs/${ipfs}`);
 
-        setIpfsImageUrl(`https://ipfs.infura.io/ipfs/${imgAddedToIPFS.path}`);
-
-        const imgAddedToSanity = await uploadImgToCDN(file);
-
-        if (imgAddedToSanity === "INVALID IMG") {
+        if (error) {
           setImageError(true);
           setImageMessageError("Imagen no permitida, contiene contenido NFSW");
         } else {
-          document.getElementById("divTextImgNFT").style.visibility = "hidden";
-          document.getElementById("divImgNFT").style.padding = "0";
-          setSanityImgUrl(imgAddedToSanity);
+          setSanityImgUrl(sanity);
           setImageError(false);
         }
       } catch (error) {
@@ -214,6 +214,7 @@ export default function EditContainer() {
                 <div className="flex flex-col gap-20">
                   <ImageInput
                     imageURL={sanityImgUrl}
+                    setImageURL={setSanityImgUrl}
                     onFileSelected={onFileSelected}
                     inputId="nftImageInput"
                     className={`outline-dashed dark:bg-dark-1 ${

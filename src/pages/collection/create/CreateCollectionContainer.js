@@ -300,6 +300,7 @@ export default function CreateCollectionContainer() {
               el marketplace. El tamaño recomendado és 350 x 350."
               label="Logo de la colección"
               imageURL={logoImage}
+              setImageURL={setLogoImage}
               onFileSelected={onSelectLogoImage}
               inputId="logoImageInput"
               className="rounded-full w-[200px] h-[200px]"
@@ -314,6 +315,7 @@ export default function CreateCollectionContainer() {
           <div className="flex pt-[30px] mr-5 md:mr-0">
             <ImageInput
               imageURL={mainImage}
+              setImageURL={setMainImage}
               info=" Selecciona la imagen de presentación de la colección. Esta imagen se
               utilizará para presentar su colección en la página de inicio u otras
               áreas promocionales de Fibbo. Si no se selecciona ninguna imagen, se
@@ -334,6 +336,7 @@ export default function CreateCollectionContainer() {
           <div className="flex pt-[30px] mr-5 md:mr-0">
             <ImageInput
               imageURL={bannerImage}
+              setImageURL={setBannerImage}
               info="Esta imagen aparecerá en la parte superior de la página de tu
               colección. Evite incluir demasiado texto en esta imagen de banner,
               ya que las dimensiones cambian en diferentes dispositivos. El tamaño recomendado és 1400 x 350."

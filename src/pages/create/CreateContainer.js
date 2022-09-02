@@ -173,6 +173,7 @@ export default function CreateContainer() {
                 <div className="flex flex-col gap-20">
                   <ImageInput
                     imageURL={sanityImgUrl}
+                    setImageURL={setSanityImgUrl}
                     inputId="inputNFT"
                     onFileSelected={onFileSelected}
                     imageError={imageError}

@@ -63,6 +63,7 @@ export default function ConfigProfileContainer({ children }) {
           <ImageInput
             label="Imagen de perfil"
             imageURL={profileImg}
+            setImageURL={setProfileImg}
             className=" rounded-full w-[200px] h-[200px]"
             inputId="profileImageInput"
             icon={true}
@@ -70,6 +71,7 @@ export default function ConfigProfileContainer({ children }) {
           <ImageInput
             label="Imagen de fondo"
             imageURL={bannerImage}
+            setImageURL={setBannerImage}
             className=" w-[300px] h-[200px]"
             inputId="bannerImageInput"
             icon={true}
