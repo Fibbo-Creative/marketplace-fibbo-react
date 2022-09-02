@@ -9,8 +9,10 @@ import useAccount from "../../../hooks/useAccount";
 import { ConfirmCreateCollection } from "../../../components/modals/ConfirmCreateCollection";
 import ReactTooltip from "react-tooltip";
 import { ThemeContext } from "../../../context/ThemeContext";
+import { useStateContext } from "../../../context/StateProvider";
 
 export default function CreateCollectionContainer() {
+  const [{literals}] = useStateContext();
   const { uploadImgToCDN, checkNameRepeated, checkUrlRepeated } = useApi();
   const { theme } = useContext(ThemeContext);
   const { wallet, connectToWallet } = useAccount();
@@ -289,7 +291,7 @@ export default function CreateCollectionContainer() {
       <div className="flex w-11/12 md:w-9/12 w-7/11 flex-col  ">
         <div className="flex w-full p-[40px] content-center justify-center">
           <div id="top" className="text-2xl">
-            <b>CREAR COLECCIÓN</b>
+            <b>{literals.actions.createCollection}</b>
           </div>
         </div>
 
@@ -297,9 +299,8 @@ export default function CreateCollectionContainer() {
           <div className="flex flex-col pt-[2px] md:pt-[30px] mr-5 md:mr-0">
             <ImageInput
               required
-              info="Selecciona el logo de la colección que será visible al navegar por
-              el marketplace. El tamaño recomendado és 350 x 350."
-              label="Logo de la colección"
+              info={literals.createCollection.logoDesc}
+              label={literals.createCollection.logo}
               imageURL={logoImage}
               onFileSelected={onSelectLogoImage}
               inputId="logoImageInput"
@@ -315,11 +316,8 @@ export default function CreateCollectionContainer() {
           <div className="flex pt-[30px] mr-5 md:mr-0">
             <ImageInput
               imageURL={mainImage}
-              info=" Selecciona la imagen de presentación de la colección. Esta imagen se
-              utilizará para presentar su colección en la página de inicio u otras
-              áreas promocionales de Fibbo. Si no se selecciona ninguna imagen, se
-              usará el logo de la colección. El tamaño recomendado és 600 x 400."
-              label="Imagen principal de la colección"
+              info= {literals.createCollection.imgPrincipalDesc}
+              label={literals.createCollection.imgPrincipal}
               inputId="mainImageInput"
               backgroundImage={true}
               className="rounded-xl w-[300px] h-[200px]"
@@ -335,10 +333,8 @@ export default function CreateCollectionContainer() {
           <div className="flex pt-[30px] mr-5 md:mr-0">
             <ImageInput
               imageURL={bannerImage}
-              info="Esta imagen aparecerá en la parte superior de la página de tu
-              colección. Evite incluir demasiado texto en esta imagen de banner,
-              ya que las dimensiones cambian en diferentes dispositivos. El tamaño recomendado és 1400 x 350."
-              label="Pancarta de la colección"
+              info={literals.createCollection.bannerDesc}
+              label={literals.createCollection.banner}
               backgroundImage={true}
               inputId="bannerImageInput"
               className="rounded-xl w-11/12 h-[130px] sm:w-[600px] sm:h-[200px]"
@@ -352,8 +348,8 @@ export default function CreateCollectionContainer() {
 
         <div className="mt-10">
           <TextInput
-            placeholder={"Ejemplo: Pinturas rupestres"}
-            label={"Nombre de la colección"}
+            placeholder={literals.createCollection.example}
+            label={literals.createCollection.collectionName}
             required
             value={name}
             onChange={(e) => handleChangeName(e.target.value)}
@@ -368,16 +364,16 @@ export default function CreateCollectionContainer() {
             value={url}
             onChange={(e) => handleChangeURL(e.target.value)}
             error={urlError}
-            info="Personaliza tu URL en Fibbo. Solo puede contener letras minúsculas, números y guiones"
+            info={literals.createCollection.urlDesc}
             errorMessage={urlErrorMessage}
           />
         </div>
         <div className="mt-10">
           <TextArea
-            placeholder={"Cuenta todo detalle acerca de tu colección!"}
-            label="Descripción"
+            placeholder={literals.createCollection.descriptionPlaceholder}
+            label={literals.createCollection.description}
             required
-            info="La descripción de la colección debe contener un máximo de 1000 carácteres."
+            info={literals.createCollection.descriptionDesc}
             error={descError}
             value={desc}
             rows={"6"}
@@ -452,7 +448,7 @@ export default function CreateCollectionContainer() {
               />
 
               <span className="font-bold text-lg text-gray-700 dark:text-gray-400 border-gray-300 p-3 flex-row ">
-                Contenido Explícito o Sensible
+                {literals.createCollection.explicit}
               </span>
             </label>
             <div
@@ -473,7 +469,7 @@ export default function CreateCollectionContainer() {
 
         <div className="flex flex-col w-full pt-[40px] content-center justify-center ">
           <ActionButton
-            text="Crear Colección"
+            text={literals.actions.createCollection}
             size="large"
             buttonAction={handleCreateCollection}
           />

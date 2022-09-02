@@ -12,6 +12,7 @@ import { PageWithLoading } from "../../components/basic/PageWithLoading";
 import { NotVerified } from "../../components/basic/NotVerified";
 import { ImageInput } from "../../components/inputs/ImageInput";
 import { NotOwner } from "../../components/basic/NotOwner";
+import { engLiterals } from "../../context/lang";
 
 const validateName = (name) => {
   if (name.length > 4 && name.length < 30) return true;
@@ -32,7 +33,7 @@ export default function CreateContainer() {
   const [desc, setDesc] = useState("");
   const [royalty, setRoyalty] = useState("");
   const { connectToWallet, wallet } = useAccount();
-  const [{ verifiedAddress }] = useStateContext();
+  const [{ verifiedAddress, literals }] = useStateContext();
   const [collectionsAvailable, setCollectionsAvailable] = useState([]);
   const [collectionSelected, setCollectionsSelected] = useState(null);
   const [isOwner, setIsOwner] = useState(false);
@@ -327,8 +328,7 @@ export default function CreateContainer() {
             </div>
           ) : (
             <NotVerified
-              text=" No eres un artista verificado para poder crear NFTs en el marketplace,
-          verificate y se parte de la comunidad!"
+              text={literals.modals.artistNotVerified2}
             />
           )}
         </>

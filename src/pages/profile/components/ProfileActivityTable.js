@@ -90,7 +90,7 @@ export default function ProfileActivityTable({ historyItems }) {
         onClick={() => setOpenFilters(!openFilters)}
         className="w-[200px] border dark:border-dark-4 px-6 py-3 font-bold text-lg rounded-lg dark:bg-dark-1 bg-gray-300 hover:dark:bg-dark-4 transition hover:bg-gray-400"
       >
-        Filtrar Historial
+        {literals.detailNFT.filterHistorial}
       </button>
       {openFilters && (
         <div

@@ -285,7 +285,7 @@ export default function ProfileContainer() {
                   data-for={profileData.current?.verified && "verify-info"}
                   data-tip={
                     profileData.current?.verified &&
-                    "Artista verificado por <br/> el equipo de FIBOO"
+                    literals.profile.sentence 
                   }
                   className={`flex cursorPointer ${
                     profileData.current?.verified && "gap-5 items-center"
@@ -333,7 +333,7 @@ export default function ProfileContainer() {
               {!loadingInfo && (
                 <>
                   <ProfileTab
-                    title={"En posesión"}
+                    title={literals.profile.collected}
                     count={collectedItems.length}
                     type={{
                       type: "Collected",
@@ -348,7 +348,7 @@ export default function ProfileContainer() {
                     }
                   />
                   <ProfileTab
-                    title={"Creados"}
+                    title={literals.profile.created}
                     count={createdItems.length}
                     type={{ type: "Created", viewAs: "grid" }}
                     selectedType={itemsType}
@@ -357,7 +357,7 @@ export default function ProfileContainer() {
                     }
                   />
                   <ProfileTab
-                    title={literals.itemPage.properties}
+                    title={literals.profile.activity}
                     count={activity.length}
                     type={{ type: "Activity", viewAs: "table" }}
                     selectedType={itemsType}
@@ -366,7 +366,7 @@ export default function ProfileContainer() {
                     }
                   />
                   <ProfileTab
-                    title={literals.itemPage.offers}
+                    title={literals.profile.offers}
                     count={offers.length}
                     type={{ type: "Offers", viewAs: "table" }}
                     selectedType={itemsType}
@@ -375,7 +375,7 @@ export default function ProfileContainer() {
                     }
                   />
                   <ProfileTab
-                    title={"Mis Ofertas"}
+                    title={literals.profile.myOffers}
                     count={myOffers.length}
                     type={{ type: "MyOffers", viewAs: "table" }}
                     selectedType={itemsType}

@@ -32,7 +32,7 @@ export default function DetailInfo({ properties, chainInfo, loading }) {
           <div className="flex flex-col gap-2">
             <div className="flex justify-between">
               <div>
-                <b>Colección</b>
+                <b>{literals.detailNFT.collection}</b>
               </div>
               <p
                 onClick={() =>
@@ -52,19 +52,19 @@ export default function DetailInfo({ properties, chainInfo, loading }) {
             </div>
             <div className="flex justify-between">
               <div>
-                <b>Cadena</b>
+                <b>{literals.detailNFT.chain}</b>
               </div>
               <div>{chainInfo?.network}</div>
             </div>
             <div className="flex justify-between">
               <div>
-                <b>Id Cadena</b>
+                <b>{literals.detailNFT.idchain}</b>
               </div>
               <div>{chainInfo?.chainId}</div>
             </div>
             <div className="flex justify-between">
               <div>
-                <b>Id Token</b>
+                <b>{literals.detailNFT.idtoken}</b>
               </div>
               <div>
                 {chainInfo?.tokenId} / {properties?.totalItems}
@@ -81,13 +81,13 @@ export default function DetailInfo({ properties, chainInfo, loading }) {
           <div className="flex flex-col gap-2">
             <div className="flex justify-between">
               <div>
-                <b>Royalties</b>
+                <b>{literals.detailNFT.royalties}</b>
               </div>
               <div>{properties?.royalty}%</div>
             </div>
             <div className="flex justify-between items-center">
               <div>
-                <b>Recipiente</b>
+                <b>{literals.detailNFT.recipient}</b>
               </div>
               <div className="flex gap-3 items-center">
                 <img
@@ -110,7 +110,7 @@ export default function DetailInfo({ properties, chainInfo, loading }) {
             </div>
             <div className="flex justify-between items-center">
               <div>
-                <b>Colección</b>
+                <b>{literals.detailNFT.collection}</b>
               </div>
               <div className="flex gap-3 items-center">
                 <img

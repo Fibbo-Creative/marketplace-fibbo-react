@@ -6,6 +6,8 @@ import { useFactory } from "../../contracts/factory";
 import { ethers } from "ethers";
 import { BasicModal } from "./BasicModal";
 import ActionButton from "../ActionButton";
+import { engLiterals } from "../../context/lang";
+import { useStateContext } from "../../context/StateProvider";
 export const ConfirmCreateCollection = ({
   showModal,
   handleCloseModal,
@@ -17,7 +19,7 @@ export const ConfirmCreateCollection = ({
   const [address, setAddress] = useState("");
 
   const navigate = useNavigate();
-
+  const [{literals}] = useStateContext();
   const createCollection = async (e) => {
     const {
       logoImage,
@@ -87,7 +89,7 @@ export const ConfirmCreateCollection = ({
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       onSubmit={() => createCollection()}
-      submitLabel={"Crear Colección"}
+      submitLabel={literals.actions.createCollection}
       completedText={`Colección creada correctamente`}
       completedLabel={`Ver Colección Creada`}
       completedAction={seeResult}
