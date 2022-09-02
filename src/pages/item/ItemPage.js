@@ -527,7 +527,7 @@ export default function ItemPage() {
       ..._auction,
       payToken: payTokenInfo,
     };
-    setIsFreezedMetadata(true);
+
     setIsOnAuction(true);
   };
 
