@@ -85,6 +85,7 @@ export default function ItemPage() {
     getListingInfo,
     listItem,
     cancelListing,
+
     updateListing,
     makeOffer,
     getOffer,
@@ -336,14 +337,9 @@ export default function ItemPage() {
     } */
     await listItem(collectionInfo.contractAddress, tokenId, price, payToken);
 
-    let listingInfo = await getListingInfo(
-      collectionInfo.contractAddress,
-      tokenId,
-      wallet
-    );
     let payTokenInfo = await getPayTokenInfo(payToken.contractAddress);
     listing.current = {
-      ...listingInfo,
+      price: price,
       payToken: payTokenInfo,
     };
 
@@ -384,15 +380,11 @@ export default function ItemPage() {
       payToken
     );
 
-    let _offer = await getOffer(
-      collectionInfo.contractAddress,
-      tokenId,
-      wallet
-    );
     const offerCreator = await getProfileInfo(wallet);
     const payTokenInfo = await getPayTokenInfo(payToken.contractAddress);
-    _offer = {
-      ..._offer,
+    const _offer = {
+      price: offerPrice,
+      deadline: deadline,
       creator: offerCreator,
       payToken: payTokenInfo,
     };

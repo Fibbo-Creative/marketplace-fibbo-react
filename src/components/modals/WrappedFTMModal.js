@@ -17,7 +17,8 @@ export default function WrappedFTMModal({
   handleCloseModal,
   wallet,
 }) {
-  const { getWFTMBalance, wrapFTM, unwrapFTM } = useWFTMContract();
+  const { getWFTMBalance, wrapFTM, unwrapFTM, unwrapFTMGassless } =
+    useWFTMContract();
   const [{ userProfile }, dispatch] = useStateContext();
   const [ftmAmount, setFtmAmount] = useState(0);
   const [completedAction, setCompletedAction] = useState(false);
@@ -71,8 +72,7 @@ export default function WrappedFTMModal({
     try {
       const price = ethers.utils.parseEther(ftmAmount.toString());
       if (!fromFTM) {
-        const tx = await unwrapFTM(price);
-        await tx.wait();
+        await unwrapFTMGassless(price);
         dispatch({
           type: actionTypes.UPDATED_WFTM,
         });

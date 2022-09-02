@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-const address = "0x12e4e5A55B0F8B53fFf67C1eb580951E99b07EE6";
+const address = "0x7687D1fcF56779b19beCBFae93cabAD1EA77878b";
 const abi = [
   { inputs: [], stateMutability: "nonpayable", type: "constructor" },
   {

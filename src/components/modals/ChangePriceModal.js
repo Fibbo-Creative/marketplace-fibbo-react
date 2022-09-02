@@ -35,7 +35,7 @@ export default function ChangePriceModal({
       completedLabel={`Ver ítem acutalizado`}
       completedAction={handleCloseModal}
     >
-      <div className="my-10 mx-8 flex flex-col gap-10 pb-10">
+      <div className="my-10 mx-8 flex flex-col items-center gap-10 pb-10">
         <Erc20AmountInput
           label={"Precio"}
           value={priceFor}

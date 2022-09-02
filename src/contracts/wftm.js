@@ -7,10 +7,15 @@ import { ethers } from "ethers";
 import { useMarketplace } from "./market";
 import { useApi } from "../api";
 import { useAuction } from "./auction";
+import useProvider from "../hooks/useProvider";
+import { createForwarderInstance } from "./forwarder";
+import { signMetaTxRequest } from "./signer";
+import { formatEther, parseEther } from "ethers/lib/utils";
+import { sendMetaTx } from "./meta";
 
 const WFTM_ADDRESS = {
   [ChainId.FANTOM]: "0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83",
-  [ChainId.FANTOM_TESTNET]: "0xf1277d1Ed8AD466beddF92ef448A132661956621",
+  [ChainId.FANTOM_TESTNET]: "0x4EEf747dC4f5d110d9bCfA5C6F24b3359bD4B2d4",
 };
 
 const tokenSymbol = "WFTM";
@@ -27,6 +32,7 @@ export const useWFTMContract = () => {
   const { setImportWFTM } = useApi();
   const { getContractAddress } = useMarketplace();
   const { getAuctionContract } = useAuction();
+  const { createProvider } = useProvider();
 
   const wftmAddress = WFTM_ADDRESS[CHAIN];
 
@@ -53,6 +59,21 @@ export const useWFTMContract = () => {
     if (success) await setImportWFTM(wallet);
   };
 
+  const unwrapFTMGassless = async (value) => {
+    //if (!isImported) await importWFTM(wallet);
+    const contract = await getWFTMContract();
+
+    const provider = createProvider();
+    await window.ethereum.enable();
+    const userProvider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = userProvider.getSigner();
+    const from = await signer.getAddress();
+    return await sendMetaTx(contract, provider, signer, {
+      functionName: "withdraw",
+      args: [value],
+    });
+  };
+
   const wrapFTM = async (isImported, wallet, value, from) => {
     if (!isImported) await importWFTM(wallet);
     const contract = await getWFTMContract();
@@ -73,14 +94,7 @@ export const useWFTMContract = () => {
     let tx = await contract.deposit(options);
     tx.wait();
 
-    const approveTx = await contract.approve(marketAddress, value);
-    await approveTx.wait();
-
-    const approveAuctionTx = await contract.approve(
-      auctionContract.address,
-      value
-    );
-    await approveAuctionTx.wait();
+    await approve(marketAddress, value);
   };
 
   const unwrapFTM = async (value) => {
@@ -100,17 +114,21 @@ export const useWFTMContract = () => {
 
   const approve = async (address, value) => {
     const contract = await getWFTMContract();
-    const tx = await contract.approve(
-      address,
-      ethers.constants.MaxUint256 || value
-    );
-    await tx.wait();
+    const provider = createProvider();
+    await window.ethereum.enable();
+    const userProvider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = userProvider.getSigner();
+    return await sendMetaTx(contract, provider, signer, {
+      functionName: "approve",
+      args: [address, value],
+    });
   };
 
   return {
     wftmAddress,
     getWFTMBalance,
     wrapFTM,
+    unwrapFTMGassless,
     unwrapFTM,
     getAllowance,
     approve,

@@ -6,11 +6,16 @@ import { useAddressRegistry } from "./addressRegistry";
 import { formatEther, parseEther } from "ethers/lib/utils";
 import { useTokens } from "./token";
 import useAccount from "../hooks/useAccount";
+import useProvider from "../hooks/useProvider";
+import { sendMetaTx } from "./meta";
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const useMarketplace = () => {
   const { getERC20Contract, getERC721Contract } = useTokens();
   const { getMarketplaceAddress } = useAddressRegistry();
   const { wallet } = useAccount();
+  const { createProvider } = useProvider();
 
   const { getContract } = useContract();
 
@@ -38,15 +43,22 @@ export const useMarketplace = () => {
       await approveTx.wait();
     }
 
-    let listItemTx = await marketContract.listItem(
-      collection,
-      tokenId,
-      payToken.contractAddress,
-      parseEther(price.toString()),
-      ethers.BigNumber.from(Math.floor(new Date().getTime() / 1000))
-    );
+    const provider = createProvider();
+    await window.ethereum.enable();
+    const userProvider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = userProvider.getSigner();
+    const from = await signer.getAddress();
 
-    await listItemTx.wait();
+    return await sendMetaTx(marketContract, provider, signer, {
+      functionName: "listItem",
+      args: [
+        collection,
+        tokenId,
+        payToken.contractAddress,
+        parseEther(price.toString()),
+        ethers.BigNumber.from(Math.floor(new Date().getTime() / 1000)),
+      ],
+    });
   };
 
   const buyItem = async (
@@ -60,23 +72,30 @@ export const useMarketplace = () => {
     const marketContract = await getMarketContract();
     const tokenAddress = payToken.contractAddress;
     const erc20 = await getERC20Contract(tokenAddress);
+
+    const provider = createProvider();
+    await window.ethereum.enable();
+    const userProvider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = userProvider.getSigner();
+    const from = await signer.getAddress();
+
     price = parseEther(price.toString());
     const allowance = await erc20.allowance(buyer, marketContract.address);
 
     if (allowance.lt(price)) {
-      const tx = await erc20.approve(marketContract.address, price);
-      await tx.wait();
+      await sendMetaTx(erc20, provider, signer, {
+        functionName: "approve",
+        args: [marketContract.address, price],
+      });
+      await sleep(3000);
     }
+
     const ERC721contract = await getERC721Contract(collection);
 
-    let buyItemTx = await marketContract.buyItem(
-      collection,
-      tokenId,
-      tokenAddress,
-      owner
-    );
-
-    await buyItemTx.wait();
+    await sendMetaTx(marketContract, provider, signer, {
+      functionName: "buyItem",
+      args: [collection, tokenId, tokenAddress, owner],
+    });
 
     const isApproved = await ERC721contract.isApprovedForAll(
       wallet,
@@ -96,25 +115,36 @@ export const useMarketplace = () => {
     const marketContract = await getMarketContract();
     const ERC721contract = await getERC721Contract(collection);
 
-    let cancelListingTx = await marketContract.cancelListing(
-      ERC721contract.address,
-      tokenId
-    );
+    const provider = createProvider();
+    await window.ethereum.enable();
+    const userProvider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = userProvider.getSigner();
+    const from = await signer.getAddress();
 
-    await cancelListingTx.wait();
+    return await sendMetaTx(marketContract, provider, signer, {
+      functionName: "cancelListing",
+      args: [ERC721contract.address, tokenId],
+    });
   };
 
   const updateListing = async (collection, tokenId, price, payToken) => {
     const marketContract = await getMarketContract();
 
-    let updateListingTx = await marketContract.updateListing(
-      collection,
-      tokenId,
-      payToken.contractAddress,
-      parseEther(price.toString())
-    );
+    const provider = createProvider();
+    await window.ethereum.enable();
+    const userProvider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = userProvider.getSigner();
+    const from = await signer.getAddress();
 
-    await updateListingTx.wait();
+    return await sendMetaTx(marketContract, provider, signer, {
+      functionName: "updateListing",
+      args: [
+        collection,
+        tokenId,
+        payToken.contractAddress,
+        parseEther(price.toString()),
+      ],
+    });
   };
 
   const getListingInfo = async (collection, tokenId, owner) => {
@@ -146,26 +176,32 @@ export const useMarketplace = () => {
     const tokenAddress = payToken.contractAddress;
     const erc20 = await getERC20Contract(tokenAddress);
 
-    console.log(await marketContract.offers(collection, tokenId, buyer));
+    const provider = createProvider();
+    await window.ethereum.enable();
+    const userProvider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = userProvider.getSigner();
+    const from = await signer.getAddress();
+
     const allowance = await erc20.allowance(buyer, marketContract.address);
-    console.log(formatEther(allowance));
+
     if (allowance.lt(parseEther(offerPrice).toString())) {
-      const tx = await erc20.approve(
-        marketContract.address,
-        parseEther(offerPrice.toString())
-      );
-      await tx.wait();
+      await sendMetaTx(erc20, provider, signer, {
+        functionName: "approve",
+        args: [marketContract.address, parseEther(offerPrice.toString())],
+      });
+      await sleep(3000);
     }
 
-    let makeOfferTx = await marketContract.createOffer(
-      collection,
-      ethers.BigNumber.from(tokenId),
-      tokenAddress,
-      parseEther(offerPrice.toString()),
-      ethers.BigNumber.from(deadline)
-    );
-
-    await makeOfferTx.wait();
+    await sendMetaTx(marketContract, provider, signer, {
+      functionName: "createOffer",
+      args: [
+        collection,
+        ethers.BigNumber.from(tokenId),
+        tokenAddress,
+        parseEther(offerPrice.toString()),
+        ethers.BigNumber.from(deadline),
+      ],
+    });
   };
 
   const modifyOrder = async (
@@ -180,29 +216,41 @@ export const useMarketplace = () => {
     const tokenAddress = payToken.contractAddress;
     const erc20 = await getERC20Contract(tokenAddress);
 
+    const provider = createProvider();
+    await window.ethereum.enable();
+    const userProvider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = userProvider.getSigner();
+    const from = await signer.getAddress();
     const allowance = await erc20.allowance(buyer, marketContract.address);
     if (allowance.lt(offerPrice)) {
-      const tx = await erc20.approve(
-        marketContract.address,
-        parseEther(offerPrice.toString())
-      );
-      await tx.wait();
+      await sendMetaTx(erc20, provider, signer, {
+        functionName: "approve",
+        args: [marketContract.address, parseEther(offerPrice.toString())],
+      });
+      await sleep(3000);
     }
 
-    let makeOfferTx = await marketContract.modifyOffer(
-      collection,
-      ethers.BigNumber.from(tokenId),
-      tokenAddress,
-      parseEther(offerPrice.toString()),
-      ethers.BigNumber.from(deadline)
-    );
-
-    await makeOfferTx.wait();
+    return await sendMetaTx(marketContract, provider, signer, {
+      functionName: "modifyOffer",
+      args: [
+        collection,
+        ethers.BigNumber.from(tokenId),
+        tokenAddress,
+        parseEther(offerPrice.toString()),
+        ethers.BigNumber.from(deadline),
+      ],
+    });
   };
 
   const acceptOffer = async (collection, tokenId, creator) => {
     const marketContract = await getMarketContract();
     const ERC721contract = await getERC721Contract(collection);
+
+    const provider = createProvider();
+    await window.ethereum.enable();
+    const userProvider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = userProvider.getSigner();
+    const from = await signer.getAddress();
 
     const isApproved = await ERC721contract.isApprovedForAll(
       wallet,
@@ -217,21 +265,24 @@ export const useMarketplace = () => {
       await approveTx.wait();
     }
 
-    let acceptOfferTx = await marketContract.acceptOffer(
-      collection,
-      tokenId,
-      creator
-    );
-
-    await acceptOfferTx.wait();
+    await sendMetaTx(marketContract, provider, signer, {
+      functionName: "acceptOffer",
+      args: [collection, tokenId, creator],
+    });
   };
 
   const cancelOffer = async (collection, tokenId) => {
     const marketContract = await getMarketContract();
+    const provider = createProvider();
+    await window.ethereum.enable();
+    const userProvider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = userProvider.getSigner();
+    const from = await signer.getAddress();
 
-    let cancelOfferTx = await marketContract.cancelOffer(collection, tokenId);
-
-    await cancelOfferTx.wait();
+    return await sendMetaTx(marketContract, provider, signer, {
+      functionName: "cancelOffer",
+      args: [collection, tokenId],
+    });
   };
 
   const getOffer = async (collection, tokenId, wallet) => {
