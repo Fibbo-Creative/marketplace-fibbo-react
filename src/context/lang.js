@@ -95,6 +95,9 @@ const engLiterals = {
     makeOffer: "Make Offer",
     createCollection: "CREATE COLLECTION",
     addSuggestion: "Make suggestion",
+    goToHome: "Go to Homepage",
+    verifyAccount: "Verify Account",
+
   },
   modals: {
     connectSentence: "Connect a wallet",
@@ -201,6 +204,8 @@ const espLiterals = {
     makeOffer: "Realizar Oferta",
     createCollection: "CREAR COLECCIÓN",
     addSuggestion: "Añadir Sugerencia",
+    goToHome: "Ir al homepage",
+    verifyAccount: "Verificarse",
 
   },
   modals: {

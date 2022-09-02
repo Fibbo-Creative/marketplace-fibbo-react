@@ -3,9 +3,11 @@ import { useNavigate } from "react-router-dom";
 import ActionButton from "../../components/ActionButton";
 import Lottie from "react-lottie-player";
 import lottieJson from "../../assets/notFound.json";
+import { useStateContext } from "../../context/StateProvider";
 
 export default function NotFoundContainer() {
   const navigate = useNavigate();
+  const [{literals}] = useStateContext();
   return (
     <div className="mt-[79px]  w-screen  ">
       <div className="flex flex-col gap-10 md:flex-row justify-center items-center mx-auto h-full w-full">
@@ -30,7 +32,7 @@ export default function NotFoundContainer() {
           </div>
           <ActionButton
             buttonAction={() => navigate("/")}
-            text="Ir al homepage"
+            text={literals.actions.goToHome}
             size="large"
           />
         </div>
