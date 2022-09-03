@@ -1,5 +1,6 @@
 import { Dialog } from "@headlessui/react";
 import React from "react";
+import { useStateContext } from "../../context/StateProvider";
 import FilterBottomDropDown from "../FilterBottomDropDown";
 import FilterButtons from "../FilterButtons";
 
@@ -10,6 +11,7 @@ export const FiltersSidebarModal = ({
   filtersSelected,
   payTokenFilters,
 }) => {
+  const [{ literals }] = useStateContext();
   return (
     <Dialog
       open={openSidebar}
@@ -24,7 +26,9 @@ export const FiltersSidebarModal = ({
           <div className="mt-[79px] dark:bg-dark-3 dark:text-white ml-auto relative max-w-lg w-full h-screen shadow-xl py-4 pb-12 flex flex-col gap-3 overflow-y-auto bg-white text-black">
             <div className="px-4 flex items-center justify-between">
               <h2 className="text-sm uppercase font-600 tracking-wide">
-                <div className="text-2xl font-semibold ">Filtros</div>
+                <div className="text-2xl font-semibold ">
+                  {literals.filters.filters}
+                </div>
               </h2>
               <button
                 type="button"
@@ -51,7 +55,7 @@ export const FiltersSidebarModal = ({
               </button>
             </div>
             <div className=" pb-28 px-4 lg:px-0 pt-2 scrollbar-hide lg:max-h-[calc(100vh-11.5rem)] ">
-              <FilterBottomDropDown name="Estado">
+              <FilterBottomDropDown name={literals.filters.state}>
                 <FilterButtons
                   options={statusFilters}
                   filtersSelected={filtersSelected}

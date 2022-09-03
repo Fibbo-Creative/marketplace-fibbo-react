@@ -1,5 +1,6 @@
 import React from "react";
 import { ActionModal } from "./ActionModal";
+import { useStateContext } from "../../context/StateProvider";
 
 export default function UnlistItemModal({
   children,
@@ -18,6 +19,7 @@ export default function UnlistItemModal({
       return "ERROR";
     }
   };
+  const [{ literals }] = useStateContext();
   return (
     <ActionModal
       title="Quitar item del mercado"
@@ -43,7 +45,7 @@ export default function UnlistItemModal({
                 <p>{tokenInfo?.royalty}</p>
               </div>
               <div className="flex gap-2">
-                <b>Precio:</b>
+                <b>{literals.detailNFT.price2}</b>
                 <img
                   src={listing?.payToken.image}
                   width={26}

@@ -4,9 +4,10 @@ import ActionButton from "../ActionButton";
 import Lottie from "react-lottie-player";
 import lottieJson from "../../assets/notVerified.json";
 import useRespnsive from "../../hooks/useResponsive";
-
+import { useStateContext } from "../../context/StateProvider";
 export const NotVerified = ({ text }) => {
   const navigate = useNavigate();
+  const [{ literals }] = useStateContext();
   const { _width } = useRespnsive();
   return (
     <div className="flex flex-col gap-10 md:flex-row justify-center items-center w-full h-screen">
@@ -27,12 +28,12 @@ export const NotVerified = ({ text }) => {
         <div className="flex flex-col md:flex-row gap-5">
           <ActionButton
             size="large"
-            text={"Ir al homepage"}
+            text={literals.actions.goToHome}
             buttonAction={() => navigate("/")}
           />
           <ActionButton
             size="large"
-            text={"Verificarse"}
+            text={literals.actions.verifyAccount}
             buttonAction={() => navigate("/verificate/request")}
           />
         </div>

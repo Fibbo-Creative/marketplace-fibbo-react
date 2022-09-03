@@ -5,6 +5,7 @@ import tw from "tailwind-styled-components";
 import { useApi } from "../../../api";
 import ActionButton from "../../../components/ActionButton";
 import { BasicModal } from "../../../components/modals/BasicModal";
+import { useStateContext } from "../../../context/StateProvider";
 import useAccount from "../../../hooks/useAccount";
 
 export default function NewFeatureModal({
@@ -13,6 +14,7 @@ export default function NewFeatureModal({
   handleCloseModal,
 }) {
   const { createNewSuggestion } = useApi();
+  const [{ literals }] = useStateContext();
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [completedAction, setCompletedAction] = useState(false);
@@ -28,21 +30,23 @@ export default function NewFeatureModal({
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       size="large"
-      title="Nueva sugerencia"
+      title={literals.features.newSuggestion}
     >
       {!completedAction ? (
         <div className="my-10 mx-8 flex flex-col gap-10">
           <div className="hidden md:flex">
-            Tu sugerencia será revisada y se le asignará un valor por parte del
-            equipo técnico, una vez sea acceptada y valorada se mostrará en la
-            lista!
+            {literals.features.newSuggestionText}
           </div>
           <div className="flex flex-col gap-2">
-            <div className="uppercase">Título</div>
+            <div className="uppercase">
+              {literals.features.newSuggestionTitle}
+            </div>
             <Input value={title} onChange={(e) => setTitle(e.target.value)} />
           </div>
           <div className="flex flex-col gap-2">
-            <div className="uppercase">Descripción</div>
+            <div className="uppercase">
+              {literals.features.newSuggestionDescription}
+            </div>
             <InputTextArea
               value={desc}
               onChange={(e) => setDesc(e.target.value)}
@@ -52,17 +56,14 @@ export default function NewFeatureModal({
           <div className="w-full flex justify-center">
             <ActionButton
               buttonAction={() => addNewSuggestion()}
-              text="Añadir Sugerencia"
+              text={literals.actions.addSuggestion}
               size="large"
             />
           </div>
         </div>
       ) : (
         <div className="my-10 mx-8 flex flex-col items-center gap-10">
-          <div>
-            Gracias por tu sugerencia, revisaremos tu solicitud y la
-            procesaremos.
-          </div>
+          <div>{literals.features.suggestionDoneText}</div>
           <ActionButton
             buttonAction={() => handleCloseModal()}
             text="Cerrar Ventana"

@@ -32,7 +32,7 @@ export default function CreateContainer() {
   const [desc, setDesc] = useState("");
   const [royalty, setRoyalty] = useState("");
   const { connectToWallet, wallet } = useAccount();
-  const [{ verifiedAddress }] = useStateContext();
+  const [{ verifiedAddress, literals }] = useStateContext();
   const [collectionsAvailable, setCollectionsAvailable] = useState([]);
   const [collectionSelected, setCollectionsSelected] = useState(null);
   const [isOwner, setIsOwner] = useState(false);
@@ -214,7 +214,7 @@ export default function CreateContainer() {
                       value={name}
                       error={nameError}
                       onChange={(e) => handleChangeName(e.target.value)}
-                      errorMessage=" El nombre debe tener entre 4 y 30 carácteres"
+                      errorMessage={literals.createCollection.nameCharacters}
                     />
 
                     {nameError && <div className="text-xs text-red-400 "></div>}
@@ -326,10 +326,7 @@ export default function CreateContainer() {
               />
             </div>
           ) : (
-            <NotVerified
-              text=" No eres un artista verificado para poder crear NFTs en el marketplace,
-          verificate y se parte de la comunidad!"
-            />
+            <NotVerified text={literals.modals.artistNotVerified2} />
           )}
         </>
       ) : (

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
+import { useStateContext } from "../../../context/StateProvider";
 
 import useResponsive from "../../../hooks/useResponsive";
 
@@ -12,7 +13,7 @@ export const ProfileMyOffersTable = ({
 }) => {
   const { _width } = useResponsive();
   const navigate = useNavigate();
-
+  const [{ literals }] = useStateContext();
   const formatDate = (offer) => {
     const now = new Date().getTime();
     const deadline = offer.deadline;
@@ -35,7 +36,7 @@ export const ProfileMyOffersTable = ({
                 </th>
 
                 <th cope="col" className="px-6 py-3">
-                  Precio
+                  {literals.detailNFT.price}
                 </th>
                 <th cope="col" className="px-6 py-3">
                   Expira
@@ -125,7 +126,7 @@ export const ProfileMyOffersTable = ({
                 </div>
                 <div className="flex justify-between">
                   <div>
-                    <b>Precio</b>
+                    <b>{literals.detailNFT.price}</b>
                   </div>
                   <div>
                     <div className="flex items-center gap-3">

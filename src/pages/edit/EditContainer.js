@@ -41,7 +41,7 @@ export default function EditContainer() {
   const [desc, setDesc] = useState("");
   const [royalty, setRoyalty] = useState("");
   const { connectToWallet, wallet } = useAccount();
-  const [{ verifiedAddress }] = useStateContext();
+  const [{ verifiedAddress, literals }] = useStateContext();
 
   const [loading, setLoading] = useState(true);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
@@ -260,7 +260,7 @@ export default function EditContainer() {
                     error={descError}
                     value={desc}
                     errorMessage={
-                      "La descripción debe tener entre 50 y 500 carácteres"
+                      literals.createCollection.descriptionCharacters
                     }
                     onChange={(e) => handleChangeDescription(e.target.value)}
                   />
@@ -368,10 +368,7 @@ export default function EditContainer() {
               />
             </div>
           ) : (
-            <NotVerified
-              text=" No eres un artista verificado para poder crear NFTs en el marketplace,
-          verificate y se parte de la comunidad!"
-            />
+            <NotVerified text={literals.modals.artistNotVerified2} />
           )}
         </>
       ) : (

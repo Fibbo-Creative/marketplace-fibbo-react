@@ -27,14 +27,16 @@ export default function ConfigContainer() {
             className={`p-2 cursor-pointer hover:bg-gray-300 flex items-center gap-5`}
           >
             <Icon icon="healthicons:ui-user-profile" width="32" />
-            <div className="text-lg">Cuenta</div>
+            <div className="text-lg">{literals.profileSettings.account}</div>
           </div>
           <div
             onClick={() => navigate("/account/settings/notifications")}
             className={`p-2 cursor-pointer hover:bg-gray-300 flex items-center gap-5`}
           >
             <Icon icon="ion:notifications-circle" width="32" />
-            <div className="text-lg">Notificaciones</div>
+            <div className="text-lg">
+              {literals.profileSettings.notifications}
+            </div>
           </div>
           <div
             onClick={() => navigate("/account/settings/appeareance")}

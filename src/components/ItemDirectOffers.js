@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import AcceptOfferModal from "./modals/AcceptOfferModal";
 import useAccount from "../hooks/useAccount";
 import RemoveOfferModal from "./modals/RemoveOfferModal";
+import { useStateContext } from "../context/StateProvider";
 
 export const ItemDirectOffers = ({
   offers,
@@ -20,6 +21,7 @@ export const ItemDirectOffers = ({
 
   const [detailOffer, setDetailOffer] = useState({});
   const { _width } = useRespnsive();
+  const [{ literals }] = useStateContext();
   const navigate = useNavigate();
 
   const handleShowAcceptOffer = (offer) => {
@@ -55,7 +57,7 @@ export const ItemDirectOffers = ({
       opened={true}
       className={`mb-5 dark:bg-dark-2`}
       icon="ri:price-tag-2-fill"
-      title="Ofertas"
+      title={literals.itemPage.offers}
     >
       <div
         className={`${

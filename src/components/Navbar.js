@@ -19,7 +19,7 @@ export default function Navbar() {
   const { wallet, connectToWallet, disconnectWallet } = useAccount();
   const [openModal, setOpenModal] = useState(false);
   const [openedMenu, setOpenedMenu] = useState(false);
-  const [{ userProfile, verifiedAddress }] = useStateContext();
+  const [{ userProfile, verifiedAddress, literals }] = useStateContext();
   const [searchItemsData, setSearchItemsData] = useState([]);
   const [searchProfilesData, setSearchProfilesData] = useState([]);
   const [searchCollectionsData, setSearchCollectionsData] = useState([]);
@@ -153,7 +153,7 @@ export default function Navbar() {
                     className={`px-4 py-2 ${
                       _width < 1200 ? "w-[200px]" : "w-[350px]"
                     }  outline-none dark:bg-dark-1`}
-                    placeholder="Buscar Items..."
+                    placeholder={literals.navbar.searchItems}
                     onChange={(e) => searchItems(e.target.value)}
                     value={searchText}
                   />
@@ -178,11 +178,17 @@ export default function Navbar() {
             <div className="flex ">
               <NavbarItem text="Marketplace" to="/explore" />
               {verifiedAddress && (
-                <NavbarItem text="Colecciones" to="/myCollections" />
+                <NavbarItem
+                  text={literals.navbar.collections}
+                  to="/myCollections"
+                />
               )}
 
               {!verifiedAddress && (
-                <NavbarItem text="Verifícate!" to="/verificate/request" />
+                <NavbarItem
+                  text={literals.navbar.verify}
+                  to="/verificate/request"
+                />
               )}
 
               {/* {verifiedAddress && (
@@ -283,10 +289,16 @@ export default function Navbar() {
               </div>
               <NavbarItemMobile text="Marketplace" to="/explore" />
               {verifiedAddress && (
-                <NavbarItemMobile text="Colecciones" to="/myCollections" />
+                <NavbarItemMobile
+                  text={literals.navbar.collections}
+                  to="/myCollections"
+                />
               )}
               {!verifiedAddress && (
-                <NavbarItemMobile text="Verifícate!" to="/verificate/request" />
+                <NavbarItemMobile
+                  text={literals.navbar.verify}
+                  to="/verificate/request"
+                />
               )}
               {/*  {verifiedAddress && (
                 <NavbarItemMobile text="Comunidad" to="/community" />

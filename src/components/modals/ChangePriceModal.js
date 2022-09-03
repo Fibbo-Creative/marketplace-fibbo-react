@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useStateContext } from "../../context/StateProvider";
 import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
 import { ActionModal } from "./ActionModal";
 
@@ -11,6 +12,7 @@ export default function ChangePriceModal({
 }) {
   const [priceFor, setPriceFor] = useState(0);
   const [payTokenSelected, setPayTokenSelected] = useState(null);
+  const [{ literals }] = useStateContext();
 
   const changeListingPrice = async () => {
     try {
@@ -30,7 +32,7 @@ export default function ChangePriceModal({
       handleCloseModal={handleCloseModal}
       size="large"
       onSubmit={() => changeListingPrice()}
-      submitLabel={"Cambiar precio"}
+      submitLabel={literals.detailNFT.price}
       completedText={`Item listado por ${priceFor} correctamente`}
       completedLabel={`Ver ítem acutalizado`}
       completedAction={handleCloseModal}

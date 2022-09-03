@@ -34,7 +34,8 @@ export default function ProfileContainer() {
   const { address } = useParams();
   const [userItems, setUserItems] = useState([]);
   const [userSmallview, setSmallViewUser] = useState(true);
-  const [{ userProfile, verifiedAddress }, stateDispatch] = useStateContext();
+  const [{ userProfile, verifiedAddress, literals }, stateDispatch] =
+    useStateContext();
   const { theme } = useContext(ThemeContext);
 
   const [myProfile, setMyprofile] = useState(false);
@@ -283,8 +284,7 @@ export default function ProfileContainer() {
                 <div
                   data-for={profileData.current?.verified && "verify-info"}
                   data-tip={
-                    profileData.current?.verified &&
-                    "Artista verificado por <br/> el equipo de FIBOO"
+                    profileData.current?.verified && literals.profile.sentence
                   }
                   className={`flex cursorPointer ${
                     profileData.current?.verified && "gap-5 items-center"
@@ -332,7 +332,7 @@ export default function ProfileContainer() {
               {!loadingInfo && (
                 <>
                   <ProfileTab
-                    title={"En posesión"}
+                    title={literals.profile.collected}
                     count={collectedItems.length}
                     type={{
                       type: "Collected",
@@ -347,7 +347,7 @@ export default function ProfileContainer() {
                     }
                   />
                   <ProfileTab
-                    title={"Creados"}
+                    title={literals.profile.created}
                     count={createdItems.length}
                     type={{ type: "Created", viewAs: "grid" }}
                     selectedType={itemsType}
@@ -356,7 +356,7 @@ export default function ProfileContainer() {
                     }
                   />
                   <ProfileTab
-                    title={"Actividad"}
+                    title={literals.profile.activity}
                     count={activity.length}
                     type={{ type: "Activity", viewAs: "table" }}
                     selectedType={itemsType}
@@ -365,7 +365,7 @@ export default function ProfileContainer() {
                     }
                   />
                   <ProfileTab
-                    title={"Ofertas"}
+                    title={literals.profile.offers}
                     count={offers.length}
                     type={{ type: "Offers", viewAs: "table" }}
                     selectedType={itemsType}
@@ -374,7 +374,7 @@ export default function ProfileContainer() {
                     }
                   />
                   <ProfileTab
-                    title={"Mis Ofertas"}
+                    title={literals.profile.myOffers}
                     count={myOffers.length}
                     type={{ type: "MyOffers", viewAs: "table" }}
                     selectedType={itemsType}

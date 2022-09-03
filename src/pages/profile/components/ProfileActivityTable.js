@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
 import { ADDRESS_ZERO } from "../../../constants/networks";
+import { useStateContext } from "../../../context/StateProvider";
 import useResponsive from "../../../hooks/useResponsive";
 import { truncateWallet } from "../../../utils/wallet";
 
@@ -37,6 +38,7 @@ export default function ProfileActivityTable({ historyItems }) {
   const [filtersSelected, setFiltersSelected] = useState([]);
   const [openFilters, setOpenFilters] = useState(false);
   const filtersRef = useRef();
+  const [{ literals }] = useStateContext();
 
   const filterByType = (type) => {
     let isSelected = filtersSelected.find((item) => item === type);
@@ -89,7 +91,7 @@ export default function ProfileActivityTable({ historyItems }) {
         onClick={() => setOpenFilters(!openFilters)}
         className="w-[200px] border dark:border-dark-4 px-6 py-3 font-bold text-lg rounded-lg dark:bg-dark-1 bg-gray-300 hover:dark:bg-dark-4 transition hover:bg-gray-400"
       >
-        Filtrar Historial
+        {literals.detailNFT.filterHistorial}
       </button>
       {openFilters && (
         <div
@@ -148,7 +150,7 @@ export default function ProfileActivityTable({ historyItems }) {
                   Item
                 </th>
                 <th cope="col" className="px-6 py-3">
-                  Precio
+                  {literals.detailNFT.price}
                 </th>
                 <th cope="col" className="px-6 py-3">
                   Iniciador
@@ -315,7 +317,7 @@ export default function ProfileActivityTable({ historyItems }) {
                   </div>
                   <div className="flex justify-between">
                     <div>
-                      <b>Precio</b>
+                      <b>{literals.detailNFT.price}</b>
                     </div>
                     <div>
                       {" "}

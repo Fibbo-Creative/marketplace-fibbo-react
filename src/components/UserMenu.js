@@ -7,7 +7,7 @@ import { ThemeContext } from "../context/ThemeContext";
 export const UserMenu = ({ setOpenStation, setOpenMenu, disconnectWallet }) => {
   const ref = useRef(null);
   const { theme, setTheme } = React.useContext(ThemeContext);
-  const [{ userProfile }] = useStateContext();
+  const [{ userProfile, literals }] = useStateContext();
 
   const navigate = useNavigate();
   const goToProfile = () => {
@@ -51,35 +51,34 @@ export const UserMenu = ({ setOpenStation, setOpenMenu, disconnectWallet }) => {
         className="w-[175px] md:w-[225px] bg-gray-100 dark:bg-dark-2 absolute  z-20 flex flex-col  rounded-md"
       >
         <UserMenuItem
-          text="Perfil"
+          text={literals.userMenu.profile}
           icon="healthicons:ui-user-profile"
           onClick={() => goToProfile()}
         />
 
         <UserMenuItem
-          disabled
-          text="Configuración"
+          text={literals.userMenu.settings}
           icon="ci:settings"
           onClick={() => goToSettings()}
         />
         <UserMenuItem
-          text="Comunidad"
+          text={literals.userMenu.community}
           icon="fluent:people-community-16-filled"
           onClick={() => goToCommunity()}
         />
         <UserMenuItem
-          text="Estación wFTM"
+          text={literals.userMenu.station}
           icon="carbon:gas-station-filled"
           onClick={() => setOpenStation(true)}
         />
         <UserMenuItem
-          text="Desconectar"
+          text={literals.userMenu.disconnect}
           icon="ri:logout-box-line"
           onClick={handleDisconnect}
         />
 
         <UserMenuItemToggle
-          text="Tema Oscuro"
+          text={literals.userMenu.darkMode}
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
         />
       </div>
