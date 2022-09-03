@@ -28,6 +28,14 @@ export default function MyCollectionsContainer() {
     }
   };
 
+  const redirectToCreate = (col) => {
+    if (col.customURL) {
+      navigate(`/collection/${col.customURL}/create`);
+    } else {
+      navigate(`/collection/${col.contractAddress}/create`);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       await connectToWallet();
@@ -73,9 +81,9 @@ export default function MyCollectionsContainer() {
             <div
               key={col._id}
               className="hover:-translate-y-1 rounded-lg cursor-pointer flex flex-col  w-[350px] md:w-[400px] h-[300px] md:h-[300px]  bg-slate-300"
-              onClick={() => redirectToColectionPage(col)}
             >
               <div
+                onClick={() => redirectToColectionPage(col)}
                 style={{
                   backgroundImage: `url(${col.featuredImage})`,
                   backgroundSize: "cover",
@@ -85,17 +93,26 @@ export default function MyCollectionsContainer() {
                 className="flex w-full h-[200px] items-center rounded-lg justify-center "
               ></div>
               <div className="flex gap-4 items-center w-full h-[100px] p-4">
-                <div className=" flex w-[100px] h-full items-center justify-center">
+                <div
+                  onClick={() => redirectToColectionPage(col)}
+                  className=" flex w-[100px] h-full items-center justify-center"
+                >
                   <img
                     src={col.logoImage}
                     className="object-cover rounded-lg"
                     alt={`colection-${col._id}`}
                   />
                 </div>
-                <div className="flex flex-col w-[300px] h-full items-center justify-evenly text-black ">
+                <div
+                  onClick={() => redirectToColectionPage(col)}
+                  className="flex flex-col w-[300px] h-full items-center justify-evenly text-black "
+                >
                   <b>{col.name}</b>
                 </div>
-                <div className="flexflex-col font-bold items-center justify-center hover:-translate-y-1   ">
+                <div
+                  onClick={() => redirectToCreate(col)}
+                  className="flexflex-col font-bold items-center justify-center hover:-translate-y-1   "
+                >
                   <Icon color="black" width="40px" icon="carbon:add-filled" />
                 </div>
               </div>
