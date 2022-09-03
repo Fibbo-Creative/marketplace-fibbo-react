@@ -23,25 +23,25 @@ export default function ConfigContainer() {
         <div className="px-8 pt-4 flex flex-col gap-4 w-[400px] h-full ">
           <b className="uppercase text-gray-500 ">{literals.profileSettings.settings}</b>
           <div
-            onClick={() => navigate("to")}
+            onClick={() => navigate("/account/settings/profile")}
             className={`p-2 cursor-pointer hover:bg-gray-300 flex items-center gap-5`}
           >
             <Icon icon="healthicons:ui-user-profile" width="32" />
             <div className="text-lg">{literals.profileSettings.account}</div>
           </div>
           <div
-            onClick={null}
+            onClick={() => navigate("/account/settings/notifications")}
             className={`p-2 cursor-pointer hover:bg-gray-300 flex items-center gap-5`}
           >
             <Icon icon="ion:notifications-circle" width="32" />
             <div className="text-lg">{literals.profileSettings.notifications}</div>
           </div>
           <div
-            onClick={null}
+            onClick={() => navigate("/account/settings/appeareance")}
             className={`p-2 cursor-pointer hover:bg-gray-300 flex items-center gap-5`}
           >
             <Icon icon="iconoir:emoji-look-bottom" width="32" />
-            <div className="text-lg">{literals.profileSettings.notifications}</div>
+            <div className="text-lg">{literals.profileSettings.appearance}</div>
           </div>
         </div>
 
