@@ -26,9 +26,7 @@ export default function NotFoundContainer() {
         <div className="flex flex-col items-center  gap-4">
           <div className="text-6xl">404</div>
           <div className="text-lg w-3/4">
-            La página a la que intentas acceder no existe, es un misterio cómo
-            has accedido a esta. Puedes pulsar el botón para dirigirte al
-            Homepage de la página
+            {literals.modals.URLNotFound}
           </div>
           <ActionButton
             buttonAction={() => navigate("/")}

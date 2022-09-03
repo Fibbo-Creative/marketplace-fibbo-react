@@ -219,13 +219,13 @@ export default function CreateCollectionContainer() {
     if (logoImage === "") {
       error = true;
       setLogoImageError(true);
-      setLogoImageMessageError("Selecciona una imágen!");
+      setLogoImageMessageError(literals.createCollection.selectImage);
     }
 
     if (name === "" || name.length < 5 || name.length > 30) {
       error = true;
       setNameError(true);
-      setNameErrorMessage("El nombre debe tener entre 4 y 30 carácteres");
+      setNameErrorMessage(literals.createCollection.nameCharacters);
     }
 
     const isNameRepeated = await checkNameRepeated(name);
@@ -378,7 +378,7 @@ export default function CreateCollectionContainer() {
             value={desc}
             rows={"6"}
             errorMessage={
-              "La descripción debe tener entre 50 y 1000 carácteres"
+              literals.createCollection.descriptionCharacters
             }
             onChange={(e) => handleChangeDesc(e.target.value)}
           />

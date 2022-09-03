@@ -215,7 +215,7 @@ export default function CreateContainer() {
                       value={name}
                       error={nameError}
                       onChange={(e) => handleChangeName(e.target.value)}
-                      errorMessage=" El nombre debe tener entre 4 y 30 carácteres"
+                      errorMessage={literals.createCollection.nameCharacters}
                     />
 
                     {nameError && <div className="text-xs text-red-400 "></div>}

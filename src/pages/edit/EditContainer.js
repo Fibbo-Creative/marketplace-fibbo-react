@@ -248,7 +248,7 @@ export default function EditContainer() {
                       value={name}
                       error={nameError}
                       onChange={(e) => handleChangeName(e.target.value)}
-                      errorMessage=" El nombre debe tener entre 4 y 30 carácteres"
+                      errorMessage={literals.createCollection.nameCharacters}
                     />
 
                     {nameError && <div className="text-xs text-red-400 "></div>}
@@ -260,7 +260,7 @@ export default function EditContainer() {
                     error={descError}
                     value={desc}
                     errorMessage={
-                      "La descripción debe tener entre 50 y 500 carácteres"
+                      literals.createCollection.descriptionCharacters
                     }
                     onChange={(e) => handleChangeDescription(e.target.value)}
                   />

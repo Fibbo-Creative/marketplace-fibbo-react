@@ -6,7 +6,6 @@ import { TextInput } from "../../components/inputs/TextInput";
 import { TextArea } from "../../components/inputs/TextArea";
 import { ImageInput } from "../../components/inputs/ImageInput";
 import ActionButton from "../../components/ActionButton";
-
 import useAccount from "../../hooks/useAccount";
 
 export default function ConfigProfileContainer({ children }) {
@@ -14,7 +13,6 @@ export default function ConfigProfileContainer({ children }) {
   const { wallet, connectToWallet } = useAccount();
   const navigate = useNavigate();
   const { _width } = useRespnsive();
-
   const [username, setUsername] = useState("");
   const [profileImg, setProfileImg] = useState("");
   const [bannerImage, setBannerImage] = useState("");
@@ -33,42 +31,42 @@ export default function ConfigProfileContainer({ children }) {
   return (
     <div className="p-10 flex flex-col gap-10">
       <div>
-        <p className="text-3xl font-black">Ajustes de perfil</p>
+        <p className="text-3xl font-black">{literals.profileSettings.profileSettings}</p>
       </div>
       <div className="flex w-full gap-10">
         <div className="flex flex-col gap-5 w-2/3">
           <TextInput
-            label={"Nombre de usuario"}
-            placeholder={"Introduce un nombre de usuario"}
+            label={literals.profileSettings.userName}
+            placeholder={literals.profileSettings.introduceUserName}
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
           <TextArea
-            label={"Biografía"}
-            placeholder={"Cuentanos más acerca de ti..."}
+            label={literals.profileSettings.biography}
+            placeholder={literals.profileSettings.tellMore}
             value={bio}
             onChange={(e) => setBio(e.target.value)}
           />
 
           <TextInput
-            label={"Correo electronico"}
-            placeholder={"ejemplo@gmail.com"}
+            label={literals.profileSettings.email}
+            placeholder={literals.profileSettings.emailExample}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
 
-          <TextInput label={"Billetera"} value={wallet} disabled />
+          <TextInput label={literals.profileSettings.wallet} value={wallet} disabled />
         </div>
         <div className="flex flex-col gap-5 w-1/3">
           <ImageInput
-            label="Imagen de perfil"
+            label={literals.profileSettings.profileImg}
             imageURL={profileImg}
             className=" rounded-full w-[200px] h-[200px]"
             inputId="profileImageInput"
             icon={true}
           />
           <ImageInput
-            label="Imagen de fondo"
+            label={literals.profileSettings.backgroundImg}
             imageURL={bannerImage}
             className=" w-[300px] h-[200px]"
             inputId="bannerImageInput"
@@ -76,7 +74,7 @@ export default function ConfigProfileContainer({ children }) {
           />
         </div>
       </div>
-      <ActionButton text="Guardar cambios" size="large" />
+      <ActionButton text={literals.actions.saveChanges} size="large" />
     </div>
   );
 }

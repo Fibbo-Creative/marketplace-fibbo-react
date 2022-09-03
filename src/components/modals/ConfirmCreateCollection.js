@@ -85,7 +85,7 @@ export const ConfirmCreateCollection = ({
   return (
     <ActionModal
       size="large"
-      title="Confirma tu creación"
+      title={literals.modals.confirmCreation}
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       onSubmit={() => createCollection()}
@@ -106,11 +106,11 @@ export const ConfirmCreateCollection = ({
           </div>
           <div className="flex flex-col gap-3 w-60">
             <div className="flex gap-2">
-              <b>Nombre:</b>
+              <b>{literals.createCollection.collectionName2}</b>
               <p>{collectionData.name}</p>
             </div>
             <div className="flex flex-col gap-2">
-              <b>Descripción:</b>
+              <b>{literals.createCollection.description2}</b>
               <p className="text-sm ">{collectionData.description}</p>
             </div>
             {collectionData.url.split(

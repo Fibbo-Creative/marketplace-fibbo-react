@@ -5,6 +5,7 @@ import ActionButton from "../ActionButton";
 import { Check } from "../lottie/Check";
 import { BasicModal } from "./BasicModal";
 import { useTokens } from "../../contracts/token";
+import {useStateContext} from "../../context/StateProvider";
 export const ConfirmCreateModal = ({
   showModal,
   handleCloseModal,
@@ -12,6 +13,7 @@ export const ConfirmCreateModal = ({
   collection,
   wallet,
 }) => {
+  const [{literals}] = useStateContext();
   const { getERC721Contract } = useTokens();
   const { saveMintedItem, uploadJSONMetadata } = useApi();
   const [newTokenId, setNewTokenId] = useState(0);
@@ -67,7 +69,7 @@ export const ConfirmCreateModal = ({
   return (
     <BasicModal
       size="large"
-      title="Confirma tu creación"
+      title={literals.modals.confirmCreation}
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       createNFT
