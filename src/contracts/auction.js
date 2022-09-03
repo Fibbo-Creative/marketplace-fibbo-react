@@ -6,9 +6,13 @@ import { useAddressRegistry } from "./addressRegistry";
 import { Contracts } from "../constants/networks";
 import { formatEther, parseEther } from "ethers/lib/utils";
 import { useTokens } from "./token";
+import useProvider from "../hooks/useProvider";
+import { sendMetaTx } from "./meta";
 
 const CHAIN = ChainId.FANTOM_TESTNET;
 const WFTM_ADDRESS = Contracts[CHAIN].wftmAddress;
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const formatAuction = (auctionData) => {
   return {
@@ -32,7 +36,7 @@ const formatHighestBid = (highestBidData) => {
 export const useAuction = () => {
   const { getERC20Contract, getERC721Contract } = useTokens();
   const { getAuctionAddress } = useAddressRegistry();
-
+  const { createProvider } = useProvider();
   const { getContract } = useContract();
 
   const getContractAddress = async () => await getAuctionAddress();
@@ -93,119 +97,167 @@ export const useAuction = () => {
       await approveTx.wait();
     }
 
-    const createAuctionTx = await auctionContract.createAuction(
-      collection,
-      ethers.BigNumber.from(tokenId),
-      payToken.contractAddress,
-      parseEther(reservePrice.toString()),
-      parseEther(buyNowPrice.toString()),
-      ethers.BigNumber.from(startTime),
-      minBidReserve,
-      ethers.BigNumber.from(endTime)
-    );
+    const provider = createProvider();
+    await window.ethereum.enable();
+    const userProvider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = userProvider.getSigner();
+    const from = await signer.getAddress();
 
-    await createAuctionTx.wait();
+    return await sendMetaTx(auctionContract, provider, signer, {
+      functionName: "createAuction",
+      args: [
+        collection,
+        ethers.BigNumber.from(tokenId),
+        payToken.contractAddress,
+        parseEther(reservePrice.toString()),
+        parseEther(buyNowPrice.toString()),
+        ethers.BigNumber.from(startTime),
+        minBidReserve,
+        ethers.BigNumber.from(endTime),
+      ],
+    });
   };
 
   const updateReservePrice = async (collection, tokenId, reservePrice) => {
     const auctionContract = await getAuctionContract();
 
-    const updateTx = await auctionContract.updateAuctionReservePrice(
-      collection,
-      tokenId,
-      parseEther(reservePrice.toString())
-    );
+    const provider = createProvider();
+    await window.ethereum.enable();
+    const userProvider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = userProvider.getSigner();
+    const from = await signer.getAddress();
 
-    await updateTx.wait();
+    await sendMetaTx(auctionContract, provider, signer, {
+      functionName: "updateAuctionReservePrice",
+      args: [collection, tokenId, parseEther(reservePrice.toString())],
+    });
+    await sleep(3000);
   };
 
   const updateStartTime = async (collection, tokenId, startTime) => {
     const auctionContract = await getAuctionContract();
 
-    const updateTx = await auctionContract.updateAuctionStartTime(
-      collection,
-      tokenId,
-      ethers.BigNumber.from(startTime)
-    );
+    const provider = createProvider();
+    await window.ethereum.enable();
+    const userProvider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = userProvider.getSigner();
+    const from = await signer.getAddress();
 
-    await updateTx.wait();
+    await sendMetaTx(auctionContract, provider, signer, {
+      functionName: "updateAuctionStartTime",
+      args: [collection, tokenId, ethers.BigNumber.from(startTime)],
+    });
+    sleep(3000);
   };
 
   const updateEndTime = async (collection, tokenId, endTime) => {
     const auctionContract = await getAuctionContract();
 
-    const updateTx = await auctionContract.updateAuctionEndTime(
-      collection,
-      tokenId,
-      ethers.BigNumber.from(endTime)
-    );
+    const provider = createProvider();
+    await window.ethereum.enable();
+    const userProvider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = userProvider.getSigner();
+    const from = await signer.getAddress();
 
-    await updateTx.wait();
+    await sendMetaTx(auctionContract, provider, signer, {
+      functionName: "updateAuctionEndTime",
+      args: [collection, tokenId, ethers.BigNumber.from(endTime)],
+    });
+
+    sleep(3000);
   };
 
   const cancelAuction = async (collection, tokenId) => {
     const auctionContract = await getAuctionContract();
 
-    const cancelAuctionTx = await auctionContract.cancelAuction(
-      collection,
-      tokenId
-    );
+    const provider = createProvider();
+    await window.ethereum.enable();
+    const userProvider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = userProvider.getSigner();
+    const from = await signer.getAddress();
 
-    await cancelAuctionTx.wait();
+    return await sendMetaTx(auctionContract, provider, signer, {
+      functionName: "cancelAuction",
+      args: [collection, tokenId],
+    });
   };
 
   const makeBid = async (bidder, collection, tokenId, bidAmount) => {
-    const auctionContract = await getAuctionContract();
-    const erc20 = await getERC20Contract(WFTM_ADDRESS);
+    try {
+      const auctionContract = await getAuctionContract();
+      const erc20 = await getERC20Contract(WFTM_ADDRESS);
 
-    const allowance = await erc20.allowance(bidder, auctionContract.address);
+      const provider = createProvider();
+      await window.ethereum.enable();
+      const userProvider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = userProvider.getSigner();
+      const from = await signer.getAddress();
 
-    if (allowance.lt(bidAmount)) {
-      const tx = await erc20.approve(
-        auctionContract.address,
-        parseEther(bidAmount.toString())
-      );
-      await tx.wait();
+      const allowance = await erc20.allowance(bidder, auctionContract.address);
+
+      if (allowance.lt(bidAmount)) {
+        await sendMetaTx(erc20, provider, signer, {
+          functionName: "approve",
+          args: [auctionContract.address, parseEther(bidAmount.toString())],
+        });
+
+        await sleep(3000);
+      }
+
+      await sendMetaTx(auctionContract, provider, signer, {
+        functionName: "placeBid",
+        args: [collection, tokenId, parseEther(bidAmount.toString())],
+      });
+      await sleep(5000);
+    } catch (e) {
+      console.log(e);
     }
-
-    const bidTx = await auctionContract.placeBid(
-      collection,
-      tokenId,
-      parseEther(bidAmount.toString())
-    );
-
-    await bidTx.wait();
   };
 
   const buyNow = async (buyer, collection, tokenId, buyNowPrice) => {
-    const auctionContract = await getAuctionContract();
-    const erc20 = await getERC20Contract(WFTM_ADDRESS);
-    const ERC721contract = await getERC721Contract(collection);
+    try {
+      const auctionContract = await getAuctionContract();
+      const erc20 = await getERC20Contract(WFTM_ADDRESS);
+      const ERC721contract = await getERC721Contract(collection);
 
-    const formattedPrice = parseEther(buyNowPrice.toString());
-    const allowance = await erc20.allowance(buyer, auctionContract.address);
+      const provider = createProvider();
+      await window.ethereum.enable();
+      const userProvider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = userProvider.getSigner();
+      const from = await signer.getAddress();
 
-    if (allowance.lt(formattedPrice)) {
-      const tx = await erc20.approve(auctionContract.address, formattedPrice);
-      await tx.wait();
-    }
+      const formattedPrice = parseEther(buyNowPrice.toString());
+      const allowance = await erc20.allowance(buyer, auctionContract.address);
 
-    const isApprovedForAll = await ERC721contract.isApprovedForAll(
-      buyer,
-      auctionContract.address
-    );
+      if (allowance.lt(formattedPrice)) {
+        await sendMetaTx(erc20, provider, signer, {
+          functionName: "approve",
+          args: [auctionContract.address, formattedPrice],
+        });
 
-    if (!isApprovedForAll) {
-      const approveTx = await ERC721contract.setApprovalForAll(
-        auctionContract.address,
-        true
+        await sleep(3000);
+      }
+
+      const isApprovedForAll = await ERC721contract.isApprovedForAll(
+        buyer,
+        auctionContract.address
       );
-      await approveTx.wait();
+
+      if (!isApprovedForAll) {
+        const approveTx = await ERC721contract.setApprovalForAll(
+          auctionContract.address,
+          true
+        );
+        await approveTx.wait();
+      }
+
+      return await sendMetaTx(auctionContract, provider, signer, {
+        functionName: "buyNow",
+        args: [collection, tokenId],
+      });
+    } catch (e) {
+      console.log(e);
     }
-
-    const buyNowTx = await auctionContract.buyNow(collection, tokenId);
-
-    await buyNowTx.wait();
   };
 
   return {

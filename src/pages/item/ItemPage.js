@@ -296,6 +296,8 @@ export default function ItemPage() {
           auctionInfo.current.payToken
         );
 
+        console.log(bid);
+
         if (bid.bid !== 0) {
           const bidderProfile = await getProfileInfo(bid.bidder);
           setHighestBid({
@@ -511,10 +513,13 @@ export default function ItemPage() {
       payToken
     );
 
-    const _auction = await getAuction(collectionInfo.contractAddress, tokenId);
     const payTokenInfo = await getPayTokenInfo(payToken.contractAddress);
     auctionInfo.current = {
-      ..._auction,
+      owner: wallet,
+      reservePrice: reservePrice,
+      buyNowPrice: buyNowPrice,
+      startTime: startTime,
+      endTime: endTime,
       payToken: payTokenInfo,
     };
 
