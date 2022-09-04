@@ -15,6 +15,8 @@ const engLiterals = {
     station: "wFTM Station",
     disconnect: "Disconnect",
     darkMode: "Dark Mode",
+    autoDarkMode: "Auto Dark Mode",
+
   },
   filters: {
     filters: "Filters",
@@ -59,6 +61,14 @@ const engLiterals = {
     moreCollection: "More from this collection",
     offers: "Offers",
   },
+  itemHistory: {
+    event: "Event",
+    item: "Item",
+    price: "Price",
+    initiator: "Initiator",
+    recipient: "Recipient",
+    date: "Date",
+  },
   myCollections: {
     mycollections: "My collections",
     text: "Create and manage your exclusives NFT's collections for sharing and selling them",
@@ -99,10 +109,10 @@ const engLiterals = {
   },
   profileSettings: {
     settings: "SETTINGS",
-    account: "Account",
+    account: "Profile",
     notifications: "Notifications",
     appearance: "Appearance",
-    profileSettings: "Profile settings",
+    profileSettings: "Profile",
     userName: "User name",
     introduceUserName: "Introduce your username",
     biography: "Biography",
@@ -112,6 +122,11 @@ const engLiterals = {
     wallet: "Wallet",
     profileImg: "Profile image",
     backgroundImg: "Background image",
+    selectLenguage: "Select a lenguage:",
+    spanish: "Spanish",
+    english: "English",
+    yourActivityNotifications: "Your Activity Notifications",
+    followerActivityNotifications: "Follower Activity Notifications",
   },
   features: {
     suggestions: "Suggestions",
@@ -165,6 +180,7 @@ const espLiterals = {
     station: "Estación wFTM",
     disconnect: "Desconectar",
     darkMode: "Tema Oscuro",
+    autoDarkMode: "Auto Tema Oscuro",
   },
   filters: {
     filters: "Filtros",
@@ -209,6 +225,14 @@ const espLiterals = {
     moreCollection: "Mas de la colección",
     offers: "Ofertas",
   },
+  itemHistory: {
+    event: "Event",
+    item: "Item",
+    price: "Price",
+    initiator: "Initiator",
+    recipient: "Recipient",
+    date: "Date",
+  },
   myCollections: {
     mycollections: "Mis colecciones",
     text: "Crea y administra tus colecciones de NFTs únicos para poder compartirlos y venderlos.",
@@ -249,7 +273,7 @@ const espLiterals = {
   },
   profileSettings: {
     settings: "CONFIGURACIÓN",
-    account: "Cuenta",
+    account: "Perfil",
     notifications: "Notificaciones",
     appearance: "Apariencia",
     profileSettings: "Ajustes de perfil",
@@ -262,6 +286,11 @@ const espLiterals = {
     wallet: "Billetera",
     profileImg: "Imagen de perfil",
     backgroundImg: "Imagen de fondo",
+    selectLenguage: "Selecciona un idioma",
+    spanish: "Español",
+    english: "Inglés",
+    yourActivityNotifications: "Tus Notificaciones de Actividad",
+    followerActivityNotifications: "Notificaciones de Actividad de Seguidores",
   },
   features: {
     suggestions: "Sugerencias",

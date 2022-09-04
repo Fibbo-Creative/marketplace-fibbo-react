@@ -21,7 +21,7 @@ export default function ConfigContainer() {
       <div className="flex w-full h-full">
         {/** SIDEBAR */}
         <div className="px-8 pt-4 flex flex-col gap-4 w-[400px] h-full ">
-          <b className="uppercase text-gray-500 ">Configuración</b>
+          <b className="uppercase text-gray-500 ">{literals.profileSettings.settings}</b>
           <div
             onClick={() => navigate("/account/settings/profile")}
             className={`p-2 cursor-pointer hover:bg-gray-300 flex items-center gap-5`}
