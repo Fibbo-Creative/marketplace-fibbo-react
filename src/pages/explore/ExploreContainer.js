@@ -53,12 +53,7 @@ export default function ExploreContainer() {
 
       const _collections = await getCollectionsAvailable();
       console.log(_collections);
-      setAllCollections(
-        _collections
-          .concat(_collections)
-          .concat(_collections)
-          .concat(_collections)
-      );
+      setAllCollections(_collections);
       //const firstItems = await getAllTokens(20);
       //setAllMarketItems(firstItems);
       //setVisibleMarketItems(firstItems.slice(0, 12));
@@ -346,7 +341,11 @@ export default function ExploreContainer() {
 
   const removeFilter = (filter) => {
     if (typeof filter === "object") {
-      selectPayTokenFilter(filter);
+      if (filter.collection) {
+        removeCollectionFilter(filter);
+      } else {
+        selectPayTokenFilter(filter);
+      }
     } else {
       switch (filter) {
         case literals.filters.onSale:
@@ -383,31 +382,63 @@ export default function ExploreContainer() {
     }
   };
 
+  const selectCollection = (collectionItem) => {
+    let isSelected = filtersSelected.find(
+      (item) => item.collection === collectionItem.contractAddress
+    );
+    console.log(isSelected);
+    if (isSelected) {
+      setVisibleMarketItems(allMarketItems);
+      setFiltersSelected(
+        filtersSelected.filter(
+          (item) => item.collection !== collectionItem.contractAddress
+        )
+      );
+    } else {
+      setFiltersSelected([
+        ...filtersSelected,
+        {
+          collection: collectionItem.contractAddress,
+          name: collectionItem.name,
+        },
+      ]);
+    }
+  };
+
+  const removeCollectionFilter = (collectionItem) => {
+    console.log("KE");
+    let isSelected = filtersSelected.find(
+      (item) => item.collection === collectionItem.collection
+    );
+    if (isSelected) {
+      setVisibleMarketItems(allMarketItems);
+      setFiltersSelected(
+        filtersSelected.filter(
+          (item) => item.collection !== collectionItem.collection
+        )
+      );
+    }
+  };
+
   useEffect(() => {
     //Status Filter
     if (filtersSelected.length > 0) {
       let filtered = [];
       filtersSelected.forEach((filter) => {
         if (filter === literals.filters.onSale) {
-          let result = allMarketItems.filter(
-            (item) => item.price !== undefined
-          );
+          let result = marketItems.filter((item) => item.price !== undefined);
           filtered = [...filtered, ...result];
         }
         if (filter === literals.filters.offered) {
-          let result = allMarketItems.filter(
-            (item) => item.offer !== undefined
-          );
+          let result = marketItems.filter((item) => item.offer !== undefined);
           filtered = [...filtered, ...result];
         }
         if (filter === literals.filters.onAuction) {
-          let result = allMarketItems.filter(
-            (item) => item.auction !== undefined
-          );
+          let result = marketItems.filter((item) => item.auction !== undefined);
           filtered = [...filtered, ...result];
         }
         if (filter === literals.filters.hasBids) {
-          let result = allMarketItems.filter(
+          let result = marketItems.filter(
             (item) => item.auction?.topBid !== undefined
           );
           filtered = [...filtered, ...result];
@@ -448,6 +479,13 @@ export default function ExploreContainer() {
             );
           }
 
+          filtered = [...filtered, ..._result];
+        }
+        if (filter.collection) {
+          let _result = [];
+          _result = marketItems.filter(
+            (item) => item.collectionAddress === filter.collection
+          );
           filtered = [...filtered, ..._result];
         }
       });
@@ -505,6 +543,7 @@ export default function ExploreContainer() {
                   filter: selectPayTokenFilter,
                 };
               })}
+              selectCollection={selectCollection}
             />
           )}
           <div className={`flex flex-col ${openedSidebar && "ml-[17vw]"}`}>
