@@ -9,13 +9,16 @@ import ActionButton from "../../components/ActionButton";
 import useAccount from "../../hooks/useAccount";
 import { ThemeContext } from "../../context/ThemeContext";
 import { Icon } from "@iconify/react";
+import { actionTypes } from "../../context/stateReducer";
+import { espLiterals, engLiterals } from "../../context/lang";
+
 
 
 
 export default function ConfigAppeareanceContainer({ children }) {
   const { theme, setTheme } = React.useContext(ThemeContext);
 
-  const [{ verifiedAddress, userProfile, literals }] = useStateContext();
+  const [{ verifiedAddress, userProfile, literals }, dispatch] = useStateContext();
   const { wallet, connectToWallet } = useAccount();
   const navigate = useNavigate();
   const { _width } = useRespnsive();
@@ -25,7 +28,26 @@ export default function ConfigAppeareanceContainer({ children }) {
   const [bio, setBio] = useState("");
 
   const [email, setEmail] = useState("");
+  const language = "esp";
+  
+  
+  const setSpanish=() => {
+    dispatch({
+      type: actionTypes.SET_LANGUAGE,
+      lang: "esp",
+      literals: espLiterals,
+    });
+  }
+    
+  const setEnglish=() => {
+    dispatch({
+      type: actionTypes.SET_LANGUAGE,
+      lang: "eng",
+      literals: engLiterals,
+    });
+  }
 
+  
 
   const UserMenuItemToggle = ({ text, disabled, onClick }) => {
     const { theme } = React.useContext(ThemeContext);
@@ -80,8 +102,8 @@ export default function ConfigAppeareanceContainer({ children }) {
       </div>
 
       <div className="flex w-full gap-10 ">
-        <button className="text-xl p-3 hover:-translate-y-1 hover:font-bold">Spanish</button>
-        <button className="text-xl hover:-translate-y-1 hover:font-bold">English</button>
+        <button onClick={setSpanish} className="text-xl p-3 hover:-translate-y-1 hover:font-bold">{literals.profileSettings.spanish}</button>
+        <button onClick={setEnglish} className="text-xl hover:-translate-y-1 hover:font-bold">{literals.profileSettings.english}</button>
       </div>
       
     </div>
