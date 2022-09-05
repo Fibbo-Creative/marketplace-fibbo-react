@@ -53,6 +53,10 @@ const engLiterals = {
     listings: "Listings",
     offers: "Offers",
     auctions: "Auctions",
+    offerOf: "Offer of",
+    expires: "Expires",
+    expiresIn: "Expires in",
+    actions: "Actions",
   },
   itemPage: {
     chainData: "Chain Data",
@@ -60,6 +64,10 @@ const engLiterals = {
     activity: "Item Activity",
     moreCollection: "More from this collection",
     offers: "Offers",
+    owner: "Owner:",
+    refreshMeta : "Refresh Metadata",
+    fantomNetwork: "Fantom Network",
+    itemFreezed: "This item is frozen",
   },
   itemHistory: {
     event: "Event",
@@ -143,6 +151,16 @@ const engLiterals = {
     suggestionDoneText:
       "Thank you for your suggestion, we will review your request and process it.",
   },
+  makeOffer: {
+    offerPrice: "What price do you want to offer?",
+    expires: "Expires",
+    notWFTM: "You don't have enough WFTM",
+    offerOf: "Offer of",
+  },
+  notifications: {
+    notifications: "Notifications",
+    noNotifications: "You don't have notifications",
+  },
   actions: {
     makeOffer: "Make Offer",
     createCollection: "CREATE COLLECTION",
@@ -151,6 +169,9 @@ const engLiterals = {
     verifyAccount: "Verify Account",
     closeWindow: "CLOSE WINDOW",
     saveChanges: "SAVE",
+    buyNow: "Buy now",
+    makeBid: "Make bid",
+    viewYourOffer: "View your offer",
   },
   modals: {
     connectSentence: "Connect a wallet",
@@ -219,6 +240,10 @@ const espLiterals = {
     listings: "Listados",
     offers: "Ofertas",
     auctions: "Subastas",
+    offerOf: "Oferta de",
+    expires: "Expira",
+    expiresIn: "Expira en",
+    actions: "Acciones",
   },
   itemPage: {
     chainData: "Datos de la cadena",
@@ -226,6 +251,10 @@ const espLiterals = {
     activity: "Actividad del Item",
     moreCollection: "Mas de la colección",
     offers: "Ofertas",
+    owner: "Pertenece a:",
+    refreshMeta : "Refrescar Metadata",
+    fantomNetwork: "Red de Fantom",
+    itemFreezed: "El item tiene sus datos congelados",
   },
   itemHistory: {
     event: "Evento",
@@ -309,6 +338,16 @@ const espLiterals = {
     suggestionDoneText:
       "Gracias por tu sugerencia, revisaremos tu solicitud y la procesaremos.",
   },
+  makeOffer: {
+    offerPrice: "Que precio quieres ofertar?",
+    expires: "Fecha de Expiración",
+    notWFTM: "No tienes suficientes WFTM",
+    offerOf: "Oferta por",
+  },
+  notifications: {
+    notifications: "Notificaciones",
+    noNotifications: "No tienes notificaciones",
+  },
   actions: {
     makeOffer: "Realizar Oferta",
     createCollection: "CREAR COLECCIÓN",
@@ -317,6 +356,9 @@ const espLiterals = {
     verifyAccount: "Verificarse",
     closeWindow: "CERRAR VENTANA",
     saveChanges: "GUARDAR CAMBIOS",
+    buyNow: "Comprar ya",
+    makeBid: "Realizar puja",
+    viewYourOffer: "Ver tu oferta",
   },
   modals: {
     connectSentence: "Conectar una billetera",

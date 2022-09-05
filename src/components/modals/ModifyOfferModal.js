@@ -18,7 +18,7 @@ export default function ModifyOfferModal({
   const [expireHour, setExpireHour] = useState(0);
   const [actionError, setActionError] = useState(false);
   const [payTokenSelected, setPayTokenSelected] = useState(null);
-  const [{ updatedWFTM }] = useStateContext();
+  const [{ updatedWFTM, literals }] = useStateContext();
 
   const { getWFTMBalance } = useWFTMContract();
   const handleMakeOffer = async () => {
@@ -88,7 +88,7 @@ export default function ModifyOfferModal({
               value={offerPrice}
               onChange={setOfferPrice}
               error={parseFloat(wftmBalance) < parseFloat(offerPrice)}
-              errorMessage={"No tienes suficientes WFTM"}
+              errorMessage={literals.makeOffer.notWFTM}
               selectedToken={payTokenSelected}
               setSelectedToken={setPayTokenSelected}
               showBalance={true}

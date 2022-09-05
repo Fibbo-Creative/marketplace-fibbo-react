@@ -669,7 +669,7 @@ export default function ItemPage() {
                             icon="charm:refresh"
                             tooltip="refresh-item"
                             onClick={() => setRefreshMetadata(!refreshMetadata)}
-                            tooltipText="Refrescar Metadata"
+                            tooltipText={literals.itemPage.refreshMeta}
                           />
                           {!isFreezedMetadata &&
                             isOwner &&
@@ -734,7 +734,7 @@ export default function ItemPage() {
                         icon="charm:refresh"
                         tooltip="refresh-item"
                         onClick={() => setRefreshMetadata(!refreshMetadata)}
-                        tooltipText="Refrescar Metadata"
+                        tooltipText={literals.itemPage.refreshMeta}
                       />
                       {!isFreezedMetadata &&
                         isOwner &&
@@ -784,7 +784,7 @@ export default function ItemPage() {
                   <div className="w-full h-full animate-pulse bg-gray-300"></div>
                 ) : (
                   <div className="flex items-center gap-4">
-                    <b> Pertenece a: </b>
+                    <b>{literals.itemPage.owner} </b>
                     <div
                       onClick={() => redirectToProfile()}
                       className="flex items-center gap-2 border border-gray-200 p-2 rounded-full cursor-pointer hover:bg-gray-200 transition duration-150 ease-in-out"
@@ -1035,7 +1035,7 @@ export default function ItemPage() {
                                 ? setOpenConnectionModal(true)
                                 : setOpenOfferModal(true)
                             }
-                            text="Realizar Oferta"
+                            text={literals.actions.makeOffer}
                           />
                         ) : (
                           <ActionButton
@@ -1133,7 +1133,7 @@ export default function ItemPage() {
                                 ? setOpenConnectionModal(true)
                                 : setOpenBidModal(true)
                             }
-                            text="Realizar Puja"
+                            text={literals.actions.makeBid}
                           />
                         )}
                         <ActionButton
@@ -1144,7 +1144,8 @@ export default function ItemPage() {
                               ? setOpenConnectionModal(true)
                               : setOpenBuyNowModal(true)
                           }
-                          text="Comprar ya"
+                          text={literals.actions.buyNow}
+
                         />
                       </>
                     )}
