@@ -265,10 +265,8 @@ export const useApi = () => {
     return res.data;
   };
 
-  const getCollectionsAvailable = async (owner) => {
-    const res = await marketplaceApi.get(
-      `collections/available?owner=${owner}`
-    );
+  const getCollectionsAvailable = async () => {
+    const res = await marketplaceApi.get(`collections/available`);
     return res.data;
   };
 

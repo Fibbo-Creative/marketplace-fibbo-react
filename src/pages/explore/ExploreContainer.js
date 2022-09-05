@@ -27,7 +27,7 @@ import { useStateContext } from "../../context/StateProvider";
 export default function ExploreContainer() {
   const [{ literals }] = useStateContext();
   const navigate = useNavigate();
-  const { getAllTokens, getAllPayTokens } = useApi();
+  const { getAllTokens, getAllPayTokens, getCollectionsAvailable } = useApi();
   const { wallet } = useAccount();
   const [marketItems, setMarketItems] = useState([]);
   const [allMarketItems, setAllMarketItems] = useState([]);
@@ -41,6 +41,7 @@ export default function ExploreContainer() {
   const [loading, setLoading] = useState(true);
   const [loadingInfo, setLoadingInfo] = useState(false);
 
+  const [allCollections, setAllCollections] = useState([]);
   const [allErc20Tokens, setAllErc20Tokens] = useState([]);
 
   useEffect(() => {
@@ -50,6 +51,14 @@ export default function ExploreContainer() {
       const _payTokens = await getAllPayTokens();
       setAllErc20Tokens(_payTokens);
 
+      const _collections = await getCollectionsAvailable();
+      console.log(_collections);
+      setAllCollections(
+        _collections
+          .concat(_collections)
+          .concat(_collections)
+          .concat(_collections)
+      );
       //const firstItems = await getAllTokens(20);
       //setAllMarketItems(firstItems);
       //setVisibleMarketItems(firstItems.slice(0, 12));
@@ -475,6 +484,7 @@ export default function ExploreContainer() {
         <>
           {_width > 900 && (
             <FiltersSidebar
+              collections={allCollections}
               filtersSelected={filtersSelected}
               openedSidebar={openedSidebar}
               setFiltersSelected={setFiltersSelected}
