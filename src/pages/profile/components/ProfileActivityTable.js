@@ -144,22 +144,22 @@ export default function ProfileActivityTable({ historyItems }) {
             <thead className="bg-gray-200 dark:bg-dark-3 p-2">
               <tr className="p-2">
                 <th scope="col" className="px-6 py-3">
-                  Evento
+                  {literals.itemHistory.event}
                 </th>
                 <th cope="col" className="px-6 py-3">
-                  Item
+                  {literals.itemHistory.item}
                 </th>
                 <th cope="col" className="px-6 py-3">
-                  {literals.detailNFT.price}
+                  {literals.itemHistory.price}
                 </th>
                 <th cope="col" className="px-6 py-3">
-                  Iniciador
+                  {literals.itemHistory.initiator}
                 </th>
                 <th cope="col" className="px-6 py-3">
-                  Recipiente
+                  {literals.itemHistory.recipient}
                 </th>
                 <th cope="col" className="px-6 py-3">
-                  Fecha
+                  {literals.itemHistory.date}
                 </th>
               </tr>
             </thead>
@@ -281,13 +281,13 @@ export default function ProfileActivityTable({ historyItems }) {
                 >
                   <div className="flex justify-between">
                     <div>
-                      <b>Evento</b>
+                      <b>{literals.itemHistory.event}</b>
                     </div>
                     <div>{item.eventDesc}</div>
                   </div>
                   <div className="flex justify-between">
                     <div>
-                      <b>Item</b>
+                      <b>{literals.itemHistory.item}</b>
                     </div>
                     <div>
                       <div className="flex gap-2 items-center">
@@ -333,7 +333,7 @@ export default function ProfileActivityTable({ historyItems }) {
                   </div>
                   <div className="flex justify-between">
                     <div>
-                      <b>Iniciador</b>
+                      <b>{literals.itemHistory.initiator}</b>
                     </div>
                     <div>
                       {item.from === ADDRESS_ZERO ? (
@@ -363,7 +363,7 @@ export default function ProfileActivityTable({ historyItems }) {
                   </div>
                   <div className="flex justify-between">
                     <div>
-                      <b>Recipiente</b>
+                      <b>{literals.itemHistory.recipient}</b>
                     </div>
                     <div>
                       {item.to === ADDRESS_ZERO ? (
@@ -393,7 +393,7 @@ export default function ProfileActivityTable({ historyItems }) {
                   </div>
                   <div className="flex justify-between">
                     <div>
-                      <b>Fecha</b>
+                      <b>{literals.itemHistory.date}</b>
                     </div>
                     <div> {new Date(item.timestamp).toLocaleString()}</div>
                   </div>

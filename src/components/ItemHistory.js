@@ -147,19 +147,19 @@ export default function ItemHistory({ historyItems }) {
             <thead className="bg-gray-200 dark:bg-dark-3 p-2">
               <tr className="p-2">
                 <th scope="col" className="px-6 py-3">
-                  Evento
+                  {literals.itemHistory.event}
                 </th>
                 <th cope="col" className="px-6 py-3">
                   {literals.detailNFT.price}
                 </th>
                 <th cope="col" className="px-6 py-3">
-                  De
+                  {literals.itemHistory.from}
                 </th>
                 <th cope="col" className="px-6 py-3">
-                  A
+                  {literals.itemHistory.to}
                 </th>
                 <th cope="col" className="px-6 py-3">
-                  Fecha
+                  {literals.itemHistory.date}
                 </th>
               </tr>
             </thead>
@@ -256,7 +256,7 @@ export default function ItemHistory({ historyItems }) {
                 >
                   <div className="flex justify-between">
                     <div>
-                      <b>Evento</b>
+                      <b>{literals.itemHistory.event}</b>
                     </div>
                     <div>{item.eventDesc}</div>
                   </div>
@@ -278,7 +278,7 @@ export default function ItemHistory({ historyItems }) {
                   </div>
                   <div className="flex justify-between">
                     <div>
-                      <b>De</b>
+                      <b>{literals.itemHistory.from}</b>
                     </div>
                     <div>
                       {item.from === ADDRESS_ZERO ? (
@@ -308,7 +308,7 @@ export default function ItemHistory({ historyItems }) {
                   </div>
                   <div className="flex justify-between">
                     <div>
-                      <b>A</b>
+                      <b>{literals.itemHistory.to}</b>
                     </div>
                     <div>
                       {item.to === ADDRESS_ZERO ? (
@@ -338,7 +338,7 @@ export default function ItemHistory({ historyItems }) {
                   </div>
                   <div className="flex justify-between">
                     <div>
-                      <b>Fecha</b>
+                      <b>{literals.itemHistory.date}</b>
                     </div>
                     <div> {new Date(item.timestamp).toLocaleString()}</div>
                   </div>

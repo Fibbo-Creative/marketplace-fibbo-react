@@ -68,6 +68,8 @@ const engLiterals = {
     initiator: "Initiator",
     recipient: "Recipient",
     date: "Date",
+    from: "From",
+    to: "To",
   },
   myCollections: {
     mycollections: "My collections",
@@ -226,12 +228,14 @@ const espLiterals = {
     offers: "Ofertas",
   },
   itemHistory: {
-    event: "Event",
+    event: "Evento",
     item: "Item",
-    price: "Price",
-    initiator: "Initiator",
-    recipient: "Recipient",
-    date: "Date",
+    price: "Precio",
+    initiator: "Iniciador",
+    recipient: "Recipiente",
+    date: "Fecha",
+    from: "De",
+    to: "A",
   },
   myCollections: {
     mycollections: "Mis colecciones",
