@@ -11,7 +11,7 @@ import { InfoCard } from "../../components/InfoCard";
 emailjs.init("A9IZio99Pk7PWQVes");
 
 export const VerificationFormContainer = () => {
-  const { newVerifyRequest } = useApi();
+  const { newVerifyRequest, setUserEmail } = useApi();
   const { wallet } = useAccount();
   const [{ verifiedAddress, userProfile }] = useStateContext();
   const [name, setName] = useState("");
@@ -26,6 +26,7 @@ export const VerificationFormContainer = () => {
   const sendNewVerifyRequest = async () => {
     if (name !== "" && lastName !== "" && description !== "") {
       await newVerifyRequest(wallet, name, lastName, description, email);
+      await setUserEmail(wallet, email);
       setCompletedAction(true);
     }
   };

@@ -99,6 +99,15 @@ export const useApi = () => {
     return "OK";
   };
 
+  const setUserEmail = async (wallet, email) => {
+    await marketplaceApi.post("users/updateEmail", {
+      wallet: wallet,
+      email: email,
+    });
+
+    return "OK";
+  };
+
   const setProfileImg = async (address, file) => {
     var formData = new FormData();
     formData.append("image", file);
@@ -562,6 +571,7 @@ export const useApi = () => {
     registerSentItem,
     newVerifyRequest,
     setProfileData,
+    setUserEmail,
     getNftsFromCreator,
     getWalletHistory,
     getWalletOffers,

@@ -66,6 +66,8 @@ export default function ConfigProfileContainer({ children }) {
     setUsername(userProfile.username);
     setProfileImg(userProfile.profileImg);
     setBannerImage(userProfile.profileBanner);
+    setBio(userProfile.bio);
+    setEmail(userProfile.email);
   }, [wallet]);
   return (
     <div className="p-10 flex flex-col gap-10">

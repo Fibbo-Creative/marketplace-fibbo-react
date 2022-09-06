@@ -25,7 +25,7 @@ export default function ConfigContainer() {
             <Icon icon="healthicons:ui-user-profile" width="32" />
             <div className="text-lg">{literals.profileSettings.account}</div>
           </div>
-          <div
+          {/* <div
             onClick={() => navigate("/account/settings/notifications")}
             className={`p-2 cursor-pointer hover:bg-gray-300 flex items-center gap-5`}
           >
@@ -33,7 +33,7 @@ export default function ConfigContainer() {
             <div className="text-lg">
               {literals.profileSettings.notifications}
             </div>
-          </div>
+          </div> */}
           <div
             onClick={() => navigate("/account/settings/appeareance")}
             className={`p-2 cursor-pointer hover:bg-gray-300 flex items-center gap-5`}
