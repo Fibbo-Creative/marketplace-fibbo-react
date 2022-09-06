@@ -14,8 +14,9 @@ export const ConfirmCreateModal = ({
   wallet,
 }) => {
   const [{ literals }] = useStateContext();
-  const { getERC721Contract } = useTokens();
-  const { saveMintedItem, uploadJSONMetadata } = useApi();
+  const { getERC721Contract, mintGassless } = useTokens();
+  const { saveMintedItem, uploadJSONMetadata, getItemsFromCollection } =
+    useApi();
   const [newTokenId, setNewTokenId] = useState(0);
   const [address, setAddress] = useState("");
   const [completedAction, setCompletedAction] = useState(false);
@@ -33,13 +34,9 @@ export const ConfirmCreateModal = ({
 
       const ipfsFileURL = `https://ipfs.io/ipfs/${ipfsCID}`;
 
-      const contract = await getERC721Contract(collection.contractAddress);
-      let mintTx = await contract.mint(wallet, ipfsFileURL);
-      let tx = await mintTx.wait();
-
-      let event = tx.events[0];
-      let value = event.args[2];
-      let newTokenId = value.toNumber();
+      await mintGassless(collection.contractAddress, wallet, ipfsFileURL);
+      let items = await getItemsFromCollection(collection.contractAddress);
+      let newTokenId = collection.numberOfItems + 1;
       //Si todo va bien, crear a sanity
       await saveMintedItem(
         itemData.name,

@@ -12,7 +12,8 @@ import { sendMetaTx } from "./meta";
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const useMarketplace = () => {
-  const { getERC20Contract, getERC721Contract } = useTokens();
+  const { getERC20Contract, getERC721Contract, approvalForAllGasless } =
+    useTokens();
   const { getMarketplaceAddress } = useAddressRegistry();
   const { wallet } = useAccount();
   const { createProvider } = useProvider();
@@ -34,13 +35,10 @@ export const useMarketplace = () => {
       wallet,
       marketContract.address
     );
-
     if (!isApproved) {
-      const approveTx = await ERC721contract.setApprovalForAll(
-        marketContract.address,
-        true
-      );
-      await approveTx.wait();
+      console.log("Approivng");
+      await approvalForAllGasless(ERC721contract, marketContract.address, true);
+      await sleep(5000);
     }
 
     const provider = createProvider();
@@ -96,6 +94,7 @@ export const useMarketplace = () => {
       functionName: "buyItem",
       args: [collection, tokenId, tokenAddress, owner],
     });
+    await sleep(4000);
 
     const isApproved = await ERC721contract.isApprovedForAll(
       wallet,
@@ -103,11 +102,8 @@ export const useMarketplace = () => {
     );
 
     if (!isApproved) {
-      let approveTx = await ERC721contract.setApprovalForAll(
-        marketContract.address,
-        true
-      );
-      await approveTx.wait();
+      console.log("Approving");
+      await approvalForAllGasless(ERC721contract, marketContract.address);
     }
   };
 
@@ -258,11 +254,8 @@ export const useMarketplace = () => {
     );
 
     if (!isApproved) {
-      const approveTx = await ERC721contract.setApprovalForAll(
-        marketContract.address,
-        true
-      );
-      await approveTx.wait();
+      await approvalForAllGasless(ERC721contract, marketContract.address);
+      await sleep(4000);
     }
 
     await sendMetaTx(marketContract, provider, signer, {

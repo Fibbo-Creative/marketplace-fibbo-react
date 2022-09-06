@@ -1,5 +1,6 @@
 import axios from "axios";
 import { ethers } from "ethers";
+import { Contracts } from "../constants/networks";
 import useContract from "../hooks/useContract";
 import useProvider from "../hooks/useProvider";
 import { calculateGasMargin, getHigherGWEI } from "../utils/gas";
@@ -8,6 +9,10 @@ import { useAddressRegistry } from "./addressRegistry";
 import { createForwarderInstance } from "./forwarder";
 import { signMetaTxRequest } from "./signer";
 import { useTokens } from "./token";
+import { ChainId } from "@sushiswap/sdk";
+
+const forwarder = Contracts[ChainId.FANTOM_TESTNET].minimalForwarder;
+
 export const useFactory = () => {
   const { getFactoryAddress, getAuctionAddress, getMarketplaceAddress } =
     useAddressRegistry();
@@ -57,7 +62,7 @@ export const useFactory = () => {
 
   const createNFTContract = async (name, symbol, from) => {
     const factoryContract = await getFactoryContract();
-    const args = [name, symbol];
+    const args = [name, symbol, forwarder];
 
     const options = {
       from,

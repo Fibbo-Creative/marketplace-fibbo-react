@@ -152,6 +152,15 @@ export const useApi = () => {
     return res.data;
   };
 
+  const registerSentItem = async (collection, tokenId, from, to) => {
+    await marketplaceApi.post("nfts/sentItem", {
+      collection: collection,
+      tokenId: tokenId,
+      from: from,
+      to: to,
+    });
+  };
+
   const saveMintedItem = async (
     name,
     description,
@@ -224,6 +233,17 @@ export const useApi = () => {
     }
   };
 
+  const deleteNftItem = async (collection, tokenId) => {
+    try {
+      await marketplaceApi.post("nfts/delete", {
+        collection: collection,
+        tokenId: tokenId,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   //#endregion
 
   //#region Offers
@@ -254,6 +274,13 @@ export const useApi = () => {
   const getCollectionInfo = async (collection) => {
     const res = await marketplaceApi.get(
       `collections/collectionData?collection=${collection}`
+    );
+    return res.data;
+  };
+
+  const getItemsFromCollection = async (collection) => {
+    const res = await marketplaceApi.get(
+      `collections/items?address=${collection}`
     );
     return res.data;
   };
@@ -505,12 +532,14 @@ export const useApi = () => {
     getNftHistory,
     saveMintedItem,
     registerNftRoyalties,
+    deleteNftItem,
     saveCollectionDetails,
     searchItemsAndProfiles,
     uploadImgToCDN,
     uploadJSONMetadata,
     createNewSuggestion,
     getVerificatedArtists,
+    registerSentItem,
     newVerifyRequest,
     getNftsFromCreator,
     getWalletHistory,
@@ -524,6 +553,7 @@ export const useApi = () => {
     editNftData,
     editCollectionDetails,
     getUserNotifications,
+    getItemsFromCollection,
     deleteNotification,
   };
 };

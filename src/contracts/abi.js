@@ -1174,6 +1174,16 @@ export const COLLECTION_ABI = [
         name: "_verification",
         type: "address",
       },
+      {
+        internalType: "address",
+        name: "_contractsManager",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "forwarder",
+        type: "address",
+      },
     ],
     stateMutability: "nonpayable",
     type: "constructor",
@@ -1439,6 +1449,25 @@ export const COLLECTION_ABI = [
     inputs: [
       {
         internalType: "address",
+        name: "forwarder",
+        type: "address",
+      },
+    ],
+    name: "isTrustedForwarder",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
         name: "_to",
         type: "address",
       },
@@ -1473,19 +1502,6 @@ export const COLLECTION_ABI = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "owner",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [
       {
         internalType: "uint256",
@@ -1502,13 +1518,6 @@ export const COLLECTION_ABI = [
       },
     ],
     stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "renounceOwnership",
-    outputs: [],
-    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -3925,6 +3934,16 @@ export const ERC721_CONTRACT_ABI = [
         name: "_verification",
         type: "address",
       },
+      {
+        internalType: "address",
+        name: "_contractsManager",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "forwarder",
+        type: "address",
+      },
     ],
     stateMutability: "nonpayable",
     type: "constructor",
@@ -4190,6 +4209,38 @@ export const ERC721_CONTRACT_ABI = [
     inputs: [
       {
         internalType: "address",
+        name: "forwarder",
+        type: "address",
+      },
+    ],
+    name: "isTrustedForwarder",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "minimalForwarder",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
         name: "_to",
         type: "address",
       },
@@ -4224,19 +4275,6 @@ export const ERC721_CONTRACT_ABI = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "owner",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [
       {
         internalType: "uint256",
@@ -4253,13 +4291,6 @@ export const ERC721_CONTRACT_ABI = [
       },
     ],
     stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "renounceOwnership",
-    outputs: [],
-    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -4786,6 +4817,17 @@ export const ERC1155_CONTRACT_ABI = [
 
 export const FACTORY_ABI = [
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "forwarder",
+        type: "address",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "constructor",
+  },
+  {
     anonymous: false,
     inputs: [
       {
@@ -4867,6 +4909,11 @@ export const FACTORY_ABI = [
         name: "_symbol",
         type: "string",
       },
+      {
+        internalType: "address",
+        name: "_forwarder",
+        type: "address",
+      },
     ],
     name: "createNFTContract",
     outputs: [
@@ -4925,8 +4972,40 @@ export const FACTORY_ABI = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "forwarder",
+        type: "address",
+      },
+    ],
+    name: "isTrustedForwarder",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "marketplace",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "metaTxforwarder",
     outputs: [
       {
         internalType: "address",

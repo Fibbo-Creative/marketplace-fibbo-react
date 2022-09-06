@@ -6,6 +6,8 @@ import { useAddressRegistry } from "./addressRegistry";
 import { Contracts } from "../constants/networks";
 import { formatEther, parseEther } from "ethers/lib/utils";
 import { useTokens } from "./token";
+import { useFactory } from "./factory";
+
 import useProvider from "../hooks/useProvider";
 import { sendMetaTx } from "./meta";
 
@@ -34,10 +36,12 @@ const formatHighestBid = (highestBidData) => {
 };
 
 export const useAuction = () => {
-  const { getERC20Contract, getERC721Contract } = useTokens();
+  const { getERC20Contract, getERC721Contract, approvalForAllGasless } =
+    useTokens();
   const { getAuctionAddress } = useAddressRegistry();
   const { createProvider } = useProvider();
   const { getContract } = useContract();
+  const { getFactoryContract } = useFactory();
 
   const getContractAddress = async () => await getAuctionAddress();
 
@@ -48,7 +52,6 @@ export const useAuction = () => {
 
   const getAuction = async (collection, tokenId) => {
     const auctionContract = await getAuctionContract();
-    const erc20 = await getERC20Contract(WFTM_ADDRESS);
 
     let auction = await auctionContract.auctions(
       collection,
@@ -83,18 +86,14 @@ export const useAuction = () => {
     const auctionContract = await getAuctionContract();
 
     const ERC721contract = await getERC721Contract(collection);
-
+    const factoryContract = await getFactoryContract();
     const isApprovedForAll = await ERC721contract.isApprovedForAll(
       wallet,
       auctionContract.address
     );
-
     if (!isApprovedForAll) {
-      const approveTx = await ERC721contract.setApprovalForAll(
-        auctionContract.address,
-        true
-      );
-      await approveTx.wait();
+      await approvalForAllGasless(ERC721contract, auctionContract.address);
+      await sleep(5000);
     }
 
     const provider = createProvider();
@@ -190,11 +189,12 @@ export const useAuction = () => {
       const provider = createProvider();
       await window.ethereum.enable();
       const userProvider = new ethers.providers.Web3Provider(window.ethereum);
+
       const signer = userProvider.getSigner();
       const from = await signer.getAddress();
-
+      console.log(erc20);
       const allowance = await erc20.allowance(bidder, auctionContract.address);
-
+      console.log("KEE");
       if (allowance.lt(bidAmount)) {
         await sendMetaTx(erc20, provider, signer, {
           functionName: "approve",
@@ -208,7 +208,7 @@ export const useAuction = () => {
         functionName: "placeBid",
         args: [collection, tokenId, parseEther(bidAmount.toString())],
       });
-      await sleep(5000);
+      await sleep(7000);
     } catch (e) {
       console.log(e);
     }
@@ -244,11 +244,8 @@ export const useAuction = () => {
       );
 
       if (!isApprovedForAll) {
-        const approveTx = await ERC721contract.setApprovalForAll(
-          auctionContract.address,
-          true
-        );
-        await approveTx.wait();
+        await approvalForAllGasless(ERC721contract, auctionContract.address);
+        await sleep(4000);
       }
 
       return await sendMetaTx(auctionContract, provider, signer, {

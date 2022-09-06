@@ -3,33 +3,29 @@ import { useNavigate } from "react-router-dom";
 import { useCollections } from "../../contracts/collection";
 import { ActionModal } from "./ActionModal";
 
-export default function FreezeMetadataModal({
+export default function DeleteItemModal({
   children,
   showModal,
   handleCloseModal,
   tokenId,
   collectionInfo,
   itemData,
+  onDeleteItem,
   wallet,
 }) {
-  const { setFreezedMetadata } = useCollections();
   const navigate = useNavigate();
   const [secure, setSecure] = useState(false);
 
-  const goToItem = () => {
+  const goToCollection = () => {
     if (collectionInfo.customURL) {
-      navigate(`/explore/${collectionInfo.customURL}/${tokenId}`);
+      navigate(`/collection/${collectionInfo.customURL}`);
     } else {
-      navigate(`/explore/${collectionInfo.contractAddress}/${tokenId}`);
+      navigate(`/collection/${collectionInfo.contractAddress}`);
     }
   };
-  const handleFreezeMetadata = async () => {
+  const handleDeleteItem = async () => {
     try {
-      await setFreezedMetadata(
-        collectionInfo.contractAddress,
-        itemData,
-        tokenId
-      );
+      await onDeleteItem();
       return "OK";
     } catch (e) {
       console.log(e);
@@ -39,24 +35,23 @@ export default function FreezeMetadataModal({
 
   return (
     <ActionModal
-      title={`Congelar metadata del NFT`}
+      title={`Eliminar NFT`}
       showModal={showModal}
       handleCloseModal={handleCloseModal}
-      submitLabel={"Congelar"}
+      submitLabel={"Eliminar"}
       submitDisabled={!secure}
-      onSubmit={handleFreezeMetadata}
-      completedLabel="Ver el Item"
-      completedText="La información de tu ítem se ha congelado correctamente"
-      completedAction={goToItem}
+      onSubmit={handleDeleteItem}
+      completedLabel="Ver colección"
+      completedText="El item se ha eliminado correctamente"
+      completedAction={goToCollection}
     >
       <div className="my-10 mx-3 md:mx-8 flex flex-col items-center gap-10">
         <div>
-          Una vez aceptes esta opción, la información del NFT no podrá ser
-          editada y se almacenará de una forma descentralizada en el protocolo
-          IPFS
+          Una vez aceptes esta opción, el item será eliminado del marketplace y
+          no se va a poder interactuar con el
         </div>
 
-        <div>¿Estas seguro de que la información es correcta?</div>
+        <div>¿Estas seguro de que quieres eliminarlo?</div>
         <label className="">
           <input
             type="checkbox"

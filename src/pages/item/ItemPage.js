@@ -40,6 +40,8 @@ import { useStateContext } from "../../context/StateProvider";
 import { actionTypes } from "../../context/stateReducer";
 import RedirectModal from "../../components/modals/RedirectModal";
 import ModifyOfferModal from "../../components/modals/ModifyOfferModal";
+import TransferModal from "../../components/modals/TransferModal";
+import DeleteItemModal from "../../components/modals/DeleteItemModal";
 
 const formatPriceInUsd = (price) => {
   let priceStr = price.toString().split(".");
@@ -80,6 +82,8 @@ export default function ItemPage() {
     getCollectionInfo,
     setShowRedirectProfile,
     setAcceptedOffer,
+    deleteNftItem,
+    registerSentItem,
   } = useApi();
   const {
     getListingInfo,
@@ -94,7 +98,7 @@ export default function ItemPage() {
     acceptOffer,
     modifyOrder,
   } = useMarketplace();
-  const { getERC721Contract } = useTokens();
+  const { getERC721Contract, sendItemGassles } = useTokens();
 
   const {
     getAuction,
@@ -117,6 +121,8 @@ export default function ItemPage() {
   const [openAdditionalModal, setOpenAdditionalModal] = useState(false);
   const [openCancelOfferModal, setOpenCancelOfferModal] = useState(false);
   const [openModifyOfferModal, setOpenModifyOfferModal] = useState(false);
+  const [openTransferModal, setOpenTransferModal] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   const [openCreateAuction, setOpenCreateAuction] = useState(false);
   const [openBidModal, setOpenBidModal] = useState(false);
@@ -328,6 +334,19 @@ export default function ItemPage() {
     }
   };
 
+  const handleSendItem = async (to) => {
+    await sendItemGassles(collectionInfo.contractAddress, wallet, to, tokenId);
+
+    await registerSentItem(collectionInfo.contractAddress, tokenId, wallet, to);
+    const newOwner = await getProfileInfo(to);
+
+    profileOwnerData.current = newOwner;
+    setIsOwner(false);
+  };
+  const handleDeleteItem = async () => {
+    //Lamar a la api y eliminar item
+    await deleteNftItem(collectionInfo.contractAddress, tokenId);
+  };
   const handleListItem = async (price, payToken) => {
     /*  if (!isFreezedMetadata) {
       await setFreezedMetadata(
@@ -492,15 +511,6 @@ export default function ItemPage() {
     endTime,
     payToken
   ) => {
-    /*  if (!isFreezedMetadata) {
-      await setFreezedMetadata(
-        collectionInfo.contractAddress,
-        tokenInfo.current,
-        tokenId
-      );
-      setIsFreezedMetadata(true);
-    } */
-
     await createAuction(
       wallet,
       collectionInfo.contractAddress,
@@ -572,13 +582,9 @@ export default function ItemPage() {
   const handleMakeBid = async (bidAmount) => {
     await makeBid(wallet, collectionInfo.contractAddress, tokenId, bidAmount);
 
-    let _highestBid = await getHighestBid(
-      collectionInfo.contractAddress,
-      tokenId
-    );
-    const profile = await getProfileInfo(_highestBid.bidder);
-    _highestBid = {
-      ..._highestBid,
+    const profile = await getProfileInfo(wallet);
+    let _highestBid = {
+      bid: bidAmount,
       bidder: profile,
     };
     setHighestBid(_highestBid);
@@ -671,6 +677,15 @@ export default function ItemPage() {
                             onClick={() => setRefreshMetadata(!refreshMetadata)}
                             tooltipText="Refrescar Metadata"
                           />
+                          {isOwner && !isForSale && !isOnAuction && (
+                            <ItemPageOption
+                              icon="fluent:send-16-filled"
+                              tooltip="transfer-item"
+                              onClick={() => setOpenTransferModal(true)}
+                              tooltipText="Enviar NFT"
+                            />
+                          )}
+
                           {!isFreezedMetadata &&
                             isOwner &&
                             !isForSale &&
@@ -683,6 +698,14 @@ export default function ItemPage() {
                                 tooltipText="Editar Item"
                               />
                             )}
+                          {isOwner && !isForSale && !isOnAuction && (
+                            <ItemPageOption
+                              icon="fluent:delete-dismiss-24-filled"
+                              tooltip="delete-item"
+                              onClick={() => setOpenDeleteModal(true)}
+                              tooltipText="Eliminar NFT"
+                            />
+                          )}
                           {tokenInfo?.current.externalLink &&
                             tokenInfo?.current.externalLink !== "" && (
                               <ItemPageOption
@@ -736,6 +759,22 @@ export default function ItemPage() {
                         onClick={() => setRefreshMetadata(!refreshMetadata)}
                         tooltipText="Refrescar Metadata"
                       />
+                      {isOwner && !isForSale && !isOnAuction && (
+                        <ItemPageOption
+                          icon="fluent:send-16-filled"
+                          tooltip="transfer-item"
+                          onClick={() => setOpenTransferModal(true)}
+                          tooltipText="Enviar NFT"
+                        />
+                      )}
+                      {isOwner && !isForSale && !isOnAuction && (
+                        <ItemPageOption
+                          icon="fluent:delete-dismiss-24-filled"
+                          tooltip="delete-item"
+                          onClick={() => setOpenDeleteModal(true)}
+                          tooltipText="Eliminar NFT"
+                        />
+                      )}
                       {!isFreezedMetadata &&
                         isOwner &&
                         !isForSale &&
@@ -1179,6 +1218,17 @@ export default function ItemPage() {
         link={tokenInfo?.current.externalLink}
         showModal={showRedirect}
         handleCloseModal={() => setShowRedirect(false)}
+      />
+      <TransferModal
+        showModal={openTransferModal}
+        handleCloseModal={() => setOpenTransferModal(false)}
+        onSendItem={handleSendItem}
+      />
+      <DeleteItemModal
+        showModal={openDeleteModal}
+        collectionInfo={collectionInfo}
+        handleCloseModal={() => setOpenDeleteModal(false)}
+        onDeleteItem={handleDeleteItem}
       />
       <ConnectionModal
         showModal={openConnectionModal}

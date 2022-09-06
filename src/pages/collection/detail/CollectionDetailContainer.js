@@ -25,11 +25,13 @@ import ReactTooltip from "react-tooltip";
 import { ThemeContext } from "../../../context/ThemeContext";
 import { ButtonTooltip } from "../../../components/tooltips/ButtonTooltip";
 import { useStateContext } from "../../../context/StateProvider";
+import { useTokens } from "../../../contracts/token";
 
 export const CollectionDetailContainer = () => {
   const [loading, setLoading] = useState(true);
   const { collection } = useParams();
   const { _width } = useResponsive();
+  const { getERC721Contract } = useTokens();
   const [{ literals }] = useStateContext();
   const {
     getCollectionDetail,
@@ -315,6 +317,8 @@ export const CollectionDetailContainer = () => {
       setLoading(true);
       const collectionDetail = await getCollectionDetail(collection);
       setIsOwner(collectionDetail.creator === wallet);
+      const factory = await getERC721Contract(collection);
+      console.log(await factory.minimalForwarder());
       if (collectionDetail.creator !== wallet) {
         let collOptions = await getUserCollectionOptions(
           collectionDetail.contractAddress,
