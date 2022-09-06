@@ -32,14 +32,14 @@ export const ProfileMyOffersTable = ({
             <thead className="bg-gray-200 dark:bg-dark-3 p-2">
               <tr className="p-2">
                 <th scope="col" className="px-6 py-3">
-                  Item
+                  {literals.itemHistory.item}
                 </th>
 
                 <th cope="col" className="px-6 py-3">
                   {literals.detailNFT.price}
                 </th>
                 <th cope="col" className="px-6 py-3">
-                  Expira
+                  {literals.detailNFT.expires}
                 </th>
               </tr>
             </thead>

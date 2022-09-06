@@ -70,16 +70,16 @@ export const ItemDirectOffers = ({
               <thead className="bg-gray-200 dark:bg-dark-3 p-2">
                 <tr className="p-2">
                   <th scope="col" className="px-6 py-3">
-                    Oferta de
+                    {literals.detailNFT.offerOf}
                   </th>
                   <th cope="col" className="px-6 py-3">
-                    Precio
+                    {literals.detailNFT.price}
                   </th>
                   <th cope="col" className="px-6 py-3">
-                    Expira
+                  {literals.detailNFT.expires}
                   </th>
                   <th cope="col" className="px-8 py-3">
-                    Acciones
+                  {literals.detailNFT.actions}
                   </th>
                 </tr>
               </thead>
@@ -174,7 +174,7 @@ export const ItemDirectOffers = ({
                 >
                   <div className="flex justify-between">
                     <div>
-                      <b>Oferta de</b>
+                      <b>{literals.detailNFT.offerOf}</b>
                     </div>
                     <div>
                       <div className="flex gap-2 items-center">
@@ -202,7 +202,7 @@ export const ItemDirectOffers = ({
                   </div>
                   <div className="flex justify-between">
                     <div>
-                      <b>Precio</b>
+                      <b>{literals.detailNFT.price}</b>
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
@@ -213,7 +213,7 @@ export const ItemDirectOffers = ({
                   </div>
                   <div className="flex justify-between">
                     <div>
-                      <b>Expira en</b>
+                      <b>{literals.detailNFT.expiresIn}</b>
                     </div>
                     <div>{formatDate(offer)}</div>
                   </div>

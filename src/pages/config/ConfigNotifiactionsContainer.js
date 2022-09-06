@@ -10,7 +10,7 @@ import ActionButton from "../../components/ActionButton";
 import useAccount from "../../hooks/useAccount";
 
 export default function ConfigNotificationsContainer({ children }) {
-  const [{ userProfile }] = useStateContext();
+  const [{ userProfile, literals }] = useStateContext();
   const { wallet, connectToWallet } = useAccount();
   const navigate = useNavigate();
 
@@ -20,8 +20,20 @@ export default function ConfigNotificationsContainer({ children }) {
   return (
     <div className="p-10 flex flex-col gap-10">
       <div>
-        <p className="text-3xl font-black">Ajustes de Notifiaciones</p>
+        <p className="text-3xl font-black">{literals.profileSettings.notifications}</p>
       </div>
+
+      <div className="flex flex-row w-full gap-10 ">
+        <div className="flex gap-5 m-5">
+          <input className="w-5 cursor-pointer" type="checkbox"/>
+          <a className="text-xl">{literals.profileSettings.yourActivityNotifications}</a>
+        </div>
+        <div className="flex gap-5 m-5">
+          <input className="w-5 cursor-pointer" type="checkbox"/>
+          <a className="text-xl">{literals.profileSettings.followerActivityNotifications}</a>
+        </div>
+      </div>
+
     </div>
   );
 }

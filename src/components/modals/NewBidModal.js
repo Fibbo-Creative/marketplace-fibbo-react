@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useStateContext } from "../../context/StateProvider";
 import { formatEther } from "ethers/lib/utils";
 import { useWFTMContract } from "../../contracts/wftm";
 import { isMobile } from "react-device-detect";
 import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
 import { ActionModal } from "./ActionModal";
-import { useStateContext } from "../../context/StateProvider";
 
 export default function MakeBidModal({
   collection,
@@ -20,6 +19,7 @@ export default function MakeBidModal({
   onMakeBid,
 }) {
   const navigate = useNavigate();
+  const [{literals}] = useStateContext();
   const [bidAmmount, setBidAmmount] = useState(0);
   const [wftmBalance, setWftmBalance] = useState(0);
   const [payTokenSelected, setPayTokenSelected] = useState(null);
@@ -157,10 +157,10 @@ export default function MakeBidModal({
                     ? "La puja debe ser mayor a la actual"
                     : bidAmmount < parseFloat(highestBid.bid) + 1
                     ? "La diferencia con la puja actual debe ser 1 o mayor"
-                    : "No tienes suficientes WFTM"
+                    : literals.makeOffer.notWFTM
                   : parseFloat(auctionInfo?.minBid) > parseFloat(bidAmmount)
                   ? "La puja debe ser mayor o igual que el precio reservado"
-                  : "No tienes suficientes WFTM"
+                  : literals.makeOffer.notWFTM
               }`}
               selectedToken={payTokenSelected}
               setSelectedToken={setPayTokenSelected}

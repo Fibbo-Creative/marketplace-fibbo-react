@@ -7,9 +7,18 @@ import { TextArea } from "../../components/inputs/TextArea";
 import { ImageInput } from "../../components/inputs/ImageInput";
 import ActionButton from "../../components/ActionButton";
 import useAccount from "../../hooks/useAccount";
+import { ThemeContext } from "../../context/ThemeContext";
+import { Icon } from "@iconify/react";
+import { actionTypes } from "../../context/stateReducer";
+import { espLiterals, engLiterals } from "../../context/lang";
+
+
+
 
 export default function ConfigAppeareanceContainer({ children }) {
-  const [{ verifiedAddress, userProfile, literals }] = useStateContext();
+  const { theme, setTheme } = React.useContext(ThemeContext);
+
+  const [{ verifiedAddress, userProfile, literals }, dispatch] = useStateContext();
   const { wallet, connectToWallet } = useAccount();
   const navigate = useNavigate();
   const { _width } = useRespnsive();
@@ -19,7 +28,49 @@ export default function ConfigAppeareanceContainer({ children }) {
   const [bio, setBio] = useState("");
 
   const [email, setEmail] = useState("");
+  const language = "esp";
+  
+  
+  const setSpanish=() => {
+    dispatch({
+      type: actionTypes.SET_LANGUAGE,
+      lang: "esp",
+      literals: espLiterals,
+    });
+  }
+    
+  const setEnglish=() => {
+    dispatch({
+      type: actionTypes.SET_LANGUAGE,
+      lang: "eng",
+      literals: engLiterals,
+    });
+  }
 
+  
+
+  const UserMenuItemToggle = ({ text, disabled, onClick }) => {
+    const { theme } = React.useContext(ThemeContext);
+    return (
+      <div
+        onClick={disabled ? null : onClick}
+        className={`p-2 ${
+          disabled
+            ? "cursor-not-allowed text-gray-400"
+            : "cursor-pointer hover:bg-gray-300"
+        }  flex items-center gap-5`}
+      >
+        <div className="flex p-2 items-center dark:justify-end w-[64px] h-[32px] bg-gray-400 dark:bg-primary-2 rounded-xl">
+          {theme === "dark" ? (
+            <Icon width={24} icon="fa-solid:moon" className="text-gray-200" />
+          ) : (
+            <Icon width={28} icon="fa-solid:sun" className="text-gray-700" />
+          )}
+        </div>
+        {text}
+      </div>
+    );
+  };
   useEffect(() => {
     connectToWallet();
     //Get Profile info
@@ -31,14 +82,33 @@ export default function ConfigAppeareanceContainer({ children }) {
   return (
     <div className="p-10 flex flex-col gap-10">
       <div>
-        <p className="text-3xl font-black">Apariencia</p>
+        <p className="text-3xl font-black">{literals.profileSettings.appearance}</p>
       </div>
       <div className="flex w-full gap-10">
-        <div className="flex flex-col gap-5 w-2/3">
-          
-        </div>
+        
+        <UserMenuItemToggle
+          text={literals.userMenu.darkMode}
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+        />
+        <UserMenuItemToggle
+          text={literals.userMenu.autoDarkMode}
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+        />
+   
+      </div>
+
+      <div className="flex w-full gap-10 mt-6">
+        <a className="text-xl font-bold">{literals.profileSettings.selectLenguage}</a>
+      </div>
+
+      <div className="flex w-full gap-10 ">
+        <button onClick={setSpanish} className="text-xl p-3 hover:-translate-y-1 hover:font-bold">{literals.profileSettings.spanish}</button>
+        <button onClick={setEnglish} className="text-xl hover:-translate-y-1 hover:font-bold">{literals.profileSettings.english}</button>
       </div>
       
     </div>
   );
+
+
+  
 }

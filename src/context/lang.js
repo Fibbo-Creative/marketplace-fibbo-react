@@ -15,6 +15,8 @@ const engLiterals = {
     station: "wFTM Station",
     disconnect: "Disconnect",
     darkMode: "Dark Mode",
+    autoDarkMode: "Auto Dark Mode",
+
   },
   filters: {
     filters: "Filters",
@@ -51,6 +53,10 @@ const engLiterals = {
     listings: "Listings",
     offers: "Offers",
     auctions: "Auctions",
+    offerOf: "Offer of",
+    expires: "Expires",
+    expiresIn: "Expires in",
+    actions: "Actions",
   },
   itemPage: {
     chainData: "Chain Data",
@@ -58,6 +64,20 @@ const engLiterals = {
     activity: "Item Activity",
     moreCollection: "More from this collection",
     offers: "Offers",
+    owner: "Owner:",
+    refreshMeta : "Refresh Metadata",
+    fantomNetwork: "Fantom Network",
+    itemFreezed: "This item is frozen",
+  },
+  itemHistory: {
+    event: "Event",
+    item: "Item",
+    price: "Price",
+    initiator: "Initiator",
+    recipient: "Recipient",
+    date: "Date",
+    from: "From",
+    to: "To",
   },
   myCollections: {
     mycollections: "My collections",
@@ -99,10 +119,10 @@ const engLiterals = {
   },
   profileSettings: {
     settings: "SETTINGS",
-    account: "Account",
+    account: "Profile",
     notifications: "Notifications",
     appearance: "Appearance",
-    profileSettings: "Profile settings",
+    profileSettings: "Profile",
     userName: "User name",
     introduceUserName: "Introduce your username",
     biography: "Biography",
@@ -112,6 +132,11 @@ const engLiterals = {
     wallet: "Wallet",
     profileImg: "Profile image",
     backgroundImg: "Background image",
+    selectLenguage: "Select a lenguage:",
+    spanish: "Spanish",
+    english: "English",
+    yourActivityNotifications: "Your Activity Notifications",
+    followerActivityNotifications: "Follower Activity Notifications",
   },
   features: {
     suggestions: "Suggestions",
@@ -126,6 +151,16 @@ const engLiterals = {
     suggestionDoneText:
       "Thank you for your suggestion, we will review your request and process it.",
   },
+  makeOffer: {
+    offerPrice: "What price do you want to offer?",
+    expires: "Expires",
+    notWFTM: "You don't have enough WFTM",
+    offerOf: "Offer of",
+  },
+  notifications: {
+    notifications: "Notifications",
+    noNotifications: "You don't have notifications",
+  },
   actions: {
     makeOffer: "Make Offer",
     createCollection: "CREATE COLLECTION",
@@ -134,6 +169,9 @@ const engLiterals = {
     verifyAccount: "Verify Account",
     closeWindow: "CLOSE WINDOW",
     saveChanges: "SAVE",
+    buyNow: "Buy now",
+    makeBid: "Make bid",
+    viewYourOffer: "View your offer",
   },
   modals: {
     connectSentence: "Connect a wallet",
@@ -165,6 +203,7 @@ const espLiterals = {
     station: "Estación wFTM",
     disconnect: "Desconectar",
     darkMode: "Tema Oscuro",
+    autoDarkMode: "Auto Tema Oscuro",
   },
   filters: {
     filters: "Filtros",
@@ -201,6 +240,10 @@ const espLiterals = {
     listings: "Listados",
     offers: "Ofertas",
     auctions: "Subastas",
+    offerOf: "Oferta de",
+    expires: "Expira",
+    expiresIn: "Expira en",
+    actions: "Acciones",
   },
   itemPage: {
     chainData: "Datos de la cadena",
@@ -208,6 +251,20 @@ const espLiterals = {
     activity: "Actividad del Item",
     moreCollection: "Mas de la colección",
     offers: "Ofertas",
+    owner: "Pertenece a:",
+    refreshMeta : "Refrescar Metadata",
+    fantomNetwork: "Red de Fantom",
+    itemFreezed: "El item tiene sus datos congelados",
+  },
+  itemHistory: {
+    event: "Evento",
+    item: "Item",
+    price: "Precio",
+    initiator: "Iniciador",
+    recipient: "Recipiente",
+    date: "Fecha",
+    from: "De",
+    to: "A",
   },
   myCollections: {
     mycollections: "Mis colecciones",
@@ -249,7 +306,7 @@ const espLiterals = {
   },
   profileSettings: {
     settings: "CONFIGURACIÓN",
-    account: "Cuenta",
+    account: "Perfil",
     notifications: "Notificaciones",
     appearance: "Apariencia",
     profileSettings: "Ajustes de perfil",
@@ -262,6 +319,11 @@ const espLiterals = {
     wallet: "Billetera",
     profileImg: "Imagen de perfil",
     backgroundImg: "Imagen de fondo",
+    selectLenguage: "Selecciona un idioma",
+    spanish: "Español",
+    english: "Inglés",
+    yourActivityNotifications: "Tus Notificaciones de Actividad",
+    followerActivityNotifications: "Notificaciones de Actividad de Seguidores",
   },
   features: {
     suggestions: "Sugerencias",
@@ -276,6 +338,16 @@ const espLiterals = {
     suggestionDoneText:
       "Gracias por tu sugerencia, revisaremos tu solicitud y la procesaremos.",
   },
+  makeOffer: {
+    offerPrice: "Que precio quieres ofertar?",
+    expires: "Fecha de Expiración",
+    notWFTM: "No tienes suficientes WFTM",
+    offerOf: "Oferta por",
+  },
+  notifications: {
+    notifications: "Notificaciones",
+    noNotifications: "No tienes notificaciones",
+  },
   actions: {
     makeOffer: "Realizar Oferta",
     createCollection: "CREAR COLECCIÓN",
@@ -284,6 +356,9 @@ const espLiterals = {
     verifyAccount: "Verificarse",
     closeWindow: "CERRAR VENTANA",
     saveChanges: "GUARDAR CAMBIOS",
+    buyNow: "Comprar ya",
+    makeBid: "Realizar puja",
+    viewYourOffer: "Ver tu oferta",
   },
   modals: {
     connectSentence: "Conectar una billetera",

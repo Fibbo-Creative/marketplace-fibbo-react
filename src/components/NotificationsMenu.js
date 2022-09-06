@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react";
 import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { ButtonTooltip } from "./tooltips/ButtonTooltip";
+import { useStateContext } from "../context/StateProvider";
 
 export const NotificationsMenu = ({
   setOpenMenu,
@@ -9,7 +10,7 @@ export const NotificationsMenu = ({
   removeNotification,
 }) => {
   const ref = useRef(null);
-
+  const [{literals}] = useStateContext();
   const navigate = useNavigate();
 
   const redirectToItem = (notification) => {
@@ -82,7 +83,7 @@ export const NotificationsMenu = ({
         ref={ref}
         className="w-[250px] md:w-[300px] bg-gray-100 dark:bg-dark-2 absolute  top-[60px] right-[200px]   z-20 flex flex-col  rounded-md"
       >
-        <div className="p-2 border-b">Notificaciones</div>
+        <div className="p-2 border-b">{literals.notifications.notifications}</div>
 
         {notifications.length > 0 ? (
           <div className="flex flex-col gap-2">
@@ -102,7 +103,7 @@ export const NotificationsMenu = ({
           </div>
         ) : (
           <div className="flex text-gray-400 gap-2 p-2 items-center justify-between">
-            No tienes notificaciones
+            {literals.notifications.noNotifications}
           </div>
         )}
       </div>
