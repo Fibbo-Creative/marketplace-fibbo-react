@@ -46,6 +46,7 @@ export default function WalletButton({
       </button>
       {openMenu && (
         <UserMenu
+          wallet={wallet}
           setOpenMenu={setOpenMenu}
           setOpenStation={setOpenStation}
           disconnectWallet={disconnectWallet}

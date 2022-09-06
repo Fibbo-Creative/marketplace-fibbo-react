@@ -4,7 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { useStateContext } from "../context/StateProvider";
 import { ThemeContext } from "../context/ThemeContext";
 
-export const UserMenu = ({ setOpenStation, setOpenMenu, disconnectWallet }) => {
+export const UserMenu = ({
+  setOpenStation,
+  setOpenMenu,
+  wallet,
+  disconnectWallet,
+}) => {
   const ref = useRef(null);
   const { theme, setTheme } = React.useContext(ThemeContext);
   const [{ userProfile, literals }] = useStateContext();
@@ -28,6 +33,11 @@ export const UserMenu = ({ setOpenStation, setOpenMenu, disconnectWallet }) => {
   const handleDisconnect = () => {
     setOpenMenu(false);
     disconnectWallet();
+  };
+
+  const openTransak = () => {
+    const baseUrl = `https://staging-global.transak.com/?apiKey=e486f33d-d0db-431b-bcf7-852e42ed9fdc&&cryptoCurrencyList=FTM&defaultCryptoCurrency=FTM,&disableWalletAddressForm=true&walletAddress=${wallet}&exchangeScreenTitle=Buy%20FTM%20for%20FIBBO%20Marketplace&isFeeCalculationHidden=true&redirectURL=${window.location.href}`;
+    window.open(baseUrl, "_blank");
   };
 
   useEffect(() => {
@@ -70,6 +80,11 @@ export const UserMenu = ({ setOpenStation, setOpenMenu, disconnectWallet }) => {
           text={literals.userMenu.station}
           icon="carbon:gas-station-filled"
           onClick={() => setOpenStation(true)}
+        />
+        <UserMenuItem
+          text="Comprar FTM"
+          icon="fa6-solid:money-bill-transfer"
+          onClick={() => openTransak()}
         />
         <UserMenuItem
           text={literals.userMenu.disconnect}
