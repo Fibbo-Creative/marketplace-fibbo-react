@@ -6,21 +6,59 @@ import { TextInput } from "../../components/inputs/TextInput";
 import { TextArea } from "../../components/inputs/TextArea";
 import { ImageInput } from "../../components/inputs/ImageInput";
 import ActionButton from "../../components/ActionButton";
-
+import { Check } from "../../components/lottie/Check";
 import useAccount from "../../hooks/useAccount";
+import { useApi } from "../../api";
+import { actionTypes } from "../../context/stateReducer";
 
 export default function ConfigProfileContainer({ children }) {
-  const [{ verifiedAddress, userProfile, literals }] = useStateContext();
+  const [{ verifiedAddress, userProfile, literals }, dispatch] =
+    useStateContext();
   const { wallet, connectToWallet } = useAccount();
   const navigate = useNavigate();
   const { _width } = useRespnsive();
-
+  const { setProfileData, uploadImgToCDN } = useApi();
   const [username, setUsername] = useState("");
   const [profileImg, setProfileImg] = useState("");
   const [bannerImage, setBannerImage] = useState("");
   const [bio, setBio] = useState("");
-
   const [email, setEmail] = useState("");
+
+  const [completedAction, setCompletedAction] = useState(false);
+
+  const updateProfile = async () => {
+    await setProfileData(username, wallet, email, bio, profileImg, bannerImage);
+
+    //Dispatch actualizar username, banner y profileIMG
+    dispatch({
+      type: actionTypes.UPDATE_PROFILE,
+      profileImg: profileImg,
+      profileBanner: bannerImage,
+      username: username,
+    });
+    setCompletedAction(true);
+  };
+
+  const onSelectProfileImage = async (e) => {
+    const file = e.target.files[0];
+    if (file.type.includes("image")) {
+      const { sanity } = await uploadImgToCDN(file, false);
+      if (sanity === "INVALID IMG") {
+      } else {
+        setProfileImg(sanity);
+      }
+    }
+  };
+  const onSelectBannerImage = async (e) => {
+    const file = e.target.files[0];
+    if (file.type.includes("image")) {
+      const { sanity } = await uploadImgToCDN(file, false);
+      if (sanity === "INVALID IMG") {
+      } else {
+        setBannerImage(sanity);
+      }
+    }
+  };
 
   useEffect(() => {
     connectToWallet();
@@ -28,7 +66,6 @@ export default function ConfigProfileContainer({ children }) {
     setUsername(userProfile.username);
     setProfileImg(userProfile.profileImg);
     setBannerImage(userProfile.profileBanner);
-    console.log(userProfile.profileBanner);
   }, [wallet]);
   return (
     <div className="p-10 flex flex-col gap-10">
@@ -37,7 +74,7 @@ export default function ConfigProfileContainer({ children }) {
           {literals.profileSettings.profileSettings}
         </p>
       </div>
-      <div className="flex w-full gap-10">
+      <div className="flex  flex-col lg:flex-row w-full gap-10">
         <div className="flex flex-col gap-5 w-2/3">
           <TextInput
             label={literals.profileSettings.userName}
@@ -72,17 +109,31 @@ export default function ConfigProfileContainer({ children }) {
             className=" rounded-full w-[200px] h-[200px]"
             inputId="profileImageInput"
             icon={true}
+            onFileSelected={onSelectProfileImage}
           />
           <ImageInput
             label={literals.profileSettings.backgroundImg}
             imageURL={bannerImage}
             className=" w-[300px] h-[200px]"
             inputId="bannerImageInput"
+            onFileSelected={onSelectBannerImage}
             icon={true}
           />
         </div>
       </div>
-      <ActionButton text={literals.actions.saveChanges} size="large" />
+      <div className="flex gap-5 items-center">
+        <ActionButton
+          text={literals.actions.saveChanges}
+          buttonAction={updateProfile}
+          size="large"
+        />
+        {completedAction && (
+          <div className="flex gap-1  items-center text-green-500">
+            Perfil actualizado correctamente
+            <Check />
+          </div>
+        )}
+      </div>
     </div>
   );
 }

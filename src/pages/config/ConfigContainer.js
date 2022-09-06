@@ -1,14 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import FiboIMG from "../../assets/logoHome.png";
-import ActionButton from "../../components/ActionButton";
 import { useStateContext } from "../../context/StateProvider";
 import { PageWithLoading } from "../../components/basic/PageWithLoading";
-import Lottie from "react-lottie-player";
-import communityJson from "../../assets/community.json";
-import artistJson from "../../assets/artists.json";
 import useRespnsive from "../../hooks/useResponsive";
-import { TextInput } from "../../components/inputs/TextInput";
 import { Icon } from "@iconify/react";
 
 export default function ConfigContainer() {
@@ -18,10 +12,12 @@ export default function ConfigContainer() {
 
   return (
     <PageWithLoading loading={false}>
-      <div className="flex w-full h-full">
+      <div className="flex flex-col md:flex-row  w-screen  h-full">
         {/** SIDEBAR */}
-        <div className="px-8 pt-4 flex flex-col gap-4 w-[400px] h-full ">
-          <b className="uppercase text-gray-500 ">{literals.profileSettings.settings}</b>
+        <div className="px-8 pt-4 flex flex-col gap-4 w-full md:w-[400px] h-full border-b border-gray-300 md:border-0 ">
+          <b className="uppercase text-gray-500 ">
+            {literals.profileSettings.settings}
+          </b>
           <div
             onClick={() => navigate("/account/settings/profile")}
             className={`p-2 cursor-pointer hover:bg-gray-300 flex items-center gap-5`}

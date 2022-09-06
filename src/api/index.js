@@ -79,6 +79,26 @@ export const useApi = () => {
     return imgAddedToSanity.data;
   };
 
+  const setProfileData = async (
+    username,
+    wallet,
+    email,
+    bio,
+    profileImg,
+    profileBanner
+  ) => {
+    await marketplaceApi.post("users/update", {
+      username: username,
+      wallet: wallet,
+      email: email,
+      bio: bio,
+      profileImg: profileImg,
+      profileBanner: profileBanner,
+    });
+
+    return "OK";
+  };
+
   const setProfileImg = async (address, file) => {
     var formData = new FormData();
     formData.append("image", file);
@@ -541,6 +561,7 @@ export const useApi = () => {
     getVerificatedArtists,
     registerSentItem,
     newVerifyRequest,
+    setProfileData,
     getNftsFromCreator,
     getWalletHistory,
     getWalletOffers,

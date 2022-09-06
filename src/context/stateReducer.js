@@ -25,6 +25,8 @@ export const initialState = {
 export const actionTypes = {
   SET_LANGUAGE: "SET_LANGUAGE",
   SET_USER_PROFILE: "SET_USER_PROFILE",
+  UPDATE_PROFILE: "UPDATE_PROFILE",
+
   SET_PROFILE_BANNER: "SET_PROFILE_BANNER",
   SET_PROFILE_IMAGE: "SET_PROFILE_IMAGE",
   SET_USERNAME: "SET_USERNAME",
@@ -68,6 +70,16 @@ const stateReducer = (state, action) => {
         ...state,
         userProfile: {
           ...state.userProfile,
+          username: action.username,
+        },
+      };
+    case actionTypes.UPDATE_PROFILE:
+      return {
+        ...state,
+        userProfile: {
+          ...state.userProfile,
+          profileBanner: action.banner,
+          profileImg: action.profileImg,
           username: action.username,
         },
       };

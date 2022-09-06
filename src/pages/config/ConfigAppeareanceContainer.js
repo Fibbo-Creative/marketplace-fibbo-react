@@ -12,42 +12,24 @@ import { Icon } from "@iconify/react";
 import { actionTypes } from "../../context/stateReducer";
 import { espLiterals, engLiterals } from "../../context/lang";
 
-
-
-
-export default function ConfigAppeareanceContainer({ children }) {
+export default function ConfigAppeareanceContainer() {
   const { theme, setTheme } = React.useContext(ThemeContext);
-
-  const [{ verifiedAddress, userProfile, literals }, dispatch] = useStateContext();
-  const { wallet, connectToWallet } = useAccount();
-  const navigate = useNavigate();
-  const { _width } = useRespnsive();
-  const [username, setUsername] = useState("");
-  const [profileImg, setProfileImg] = useState("");
-  const [bannerImage, setBannerImage] = useState("");
-  const [bio, setBio] = useState("");
-
-  const [email, setEmail] = useState("");
-  const language = "esp";
-  
-  
-  const setSpanish=() => {
+  const [{ userProfile, literals }, dispatch] = useStateContext();
+  const setSpanish = () => {
     dispatch({
       type: actionTypes.SET_LANGUAGE,
       lang: "esp",
       literals: espLiterals,
     });
-  }
-    
-  const setEnglish=() => {
+  };
+
+  const setEnglish = () => {
     dispatch({
       type: actionTypes.SET_LANGUAGE,
       lang: "eng",
       literals: engLiterals,
     });
-  }
-
-  
+  };
 
   const UserMenuItemToggle = ({ text, disabled, onClick }) => {
     const { theme } = React.useContext(ThemeContext);
@@ -71,21 +53,15 @@ export default function ConfigAppeareanceContainer({ children }) {
       </div>
     );
   };
-  useEffect(() => {
-    connectToWallet();
-    //Get Profile info
-    setUsername(userProfile.username);
-    setProfileImg(userProfile.profileImg);
-    setBannerImage(userProfile.profileBanner);
-    console.log(userProfile.profileBanner);
-  }, [wallet]);
+
   return (
     <div className="p-10 flex flex-col gap-10">
       <div>
-        <p className="text-3xl font-black">{literals.profileSettings.appearance}</p>
+        <p className="text-3xl font-black">
+          {literals.profileSettings.appearance}
+        </p>
       </div>
       <div className="flex w-full gap-10">
-        
         <UserMenuItemToggle
           text={literals.userMenu.darkMode}
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
@@ -94,21 +70,30 @@ export default function ConfigAppeareanceContainer({ children }) {
           text={literals.userMenu.autoDarkMode}
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
         />
-   
       </div>
 
       <div className="flex w-full gap-10 mt-6">
-        <a className="text-xl font-bold">{literals.profileSettings.selectLenguage}</a>
+        <a className="text-xl font-bold">
+          {literals.profileSettings.selectLenguage}
+        </a>
       </div>
 
       <div className="flex w-full gap-10 ">
-        <button onClick={setSpanish} className="text-xl p-3 hover:-translate-y-1 hover:font-bold">{literals.profileSettings.spanish}</button>
-        <button onClick={setEnglish} className="text-xl hover:-translate-y-1 hover:font-bold">{literals.profileSettings.english}</button>
+        <button
+          onClick={setSpanish}
+          className="flex gap-2  items-center text-xl p-3 hover:-translate-y-1 hover:font-bold"
+        >
+          <Icon icon="twemoji:flag-spain" width={32} />
+          {literals.profileSettings.spanish}
+        </button>
+        <button
+          onClick={setEnglish}
+          className="flex gap-2  items-center text-xl hover:-translate-y-1 hover:font-bold"
+        >
+          <Icon icon="flagpack:gb-ukm" width={32} />
+          {literals.profileSettings.english}
+        </button>
       </div>
-      
     </div>
   );
-
-
-  
 }
