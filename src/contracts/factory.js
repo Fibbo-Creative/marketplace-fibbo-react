@@ -27,39 +27,6 @@ export const useFactory = () => {
     return await getContract(address, FACTORY_ABI);
   };
 
-  /* const sendMetaTx = async (factory, provider, signer, name, symbol) => {
-    console.log(`Sending register meta-tx to create=${name}`);
-    const url = process.env.REACT_APP_WEBHOOK_URL;
-    if (!url) throw new Error(`Missing relayer url`);
-
-    const forwarder = createForwarderInstance(provider);
-
-    console.log(forwarder.address);
-    const from = await signer.getAddress();
-    const data = factory.interface.encodeFunctionData("createNFTContract", [
-      name,
-      symbol,
-      from,
-    ]);
-    console.log(from);
-    const to = factory.address;
-
-    const request = await signMetaTxRequest(signer.provider, forwarder, {
-      to,
-      from,
-      data,
-    });
-
-    const res = await fetch(url, {
-      method: "POST",
-      body: JSON.stringify(request),
-      headers: { "Content-Type": "application/json" },
-    });
-
-    console.log(res);
-    return res.data;
-  }; */
-
   const createNFTContract = async (name, symbol, from) => {
     const factoryContract = await getFactoryContract();
     const args = [name, symbol, forwarder];
