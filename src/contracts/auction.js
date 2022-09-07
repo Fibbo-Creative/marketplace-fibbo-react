@@ -160,7 +160,7 @@ export const useAuction = () => {
 
     const allowance = await erc20.allowance(bidder, auctionContract.address);
 
-    if (allowance.lt(bidAmount)) {
+    if (allowance.lt(parseEther(bidAmount.toString()))) {
       const tx = await erc20.approve(
         auctionContract.address,
         parseEther(bidAmount.toString())
