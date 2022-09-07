@@ -98,7 +98,7 @@ export default function ItemPage() {
     acceptOffer,
     modifyOrder,
   } = useMarketplace();
-  const { getERC721Contract, sendItemGassles } = useTokens();
+  const { getERC721Contract, sendItemGassles, burnItemGassles } = useTokens();
 
   const {
     getAuction,
@@ -302,8 +302,6 @@ export default function ItemPage() {
           auctionInfo.current.payToken
         );
 
-        console.log(bid);
-
         if (bid.bid !== 0) {
           const bidderProfile = await getProfileInfo(bid.bidder);
           setHighestBid({
@@ -327,7 +325,7 @@ export default function ItemPage() {
     if (hasMyOffer) {
       const now = new Date().getTime();
       const deadline = new Date(hasMyOffer.deadline * 1000);
-      console.log(now < deadline);
+
       if (now < deadline) {
         setMyOffer(hasMyOffer);
       }
@@ -345,6 +343,7 @@ export default function ItemPage() {
   };
   const handleDeleteItem = async () => {
     //Lamar a la api y eliminar item
+    await burnItemGassles(collectionInfo.contractAddress, tokenId);
     await deleteNftItem(collectionInfo.contractAddress, tokenId);
   };
   const handleListItem = async (price, payToken) => {
@@ -670,7 +669,7 @@ export default function ItemPage() {
                   <div className="flex flex-col  items-start gap-2 w-full">
                     {_width < 900 && (
                       <div className="flex w-full justify-center mb-2">
-                        <div className="flex border  border-2 h-fit rounded-xl dark:text-white">
+                        <div className="flex  h-fit rounded-xl dark:text-white">
                           <ItemPageOption
                             icon="charm:refresh"
                             tooltip="refresh-item"
@@ -752,7 +751,7 @@ export default function ItemPage() {
                     </div>
                   </div>
                   {_width > 900 && (
-                    <div className="flex border border-2 h-fit rounded-xl dark:text-white">
+                    <div className="flex  h-fit rounded-xl dark:text-white">
                       <ItemPageOption
                         icon="charm:refresh"
                         tooltip="refresh-item"
@@ -1184,7 +1183,6 @@ export default function ItemPage() {
                               : setOpenBuyNowModal(true)
                           }
                           text={literals.actions.buyNow}
-
                         />
                       </>
                     )}
@@ -1385,7 +1383,7 @@ const ItemPageOption = ({
     <div
       className={`${
         disabled ? "cursor-not-allowed" : "cursor-pointer"
-      } p-2 hover b ${position === "last" ? "" : "border-r"} ${
+      } p-2 hover b  ${
         disabled
           ? "dark:text-gray-600 text-gray-200"
           : "dark:hover:text-gray-400 hover:text-gray-400"

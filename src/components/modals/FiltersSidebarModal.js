@@ -3,6 +3,7 @@ import React from "react";
 import { useStateContext } from "../../context/StateProvider";
 import FilterBottomDropDown from "../FilterBottomDropDown";
 import FilterButtons from "../FilterButtons";
+import FiltersSelectList from "../FilterSelectList";
 
 export const FiltersSidebarModal = ({
   openSidebar,
@@ -10,6 +11,8 @@ export const FiltersSidebarModal = ({
   statusFilters,
   filtersSelected,
   payTokenFilters,
+  collections,
+  selectCollection,
 }) => {
   const [{ literals }] = useStateContext();
   return (
@@ -64,6 +67,13 @@ export const FiltersSidebarModal = ({
               <FilterBottomDropDown name="Token">
                 <FilterButtons
                   options={payTokenFilters}
+                  filtersSelected={filtersSelected}
+                />
+              </FilterBottomDropDown>
+              <FilterBottomDropDown name="Collections">
+                <FiltersSelectList
+                  list={collections}
+                  onClick={selectCollection}
                   filtersSelected={filtersSelected}
                 />
               </FilterBottomDropDown>

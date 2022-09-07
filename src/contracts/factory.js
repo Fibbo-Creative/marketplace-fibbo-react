@@ -53,9 +53,6 @@ export const useFactory = () => {
       wallet,
       auctionAddress
     );
-
-    console.log(isApprovedAuctionForAll);
-
     if (!isApprovedAuctionForAll) {
       const approveAuctionTx = await contract.setApprovalForAll(
         auctionAddress,

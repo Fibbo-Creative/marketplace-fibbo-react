@@ -14,7 +14,7 @@ import { espLiterals, engLiterals } from "../../context/lang";
 
 export default function ConfigAppeareanceContainer() {
   const { theme, setTheme } = React.useContext(ThemeContext);
-  const [{ userProfile, literals }, dispatch] = useStateContext();
+  const [{ userProfile, literals, lang }, dispatch] = useStateContext();
   const setSpanish = () => {
     dispatch({
       type: actionTypes.SET_LANGUAGE,
@@ -81,14 +81,18 @@ export default function ConfigAppeareanceContainer() {
       <div className="flex w-full gap-10 ">
         <button
           onClick={setSpanish}
-          className="flex gap-2  items-center text-xl p-3 hover:-translate-y-1 hover:font-bold"
+          className={`flex gap-2  items-center text-xl p-3 hover:-translate-y-1 hover:font-bold ${
+            lang === "esp" && "font-bold underline"
+          }`}
         >
           <Icon icon="twemoji:flag-spain" width={32} />
           {literals.profileSettings.spanish}
         </button>
         <button
           onClick={setEnglish}
-          className="flex gap-2  items-center text-xl hover:-translate-y-1 hover:font-bold"
+          className={`flex gap-2  items-center text-xl p-3 hover:-translate-y-1 hover:font-bold ${
+            lang === "eng" && "font-bold underline"
+          }`}
         >
           <Icon icon="flagpack:gb-ukm" width={32} />
           {literals.profileSettings.english}

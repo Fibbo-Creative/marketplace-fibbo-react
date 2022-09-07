@@ -1,7 +1,10 @@
+import { Icon } from "@iconify/react";
 import React from "react";
 import { useStateContext } from "../context/StateProvider";
-export default function NftCard({ item, onClick, isSmall }) {
+import { ButtonTooltip } from "./tooltips/ButtonTooltip";
+export default function NftCard({ item, onClick, isSmall, selectFavorite }) {
   const [{ literals }] = useStateContext();
+
   const formatDate = () => {
     const now = new Date();
     const auctionInfo = item.auction;
@@ -39,11 +42,25 @@ export default function NftCard({ item, onClick, isSmall }) {
     }
   };
   return (
-    <div
-      onClick={onClick}
-      className="flex flex-col gap-3 shadow-lg bg-gray-200 dark:border-dark-2 dark:bg-dark-3 border-gray-30  shadow-gray-300 dark:shadow-dark-4   border-2 p-3 rounded-md cursor-pointer hover:shadow-lg hover:border-3 hover:-translate-y-1"
-    >
+    <div className="flex flex-col gap-3 shadow-lg bg-gray-200 dark:border-dark-2 dark:bg-dark-3 border-gray-30  shadow-gray-300 dark:shadow-dark-4   border-2 p-3 rounded-md cursor-pointer hover:shadow-lg hover:border-3 hover:-translate-y-1">
+      <div className="w-full flex gap-2 items-end justify-end text-gray-400">
+        <ButtonTooltip
+          tooltip={`favorite-${item.tokenId}-${item.collection.contractAddress}`}
+          tooltipText="Favorite"
+          tooltipPlacement="left"
+          onClick={selectFavorite}
+          className="flex flex-row gap-2"
+        >
+          <Icon
+            icon="carbon:favorite"
+            width={22}
+            className="hover:text-primary-2"
+          />
+          0
+        </ButtonTooltip>
+      </div>
       <div
+        onClick={onClick}
         className={`${
           isSmall ? "h-[212px] w-[212px]" : "h-[322px] w-[322px]"
         } flex pb-3 border-b-2 border-gray-700 dark:border-gray-300 `}
@@ -54,7 +71,10 @@ export default function NftCard({ item, onClick, isSmall }) {
           alt={item.name}
         />
       </div>
-      <div className="flex justify-between gap-2 items-center">
+      <div
+        onClick={onClick}
+        className="flex justify-between gap-2 items-center"
+      >
         <div className="flex flex-col justify-center pt-2 gap-1 pb-1">
           <p className="text-xs text-gray-400">
             <i>{item.collection?.name}</i>

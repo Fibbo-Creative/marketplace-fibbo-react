@@ -119,9 +119,7 @@ export default function Navbar() {
     const fetchData = async () => {
       setOpenedMenu(false);
       if (wallet !== "") {
-        console.log(wallet);
         const userNotifications = await getUserNotifications(wallet);
-        console.log(userNotifications);
         setNotifications(userNotifications);
       }
     };

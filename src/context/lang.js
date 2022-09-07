@@ -16,7 +16,6 @@ const engLiterals = {
     disconnect: "Disconnect",
     darkMode: "Dark Mode",
     autoDarkMode: "Auto Dark Mode",
-
   },
   filters: {
     filters: "Filters",
@@ -26,6 +25,7 @@ const engLiterals = {
     onAuction: "On Auction",
     hasBids: "Has Bids",
     clearAll: "Clear All",
+    colections: "Collections",
   },
   explore: {
     filterSort: "Sort By",
@@ -57,6 +57,7 @@ const engLiterals = {
     expires: "Expires",
     expiresIn: "Expires in",
     actions: "Actions",
+    favorite: "Favorite",
   },
   itemPage: {
     chainData: "Chain Data",
@@ -65,7 +66,7 @@ const engLiterals = {
     moreCollection: "More from this collection",
     offers: "Offers",
     owner: "Owner:",
-    refreshMeta : "Refresh Metadata",
+    refreshMeta: "Refresh Metadata",
     fantomNetwork: "Fantom Network",
     itemFreezed: "This item is frozen",
   },
@@ -137,6 +138,7 @@ const engLiterals = {
     english: "English",
     yourActivityNotifications: "Your Activity Notifications",
     followerActivityNotifications: "Follower Activity Notifications",
+    completed: "Your profile has been updated",
   },
   features: {
     suggestions: "Suggestions",
@@ -213,6 +215,7 @@ const espLiterals = {
     onAuction: "En Subasta",
     hasBids: "Pujado",
     clearAll: "Limpiar Todos",
+    colections: "Colecciones",
   },
   explore: {
     filterSort: "Ordenar Por",
@@ -244,6 +247,7 @@ const espLiterals = {
     expires: "Expira",
     expiresIn: "Expira en",
     actions: "Acciones",
+    favorite: "Favorito",
   },
   itemPage: {
     chainData: "Datos de la cadena",
@@ -252,7 +256,7 @@ const espLiterals = {
     moreCollection: "Mas de la colección",
     offers: "Ofertas",
     owner: "Pertenece a:",
-    refreshMeta : "Refrescar Metadata",
+    refreshMeta: "Refrescar Metadata",
     fantomNetwork: "Red de Fantom",
     itemFreezed: "El item tiene sus datos congelados",
   },
@@ -324,6 +328,7 @@ const espLiterals = {
     english: "Inglés",
     yourActivityNotifications: "Tus Notificaciones de Actividad",
     followerActivityNotifications: "Notificaciones de Actividad de Seguidores",
+    completed: "Tu perfil ha sido actualizado",
   },
   features: {
     suggestions: "Sugerencias",

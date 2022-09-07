@@ -52,7 +52,7 @@ export default function ExploreContainer() {
       setAllErc20Tokens(_payTokens);
 
       const _collections = await getCollectionsAvailable();
-      console.log(_collections);
+
       setAllCollections(_collections);
       //const firstItems = await getAllTokens(20);
       //setAllMarketItems(firstItems);
@@ -386,7 +386,7 @@ export default function ExploreContainer() {
     let isSelected = filtersSelected.find(
       (item) => item.collection === collectionItem.contractAddress
     );
-    console.log(isSelected);
+
     if (isSelected) {
       setVisibleMarketItems(allMarketItems);
       setFiltersSelected(
@@ -406,7 +406,6 @@ export default function ExploreContainer() {
   };
 
   const removeCollectionFilter = (collectionItem) => {
-    console.log("KE");
     let isSelected = filtersSelected.find(
       (item) => item.collection === collectionItem.collection
     );
@@ -522,7 +521,6 @@ export default function ExploreContainer() {
         <>
           {_width > 900 && (
             <FiltersSidebar
-              collections={allCollections}
               filtersSelected={filtersSelected}
               openedSidebar={openedSidebar}
               setFiltersSelected={setFiltersSelected}
@@ -543,6 +541,7 @@ export default function ExploreContainer() {
                   filter: selectPayTokenFilter,
                 };
               })}
+              collections={allCollections}
               selectCollection={selectCollection}
             />
           )}
@@ -688,6 +687,8 @@ export default function ExploreContainer() {
                   filter: selectPayTokenFilter,
                 };
               })}
+              collections={allCollections}
+              selectCollection={selectCollection}
             />
           )}
         </>

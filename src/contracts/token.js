@@ -31,8 +31,6 @@ export const useTokens = () => {
     const userProvider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = userProvider.getSigner();
     const from = await signer.getAddress();
-
-    console.log(await contract.minimalForwarder());
     await sendMetaTx(contract, provider, signer, {
       functionName: "mint",
       args: [wallet, tokenURI],
@@ -66,6 +64,19 @@ export const useTokens = () => {
     });
   };
 
+  const burnItemGassles = async (collectionAddress, tokenId) => {
+    const contract = await getERC721Contract(collectionAddress);
+    const provider = createProvider();
+    await window.ethereum.enable();
+    const userProvider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = userProvider.getSigner();
+
+    await sendMetaTx(contract, provider, signer, {
+      functionName: "burn",
+      args: [tokenId],
+    });
+  };
+
   return {
     getERC20Contract,
     getERC721Contract,
@@ -73,5 +84,6 @@ export const useTokens = () => {
     mintGassless,
     approvalForAllGasless,
     sendItemGassles,
+    burnItemGassles,
   };
 };

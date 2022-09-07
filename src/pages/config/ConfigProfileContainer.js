@@ -131,7 +131,7 @@ export default function ConfigProfileContainer({ children }) {
         />
         {completedAction && (
           <div className="flex gap-1  items-center text-green-500">
-            Perfil actualizado correctamente
+            {literals.profileSettings.completed}
             <Check />
           </div>
         )}

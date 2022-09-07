@@ -192,9 +192,9 @@ export const useAuction = () => {
 
       const signer = userProvider.getSigner();
       const from = await signer.getAddress();
-      console.log(erc20);
+
       const allowance = await erc20.allowance(bidder, auctionContract.address);
-      console.log("KEE");
+
       if (allowance.lt(bidAmount)) {
         await sendMetaTx(erc20, provider, signer, {
           functionName: "approve",

@@ -5,14 +5,9 @@ import FilterButtons from "./FilterButtons";
 import { useStateContext } from "../context/StateProvider";
 import FiltersSelectList from "./FilterSelectList";
 export default function FiltersSidebar({
-  allMarketItems,
   openedSidebar,
-  setAllMarketItems,
-  visibleMarketItems,
   setOpenedSidebar,
-  setVisibleMarketItems,
   filtersSelected,
-  setFiltersSelected,
   statusFilters,
   payTokenFilters,
   collections,

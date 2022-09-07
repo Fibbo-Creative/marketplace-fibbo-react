@@ -317,8 +317,6 @@ export const CollectionDetailContainer = () => {
       setLoading(true);
       const collectionDetail = await getCollectionDetail(collection);
       setIsOwner(collectionDetail.creator === wallet);
-      const factory = await getERC721Contract(collection);
-      console.log(await factory.minimalForwarder());
       if (collectionDetail.creator !== wallet) {
         let collOptions = await getUserCollectionOptions(
           collectionDetail.contractAddress,
@@ -477,72 +475,83 @@ export const CollectionDetailContainer = () => {
           <div className="flex md:items-end md:ml-[50px] mb-[20px] md:w-full mt-[20px] ">
             <div className="flex text-2xl flex-col md:flex-row items-center gap-4">
               {_width < 900 && (
-                <div className="flex border border-2 h-fit rounded-xl dark:text-white">
-                  {isOwner && (
+                <div className="flex h-fit rounded-xl dark:text-white">
+                  <div className="flex items-center">
+                    {isOwner && (
+                      <ItemPageOption
+                        icon="carbon:add-alt"
+                        tooltip="add-item"
+                        onClick={redirectToCreateItem}
+                        tooltipText="Crear NFT"
+                      />
+                    )}
+                    {isOwner && (
+                      <ItemPageOption
+                        icon="bxs:edit-alt"
+                        tooltip="edit-item"
+                        onClick={redirectToEditCollection}
+                        tooltipText="Editar coleccion"
+                      />
+                    )}
+                  </div>
+                  <div className="mx-5"></div>
+
+                  <div className="flex items-center">
                     <ItemPageOption
-                      icon="carbon:add-alt"
-                      tooltip="add-item"
-                      onClick={redirectToCreateItem}
-                      tooltipText="Crear NFT"
+                      disabled
+                      icon="bi:share-fill"
+                      tooltip="share-item"
+                      tooltipText="Compartir"
                     />
-                  )}
-                  {isOwner && (
                     <ItemPageOption
-                      icon="bxs:edit-alt"
-                      tooltip="edit-item"
-                      onClick={redirectToEditCollection}
-                      tooltipText="Editar coleccion"
+                      disabled
+                      position="last"
+                      icon="akar-icons:more-vertical"
+                      tooltip="more-item"
+                      tooltipText="Mas opciones"
                     />
-                  )}
-                  <ItemPageOption
-                    disabled
-                    icon="bi:share-fill"
-                    tooltip="share-item"
-                    tooltipText="Compartir"
-                  />
-                  <ItemPageOption
-                    disabled
-                    position="last"
-                    icon="akar-icons:more-vertical"
-                    tooltip="more-item"
-                    tooltipText="Mas opciones"
-                  />
+                  </div>
                 </div>
               )}
               <b>{collectionInfo?.name}</b>
             </div>
           </div>
           {_width > 900 && (
-            <div className="flex border border-2 h-fit mr-10 rounded-xl dark:text-white">
-              {isOwner && (
+            <div className="flex h-fit mr-10 rounded-xl dark:text-white">
+              <div className="flex items-center">
+                {isOwner && (
+                  <ItemPageOption
+                    icon="carbon:add-alt"
+                    tooltip="add-item"
+                    onClick={redirectToCreateItem}
+                    tooltipText="Crear NFT"
+                  />
+                )}
+                {isOwner && (
+                  <ItemPageOption
+                    icon="bxs:edit-alt"
+                    tooltip="edit-item"
+                    onClick={redirectToEditCollection}
+                    tooltipText="Editar coleccion"
+                  />
+                )}
+              </div>
+              <div className="mx-5 w-[1px] border-2"></div>
+              <div className="flex items-center">
                 <ItemPageOption
-                  icon="carbon:add-alt"
-                  tooltip="add-item"
-                  onClick={redirectToCreateItem}
-                  tooltipText="Crear NFT"
+                  disabled
+                  icon="bi:share-fill"
+                  tooltip="share-item"
+                  tooltipText="Compartir"
                 />
-              )}
-              {isOwner && (
                 <ItemPageOption
-                  icon="bxs:edit-alt"
-                  tooltip="edit-item"
-                  onClick={redirectToEditCollection}
-                  tooltipText="Editar coleccion"
+                  disabled
+                  position="last"
+                  icon="akar-icons:more-vertical"
+                  tooltip="more-item"
+                  tooltipText="Mas opciones"
                 />
-              )}
-              <ItemPageOption
-                disabled
-                icon="bi:share-fill"
-                tooltip="share-item"
-                tooltipText="Compartir"
-              />
-              <ItemPageOption
-                disabled
-                position="last"
-                icon="akar-icons:more-vertical"
-                tooltip="more-item"
-                tooltipText="Mas opciones"
-              />
+              </div>
             </div>
           )}
         </div>
@@ -863,7 +872,7 @@ const ItemPageOption = ({
     <div
       className={`${
         disabled ? "cursor-not-allowed" : "cursor-pointer"
-      } p-2 hover b ${position === "last" ? "" : "border-r"} ${
+      } p-2 hover ${
         disabled
           ? "dark:text-gray-600 text-gray-200"
           : "dark:hover:text-gray-400 hover:text-gray-400"
