@@ -57,6 +57,7 @@ const engLiterals = {
     expires: "Expires",
     expiresIn: "Expires in",
     actions: "Actions",
+    explicitContent: "This article may contain explicit content", 
   },
   itemPage: {
     chainData: "Chain Data",
@@ -160,6 +161,16 @@ const engLiterals = {
   notifications: {
     notifications: "Notifications",
     noNotifications: "You don't have notifications",
+    itemOfferted: "Your item has been offered",
+    offerAccepted: "Your offer has been accepted",
+    offerExpired: "Your offer has expired",
+    offerModified: "An offer has been modified",
+    itemSold: "You have sold your item",
+    itemBid: "There's a bid on your item",
+    passedBid: "Your bid have exceeded ",
+    auctionWon: "You won the auction",
+    bidEnded: "Your bid is ended",
+
   },
   actions: {
     makeOffer: "Make Offer",
@@ -172,6 +183,7 @@ const engLiterals = {
     buyNow: "Buy now",
     makeBid: "Make bid",
     viewYourOffer: "View your offer",
+    
   },
   modals: {
     connectSentence: "Connect a wallet",
@@ -244,6 +256,7 @@ const espLiterals = {
     expires: "Expira",
     expiresIn: "Expira en",
     actions: "Acciones",
+    explicitContent: "Este item tiene contenido explicito", 
   },
   itemPage: {
     chainData: "Datos de la cadena",
@@ -347,6 +360,15 @@ const espLiterals = {
   notifications: {
     notifications: "Notificaciones",
     noNotifications: "No tienes notificaciones",
+    itemOfferted: "Tu item ha sido ofertado",
+    offerAccepted: "Tu oferta ha sido acceptada",
+    offerExpired: "Tu oferta ha expirado",
+    offerModified: "Han modificado una oferta",
+    itemSold: "Has vendido tu item",
+    itemBid: "Han pujado por tu item",
+    passedBid: "Han superado tu puja",
+    auctionWon: "Has ganado la subasta",
+    bidEnded: "Tu puja ha finalizado",
   },
   actions: {
     makeOffer: "Realizar Oferta",

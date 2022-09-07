@@ -110,7 +110,7 @@ export default function DetailImage({
                 {collectionInfo.explicitContent && (
                   <div
                     data-for="nfsw-icon"
-                    data-tip="Este item tiene contenido explicito"
+                    data-tip={literals.detailNFT.explicitContent}
                   >
                     <Icon
                       width={28}
