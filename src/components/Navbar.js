@@ -178,7 +178,7 @@ export default function Navbar() {
               {verifiedAddress && (
                 <NavbarItem
                   text={literals.navbar.collections}
-                  to="/myCollections"
+                  to="/collections"
                 />
               )}
 
@@ -289,7 +289,7 @@ export default function Navbar() {
               {verifiedAddress && (
                 <NavbarItemMobile
                   text={literals.navbar.collections}
-                  to="/myCollections"
+                  to="/collections"
                 />
               )}
               {!verifiedAddress && (

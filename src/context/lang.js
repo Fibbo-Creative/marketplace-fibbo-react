@@ -5,7 +5,7 @@ const engLiterals = {
   navbar: {
     searchItems: "Search Items...",
     verify: "Verify Your Account!",
-    collections: "My Collections",
+    collections: "Collections",
     connectWallet: "Connect Wallet",
   },
   userMenu: {
@@ -16,6 +16,7 @@ const engLiterals = {
     disconnect: "Disconnect",
     darkMode: "Dark Mode",
     autoDarkMode: "Auto Dark Mode",
+    myCollections: "My Collections",
   },
   filters: {
     filters: "Filters",
@@ -83,6 +84,11 @@ const engLiterals = {
   myCollections: {
     mycollections: "My collections",
     text: "Create and manage your exclusives NFT's collections for sharing and selling them",
+  },
+  collections: {
+    search: "Search collections...",
+    notFound: "No collections found",
+    result: "results",
   },
   createCollection: {
     logo: "Collection logo",
@@ -195,7 +201,7 @@ const espLiterals = {
   navbar: {
     searchItems: "Buscar Items...",
     verify: "Verifícate!",
-    collections: "Mis Colecciones",
+    collections: "Colecciones",
     connectWallet: "Conectar Billetera",
   },
   userMenu: {
@@ -206,6 +212,7 @@ const espLiterals = {
     disconnect: "Desconectar",
     darkMode: "Tema Oscuro",
     autoDarkMode: "Auto Tema Oscuro",
+    myCollections: "Mis Colecciones",
   },
   filters: {
     filters: "Filtros",
@@ -273,6 +280,11 @@ const espLiterals = {
   myCollections: {
     mycollections: "Mis colecciones",
     text: "Crea y administra tus colecciones de NFTs únicos para poder compartirlos y venderlos.",
+  },
+  collections: {
+    search: "Buscar colecciones...",
+    notFound: "No se han encontrado colecciones",
+    result: "resultados",
   },
   createCollection: {
     logo: "Logo de la colección",

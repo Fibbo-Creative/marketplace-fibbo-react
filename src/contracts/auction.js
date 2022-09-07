@@ -183,6 +183,7 @@ export const useAuction = () => {
 
   const makeBid = async (bidder, collection, tokenId, bidAmount) => {
     try {
+      bidAmount = parseEther(bidAmount.toString());
       const auctionContract = await getAuctionContract();
       const erc20 = await getERC20Contract(WFTM_ADDRESS);
 
@@ -198,7 +199,7 @@ export const useAuction = () => {
       if (allowance.lt(bidAmount)) {
         await sendMetaTx(erc20, provider, signer, {
           functionName: "approve",
-          args: [auctionContract.address, parseEther(bidAmount.toString())],
+          args: [auctionContract.address, bidAmount],
         });
 
         await sleep(3000);
@@ -206,7 +207,7 @@ export const useAuction = () => {
 
       await sendMetaTx(auctionContract, provider, signer, {
         functionName: "placeBid",
-        args: [collection, tokenId, parseEther(bidAmount.toString())],
+        args: [collection, tokenId, bidAmount],
       });
       await sleep(7000);
     } catch (e) {

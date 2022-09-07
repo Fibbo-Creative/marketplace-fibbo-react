@@ -12,7 +12,7 @@ export const UserMenu = ({
 }) => {
   const ref = useRef(null);
   const { theme, setTheme } = React.useContext(ThemeContext);
-  const [{ userProfile, literals }] = useStateContext();
+  const [{ verifiedAddress, userProfile, literals }] = useStateContext();
 
   const navigate = useNavigate();
   const goToProfile = () => {
@@ -28,6 +28,11 @@ export const UserMenu = ({
   const goToSettings = () => {
     setOpenMenu(false);
     navigate(`/account/settings/profile`);
+  };
+
+  const goToMyCollections = () => {
+    setOpenMenu(false);
+    navigate(`/myCollections`);
   };
 
   const handleDisconnect = () => {
@@ -65,7 +70,13 @@ export const UserMenu = ({
           icon="healthicons:ui-user-profile"
           onClick={() => goToProfile()}
         />
-
+        {verifiedAddress && (
+          <UserMenuItem
+            text={literals.userMenu.myCollections}
+            icon="bi:box-seam-fill"
+            onClick={() => goToMyCollections()}
+          />
+        )}
         <UserMenuItem
           text={literals.userMenu.settings}
           icon="ci:settings"

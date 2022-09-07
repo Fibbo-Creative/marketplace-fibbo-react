@@ -326,6 +326,11 @@ export const useApi = () => {
     return res.data;
   };
 
+  const getAllCollections = async () => {
+    const res = await marketplaceApi.get(`collections/all`);
+    return res.data;
+  };
+
   const getMyCollections = async (owner) => {
     const res = await marketplaceApi.get(
       `collections/myCollections?owner=${owner}`
@@ -557,6 +562,7 @@ export const useApi = () => {
     createUserCollectionOptions,
     setShowRedirectToLink,
     getCollectionsAvailable,
+    getAllCollections,
     getNftsFromAddress,
     getNftHistory,
     saveMintedItem,
