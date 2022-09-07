@@ -17,6 +17,7 @@ import { ProfileTab } from "./components/ProfileTab";
 import ProfileActivityTable from "./components/ProfileActivityTable";
 import { ProfileOffersTable } from "./components/ProfileOffersTable";
 import { ProfileMyOffersTable } from "./components/ProfileMyOffersTable";
+import { ProfileBidsTable } from "./components/ProfileBidsTable";
 
 export default function ProfileContainer() {
   const { wallet } = useAccount();
@@ -29,6 +30,7 @@ export default function ProfileContainer() {
     getNftsFromCreator,
     getWalletHistory,
     getWalletOffers,
+    getWalletBids,
   } = useApi();
   const navigate = useNavigate();
   const { address } = useParams();
@@ -51,6 +53,7 @@ export default function ProfileContainer() {
   const [activity, setActivity] = useState([]);
   const [offers, setOffers] = useState([]);
   const [myOffers, setMyOffers] = useState([]);
+  const [walletBids, setWalletBids] = useState([]);
 
   const profileData = useRef(null);
 
@@ -157,6 +160,9 @@ export default function ProfileContainer() {
         const { myOffers, offers } = await getWalletOffers(address);
         setMyOffers(myOffers);
         setOffers(offers);
+
+        const bids = await getWalletBids(address);
+        setWalletBids(bids);
 
         setLoadingInfo(false);
       }
@@ -373,13 +379,30 @@ export default function ProfileContainer() {
                       handleSetItemsType({ type: "Offers", viewAs: "table" })
                     }
                   />
+                  {myProfile && (
+                    <ProfileTab
+                      title={literals.profile.myOffers}
+                      count={myOffers.length}
+                      type={{ type: "MyOffers", viewAs: "table" }}
+                      selectedType={itemsType}
+                      onClick={() =>
+                        handleSetItemsType({
+                          type: "MyOffers",
+                          viewAs: "table",
+                        })
+                      }
+                    />
+                  )}
                   <ProfileTab
-                    title={literals.profile.myOffers}
+                    title={literals.profile.bids}
                     count={myOffers.length}
-                    type={{ type: "MyOffers", viewAs: "table" }}
+                    type={{ type: "Bids", viewAs: "table" }}
                     selectedType={itemsType}
                     onClick={() =>
-                      handleSetItemsType({ type: "MyOffers", viewAs: "table" })
+                      handleSetItemsType({
+                        type: "Bids",
+                        viewAs: "table",
+                      })
                     }
                   />
                 </>
@@ -435,10 +458,17 @@ export default function ProfileContainer() {
                     <ProfileActivityTable historyItems={activity} />
                   ) : (
                     <>
-                      {itemsType.type === "Offers" ? (
-                        <ProfileOffersTable offers={offers} />
+                      {itemsType.type === "Offers" ||
+                      itemsType.type === "MyOffers" ? (
+                        <>
+                          {itemsType.type === "Offers" ? (
+                            <ProfileOffersTable offers={offers} />
+                          ) : (
+                            <ProfileMyOffersTable offers={myOffers} />
+                          )}
+                        </>
                       ) : (
-                        <ProfileMyOffersTable offers={myOffers} />
+                        <ProfileBidsTable bids={walletBids} />
                       )}
                     </>
                   )}

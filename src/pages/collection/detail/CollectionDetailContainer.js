@@ -455,7 +455,7 @@ export const CollectionDetailContainer = () => {
       <div className="flex flex-col mt-[79px] mb-[10px] w-screen items-center justify-center">
         {collectionInfo?.bannerImage !== "" ? (
           <img
-            className="flex w-full h-[200px] md:h-[300px]"
+            className="flex w-full h-[200px] md:h-[300px] object-cover"
             src={collectionInfo?.bannerImage}
             alt={`banner-${collectionInfo?._id}`}
           ></img>

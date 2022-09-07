@@ -19,7 +19,6 @@ export default function ConfigAppeareanceContainer() {
     dispatch({
       type: actionTypes.SET_LANGUAGE,
       lang: "esp",
-      literals: espLiterals,
     });
   };
 
@@ -27,7 +26,6 @@ export default function ConfigAppeareanceContainer() {
     dispatch({
       type: actionTypes.SET_LANGUAGE,
       lang: "eng",
-      literals: engLiterals,
     });
   };
 

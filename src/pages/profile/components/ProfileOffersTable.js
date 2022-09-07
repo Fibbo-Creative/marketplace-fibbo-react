@@ -1,6 +1,7 @@
 import React from "react";
 import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
+import { useApi } from "../../../api";
 import { useStateContext } from "../../../context/StateProvider";
 
 import useResponsive from "../../../hooks/useResponsive";
@@ -9,6 +10,24 @@ export const ProfileOffersTable = ({ offers }) => {
   const { _width } = useResponsive();
   const navigate = useNavigate();
   const [{ literals }] = useStateContext();
+  const { getCollectionInfo } = useApi();
+
+  const navigateToItem = async (offer) => {
+    const collectionInfo = await getCollectionInfo(offer.collectionAddress);
+    let finalURL = "";
+    if (collectionInfo.customURL !== "") {
+      finalURL = `/explore/${collectionInfo.customURL}/${offer.item.tokenId}`;
+    } else {
+      finalURL = `/explore/${collectionInfo.contractAddress}/${offer.item.tokenId}`;
+    }
+
+    if (isMobile) {
+      navigate(finalURL);
+    } else {
+      window.open(finalURL, "_blank");
+    }
+  };
+
   const formatDate = (offer) => {
     const now = new Date().getTime();
     const deadline = offer.deadline;
@@ -54,16 +73,7 @@ export const ProfileOffersTable = ({ offers }) => {
                         />
                         <p
                           className="text-primary-2 underline cursor-pointer"
-                          onClick={() =>
-                            isMobile
-                              ? navigate(
-                                  `/explore/${offer.item.collectionAddress}/${offer.item.tokenId}`
-                                )
-                              : window.open(
-                                  `/explore/${offer.item.collectionAddress}/${offer.item.tokenId}`,
-                                  "_blank"
-                                )
-                          }
+                          onClick={() => navigateToItem(offer)}
                         >
                           {offer.item.name}
                         </p>
@@ -83,7 +93,7 @@ export const ProfileOffersTable = ({ offers }) => {
                             isMobile
                               ? navigate(`/account/${offer.creator.wallet}`)
                               : window.open(
-                                  `/profile/${offer.creator.wallet}`,
+                                  `/account/${offer.creator.wallet}`,
                                   "_blank"
                                 )
                           }
@@ -128,16 +138,7 @@ export const ProfileOffersTable = ({ offers }) => {
                       />
                       <p
                         className="text-primary-2 underline cursor-pointer"
-                        onClick={() =>
-                          isMobile
-                            ? navigate(
-                                `/explore/${offer.item.collectionAddress}/${offer.item.tokenId}`
-                              )
-                            : window.open(
-                                `/explore/${offer.item.collectionAddress}/${offer.item.tokenId}`,
-                                "_blank"
-                              )
-                        }
+                        onClick={() => navigateToItem(offer)}
                       >
                         {offer.item.name}
                       </p>
@@ -162,7 +163,7 @@ export const ProfileOffersTable = ({ offers }) => {
                           isMobile
                             ? navigate(`/account/${offer.creator.wallet}`)
                             : window.open(
-                                `/profile/${offer.creator.wallet}`,
+                                `/account/${offer.creator.wallet}`,
                                 "_blank"
                               )
                         }

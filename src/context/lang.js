@@ -123,6 +123,9 @@ const engLiterals = {
     offers: "Offers",
     myOffers: "My offers",
     sentence: "Artist verified by Fibbo team",
+    bids: "Bids",
+    biddedFor: "Bidded for",
+    endsAt: "Ends at",
   },
   profileSettings: {
     settings: "SETTINGS",
@@ -319,6 +322,9 @@ const espLiterals = {
     offers: "Ofertas",
     myOffers: "Mis ofertas",
     sentence: "Artista verificado por el equipo de FIBOO",
+    bids: "Pujas",
+    biddedFor: "Pujado por",
+    endsAt: "Termina en",
   },
   profileSettings: {
     settings: "CONFIGURACIÓN",

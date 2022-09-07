@@ -5,7 +5,6 @@ import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
 import { DateTimeInput } from "../inputs/DateTimeInput";
 import { ActionModal } from "./ActionModal";
 import { useStateContext } from "../../context/StateProvider";
-import { engLiterals } from "../../context/lang";
 export default function MakeOfferModal({
   showModal,
   handleCloseModal,
@@ -60,12 +59,12 @@ export default function MakeOfferModal({
   }, [updatedWFTM]);
   return (
     <ActionModal
-      title={engLiterals.actions.makeOffer}
+      title={literals.actions.makeOffer}
       size="large"
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       onSubmit={() => handleMakeOffer()}
-      submitLabel={literals.actions.makeOffer }
+      submitLabel={literals.actions.makeOffer}
       completedText={`Oferta por ${offerPrice} wFTM creada correctamente`}
       completedLabel={literals.actions.viewYourOffer}
       completedAction={handleCloseModal}
@@ -79,7 +78,7 @@ export default function MakeOfferModal({
         <div className="flex flex-col gap-4">
           <div className="flex flex-col items-center">
             <Erc20AmountInput
-              label={engLiterals.makeOffer.offerPrice}
+              label={literals.makeOffer.offerPrice}
               value={offerPrice}
               onChange={setOfferPrice}
               error={parseFloat(wftmBalance) < parseFloat(offerPrice)}
@@ -90,7 +89,7 @@ export default function MakeOfferModal({
             />
           </div>
           <DateTimeInput
-            label={engLiterals.makeOffer.expires}
+            label={literals.makeOffer.expires}
             valueDate={expireDate}
             valueHour={expireHour}
             onChangeDate={setExpireDate}

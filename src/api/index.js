@@ -32,6 +32,11 @@ export const useApi = () => {
     return res.data;
   };
 
+  const getWalletBids = async (address) => {
+    const res = await marketplaceApi.get(`users/bids?address=${address}`);
+    return res.data;
+  };
+
   const createNewProfile = async (address) => {
     const res = await marketplaceApi.post("users/newProfile", {
       wallet: address,
@@ -581,6 +586,7 @@ export const useApi = () => {
     getNftsFromCreator,
     getWalletHistory,
     getWalletOffers,
+    getWalletBids,
     setAcceptedOffer,
     getAllPayTokens,
     getPayTokenInfo,

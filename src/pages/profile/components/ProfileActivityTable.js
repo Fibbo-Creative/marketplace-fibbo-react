@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
+import { useApi } from "../../../api";
 import { ADDRESS_ZERO } from "../../../constants/networks";
 import { useStateContext } from "../../../context/StateProvider";
 import useResponsive from "../../../hooks/useResponsive";
@@ -39,6 +40,7 @@ export default function ProfileActivityTable({ historyItems }) {
   const [openFilters, setOpenFilters] = useState(false);
   const filtersRef = useRef();
   const [{ literals }] = useStateContext();
+  const { getCollectionInfo } = useApi();
 
   const filterByType = (type) => {
     let isSelected = filtersSelected.find((item) => item === type);
@@ -46,6 +48,22 @@ export default function ProfileActivityTable({ historyItems }) {
       setFiltersSelected(filtersSelected.filter((item) => item !== type));
     } else {
       setFiltersSelected([...filtersSelected, type]);
+    }
+  };
+
+  const navigateToItem = async (item) => {
+    const collectionInfo = await getCollectionInfo(item.item.collectionAddress);
+    let finalURL = "";
+    if (collectionInfo.customURL !== "") {
+      finalURL = `/explore/${collectionInfo.customURL}/${item.item.tokenId}`;
+    } else {
+      finalURL = `/explore/${collectionInfo.contractAddress}/${item.item.tokenId}`;
+    }
+
+    if (isMobile) {
+      navigate(finalURL);
+    } else {
+      window.open(finalURL, "_blank");
     }
   };
 
@@ -178,16 +196,7 @@ export default function ProfileActivityTable({ historyItems }) {
                         />
                         <p
                           className="text-primary-2 underline cursor-pointer"
-                          onClick={() =>
-                            isMobile
-                              ? navigate(
-                                  `/explore/${item.item?.collectionAddress}/${item.item.tokenId}`
-                                )
-                              : window.open(
-                                  `/explore/${item.item?.collectionAddress}/${item.item.tokenId}`,
-                                  "_blank"
-                                )
-                          }
+                          onClick={() => navigateToItem(item)}
                         >
                           {item.item?.name}
                         </p>
@@ -216,14 +225,7 @@ export default function ProfileActivityTable({ historyItems }) {
                           />
                           <p
                             className="text-primary-2 underline cursor-pointer"
-                            onClick={() =>
-                              isMobile
-                                ? navigate(`/account/${item.from.wallet}`)
-                                : window.open(
-                                    `/profile/${item.from.wallet}`,
-                                    "_blank"
-                                  )
-                            }
+                            onClick={() => navigateToItem(item)}
                           >
                             {item.from.username}
                           </p>
