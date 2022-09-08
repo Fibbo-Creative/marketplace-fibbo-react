@@ -10,12 +10,15 @@ import { createForwarderInstance } from "./forwarder";
 import { signMetaTxRequest } from "./signer";
 import { useTokens } from "./token";
 import { ChainId } from "@sushiswap/sdk";
+import { sendMetaTx } from "./meta";
 
 const forwarder = Contracts[ChainId.FANTOM_TESTNET].minimalForwarder;
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const useFactory = () => {
   const { getFactoryAddress, getAuctionAddress, getMarketplaceAddress } =
     useAddressRegistry();
+  const { createProvider } = useProvider();
   const { getContract } = useContract();
   const { getERC721Contract } = useTokens();
   /*   const { createProvider } = useProvider(); */
@@ -75,7 +78,7 @@ export const useFactory = () => {
     }
   };
 
-  /* const createNFTContractGasless = async (name, symbol) => {
+  const createNFTContractGasless = async (name, symbol) => {
     const factoryContract = await getFactoryContract();
     const provider = createProvider();
     await window.ethereum.enable();
@@ -83,14 +86,19 @@ export const useFactory = () => {
     const signer = userProvider.getSigner();
     const from = await signer.getAddress();
 
-    return await sendMetaTx(factoryContract, provider, signer, name, symbol);
-  }; */
+    await sendMetaTx(factoryContract, provider, signer, {
+      functionName: "createNFTContract",
+      args: [name, symbol, forwarder],
+    });
+
+    await sleep(12000);
+  };
 
   return {
     getContractAddress,
     getFactoryContract,
     createNFTContract,
     approveCollection,
-    //createNFTContractGasless,
+    createNFTContractGasless,
   };
 };

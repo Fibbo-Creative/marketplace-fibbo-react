@@ -366,7 +366,6 @@ export const useApi = () => {
   };
 
   const saveCollectionDetails = async (
-    contractAddress,
     creator,
     name,
     description,
@@ -381,7 +380,6 @@ export const useApi = () => {
     explicitContent
   ) => {
     const res = await marketplaceApi.post(`collections/new`, {
-      contractAddress,
       creator,
       name,
       description,
@@ -395,7 +393,7 @@ export const useApi = () => {
       instagramURL,
       explicitContent,
     });
-    return res.data;
+    return res;
   };
 
   const editCollectionDetails = async (
@@ -592,6 +590,7 @@ export const useApi = () => {
     getPayTokenInfo,
     setImportWFTM,
     setShowRedirectProfile,
+
     getMyCollections,
     editNftData,
     editCollectionDetails,

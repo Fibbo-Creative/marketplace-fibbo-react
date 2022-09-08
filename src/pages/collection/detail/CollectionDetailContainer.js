@@ -26,12 +26,14 @@ import { ThemeContext } from "../../../context/ThemeContext";
 import { ButtonTooltip } from "../../../components/tooltips/ButtonTooltip";
 import { useStateContext } from "../../../context/StateProvider";
 import { useTokens } from "../../../contracts/token";
+import OwnersModal from "../../../components/modals/OwnersModal";
 
 export const CollectionDetailContainer = () => {
   const [loading, setLoading] = useState(true);
   const { collection } = useParams();
   const { _width } = useResponsive();
   const { getERC721Contract } = useTokens();
+
   const [{ literals }] = useStateContext();
   const {
     getCollectionDetail,
@@ -61,6 +63,7 @@ export const CollectionDetailContainer = () => {
 
   const collectionUserOptions = useRef(null);
   const [showRedirect, setShowRedirect] = useState(false);
+  const [showOwners, setShowOwners] = useState(false);
 
   const navigate = useNavigate();
   const redirectToItem = (item) => {
@@ -610,11 +613,16 @@ export const CollectionDetailContainer = () => {
               </div>
               <div className="flex items-end">Articulos</div>
             </div>
-            <div className="flex flex-col gap-3 items-center">
+            <div
+              onClick={() => setShowOwners(true)}
+              className="cursor-pointer flex flex-col gap-3 items-center hover:text-gray-300"
+            >
               <div className="flex text-xl">
                 <b>{collectionInfo?.owners.length}</b>
               </div>
-              <div className="flex items-end">Propietarios</div>
+              <div className="flex items-end">
+                {literals.colectionDetail.owners}
+              </div>
             </div>
             <div className="flex flex-col gap-3 items-center">
               <div className="flex text-xl">
@@ -852,6 +860,12 @@ export const CollectionDetailContainer = () => {
           link={detailLink}
           showModal={showRedirect}
           handleCloseModal={() => setShowRedirect(false)}
+        />
+        <OwnersModal
+          owners={collectionInfo?.owners}
+          link={detailLink}
+          showModal={showOwners}
+          handleCloseModal={() => setShowOwners(false)}
         />
       </div>
     </PageWithLoading>

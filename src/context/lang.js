@@ -81,6 +81,9 @@ const engLiterals = {
     from: "From",
     to: "To",
   },
+  colectionDetail: {
+    owners: "Owners",
+  },
   myCollections: {
     mycollections: "My collections",
     text: "Create and manage your exclusives NFT's collections for sharing and selling them",
@@ -279,6 +282,9 @@ const espLiterals = {
     date: "Fecha",
     from: "De",
     to: "A",
+  },
+  colectionDetail: {
+    owners: "Propietarios",
   },
   myCollections: {
     mycollections: "Mis colecciones",

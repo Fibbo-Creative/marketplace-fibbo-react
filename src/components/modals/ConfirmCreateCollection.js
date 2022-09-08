@@ -12,7 +12,6 @@ export const ConfirmCreateCollection = ({
   collectionData,
   wallet,
 }) => {
-  const { createNFTContract } = useFactory();
   const { saveCollectionDetails } = useApi();
   const [address, setAddress] = useState("");
 
@@ -35,33 +34,25 @@ export const ConfirmCreateCollection = ({
     const customURL = url.split("https://fibbo-market.web.app/collection/")[1];
 
     try {
-      const tx = await createNFTContract(name, "FBBOART", wallet);
-      const res = await tx.wait();
-      res.events.map(async (evt) => {
-        if (
-          evt.topics[0] ===
-          "0x2d49c67975aadd2d389580b368cfff5b49965b0bd5da33c144922ce01e7a4d7b"
-        ) {
-          const address = ethers.utils.hexDataSlice(evt.data, 44);
+      const response = await saveCollectionDetails(
+        wallet,
+        name,
+        description,
+        logoImage,
+        mainImage !== "" ? mainImage : logoImage,
+        bannerImage,
+        customURL,
+        websiteURL,
+        discordURL,
+        telegramURL,
+        instagramURL,
+        explicitContent
+      );
 
-          setAddress(address);
-          await saveCollectionDetails(
-            address,
-            wallet,
-            name,
-            description,
-            logoImage,
-            mainImage !== "" ? mainImage : logoImage,
-            bannerImage,
-            customURL,
-            websiteURL,
-            discordURL,
-            telegramURL,
-            instagramURL,
-            explicitContent
-          );
-        }
-      });
+      if (response.status !== 200) {
+        return "ERROR";
+      }
+
       return "OK";
     } catch (e) {
       return "ERROR";
