@@ -32,29 +32,29 @@ export const NotificationsMenu = ({
     switch (type) {
       case "OFFER":
         if (paramsType === "RECIEVED") {
-          finalText = "Tu item ha sido ofertado";
+          finalText = literals.notifications.itemOfferted;
         } else if (paramsType === "ACCEPTED") {
-          finalText = "Tu oferta ha sido acceptada";
+          finalText = literals.notifications.offerAccepted;
         } else if (paramsType === "EXPIRED") {
-          finalText = "Tu oferta ha expirado";
+          finalText = literals.notifications.offerExpired;
         } else if (paramsType === "MODIFIED") {
-          finalText = "Han modificado una oferta";
+          finalText = literals.notifications.offerModified;
         }
         break;
       case "TRANSFER":
         if (paramsType === "SOLD") {
-          finalText = "Has vendido tu item";
+          finalText = literals.notifications.itemSold;
         }
         break;
       case "AUCTION":
         if (paramsType === "BIDDED") {
-          finalText = "Han pujado por tu item";
+          finalText = literals.notifications.itemBid;
         } else if (paramsType === "BID INCREASED") {
-          finalText = "Han superado tu puja";
+          finalText = literals.notifications.passedBid;
         } else if (paramsType === "WINNED") {
-          finalText = "Has ganado la subasta";
+          finalText = literals.notifications.auctionWon;
         } else if (paramsType === "FINISHED") {
-          finalText = "Tu puja ha finalizado";
+          finalText = literals.notifications.bidEnded;
         }
         break;
       default:
