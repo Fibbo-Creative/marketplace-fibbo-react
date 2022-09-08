@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
 import { DateTimeInput } from "../inputs/DateTimeInput";
 import { ActionModal } from "./ActionModal";
+import { useStateContext } from "../../context/StateProvider";
 
 export default function CreateAuctionModal({
   collection,
@@ -12,6 +13,8 @@ export default function CreateAuctionModal({
   tokenInfo,
   onCreateAuction,
 }) {
+  const [{ literals }] = useStateContext();
+
   const [reservePrice, setReservePrice] = useState(0);
   const [minimumBid, setMinimumBid] = useState(true);
 
@@ -70,7 +73,7 @@ export default function CreateAuctionModal({
       onSubmit={() => handleCreateAuction()}
       submitLabel={"Poner en subasta"}
       completedText={`Item puesto en subasta correctamente`}
-      completedLabel={`Ver ítem acutalizado`}
+      completedLabel={literals.modals.seeUpdatedItem}
       completedAction={handleCloseModal}
       submitDisabled={actionError || buyNowPrice < reservePrice * 2}
     >

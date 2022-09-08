@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { isMobile } from "react-device-detect";
 import { ActionModal } from "./ActionModal";
+import { useStateContext } from "../../context/StateProvider";
 
 export default function CancelAuctionModal({
   showModal,
@@ -12,7 +13,7 @@ export default function CancelAuctionModal({
   onCancelAuction,
 }) {
   const navigate = useNavigate();
-
+  const [{ literals }] = useStateContext();
   const handleCancelAuction = async () => {
     try {
       await onCancelAuction();
@@ -31,7 +32,7 @@ export default function CancelAuctionModal({
       onSubmit={() => handleCancelAuction()}
       submitLabel={"Cancelar"}
       completedText={`Subasta cancelada correctamente`}
-      completedLabel={`Ver Item acutalizado`}
+      completedLabel={literals.modals.seeUpdatedItem}
       completedAction={handleCloseModal}
     >
       <div className="my-10 mx-8 flex flex-col gap-10">

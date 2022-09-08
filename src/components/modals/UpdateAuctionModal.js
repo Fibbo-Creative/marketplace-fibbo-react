@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
 import { DateTimeInput } from "../inputs/DateTimeInput";
 import { ActionModal } from "./ActionModal";
+import { useStateContext } from "../../context/StateProvider";
 
 export default function UpdateAuctionModal({
   showModal,
@@ -9,6 +10,8 @@ export default function UpdateAuctionModal({
   auctionInfo,
   onUpdateAuction,
 }) {
+  const [{ literals }] = useStateContext();
+
   const [newReservePrice, setNewReservePrice] = useState(0);
   const [startDate, setStartDate] = useState(0);
   const [startHour, setStartHour] = useState(0);
@@ -54,7 +57,7 @@ export default function UpdateAuctionModal({
       onSubmit={() => handleUpdateAuction()}
       submitLabel={"Actualizar"}
       completedText={`Subasta actualizada correctamente`}
-      completedLabel={`Ver Item acutalizado`}
+      completedLabel={literals.modals.seeUpdatedItem}
       completedAction={handleCloseModal}
       submitDisabled={actionError}
     >

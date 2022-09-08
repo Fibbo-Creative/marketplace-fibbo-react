@@ -5,6 +5,7 @@ import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
 import { DateTimeInput } from "../inputs/DateTimeInput";
 import { ActionModal } from "./ActionModal";
 import { useStateContext } from "../../context/StateProvider";
+import { formatLiteral } from "../../utils/language";
 export default function MakeOfferModal({
   showModal,
   handleCloseModal,
@@ -65,7 +66,10 @@ export default function MakeOfferModal({
       handleCloseModal={handleCloseModal}
       onSubmit={() => handleMakeOffer()}
       submitLabel={literals.actions.makeOffer}
-      completedText={`Oferta por ${offerPrice} wFTM creada correctamente`}
+      completedText={formatLiteral(literals.modals.offerMade, [
+        offerPrice,
+        payTokenSelected?.name,
+      ])}
       completedLabel={literals.actions.viewYourOffer}
       completedAction={handleCloseModal}
       submitDisabled={

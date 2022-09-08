@@ -200,6 +200,8 @@ const engLiterals = {
     makeBid: "Make bid",
     viewYourOffer: "View your offer",
     notEnoughWftm: "Not enough {0} in order to purchase the item",
+    offerMade: "Succesfuly placed offer of {0} {1}",
+    bidPlaced: "",
   },
   modals: {
     connectSentence: "Connect a wallet",
@@ -439,6 +441,8 @@ const espLiterals = {
     seeOwnedItem: "Ver item en posesión",
     buySuccess: "Item comprado correctamente",
     notEnoughWftm: "No tienes suficientes {0} para comprar el item",
+    offerMade: "Oferta por {0} {1} creada correctamente",
+    bidPlaced: "Puja por {0} {1} creada correctamente",
   },
 };
 

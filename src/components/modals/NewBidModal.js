@@ -6,6 +6,7 @@ import { useWFTMContract } from "../../contracts/wftm";
 import { isMobile } from "react-device-detect";
 import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
 import { ActionModal } from "./ActionModal";
+import { formatLiteral } from "../../utils/language";
 
 export default function MakeBidModal({
   collection,
@@ -19,7 +20,7 @@ export default function MakeBidModal({
   onMakeBid,
 }) {
   const navigate = useNavigate();
-  const [{literals}] = useStateContext();
+  const [{ literals }] = useStateContext();
   const [bidAmmount, setBidAmmount] = useState(0);
   const [wftmBalance, setWftmBalance] = useState(0);
   const [payTokenSelected, setPayTokenSelected] = useState(null);
@@ -70,7 +71,10 @@ export default function MakeBidModal({
       handleCloseModal={handleCloseModal}
       onSubmit={() => handleMakeBid()}
       submitLabel={"Realizar Puja"}
-      completedText={`Puja por ${bidAmmount} wFTM creada correctamente`}
+      completedText={formatLiteral(literals.modals.bidAmmount, [
+        bidAmmount,
+        payTokenSelected?.name,
+      ])}
       completedLabel={`Ver tu puja`}
       completedAction={handleCloseModal}
       submitDisabled={
