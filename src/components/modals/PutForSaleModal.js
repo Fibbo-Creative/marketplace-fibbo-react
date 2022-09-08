@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useStateContext } from "../../context/StateProvider";
+import { formatLiteral } from "../../utils/language";
 import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
 import { ActionModal } from "./ActionModal";
 
@@ -31,7 +32,10 @@ export default function PutForSaleModal({
       handleCloseModal={handleCloseModal}
       onSubmit={putItemForSale}
       submitLabel={"Poner Item en venta"}
-      completedText={`Item listado por ${priceFor} correctamente`}
+      completedText={formatLiteral(literals.modals.changedPrice, [
+        priceFor,
+        payTokenSelected?.name,
+      ])}
       completedLabel={`Ver ítem acutalizado`}
       completedAction={handleCloseModal}
     >

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useStateContext } from "../../context/StateProvider";
+import { formatLiteral } from "../../utils/language";
 import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
 import { ActionModal } from "./ActionModal";
 
@@ -32,8 +33,11 @@ export default function ChangePriceModal({
       handleCloseModal={handleCloseModal}
       size="large"
       onSubmit={() => changeListingPrice()}
-      submitLabel={literals.detailNFT.price}
-      completedText={`Item listado por ${priceFor} correctamente`}
+      submitLabel={literals.actions.changePrice}
+      completedText={formatLiteral(literals.modals.changedPrice, [
+        priceFor,
+        payTokenSelected?.name,
+      ])}
       completedLabel={`Ver ítem acutalizado`}
       completedAction={handleCloseModal}
     >

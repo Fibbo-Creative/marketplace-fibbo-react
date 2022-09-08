@@ -177,6 +177,7 @@ const engLiterals = {
   },
   actions: {
     makeOffer: "Make Offer",
+    changePrice: "Change price",
     createCollection: "CREATE COLLECTION",
     addSuggestion: "Make suggestion",
     goToHome: "Go to Homepage",
@@ -197,6 +198,7 @@ const engLiterals = {
     URLNotFound:
       "The page you are trying to access does not exist, it is a mystery how you have accessed here. You can press the button to go to the page homepage",
     confirmCreation: "Confirm your creation",
+    changedPrice: "Item listed for {0} {1} correctly",
   },
 };
 
@@ -379,6 +381,8 @@ const espLiterals = {
   },
   actions: {
     makeOffer: "Realizar Oferta",
+    changePrice: "Cambiar precio",
+
     createCollection: "CREAR COLECCIÓN",
     addSuggestion: "Añadir Sugerencia",
     goToHome: "Ir al homepage",
@@ -399,6 +403,7 @@ const espLiterals = {
     URLNotFound:
       "La página a la que intentas acceder no existe, es un misterio cómo has accedido a esta. Puedes pulsar el botón para dirigirte al Homepage de la página",
     confirmCreation: "Confirma tu creación",
+    changedPrice: "Item listado por {0} {1} correctamente",
   },
 };
 
