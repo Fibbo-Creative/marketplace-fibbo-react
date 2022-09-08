@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useStateContext } from "../../context/StateProvider";
+import { formatLiteral } from "../../utils/language";
 import { isMobile } from "react-device-detect";
 import { ActionModal } from "./ActionModal";
 export default function AcceptOfferModal({
@@ -10,7 +11,7 @@ export default function AcceptOfferModal({
   onAcceptOffer,
 }) {
   const navigate = useNavigate();
-
+  const [{ literals }] = useStateContext();
   const handleAcceptOffer = async () => {
     try {
       await onAcceptOffer(offer.creator.wallet);
@@ -27,8 +28,11 @@ export default function AcceptOfferModal({
       handleCloseModal={handleCloseModal}
       onSubmit={() => handleAcceptOffer()}
       submitLabel={"Aceptar Oferta"}
-      completedText={`Oferta acceptada por ${offer.price} wFTM correctamente`}
-      completedLabel={`Ver item actualizado`}
+      completedText={formatLiteral(literals.modals.offerAccepted, [
+        offer?.price,
+        offer?.payToken.name,
+      ])}
+      completedLabel={literals.modals.seeUpdatedItem}
       completedAction={handleCloseModal}
     >
       <div className="my-10 mx-8 flex flex-col gap-10">

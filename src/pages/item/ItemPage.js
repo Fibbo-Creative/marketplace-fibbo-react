@@ -616,11 +616,11 @@ export default function ItemPage() {
       await getAuctions().then(() => {
         getBid();
         hasAnOffer();
+        setLoading(false);
       });
       const CoinGeckoClient = new CoinGecko();
       let data = await CoinGeckoClient.simple.price({ ids: ["fantom"] });
       setCoinPrice(data.data.fantom.usd);
-      setLoading(false);
     };
     fetchData();
   }, [collection, tokenId, wallet, refreshMetadata]);

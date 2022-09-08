@@ -177,6 +177,7 @@ const engLiterals = {
   },
   actions: {
     makeOffer: "Make Offer",
+    close: "Close",
     changePrice: "Change price",
     createCollection: "CREATE COLLECTION",
     addSuggestion: "Make suggestion",
@@ -185,8 +186,10 @@ const engLiterals = {
     closeWindow: "CLOSE WINDOW",
     saveChanges: "SAVE",
     buyNow: "Buy now",
+    buyItem: "Buy Item",
     makeBid: "Make bid",
     viewYourOffer: "View your offer",
+    notEnoughWftm: "Not enough {0} in order to purchase the item",
   },
   modals: {
     connectSentence: "Connect a wallet",
@@ -199,6 +202,11 @@ const engLiterals = {
       "The page you are trying to access does not exist, it is a mystery how you have accessed here. You can press the button to go to the page homepage",
     confirmCreation: "Confirm your creation",
     changedPrice: "Item listed for {0} {1} correctly",
+    offerAccepted: "Succesfully accepted offer for {0} {1}",
+    buyNowSuccess: "Succesfully purchased item for {0} {1}",
+    seeUpdatedItem: "See updated item",
+    seeOwnedItem: "See item in posesion",
+    buySuccess: "Succesfully purchased item",
   },
 };
 
@@ -382,7 +390,7 @@ const espLiterals = {
   actions: {
     makeOffer: "Realizar Oferta",
     changePrice: "Cambiar precio",
-
+    close: "Cerrar",
     createCollection: "CREAR COLECCIÓN",
     addSuggestion: "Añadir Sugerencia",
     goToHome: "Ir al homepage",
@@ -391,6 +399,7 @@ const espLiterals = {
     saveChanges: "GUARDAR CAMBIOS",
     buyNow: "Comprar ya",
     makeBid: "Realizar puja",
+    buyItem: "Buy Item",
     viewYourOffer: "Ver tu oferta",
   },
   modals: {
@@ -404,6 +413,12 @@ const espLiterals = {
       "La página a la que intentas acceder no existe, es un misterio cómo has accedido a esta. Puedes pulsar el botón para dirigirte al Homepage de la página",
     confirmCreation: "Confirma tu creación",
     changedPrice: "Item listado por {0} {1} correctamente",
+    offerAccepted: "Oferta acceptada por {0} {1} correctamente",
+    buyNowSuccess: "Item comprado por {0} {1} correctamente",
+    seeUpdatedItem: "Ver item actualizado",
+    seeOwnedItem: "Ver item en posesión",
+    buySuccess: "Item comprado correctamente",
+    notEnoughWftm: "No tienes suficientes {0} para comprar el item",
   },
 };
 

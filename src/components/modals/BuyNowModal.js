@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { formatEther } from "ethers/lib/utils";
 import { useWFTMContract } from "../../contracts/wftm";
 import { ActionModal } from "./ActionModal";
+import { useStateContext } from "../../context/StateProvider";
+import { formatLiteral } from "../../utils/language";
 
 export default function BuyNowModal({
   collection,
@@ -17,7 +19,7 @@ export default function BuyNowModal({
 }) {
   const [wftmBalance, setWftmBalance] = useState(0);
   const { getWFTMBalance } = useWFTMContract();
-
+  const [{ literals }] = useStateContext();
   const handleBuyNow = async () => {
     try {
       await onBuyNow();
@@ -38,14 +40,17 @@ export default function BuyNowModal({
   }, [wallet]);
   return (
     <ActionModal
-      title={"Comprar ya"}
+      title={literals.actions.buyNow}
       size="large"
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       onSubmit={() => handleBuyNow()}
-      submitLabel={"Comprar Ahora"}
-      completedText={`Item comprado por ${auctionInfo?.buyNowPrice} WFTM correctamente`}
-      completedLabel={`Ver item en posesión`}
+      submitLabel={literals.actions.buyNow}
+      completedText={formatLiteral(literals.modals.buyNowSuccess, [
+        auctionInfo?.buyNoPrice,
+        auctionInfo?.payToken.name,
+      ])}
+      completedLabel={literals.modals.seeOwnedItem}
       completedAction={handleCloseModal}
       submitDisabled={wftmBalance < auctionInfo?.buyNowPrice}
     >
@@ -69,8 +74,9 @@ export default function BuyNowModal({
         <div className="w-full flex flex-col gap-2 items-center justify-center">
           {auctionInfo?.buyNowPrice > wftmBalance && (
             <p className="text-sm text-red-600">
-              No tienes suficientes {auctionInfo?.payToken.name} para comprar el
-              item
+              {formatLiteral(literals.modals.notEnoughtWftm, [
+                auctionInfo?.payToken.name,
+              ])}
             </p>
           )}
         </div>

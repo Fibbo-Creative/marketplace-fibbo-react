@@ -38,14 +38,14 @@ export default function BuyItemModal({
   }, [updatedWFTM]);
   return (
     <ActionModal
-      title="Comprar NFT"
+      title={literals.actions.buyItem}
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       size="large"
       onSubmit={() => handleBuyItem()}
-      submitLabel={"Comprar Ítem"}
-      completedText={`Item comprado correctamente`}
-      completedLabel={`Ver item en posesión`}
+      submitLabel={literals.actions.buyItem}
+      completedText={literals.modals.buySuccess}
+      completedLabel={literals.modals.seeOwnedItem}
       completedAction={handleCloseModal}
     >
       {wallet !== "" && (

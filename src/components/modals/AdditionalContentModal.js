@@ -1,5 +1,6 @@
 import React from "react";
 import ActionButton from "../ActionButton";
+import { useStateContext } from "../../context/StateProvider";
 
 import { BasicModal } from "./BasicModal";
 
@@ -9,6 +10,7 @@ export default function AdditionalContentModal({
   handleCloseModal,
   additionalContent,
 }) {
+  const [{ literals }] = useStateContext();
   return (
     <BasicModal
       title={"Contenido adicional"}
@@ -21,7 +23,7 @@ export default function AdditionalContentModal({
           {additionalContent}
         </div>
         <ActionButton
-          text="Cerrar"
+          text={literals.modals.close}
           buttonAction={handleCloseModal}
           size="large"
         />
