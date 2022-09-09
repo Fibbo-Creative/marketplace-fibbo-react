@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCollections } from "../../contracts/collection";
 import { ActionModal } from "./ActionModal";
+import { useStateContext } from "../../context/StateProvider";
 
 export default function DeleteItemModal({
   children,
@@ -15,6 +16,7 @@ export default function DeleteItemModal({
 }) {
   const navigate = useNavigate();
   const [secure, setSecure] = useState(false);
+  const [{literals}] = useStateContext();
 
   const goToCollection = () => {
     if (collectionInfo.customURL) {
@@ -35,23 +37,22 @@ export default function DeleteItemModal({
 
   return (
     <ActionModal
-      title={`Eliminar NFT`}
+      title={literals.deleteItemModal.deleteNFT}
       showModal={showModal}
       handleCloseModal={handleCloseModal}
-      submitLabel={"Eliminar"}
+      submitLabel={literals.deleteItemModal.delete}
       submitDisabled={!secure}
       onSubmit={handleDeleteItem}
-      completedLabel="Ver colección"
-      completedText="El item se ha eliminado correctamente"
+      completedLabel={literals.deleteItemModal.viewCollection}
+      completedText={literals.deleteItemModal.deletedOk}
       completedAction={goToCollection}
     >
       <div className="my-10 mx-3 md:mx-8 flex flex-col items-center gap-10">
         <div>
-          Una vez aceptes esta opción, el item será eliminado del marketplace y
-          no se va a poder interactuar con el
+          {literals.deleteItemModal.ifYouAccept}
         </div>
 
-        <div>¿Estas seguro de que quieres eliminarlo?</div>
+        <div>{literals.deleteItemModal.confirmDelete}</div>
         <label className="">
           <input
             type="checkbox"
@@ -59,7 +60,7 @@ export default function DeleteItemModal({
             checked={secure}
           />
           <span className="font-bold text-lg text-gray-700 dark:text-gray-400 border-gray-300 p-3">
-            Si, estoy seguro
+          {literals.deleteItemModal.confirm}
           </span>
         </label>
       </div>

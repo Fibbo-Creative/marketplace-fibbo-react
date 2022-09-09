@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCollections } from "../../contracts/collection";
 import { ActionModal } from "./ActionModal";
+import { useStateContext } from "../../context/StateProvider";
 
 export default function FreezeMetadataModal({
   children,
@@ -15,6 +16,7 @@ export default function FreezeMetadataModal({
   const { setFreezedMetadata } = useCollections();
   const navigate = useNavigate();
   const [secure, setSecure] = useState(false);
+  const [{literals}] = useStateContext();
 
   const goToItem = () => {
     if (collectionInfo.customURL) {
@@ -39,24 +41,22 @@ export default function FreezeMetadataModal({
 
   return (
     <ActionModal
-      title={`Congelar metadata del NFT`}
+      title={literals.FreezeMetadataModal.freezeMeta}
       showModal={showModal}
       handleCloseModal={handleCloseModal}
-      submitLabel={"Congelar"}
+      submitLabel={literals.FreezeMetadataModal.freeze}
       submitDisabled={!secure}
       onSubmit={handleFreezeMetadata}
-      completedLabel="Ver el Item"
-      completedText="La información de tu ítem se ha congelado correctamente"
+      completedLabel={literals.FreezeMetadataModal.viewItem}
+      completedText={literals.FreezeMetadataModal.infoFreezed}
       completedAction={goToItem}
     >
       <div className="my-10 mx-3 md:mx-8 flex flex-col items-center gap-10">
         <div>
-          Una vez aceptes esta opción, la información del NFT no podrá ser
-          editada y se almacenará de una forma descentralizada en el protocolo
-          IPFS
+        {literals.FreezeMetadataModal.ifYouAccept}
         </div>
 
-        <div>¿Estas seguro de que la información es correcta?</div>
+        <div>{literals.FreezeMetadataModal.correctInfo}</div>
         <label className="">
           <input
             type="checkbox"
@@ -64,7 +64,7 @@ export default function FreezeMetadataModal({
             checked={secure}
           />
           <span className="font-bold text-lg text-gray-700 dark:text-gray-400 border-gray-300 p-3">
-            Si, estoy seguro
+            {literals.FreezeMetadataModal.yes}
           </span>
         </label>
       </div>

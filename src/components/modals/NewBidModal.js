@@ -65,17 +65,17 @@ export default function MakeBidModal({
   }, [updatedWFTM]);
   return (
     <ActionModal
-      title={"Realizar puja"}
+      title={literals.NewBidModal.makeBid}
       size="large"
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       onSubmit={() => handleMakeBid()}
-      submitLabel={"Realizar Puja"}
+      submitLabel={literals.NewBidModal.makeBid}
       completedText={formatLiteral(literals.modals.bidAmmount, [
         bidAmmount,
         payTokenSelected?.name,
       ])}
-      completedLabel={`Ver tu puja`}
+      completedLabel={literals.NewBidModal.viewBid}
       completedAction={handleCloseModal}
       submitDisabled={
         highestBid
@@ -89,7 +89,7 @@ export default function MakeBidModal({
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-4">
             <div className="flex flex-row items-center gap-3 ">
-              <p>Precio Reservado</p>
+              <p>{literals.NewBidModal.reservedPrice}</p>
               <img
                 width={32}
                 src={auctionInfo?.payToken.image}
@@ -98,7 +98,7 @@ export default function MakeBidModal({
               <p>{auctionInfo?.reservePrice} wFTM </p>
             </div>
             <div className="flex flex-row gap-6">
-              <div>Puja mas alta: </div>
+              <div>{literals.NewBidModal.highestBid} </div>
               <div>
                 {highestBid ? (
                   <div className="flex gap-2 items-center">
@@ -118,7 +118,7 @@ export default function MakeBidModal({
             </div>
             {highestBid && (
               <div className="flex flex-row gap-6">
-                <div>Realizada Por: </div>
+                <div>{literals.NewBidModal.doneBy}</div>
                 <div className="flex gap-2 items-center">
                   <img
                     className="rounded-full"
@@ -145,7 +145,7 @@ export default function MakeBidModal({
           </div>
           <div className="flex flex-col items-center">
             <Erc20AmountInput
-              label={"Que precio quieres pujar?"}
+              label={literals.NewBidModal.bidPrice}
               value={bidAmmount}
               onChange={setBidAmmount}
               error={
@@ -158,12 +158,12 @@ export default function MakeBidModal({
               errorMessage={`${
                 highestBid
                   ? parseFloat(bidAmmount) < parseFloat(highestBid.bid)
-                    ? "La puja debe ser mayor a la actual"
+                    ? literals.NewBidModal.biggerBid
                     : bidAmmount < parseFloat(highestBid.bid) + 1
-                    ? "La diferencia con la puja actual debe ser 1 o mayor"
+                    ? literals.NewBidModal.text1
                     : literals.makeOffer.notWFTM
                   : parseFloat(auctionInfo?.minBid) > parseFloat(bidAmmount)
-                  ? "La puja debe ser mayor o igual que el precio reservado"
+                  ? literals.NewBidModal.text2
                   : literals.makeOffer.notWFTM
               }`}
               selectedToken={payTokenSelected}
