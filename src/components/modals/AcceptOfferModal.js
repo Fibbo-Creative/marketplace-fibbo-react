@@ -28,10 +28,6 @@ export default function AcceptOfferModal({
       handleCloseModal={handleCloseModal}
       onSubmit={() => handleAcceptOffer()}
       submitLabel={"Aceptar Oferta"}
-      completedText={formatLiteral(literals.modals.offerAccepted, [
-        offer?.price,
-        offer?.payToken.name,
-      ])}
       completedLabel={literals.modals.seeUpdatedItem}
       completedAction={handleCloseModal}
     >

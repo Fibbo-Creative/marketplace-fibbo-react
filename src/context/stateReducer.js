@@ -1,6 +1,6 @@
 import { engLiterals, espLiterals } from "./lang";
 
-const getLiterals = (lang) => {
+export const getLiterals = (lang) => {
   switch (lang) {
     case "eng":
       return engLiterals;
@@ -37,6 +37,7 @@ export const actionTypes = {
 const stateReducer = (state, action) => {
   switch (action.type) {
     case actionTypes.SET_LANGUAGE:
+      window.localStorage.setItem("lang", action.lang);
       return {
         ...state,
         lang: action.lang,

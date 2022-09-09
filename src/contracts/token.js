@@ -35,7 +35,7 @@ export const useTokens = () => {
       functionName: "mint",
       args: [wallet, tokenURI],
     });
-    await sleep(3000);
+    await sleep(8000);
   };
 
   const approvalForAllGasless = async (contract, addresToApprove) => {

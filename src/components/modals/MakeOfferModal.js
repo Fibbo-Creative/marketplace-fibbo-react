@@ -66,10 +66,6 @@ export default function MakeOfferModal({
       handleCloseModal={handleCloseModal}
       onSubmit={() => handleMakeOffer()}
       submitLabel={literals.actions.makeOffer}
-      completedText={formatLiteral(literals.modals.offerMade, [
-        offerPrice,
-        payTokenSelected?.name,
-      ])}
       completedLabel={literals.actions.viewYourOffer}
       completedAction={handleCloseModal}
       submitDisabled={

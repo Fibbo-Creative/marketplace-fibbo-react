@@ -89,7 +89,7 @@ export default function ItemPage() {
     getListingInfo,
     listItem,
     cancelListing,
-
+    getMarketContract,
     updateListing,
     makeOffer,
     getOffer,
@@ -252,6 +252,14 @@ export default function ItemPage() {
 
     profileOwnerData.current = profileOwnerResponse;
 
+    const marketContract = await getMarketContract();
+    console.log(
+      await marketContract.offers(
+        collectionResponse.contractAddress,
+        tokenId,
+        wallet
+      )
+    );
     setChainInfo({
       collection: collectionResponse.contractAddress,
       tokenId: tokenId,
@@ -669,7 +677,7 @@ export default function ItemPage() {
                   <div className="flex flex-col  items-start gap-2 w-full">
                     {_width < 900 && (
                       <div className="flex w-full justify-center mb-2">
-                        <div className="flex  h-fit rounded-xl dark:text-white">
+                        <div className="flex border  h-fit rounded-xl dark:text-white">
                           <ItemPageOption
                             icon="charm:refresh"
                             tooltip="refresh-item"
@@ -751,7 +759,7 @@ export default function ItemPage() {
                     </div>
                   </div>
                   {_width > 900 && (
-                    <div className="flex  h-fit rounded-xl dark:text-white">
+                    <div className="flex border  h-fit rounded-xl dark:text-white">
                       <ItemPageOption
                         icon="charm:refresh"
                         tooltip="refresh-item"
@@ -861,7 +869,7 @@ export default function ItemPage() {
                   <div>Ver contendido adicional</div>
                 </div>
               )}
-              <div className="flex dark:bg-dark-2 flex-col justify-center flex-wrap border-grey border-2 p-3 rounded-md ">
+              <div className="flex flex-col justify-center flex-wrap py-3 rounded-md ">
                 <>
                   {isOnAuction ? (
                     <div className="">

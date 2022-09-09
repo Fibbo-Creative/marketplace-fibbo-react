@@ -77,11 +77,7 @@ export const UserMenu = ({
             onClick={() => goToMyCollections()}
           />
         )}
-        <UserMenuItem
-          text={literals.userMenu.settings}
-          icon="ci:settings"
-          onClick={() => goToSettings()}
-        />
+
         <UserMenuItem
           text={literals.userMenu.community}
           icon="fluent:people-community-16-filled"
@@ -96,6 +92,11 @@ export const UserMenu = ({
           text="Comprar FTM"
           icon="fa6-solid:money-bill-transfer"
           onClick={() => openTransak()}
+        />
+        <UserMenuItem
+          text={literals.userMenu.settings}
+          icon="ci:settings"
+          onClick={() => goToSettings()}
         />
         <UserMenuItem
           text={literals.userMenu.disconnect}

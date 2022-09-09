@@ -71,10 +71,6 @@ export default function MakeBidModal({
       handleCloseModal={handleCloseModal}
       onSubmit={() => handleMakeBid()}
       submitLabel={"Realizar Puja"}
-      completedText={formatLiteral(literals.modals.bidAmmount, [
-        bidAmmount,
-        payTokenSelected?.name,
-      ])}
       completedLabel={`Ver tu puja`}
       completedAction={handleCloseModal}
       submitDisabled={

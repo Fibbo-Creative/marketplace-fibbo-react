@@ -393,18 +393,20 @@ export default function ProfileContainer() {
                       }
                     />
                   )}
-                  <ProfileTab
-                    title={literals.profile.bids}
-                    count={myOffers.length}
-                    type={{ type: "Bids", viewAs: "table" }}
-                    selectedType={itemsType}
-                    onClick={() =>
-                      handleSetItemsType({
-                        type: "Bids",
-                        viewAs: "table",
-                      })
-                    }
-                  />
+                  {myProfile && (
+                    <ProfileTab
+                      title={literals.profile.bids}
+                      count={myOffers.length}
+                      type={{ type: "Bids", viewAs: "table" }}
+                      selectedType={itemsType}
+                      onClick={() =>
+                        handleSetItemsType({
+                          type: "Bids",
+                          viewAs: "table",
+                        })
+                      }
+                    />
+                  )}
                 </>
               )}
             </div>
