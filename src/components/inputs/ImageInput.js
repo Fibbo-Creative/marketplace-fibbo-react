@@ -1,5 +1,6 @@
 import { Icon } from "@iconify/react";
 import React, { useEffect, useState } from "react";
+import { useStateContext } from "../../context/StateProvider";
 import fibboLogo from "../../assets/logoNavbarSmall.png";
 export const ImageInput = ({
   imageURL,
@@ -19,7 +20,7 @@ export const ImageInput = ({
     inputRef.click();
   };
   const [loadingImage, setLoadingImage] = useState(false);
-
+  const [{literals}] = useStateContext();
   const handleOnFileSelected = async (e) => {
     setLoadingImage(true);
     await onFileSelected(e);
@@ -112,8 +113,8 @@ export const ImageInput = ({
                         <div className="text-red-600">{imageMessageError}</div>
                       ) : (
                         <div className="text-center">
-                          Arrastra o selecciona ficheros de imágen <br></br>{" "}
-                          JPG, PNG, JPEG, GIF, SVG o WEBP.
+                          {literals.createCollection.imgInput} <br></br>{" "}
+                          JPG, PNG, JPEG, GIF, SVG, WEBP.
                         </div>
                       )}
                     </>

@@ -56,7 +56,7 @@ export default function FiltersSidebar({
                 filtersSelected={filtersSelected}
               />
             </FilterBottomDropDown>
-            <FilterBottomDropDown name="Collections">
+            <FilterBottomDropDown name={literals.filters.colections}>
               <FiltersSelectList
                 list={collections}
                 onClick={selectCollection}

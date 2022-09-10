@@ -1,7 +1,9 @@
 import { Icon } from "@iconify/react";
 import React, { useEffect, useState } from "react";
+import {useStateContext} from "../context/StateProvider";
 
 export default function FiltersSelectList({ list, onClick, filtersSelected }) {
+  const [{literals}] = useStateContext();
   const [searchText, setSearchText] = useState("");
   const [filtered, setFiltered] = useState(list);
   const searchItems = (query) => {
@@ -48,7 +50,7 @@ export default function FiltersSelectList({ list, onClick, filtersSelected }) {
             })}
           </>
         ) : (
-          <>No se han encontrado colecciones</>
+          <>{literals.actions.noCollections}</>
         )}
       </div>
     </div>

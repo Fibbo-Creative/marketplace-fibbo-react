@@ -34,7 +34,7 @@ export const NotOwner = ({ text }) => {
           />
           <ActionButton
             size="large"
-            text={"Ir a mis Colecciones"}
+            text={literals.actions.goToMyCollections}
             buttonAction={() => navigate("/myCollections")}
           />
         </div>

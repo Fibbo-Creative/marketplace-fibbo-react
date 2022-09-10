@@ -47,7 +47,7 @@ export default function Navbar() {
       if (items.length === 0) {
         setSearchItemsData([
           {
-            name: "No items found...",
+            name: literals.navbar.noItem,
             image:
               "https://cdn2.iconfinder.com/data/icons/documents-and-files-v-2/100/doc-03-512.png",
           },
@@ -59,7 +59,7 @@ export default function Navbar() {
       if (profiles.length === 0) {
         setSearchProfilesData([
           {
-            username: "No profiles found",
+            username: literals.navbar.noProfile,
             profileImg:
               "https://cdn2.iconfinder.com/data/icons/documents-and-files-v-2/100/doc-03-512.png",
           },
@@ -71,7 +71,7 @@ export default function Navbar() {
       if (collections.length === 0) {
         setSearchCollectionsData([
           {
-            username: "No Collections found",
+            username: literals.navbar.noCollections,
             profileImg:
               "https://cdn2.iconfinder.com/data/icons/documents-and-files-v-2/100/doc-03-512.png",
           },
@@ -269,7 +269,7 @@ export default function Navbar() {
                           className={` px-4 py-2 ${
                             _width < 1200 ? "w-[200px]" : "w-[350px]"
                           } outline-none dark:bg-dark-1`}
-                          placeholder="Buscar Items..."
+                          placeholder= {actions.navbar.searchItems}
                           onChange={(e) => searchItems(e.target.value)}
                           value={searchText}
                         />

@@ -3,9 +3,11 @@ import useRespnsive from "../hooks/useResponsive";
 import { truncateWallet } from "../utils/wallet";
 import ActionButton from "./ActionButton";
 import DropDown from "./DropDown";
+import { useStateContext } from "../context/StateProvider";
 
 export const ItemListings = ({ listings }) => {
   const { _width } = useRespnsive();
+  const [{literals}] = useStateContext();
   return (
     <DropDown icon="ri:price-tag-2-fill" title="Listados">
       {_width > 1024 ? (
@@ -13,13 +15,13 @@ export const ItemListings = ({ listings }) => {
           <thead className="bg-gray-200 p-2">
             <tr className="p-2">
               <th scope="col" className="px-6 py-3">
-                Listado por
+                {literals.itemPage.listedFor}
               </th>
               <th cope="col" className="px-6 py-3">
-                Precio
+                {literals.itemPage.price}
               </th>
               <th cope="col" className="px-6 py-3">
-                Estado
+                {literals.itemPage.state}
               </th>
               <th cope="col" className="px-6 py-3"></th>
             </tr>
@@ -34,7 +36,7 @@ export const ItemListings = ({ listings }) => {
                   <td className="px-6 py-4">{listing.price} FTM</td>
                   <td className="px-6 py-4">{listing.status}</td>
                   <td className="px-6 py-4">
-                    <ActionButton text="Buy" size="smaller" />
+                    <ActionButton text={literals.actions.buy} size="smaller" />
                   </td>
                 </tr>
               );
@@ -50,7 +52,7 @@ export const ItemListings = ({ listings }) => {
                 <td className="px-6 py-4">{listing.price} FTM</td>
                 <td className="px-6 py-4">{listing.status}</td>
                 <td className="px-6 py-4">
-                  <ActionButton text="Buy" size="small" />
+                  <ActionButton text={literals.actions.buy} size="small" />
                 </td>
               </tr>
             );

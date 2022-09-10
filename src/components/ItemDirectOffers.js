@@ -122,7 +122,7 @@ export const ItemDirectOffers = ({
                           {isOwner && (
                             <td className="px-6 py-4 flex flex-col gap-2 text-xs">
                               <ActionButton
-                                text="Acceptar"
+                                text={literals.actions.accept}
                                 size="smaller"
                                 buttonAction={() =>
                                   handleShowAcceptOffer(offer)
@@ -133,7 +133,7 @@ export const ItemDirectOffers = ({
                           {wallet === offer.creator.wallet && (
                             <td className="px-6 py-4 flex flex-col gap-2 text-xs">
                               <ActionButton
-                                text="Cancelar"
+                                text={literals.actions.cancel}
                                 size="smaller"
                                 buttonAction={() =>
                                   handleShowRemoveOffer(offer)
