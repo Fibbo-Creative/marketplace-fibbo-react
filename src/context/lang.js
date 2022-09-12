@@ -1,24 +1,29 @@
 const engLiterals = {
   home: {
     slogan: "FIBBO : The art of expressing youre art",
-    sentence1: "Marketplace focused with special emphasis on artists and content creators.",
+    sentence1:
+      "Marketplace focused with special emphasis on artists and content creators.",
     title2: "Join our community",
-    sentence2: "Verify yourself as an Artist and contribute your talent to the ecosystem. Enjoy the advantages of being part of our active community",
+    sentence2:
+      "Verify yourself as an Artist and contribute your talent to the ecosystem. Enjoy the advantages of being part of our active community",
     title3: "Help us create your ideal product",
-    sentence3: "Suggest changes to the Marketplace and get rewarded for your help",
+    sentence3:
+      "Suggest changes to the Marketplace and get rewarded for your help",
     buttonCreate: "Create",
     buttonExplore: "Explore",
     buttonVerify: "Verify Account",
     buttonSuggestion: "Suggest changes",
   },
-  verify:{
+  verify: {
     title: "Why verify myself as an Artist?",
     title1: "Create NFTs",
-    sentence1: "You will be able to mint and put your artistic works up for sale, benefiting from the royalties",
+    sentence1:
+      "You will be able to mint and put your artistic works up for sale, benefiting from the royalties",
     title2: "Suggest changes",
     sentence2: "You will be able to help scale the marketplace, being rewarded",
     title3: "Reduced fees",
-    sentence3: "If you are a verified artist, we will assume a large part of the commissions",
+    sentence3:
+      "If you are a verified artist, we will assume a large part of the commissions",
   },
   navbar: {
     searchItems: "Search Items...",
@@ -458,29 +463,51 @@ const engLiterals = {
       "You can't edit the item, you're not the owner of the collection",
     freezeMetadata: "Freeze Metadata",
   },
+  events: {
+    minted: "Minted",
+    listed: "Listed",
+    transfer: "Transfer",
+    changedPrice: "Price Updated",
+    unlisted: "Unlisted",
+    offerCreated: "Offer created",
+    offerModified: "Offer modified",
+    offerCanceled: "Offer canceled",
+    offerAccepted: "Offer accepted",
+    auctionCreated: "Auction created",
+    bidded: "Bidded",
+    auctionUpdate: "Auction Updated",
+    auctionCanceled: "Auction canceled",
+    auctionEnded: "Auction finished",
+  },
 };
 
 const espLiterals = {
   home: {
     slogan: "FIBBO : El Arte de expresar tu Arte",
-    sentence1: "Marketplace enfocado con especial énfasis en artistas y creadores de contenido.",
+    sentence1:
+      "Marketplace enfocado con especial énfasis en artistas y creadores de contenido.",
     title2: "Únete a nuestra comunidad",
-    sentence2: "Verifícate cómo Artista y aporta tu talento al ecosistema. Disfruta de las ventajas de ser parte de nuestra comunidad activa",
+    sentence2:
+      "Verifícate cómo Artista y aporta tu talento al ecosistema. Disfruta de las ventajas de ser parte de nuestra comunidad activa",
     title3: "Ayúdanos a crear tu producto ideal",
-    sentence3: "Sugiere cambios a realizar en el Marketplace y recibe recompensas por tu ayuda",
+    sentence3:
+      "Sugiere cambios a realizar en el Marketplace y recibe recompensas por tu ayuda",
     buttonCreate: "Crear",
     buttonExplore: "Explorar",
     buttonVerify: "Verifícate",
     buttonSuggestion: "Sugerir cambios",
   },
-  verify:{
+  verify: {
     title: "Porqué verificarme cómo Artista?",
     title1: "Crear NFTs",
-    sentence1: "Podrás mintear y poner a la venta tus obras artísticas, beneficiandote de los royalties",
+    sentence1:
+      "Podrás mintear y poner a la venta tus obras artísticas, beneficiandote de los royalties",
     title2: "Sugerir cambios",
-    sentence2: "Serás capaz de ayudar a escalar el marketplace, siendo recompensado",
+    sentence2:
+      "Serás capaz de ayudar a escalar el marketplace, siendo recompensado",
     title3: "Fees reducidas",
-    sentence3: "Si eres un artista verificado, asumiremos gran parte de las comisiones",
+    sentence3:
+      "Si eres un artista verificado, asumiremos gran parte de las comisiones",
   },
   navbar: {
     searchItems: "Buscar Items...",
@@ -919,6 +946,22 @@ const espLiterals = {
     notOwnerEdit2:
       "No puedes editar el ítem, No eres el propietario de la colección.",
     freezeMetadata: "Congelar Metadata",
+  },
+  events: {
+    minted: "Item minteado",
+    listed: "Item Listado",
+    transfer: "Transfer",
+    changedPrice: "Precio Actualizado",
+    unlisted: "Quitado en venta",
+    offerCreated: "Oferta creada",
+    offerModified: "Oferta Modificada",
+    offerCanceled: "Oferta cancelada",
+    offerAccepted: "Oferta acceptada",
+    auctionCreated: "Subasta creada",
+    bidded: "Puja realizada",
+    auctionUpdate: "Subasta Actualizada",
+    auctionCanceled: "Subasta cancelada",
+    auctionEnded: "Subasta Finalizada",
   },
 };
 

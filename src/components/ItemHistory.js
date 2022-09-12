@@ -38,6 +38,54 @@ export default function ItemHistory({ historyItems }) {
   const [openFilters, setOpenFilters] = useState(false);
   const filtersRef = useRef();
 
+  const getLiteral = (event) => {
+    const { eventType, eventDesc } = event;
+    switch (eventType) {
+      case "TRANSFER":
+        if (eventDesc === "MINTED") {
+          return literals.events.minted;
+        } else if (eventDesc === "TRANSFER") {
+          return literals.events.transfer;
+        }
+        break;
+      case "LISTING":
+        if (eventDesc === "LISTED") {
+          return literals.events.listed;
+        } else if (eventDesc === "NEW PRICE") {
+          return literals.events.changedPrice;
+        } else if (eventDesc === "UNLISTED") {
+          return literals.events.unlisted;
+        }
+        break;
+      case "OFFER":
+        if (eventDesc === "NEW") {
+          return literals.events.offerCreated;
+        } else if (eventDesc === "MODIFIED") {
+          return literals.events.offerModified;
+        } else if (eventDesc === "CANCEL") {
+          return literals.events.offerCanceled;
+        } else if (eventDesc === "ACCEPTED") {
+          return literals.events.offerAccepted;
+        }
+        break;
+      case "AUCTION":
+        if (eventDesc === "NEW") {
+          return literals.events.auctionCreated;
+        } else if (eventDesc === "UPDATE") {
+          return literals.events.auctionUpdate;
+        } else if (eventDesc === "BID") {
+          return literals.events.bidded;
+        } else if (eventDesc === "CANCELED") {
+          return literals.events.auctionCanceled;
+        } else if (eventDesc === "FINISHED") {
+          return literals.events.auctionEnded;
+        }
+        break;
+      default:
+        return "";
+    }
+  };
+
   const [{ literals }] = useStateContext();
 
   const filterByType = (type) => {
@@ -167,7 +215,7 @@ export default function ItemHistory({ historyItems }) {
               {filteredItems?.map((item) => {
                 return (
                   <tr key={Math.random(9999) * 1000}>
-                    <td className="px-6 py-4">{item.eventDesc}</td>
+                    <td className="px-6 py-4">{getLiteral(item)}</td>
                     <td className="px-6 py-4">
                       {item.price !== 0 ? (
                         <div className="flex items-center gap-3">
@@ -258,7 +306,7 @@ export default function ItemHistory({ historyItems }) {
                     <div>
                       <b>{literals.itemHistory.event}</b>
                     </div>
-                    <div>{item.eventDesc}</div>
+                    <div>{getLiteral(item)}</div>
                   </div>
                   <div className="flex justify-between">
                     <div>
