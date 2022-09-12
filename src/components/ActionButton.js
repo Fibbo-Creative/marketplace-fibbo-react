@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import {useStateContext} from "../context/StateProvider"
 
 const styles = {
   basicStyle:
@@ -48,6 +49,7 @@ export default function ActionButton({
   disabled,
   size,
 }) {
+  const [{literals}] = useStateContext();
   const [loading, setLoading] = useState(false);
   const [actionDone, setActionDone] = useState(false);
 
@@ -79,7 +81,7 @@ export default function ActionButton({
       {loading ? (
         <div className="flex gap-4 items-center justify-center text-xs">
           <div className="w-2 h-2 p-2 border-blue border-4 rounded-lg animate-spin"></div>
-          <div>Processing...</div>{" "}
+          <div>{literals.actions.processing}</div>{" "}
         </div>
       ) : (
         <div

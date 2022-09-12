@@ -79,8 +79,8 @@ export const ConfirmCreateCollection = ({
       handleCloseModal={handleCloseModal}
       onSubmit={() => createCollection()}
       submitLabel={literals.actions.createCollection}
-      completedText={`Colección creada correctamente`}
-      completedLabel={`Ver Colección Creada`}
+      completedText={literals.ConfirmCreateCollection.collectionCreated}
+      completedLabel={literals.ConfirmCreateCollection.viewCollection}
       completedAction={seeResult}
     >
       <div className="flex flex-col gap-10  items-center mb-10">
@@ -106,7 +106,7 @@ export const ConfirmCreateCollection = ({
               "https://fibbo-market.web.app/collection/"
             )[1] && (
               <div className="flex  items-center gap-2">
-                <b>URL personalizada:</b>
+                <b>{literals.ConfirmCreateCollection.customURL}</b>
                 <p className="text-sm ">
                   /
                   {

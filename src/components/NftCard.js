@@ -19,12 +19,12 @@ export default function NftCard({ item, onClick, isSmall, selectFavorite }) {
         const hours = Math.round(period / 3600);
         if (hours === 0) {
           const minutes = Math.round(period / 60);
-          return `Empieza en ${minutes} ${minutes > 1 ? "minutos " : "minuto"}`;
+          return literals.detailNFT.starts `${minutes} ${minutes > 1 ? literals.detailNFT.minutes : literals.detailNFT.minute}`;
         } else {
-          return `Empieza en ${hours} ${hours > 1 ? "horas" : "hora"}`;
+          return literals.detailNFT.starts `${hours} ${hours > 1 ? literals.detailNFT.hours : literals.detailNFT.hour}`;
         }
       } else {
-        return `Empieza en ${days} ${days > 1 ? "días" : "día"}`;
+        return literals.detailNFT.starts `${days} ${days > 1 ? literals.detailNFT.days : literals.detailNFT.day}`;
       }
     } else {
       const days = Math.round(period / 3600 / 24);
@@ -32,12 +32,12 @@ export default function NftCard({ item, onClick, isSmall, selectFavorite }) {
         const hours = Math.round(period / 3600);
         if (hours === 0) {
           const minutes = Math.round(period / 60);
-          return `Quedan ${minutes} ${minutes > 1 ? "minutos " : "minuto"}`;
+          return literals.detailNFT.endsIn `${minutes} ${minutes > 1 ? literals.detailNFT.minutes : literals.detailNFT.minute}`;
         } else {
-          return `Quedan ${hours} ${hours > 1 ? "horas" : "hora"}`;
+          return literals.detailNFT.endsIn `${hours} ${hours > 1 ? literals.detailNFT.hours : literals.detailNFT.hour}`;
         }
       } else {
-        return `Quedan ${days} ${days > 1 ? "días" : "día"}`;
+        return literals.detailNFT.endsIn `${days} ${days > 1 ? literals.detailNFT.days : literals.detailNFT.day}`;
       }
     }
   };
@@ -105,7 +105,7 @@ export default function NftCard({ item, onClick, isSmall, selectFavorite }) {
                   isSmall && "text-xs"
                 } text-gray-500 dark:text-gray-300`}
               >
-                {isSmall ? "Oferta" : "Ofertado por"}
+                {isSmall ? literals.detailNFT.offer : literals.detailNFT.bidBy}
               </div>
               <img src={item?.offer?.payToken.image} width={22} />
               <div>{item.offer.price} </div>
@@ -115,7 +115,7 @@ export default function NftCard({ item, onClick, isSmall, selectFavorite }) {
         {item.auction && (
           <div className="pt-2 pb-1 flex flex-col gap-1 items-end">
             <p className="text-xs text-gray-500 dark:text-gray-400">
-              {item?.auction.topBid ? <i>Puja maxima</i> : <i>Puja mínima</i>}
+              {item?.auction.topBid ? <i>{literals.detailNFT.maximumBid}</i> : <i>{literals.detailNFT.minimumBid}</i>}
             </p>
             <div className="flex gap-2 flex gap-2 items-center">
               <img src={item?.auction.payToken.image} width={22} />

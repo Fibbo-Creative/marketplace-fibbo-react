@@ -66,13 +66,13 @@ export default function CreateAuctionModal({
   }, []);
   return (
     <ActionModal
-      title={"Subastar Item"}
+      title={literals.CreateAuctionModal.auctionItem}
       size="large"
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       onSubmit={() => handleCreateAuction()}
-      submitLabel={"Poner en subasta"}
-      completedText={`Item puesto en subasta correctamente`}
+      submitLabel={literals.CreateAuctionModal.auction}
+      completedText={literals.CreateAuctionModal.auctionCorrect}
       completedLabel={literals.modals.seeUpdatedItem}
       completedAction={handleCloseModal}
       submitDisabled={actionError || buyNowPrice < reservePrice * 2}
@@ -80,7 +80,7 @@ export default function CreateAuctionModal({
       <div className="my-10 mx-2 md:mx-8 flex flex-col gap-8">
         <div className="flex flex-col gap-4 items-center">
           <Erc20AmountInput
-            label={"Que precio quieres asegurar?"}
+            label={literals.CreateAuctionModal.choosePrice}
             value={reservePrice}
             onChange={setReservePrice}
             selectedToken={payTokenSelected}
@@ -88,7 +88,7 @@ export default function CreateAuctionModal({
           />
           <div className="flex items-center gap-2">
             <span className="font-bold text-sm text-gray-700 dark:text-gray-400 border-gray-300 p-3">
-              Quieres que la puja mínima sea el precio reservado?
+              {literals.CreateAuctionModal.minBid}
             </span>
             <label className="">
               <input
@@ -99,20 +99,18 @@ export default function CreateAuctionModal({
             </label>
           </div>
           <Erc20AmountInput
-            label={"Que precio de compra ahora?"}
+            label={literals.CreateAuctionModal.buyNowPrice}
             value={buyNowPrice}
             onChange={setBuyNowPrice}
             error={buyNowPrice < reservePrice * 2}
             selectedToken={payTokenSelected}
             selectDisabled={true}
             setSelectedToken={setPayTokenSelected}
-            errorMessage={
-              "El precio de compra tiene que ser mínimo el doble de reserva"
-            }
+            errorMessage={ literals.CreateAuctionModal.errorPrice}
           />
         </div>
         <DateTimeInput
-          label={"Fecha de Inicio"}
+          label={literals.CreateAuctionModal.beginDate}
           valueDate={startDate}
           valueHour={startHour}
           onChangeDate={setStartDate}
@@ -126,7 +124,7 @@ export default function CreateAuctionModal({
           setActionError={setActionError}
         />
         <DateTimeInput
-          label={"Fecha de Fin"}
+          label={literals.CreateAuctionModal.endDate}
           valueDate={endDate}
           valueHour={endHour}
           onChangeDate={setEndDate}

@@ -132,7 +132,7 @@ export default function ItemHistory({ historyItems }) {
             onClick={() => setFiltersSelected([])}
             className=" cursor-pointer transition ml-5 text-gray-400 dark:hover:text-white hover:text-black"
           >
-            Limpiar Todos
+            {literals.filters.clearAll}
           </div>
         )}
       </div>

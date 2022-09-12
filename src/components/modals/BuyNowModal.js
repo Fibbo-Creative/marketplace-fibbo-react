@@ -58,7 +58,7 @@ export default function BuyNowModal({
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-4">
             <div className="flex flex-row items-center justify-center gap-3 ">
-              <p>Quieres comprar el item por</p>
+              <p>{literals.buyNowModal.buyItem}</p>
               <img
                 width={32}
                 src={auctionInfo?.payToken.image}

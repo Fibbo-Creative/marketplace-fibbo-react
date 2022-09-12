@@ -50,13 +50,13 @@ export default function UpdateAuctionModal({
 
   return (
     <ActionModal
-      title={"Actualizar Subasta"}
+      title={literals.UpdateAuctionModal.updateAuction}
       size="large"
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       onSubmit={() => handleUpdateAuction()}
-      submitLabel={"Actualizar"}
-      completedText={`Subasta actualizada correctamente`}
+      submitLabel={literals.UpdateAuctionModal.update}
+      completedText={literals.UpdateAuctionModal.auctionUpdated}
       completedLabel={literals.modals.seeUpdatedItem}
       completedAction={handleCloseModal}
       submitDisabled={actionError}
@@ -68,12 +68,12 @@ export default function UpdateAuctionModal({
               <Erc20AmountInput
                 value={newReservePrice}
                 onChange={setNewReservePrice}
-                label={"Precio Reservado"}
+                label={literals.UpdateAuctionModal.reservedPrice}
                 error={
                   parseFloat(newReservePrice) ===
                   parseFloat(auctionInfo.reservePrice)
                 }
-                errorMessage={"El nuevo precio reservado debe ser diferente"}
+                errorMessage={literals.UpdateAuctionModal.newPrice}
                 selectedToken={payTokenSelected}
                 setSelectedToken={setPayTokenSelected}
               />
@@ -81,7 +81,7 @@ export default function UpdateAuctionModal({
           )}
           {!auctionStarted && (
             <DateTimeInput
-              label={"Fecha de Inicio"}
+              label={literals.UpdateAuctionModal.beginDate}
               valueDate={startDate}
               valueHour={startHour}
               onChangeDate={setStartDate}
@@ -96,7 +96,7 @@ export default function UpdateAuctionModal({
             />
           )}
           <DateTimeInput
-            label={"Fecha de Fin"}
+            label={literals.UpdateAuctionModal.endDate}
             valueDate={endDate}
             valueHour={endHour}
             onChangeDate={setEndDate}
