@@ -10,6 +10,7 @@ import { formatEther } from "ethers/lib/utils";
 import CoinGecko from "coingecko-api";
 import { useStateContext } from "../../context/StateProvider";
 import { actionTypes } from "../../context/stateReducer";
+import { formatLiteral } from "../../utils/language";
 
 export default function WrappedFTMModal({
   children,
@@ -253,8 +254,12 @@ export default function WrappedFTMModal({
               <Check />
               <p>
                 {fromFTM
-                  ? `Transformados correctamente ${ftmAmount} FTM a wFTM`
-                  : `Retirados correctamente ${ftmAmount} wFTM`}{" "}
+                  ? `${formatLiteral(literals.wrappedFTMModal.succesWrap, [
+                      ftmAmount,
+                    ])}`
+                  : `${formatLiteral(literals.wrappedFTMModal.succesUnWrap, [
+                      ftmAmount,
+                    ])}`}
               </p>
             </div>
 

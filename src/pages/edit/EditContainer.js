@@ -227,12 +227,14 @@ export default function EditContainer() {
 
                 <div className="">
                   <div className="form-group mb-6 flex flex-col gap-3">
-                    <div className="font-bold text-lg">Colección</div>
+                    <div className="font-bold text-lg">
+                      {literals.createItem.colection}
+                    </div>
                     <select
                       type="text"
                       disabled={true}
                       value={collectionSelected?.name}
-                      placeholder="Collection"
+                      placeholder={literals.createItem.colection}
                       id="collectionInput"
                       className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 
               bg-white bg-clip-padding border border-solid border-black rounded transition ease-in-out m-0
@@ -243,20 +245,20 @@ export default function EditContainer() {
                   </div>
                   <div className="flex flex-col gap-3  mb-4">
                     <TextInput
-                      label={"Nombre"}
+                      label={literals.createItem.name}
                       required
                       value={name}
                       error={nameError}
                       onChange={(e) => handleChangeName(e.target.value)}
-                      errorMessage=" El nombre debe tener entre 4 y 30 carácteres"
+                      errorMessage={literals.createCollection.nameCharacters}
                     />
 
                     {nameError && <div className="text-xs text-red-400 "></div>}
                   </div>
                   <TextArea
-                    label="Descripción"
+                    label={literals.createItem.description}
                     required
-                    info={"De 50 a 500 carácteres"}
+                    info={literals.createItem.descriptionDesc}
                     error={descError}
                     value={desc}
                     errorMessage={
@@ -265,22 +267,20 @@ export default function EditContainer() {
                     onChange={(e) => handleChangeDescription(e.target.value)}
                   />
                   <TextInput
-                    label="Enlace externo"
-                    info="Fibbo incluirá un enlace a este enlace en el detalle del item. Así los usuarios podrán tener mas información."
+                    label={literals.createItem.externalLink}
+                    info={literals.createItem.externalLinkDesc}
                     value={externalLink}
                     placeholder="https://tuweb.com"
                     onChange={(e) => handleChangeLink(e.target.value)}
                   />
                   <NumberInput
-                    label="Royalties"
+                    label={literals.createItem.royatlies}
                     placeholder="ej. 2.5%"
                     value={royalty}
                     onChange={(e) => handleChangeRoyalty(e.target.value)}
                     error={royaltyError}
-                    errorMessage="Los royalties no puede ser mas de un 50% ni un valor
-                    negativo!"
-                    info="Recoge un porcentage cuando un usuario re-venda el ítem
-                    que originalmente creaste"
+                    errorMessage={literals.createItem.royaltiesError}
+                    info={literals.createItem.royaltiesDesc}
                   />
                   {/** Contenido adicional */}
                   <div className="flex flex-col gap-3">
@@ -295,14 +295,15 @@ export default function EditContainer() {
                           }
                         />
                         <span className="font-bold text-lg text-gray-700 dark:text-gray-400 border-gray-300 p-3">
-                          Contenido Adicional
+                          {literals.createItem.additionalContent}
                         </span>
                       </label>
                       {showHiddenContent && (
                         <TextArea
-                          placeholder="Añade contenido (Clave de acceso, código, enlace a ficheros...)"
-                          info="Incluye contenido adicional que sólo el propietario
-                          podrá ver"
+                          placeholder={
+                            literals.createItem.additionalContentPlaceholder
+                          }
+                          info={literals.createItem.additionalContentDesc}
                           value={hiddenContent}
                           onChange={(e) => setHiddenContent(e.target.value)}
                         />
@@ -345,7 +346,7 @@ export default function EditContainer() {
                 <ActionButton
                   variant={"contained"}
                   size="large"
-                  text="Editar NFT"
+                  text={literals.actions.createNFT}
                   buttonAction={handleEdit}
                 />
               </div>

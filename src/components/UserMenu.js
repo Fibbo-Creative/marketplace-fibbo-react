@@ -89,7 +89,7 @@ export const UserMenu = ({
           onClick={() => setOpenStation(true)}
         />
         <UserMenuItem
-          text="Comprar FTM"
+          text={literals.userMenu.buyFTM}
           icon="fa6-solid:money-bill-transfer"
           onClick={() => openTransak()}
         />

@@ -20,6 +20,7 @@ const engLiterals = {
     darkMode: "Dark Mode",
     autoDarkMode: "Auto Dark Mode",
     myCollections: "My Collections",
+    buyFTM: "Buy FTM",
   },
   filters: {
     filters: "Filters",
@@ -138,6 +139,8 @@ const engLiterals = {
     descriptionCharacters:
       "The description must contain between 50 and 1000 characters",
     imgInput: "Drag or select image files",
+    incorrectFormat: "Not valid format",
+    explicitContent: "Explícit or Sensible content",
   },
   profile: {
     collected: "Collected",
@@ -228,6 +231,7 @@ const engLiterals = {
     accept: "Accept",
     cancel: "Cancel",
     buy: "Buy",
+    createNFT: "Create NFT",
   },
   modals: {
     connectSentence: "Connect a wallet",
@@ -403,6 +407,38 @@ const engLiterals = {
     changeWFTM: "Convert to wFTM",
     sendFTM: "Withdraw FTM",
     close: "Close station",
+    succesWrap: "Succesfully wrapped {0} from FTM to wFTM",
+    succesUnWrap: "Succesfully withdrawed {0} wFTM",
+  },
+  editCollection: {
+    title: "Edit Collection",
+    notAllowed: "You can't edit the collection, you're not the owner!",
+  },
+  createItem: {
+    colection: "Collection",
+    name: "Name",
+    description: "Description",
+    descriptionDesc: "From 50 to 500 carácteres",
+    descriptionError: "The description must have between 50 and 500",
+    externalLink: "External Link",
+    externalLinkDesc:
+      "Fibbo will add a link on the item's detail to help the users get more information",
+    royalties: "Royalties",
+    royaltiesDesc:
+      "You'll get a percentatge when a user re-sells the item that you've created",
+    royaltiesError:
+      " The royalties can't be higher than 50% neither a negative value!",
+    additionalContent: "Additional Content",
+    additionalContentPlaceholder:
+      "Add content (Acces key, code, link to files...)",
+    additionalContentDesc: "Add Additonal Content that only the owner can see",
+    notOwner:
+      "You can't create NFTs, You're not the owner of the collection. Create a collection and add items!",
+    notOwnerEdit: "You can't edit the item, you're not the owner.",
+    isFreezed: "The item can't be edited, his metadata is freezed",
+    notOwnerEdit2:
+      "You can't edit the item, you're not the owner of the collection",
+    freezeMetadata: "Freeze Metadata",
   },
 };
 
@@ -428,6 +464,7 @@ const espLiterals = {
     darkMode: "Tema Oscuro",
     autoDarkMode: "Auto Tema Oscuro",
     myCollections: "Mis Colecciones",
+    buyFTM: "Comprar FTM",
   },
   filters: {
     filters: "Filtros",
@@ -546,6 +583,8 @@ const espLiterals = {
     descriptionCharacters:
       "La descripción debe tener entre 50 y 1000 carácteres",
     imgInput: "Arrastra o selecciona ficheros de imágen",
+    incorrectFormat: "Formato incorrecto",
+    explicitContent: "Contenido Explícito o Sensible",
   },
   profile: {
     collected: "En posesión",
@@ -633,6 +672,7 @@ const espLiterals = {
     accept: "Aceptar",
     cancel: "Cancelar",
     buy: "Comprar",
+    createNFT: "Crear NFT",
   },
   modals: {
     connectSentence: "Conectar una billetera",
@@ -721,12 +761,12 @@ const espLiterals = {
     confirmDelete: "¿Estas seguro de que quieres eliminarlo?",
     confirm: "Si, estoy seguro",
   },
-  FiltersSidebarModal: {
+  filtersSidebarModal: {
     close: "Cerrar menu",
     token: "Token",
     collections: "Colecciones",
   },
-  FreezeMetadataModal: {
+  freezeMetadataModal: {
     freezeMeta: "Congelar metadata del NFT",
     freeze: "Congelar",
     viewItem: "Ver el Item",
@@ -736,7 +776,7 @@ const espLiterals = {
     correctInfo: "¿Estas seguro de que la información es correcta?",
     yes: "Si, estoy seguro",
   },
-  ModifyOfferModal: {
+  modifyOfferModal: {
     modifyOffer: "Modificar oferta",
     update: "Actualizar",
     offerUpdated: "Oferta actualizada correctamente",
@@ -744,7 +784,7 @@ const espLiterals = {
     price: "Que precio quieres ofertar?",
     expires: "Fecha de Expiración",
   },
-  NewBidModal: {
+  newBidModal: {
     makeBid: "Realizar puja",
     viewBid: "Ver tu puja",
     reservedPrice: "Precio Reservado",
@@ -755,20 +795,20 @@ const espLiterals = {
     text1: "La diferencia con la puja actual debe ser 1 o mayor",
     text2: "La puja debe ser mayor o igual que el precio reservado",
   },
-  PutForSaleModal: {
+  putForSaleModal: {
     sellNft: "Poner NFT en venta",
     sellItem: "Poner Item en venta",
     viewUpdated: "Ver ítem acutalizado",
   },
   RedirectModal: {
-    redirect: "Redirección a link externo",
+    rredirect: "Redirección a link externo",
     externalLink: "Vas a ser redireccionado a un enlace externo",
     fibboNotResponsable:
       "¡ FIBBO no se hace responsable de lo que pueda pasar !",
     dontShow: "No volver a mostrar díalogo",
     goToLink: "Ir al enlace",
   },
-  RemoveOfferModal: {
+  removeOfferModal: {
     cancelYourOffer: "Cancelar tu oferta",
     cancelOffer: "Cancelar Oferta",
     canceledOk: "Oferta cancelada correctamente",
@@ -777,14 +817,14 @@ const espLiterals = {
     you: "Tú",
     offer: "ofreces",
   },
-  TransferModal: {
+  transferModal: {
     transfer: "Transferir NFT",
     send: "Enviar ítem",
     sendOk: "Item enviado correctamente",
     itemUpdated: "Ver ítem acutalizado",
     wallet: "Introduce la dirección a la cual quieres enviarlo",
   },
-  UnlistItemModal: {
+  unlistItemModal: {
     quitItem: "Quitar ítem del mercado",
     deleteItem: "Eliminar ítem",
     deletedOk: "Item eliminado del mercado correctamente",
@@ -792,7 +832,7 @@ const espLiterals = {
     name: "Nombre:",
     royalties: "Regalías:",
   },
-  UpdateAuctionModal: {
+  updateAuctionModal: {
     updateAuction: "Actualizar Subasta",
     update: "Actualizar",
     auctionUpdated: "Subasta actualizada correctamente",
@@ -801,7 +841,7 @@ const espLiterals = {
     beginDate: "Fecha de Inicio",
     endDate: "Fecha de Fin",
   },
-  WrappedFTMModal: {
+  wrappedFTMModal: {
     station: "Esatación FTM / WFTM",
     balance: "Balance",
     notFTM: "No tienes suficientes FTM para convertir",
@@ -809,6 +849,40 @@ const espLiterals = {
     changeWFTM: "Cambiar a wFTM",
     sendFTM: "Retirar FTM",
     close: "Cerrar Estación",
+    succesWrap: "Transformados correctamente {0} FTM a wFTM",
+    succesUnWrap: "Retirados correctamente {0} wFTM",
+  },
+  editCollection: {
+    title: "Editar Colección",
+    notAllowed: "No puedes editar la colección, no eres su propietario!",
+  },
+  createItem: {
+    colection: "Colección",
+    name: "Name",
+    description: "Descripción",
+    descriptionDesc: "De 50 a 500 carácteres",
+    descriptionError: "La descripción debe tener entre 50 y 500 carácteres",
+    externalLink: "Enlace externo",
+    externalLinkDesc:
+      "Fibbo incluirá un enlace a este enlace en el detalle del item. Así los usuarios podrán tener mas información.",
+    royalties: "Royalties",
+    royaltiesDesc:
+      "Recoge un porcentage cuando un usuario re-venda el ítem que originalmente creaste",
+    royaltiesError:
+      "Los royalties no puede ser mas de un 50% ni un valor negativo!",
+    additionalContent: "Contenido Adicional",
+    additionalContentPlaceholder:
+      "Añade contenido (Clave de acceso, código, enlace a ficheros...)",
+    additionalContentDesc:
+      "Incluye contenido adicional que sólo el propietario podrá ver",
+
+    notOwner:
+      "No puedes crear NFTS, No eres el propietario de la colección. Crea una colección y añade items en ella!",
+    notOwnerEdit: "No puedes editar el item, No eres el propietario.",
+    isFreezed: "El item no puede ser editado, tiene su metadata congelada",
+    notOwnerEdit2:
+      "No puedes editar el ítem, No eres el propietario de la colección.",
+    freezeMetadata: "Congelar Metadata",
   },
 };
 

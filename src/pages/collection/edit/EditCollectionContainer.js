@@ -354,7 +354,7 @@ export default function EditCollectionContainer() {
         <div className="flex w-11/12 md:w-9/12 w-7/11 flex-col  ">
           <div className="flex w-full p-[40px]  justify-center">
             <div id="top" className="text-2xl">
-              <b>Editar COLECCIÓN</b>
+              <b>{literals.editCollection.title}</b>
             </div>
           </div>
 
@@ -362,9 +362,8 @@ export default function EditCollectionContainer() {
             <div className="flex flex-col pt-[30px]">
               <ImageInput
                 required
-                info="Selecciona el logo de la colección que será visible al navegar por
-              el marketplace."
-                label="Logo de la colección"
+                info={literals.createCollection.logoDesc}
+                label={literals.createCollection.logo}
                 imageURL={logoImage}
                 onFileSelected={onSelectLogoImage}
                 inputId="logoImageInput"
@@ -380,11 +379,8 @@ export default function EditCollectionContainer() {
             <div className="flex pt-[30px]">
               <ImageInput
                 imageURL={mainImage}
-                info=" Selecciona la imagen de presentación de la colección. Esta imagen se
-              utilizará para presentar su colección en la página de inicio u otras
-              áreas promocionales de Fibbo. Si no se selecciona ninguna imagen, se
-              usará el logo de la colección."
-                label="Imagen principal de la colección"
+                info={literals.createCollection.imgPrincipalDesc}
+                label={literals.createCollection.imgPrincipal}
                 inputId="mainImageInput"
                 backgroundImage={true}
                 className="rounded-xl w-[300px] h-[200px]"
@@ -400,10 +396,8 @@ export default function EditCollectionContainer() {
             <div className="flex pt-[30px]">
               <ImageInput
                 imageURL={bannerImage}
-                info="Esta imagen aparecerá en la parte superior de la página de tu
-              colección. Evite incluir demasiado texto en esta imagen de banner,
-              ya que las dimensiones cambian en diferentes dispositivos."
-                label="Pancarta de la colección"
+                info={literals.createCollection.bannerDesc}
+                label={literals.createCollection.banner}
                 backgroundImage={true}
                 inputId="bannerImageInput"
                 className="rounded-xl w-11/12 h-[130px] sm:w-[600px] sm:h-[200px]"
@@ -417,7 +411,7 @@ export default function EditCollectionContainer() {
 
           <div className="mt-10">
             <TextInput
-              label={"Nombre de la colección"}
+              label={literals.createCollection.collectionName}
               required
               value={name}
               onChange={(e) => handleChangeName(e.target.value)}
@@ -432,15 +426,15 @@ export default function EditCollectionContainer() {
               value={url}
               onChange={(e) => handleChangeURL(e.target.value)}
               error={urlError}
-              info="Personaliza tu URL en Fibbo. Solo puede contener letras minúsculas, números y guiones"
+              info={literals.createCollection.urlDesc}
               errorMessage={urlErrorMessage}
             />
           </div>
           <div className="mt-10">
             <TextArea
-              label="Descripción"
+              label={literals.createCollection.description}
               required
-              info="La descripción de la colección debe contener un máximo de 1000 carácteres."
+              info={literals.createCollection.descriptionDesc}
               error={descError}
               value={desc}
               rows={"6"}
@@ -462,7 +456,7 @@ export default function EditCollectionContainer() {
                   <TextInput
                     value={website}
                     onChange={(e) => handleChangeWebiste(e.target.value)}
-                    placeholder="tuPaginaWeb.com"
+                    placeholder="yourPage.com"
                   />
                 </div>
               </div>
@@ -472,7 +466,7 @@ export default function EditCollectionContainer() {
                   <TextInput
                     value={discord}
                     error={discordError}
-                    errorMessage={"Formato incorrecto"}
+                    errorMessage={literals.createCollection.incorrectFormat}
                     onChange={(e) => handleChangeDiscord(e.target.value)}
                   />
                 </div>
@@ -483,7 +477,7 @@ export default function EditCollectionContainer() {
                   <TextInput
                     value={telegram}
                     error={telegramError}
-                    errorMessage={"Formato incorrecto"}
+                    errorMessage={literals.createCollection.incorrectFormat}
                     onChange={(e) => handleChangeTelegram(e.target.value)}
                   />
                 </div>
@@ -494,7 +488,7 @@ export default function EditCollectionContainer() {
                   <TextInput
                     value={instagram}
                     error={instagramError}
-                    errorMessage={"Formato incorrecto"}
+                    errorMessage={literals.createCollection.incorrectFormat}
                     onChange={(e) => handleChangeInstagram(e.target.value)}
                   />
                 </div>
@@ -513,7 +507,7 @@ export default function EditCollectionContainer() {
                 />
 
                 <span className="font-bold text-lg text-gray-700 dark:text-gray-400 border-gray-300 p-3 flex-row ">
-                  Contenido Explícito o Sensible
+                  {literals.createCollection.explicitContent}
                 </span>
               </label>
               <HelpTooltip
@@ -526,14 +520,14 @@ export default function EditCollectionContainer() {
 
           <div className="flex flex-col w-full pt-[40px] content-center justify-center ">
             <ActionButton
-              text="Editar Colección"
+              text={literals.editCollection.title}
               size="large"
               buttonAction={handleCreateCollection}
             />
           </div>
         </div>
       ) : (
-        <NotOwner text="No puedes editar la colección, no eres su propietario!" />
+        <NotOwner text={literals.editCollection.notAllowed} />
       )}
     </PageWithLoading>
   );
