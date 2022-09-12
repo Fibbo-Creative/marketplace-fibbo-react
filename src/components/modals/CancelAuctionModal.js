@@ -25,13 +25,13 @@ export default function CancelAuctionModal({
 
   return (
     <ActionModal
-      title={literals.CancelAuctionModal.cancelAuction}
+      title={literals.cancelAuctionModal.cancelAuction}
       size="large"
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       onSubmit={() => handleCancelAuction()}
-      submitLabel={literals.CancelAuctionModal.cancel}
-      completedText={literals.CancelAuctionModal.canceledOk}
+      submitLabel={literals.cancelAuctionModal.cancel}
+      completedText={literals.cancelAuctionModal.canceledOk}
       completedLabel={literals.modals.seeUpdatedItem}
       completedAction={handleCloseModal}
     >
@@ -39,7 +39,7 @@ export default function CancelAuctionModal({
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-4">
             <div className="flex flex-row items-center gap-3 ">
-              <p>{literals.CancelAuctionModal.reservedPrice}</p>
+              <p>{literals.cancelAuctionModal.reservedPrice}</p>
               <img
                 width={32}
                 src={auctionInfo?.payToken.image}
@@ -50,7 +50,7 @@ export default function CancelAuctionModal({
               </p>
             </div>
             <div className="flex flex-row gap-6">
-              <div>{literals.CancelAuctionModal.highestBid}</div>
+              <div>{literals.cancelAuctionModal.highestBid}</div>
               {highestBid ? (
                 <div className="flex gap-2 items-center">
                   <img
@@ -68,7 +68,7 @@ export default function CancelAuctionModal({
             </div>
             {highestBid && (
               <div className="flex flex-row gap-6">
-                <div>{literals.CancelAuctionModal.doneBy}</div>
+                <div>{literals.cancelAuctionModal.doneBy}</div>
                 <div className="flex gap-2 items-center">
                   <img
                     className="rounded-full"
@@ -93,7 +93,9 @@ export default function CancelAuctionModal({
               </div>
             )}
           </div>
-          <div className="mt-5 text-lg">{literals.CancelAuctionModal.doYouCancel}</div>
+          <div className="mt-5 text-lg">
+            {literals.cancelAuctionModal.doYouCancel}
+          </div>
         </div>
       </div>
     </ActionModal>

@@ -10,7 +10,7 @@ export default function TransferModal({
   wallet,
   onSendItem,
 }) {
-  const [{literals}] = useStateContext();
+  const [{ literals }] = useStateContext();
   const [to, setTo] = useState("");
   const putItemForSale = async () => {
     try {
@@ -24,20 +24,20 @@ export default function TransferModal({
   };
   return (
     <ActionModal
-      title={literals.TransferModal.transfer}
+      title={literals.transferModal.transfer}
       size="large"
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       onSubmit={putItemForSale}
-      submitLabel={literals.TransferModal.send}
-      completedText={literals.TransferModal.sendOk}
-      completedLabel={literals.TransferModal.itemUpdated}
+      submitLabel={literals.transferModal.send}
+      completedText={literals.transferModal.sendOk}
+      completedLabel={literals.transferModal.itemUpdated}
       completedAction={handleCloseModal}
       submitDisabled={to === ""}
     >
       <div className="my-10 flex flex-col items-center gap-2 pb-10 w-full">
         <TextInput
-          label={literals.TransferModal.wallet}
+          label={literals.transferModal.wallet}
           required
           value={to}
           onChange={(e) => setTo(e.target.value)}

@@ -76,10 +76,10 @@ export const ItemDirectOffers = ({
                     {literals.detailNFT.price}
                   </th>
                   <th cope="col" className="px-6 py-3">
-                  {literals.detailNFT.expires}
+                    {literals.detailNFT.expires}
                   </th>
                   <th cope="col" className="px-8 py-3">
-                  {literals.detailNFT.actions}
+                    {literals.detailNFT.actions}
                   </th>
                 </tr>
               </thead>
@@ -156,13 +156,15 @@ export const ItemDirectOffers = ({
               onCancelOffer={onCancelOffer}
             />
 
-            <AcceptOfferModal
-              showModal={showAcceptOffer}
-              handleCloseModal={() => setShowAcceptOffer(false)}
-              offer={detailOffer}
-              wallet={wallet}
-              onAcceptOffer={onAcceptOffer}
-            />
+            {isOwner && (
+              <AcceptOfferModal
+                showModal={showAcceptOffer}
+                handleCloseModal={() => setShowAcceptOffer(false)}
+                offer={detailOffer}
+                wallet={wallet}
+                onAcceptOffer={onAcceptOffer}
+              />
+            )}
           </>
         ) : (
           <div className="flex flex-col gap-10">

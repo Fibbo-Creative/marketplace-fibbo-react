@@ -22,26 +22,22 @@ export default function AcceptOfferModal({
   };
   return (
     <ActionModal
-      title={literals.AcceptOfferModal.acceptOffer}
+      title={literals.acceptOfferModal.acceptOffer}
       size="large"
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       onSubmit={() => handleAcceptOffer()}
-<<<<<<< HEAD
-      submitLabel={"Aceptar Oferta"}
-=======
-      submitLabel={literals.AcceptOfferModal.acceptOffer}
+      submitLabel={literals.acceptOfferModal.acceptOffer}
       completedText={formatLiteral(literals.modals.offerAccepted, [
         offer?.price,
-        offer?.payToken.name,
+        offer?.payToken?.name,
       ])}
->>>>>>> 9af3b2757684d9d561d45c7432a433edbb896ef3
       completedLabel={literals.modals.seeUpdatedItem}
       completedAction={handleCloseModal}
     >
       <div className="my-10 mx-8 flex flex-col gap-10">
         <div className="flex flex-col gap-10 w-full text-center ">
-          <div>{literals.AcceptOfferModal.doYouAccept}</div>
+          <div>{literals.acceptOfferModal.doYouAccept}</div>
           <div className="flex items-center justify-evenly">
             <div className="flex gap-2 items-center p-2 rounded-lg dark:bg-dark-4">
               <img
@@ -64,7 +60,7 @@ export default function AcceptOfferModal({
                 {offer?.creator?.username}
               </p>
             </div>
-            <p> {literals.AcceptOfferModal.isOffering} </p>
+            <p> {literals.acceptOfferModal.isOffering} </p>
             <div className="flex gap-3 items-center  p-2 rounded-lg dark:bg-dark-4">
               <p>{offer.price}</p>
               <img

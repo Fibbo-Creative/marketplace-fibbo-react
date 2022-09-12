@@ -39,7 +39,7 @@ export const FiltersSidebarModal = ({
                 tabIndex="0"
                 onClick={(e) => setOpenSidebar(false)}
               >
-                <span className="sr-only">{literals.FilterBottomDropDown.close}</span>
+                <span className="sr-only">{literals.actions.close}</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -64,13 +64,13 @@ export const FiltersSidebarModal = ({
                   filtersSelected={filtersSelected}
                 />
               </FilterBottomDropDown>
-              <FilterBottomDropDown name={literals.FilterBottomDropDown.token}>
+              <FilterBottomDropDown name={"Token"}>
                 <FilterButtons
                   options={payTokenFilters}
                   filtersSelected={filtersSelected}
                 />
               </FilterBottomDropDown>
-              <FilterBottomDropDown name={literals.FilterBottomDropDown.collections}>
+              <FilterBottomDropDown name={literals.navbar.collections}>
                 <FiltersSelectList
                   list={collections}
                   onClick={selectCollection}

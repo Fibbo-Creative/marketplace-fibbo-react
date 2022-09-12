@@ -88,24 +88,24 @@ export const ConfirmCreateModal = ({
             </div>
             <div className="flex flex-col gap-3 w-60">
               <div className="flex gap-2">
-                <b>{literals.ConfirmCreateModal.collection}</b>
+                <b>{literals.confirmCreateModal.collection}</b>
                 <p>{collection?.name}</p>
               </div>
               <div className="flex gap-2">
-                <b>{literals.ConfirmCreateModal.name}</b>
+                <b>{literals.confirmCreateModal.name}</b>
                 <p>{itemData.name}</p>
               </div>
               <div className="flex flex-col gap-2">
-                <b>{literals.ConfirmCreateModal.description}</b>
+                <b>{literals.confirmCreateModal.description}</b>
                 <p className="text-sm">{itemData.description}</p>
               </div>
               <div className="flex gap-2">
-                <b>{literals.ConfirmCreateModal.royalties}</b>
+                <b>{literals.confirmCreateModal.royalties}</b>
                 <p>{itemData.royalty} %</p>
               </div>
               {itemData.hiddenContent && (
                 <div className="flex gap-2 items-center">
-                  <b>{literals.ConfirmCreateModal.aditionalContent} </b>
+                  <b>{literals.confirmCreateModal.aditionalContent} </b>
                   <input type="checkbox" checked={true} disabled={true} />
                 </div>
               )}
@@ -114,7 +114,7 @@ export const ConfirmCreateModal = ({
           <ActionButton
             variant={"contained"}
             size="large"
-            text={literals.ConfirmCreateModal.createNFT}
+            text={literals.confirmCreateModal.createNFT}
             buttonAction={createNFT}
           />
         </div>
@@ -122,13 +122,13 @@ export const ConfirmCreateModal = ({
         <div className="my-10 mx-8 flex flex-col gap-10 items-center">
           <div className="flex gap-5 items-center">
             <Check />
-            <p>{literals.ConfirmCreateModal.itemCreated} </p>
+            <p>{literals.confirmCreateModal.itemCreated} </p>
           </div>
           <div className="w-full flex items-center justify-center">
             <ActionButton
               variant="contained"
               size="large"
-              text={literals.ConfirmCreateModal.viewItem}
+              text={literals.confirmCreateModal.viewItem}
               buttonAction={(e) => seeResult()}
             />
           </div>

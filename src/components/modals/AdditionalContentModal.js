@@ -13,7 +13,7 @@ export default function AdditionalContentModal({
   const [{ literals }] = useStateContext();
   return (
     <BasicModal
-      title={"Contenido adicional"}
+      title={literals.confirmCreateModal.additionalContent}
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       size="large"

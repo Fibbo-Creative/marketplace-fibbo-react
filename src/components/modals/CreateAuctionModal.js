@@ -66,13 +66,13 @@ export default function CreateAuctionModal({
   }, []);
   return (
     <ActionModal
-      title={literals.CreateAuctionModal.auctionItem}
+      title={literals.createAuctionModal.auctionItem}
       size="large"
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       onSubmit={() => handleCreateAuction()}
-      submitLabel={literals.CreateAuctionModal.auction}
-      completedText={literals.CreateAuctionModal.auctionCorrect}
+      submitLabel={literals.createAuctionModal.auction}
+      completedText={literals.createAuctionModal.auctionCorrect}
       completedLabel={literals.modals.seeUpdatedItem}
       completedAction={handleCloseModal}
       submitDisabled={actionError || buyNowPrice < reservePrice * 2}
@@ -80,7 +80,7 @@ export default function CreateAuctionModal({
       <div className="my-10 mx-2 md:mx-8 flex flex-col gap-8">
         <div className="flex flex-col gap-4 items-center">
           <Erc20AmountInput
-            label={literals.CreateAuctionModal.choosePrice}
+            label={literals.createAuctionModal.choosePrice}
             value={reservePrice}
             onChange={setReservePrice}
             selectedToken={payTokenSelected}
@@ -88,7 +88,7 @@ export default function CreateAuctionModal({
           />
           <div className="flex items-center gap-2">
             <span className="font-bold text-sm text-gray-700 dark:text-gray-400 border-gray-300 p-3">
-              {literals.CreateAuctionModal.minBid}
+              {literals.createAuctionModal.minBid}
             </span>
             <label className="">
               <input
@@ -99,18 +99,18 @@ export default function CreateAuctionModal({
             </label>
           </div>
           <Erc20AmountInput
-            label={literals.CreateAuctionModal.buyNowPrice}
+            label={literals.createAuctionModal.buyNowPrice}
             value={buyNowPrice}
             onChange={setBuyNowPrice}
             error={buyNowPrice < reservePrice * 2}
             selectedToken={payTokenSelected}
             selectDisabled={true}
             setSelectedToken={setPayTokenSelected}
-            errorMessage={ literals.CreateAuctionModal.errorPrice}
+            errorMessage={literals.createAuctionModal.errorPrice}
           />
         </div>
         <DateTimeInput
-          label={literals.CreateAuctionModal.beginDate}
+          label={literals.createAuctionModal.beginDate}
           valueDate={startDate}
           valueHour={startHour}
           onChangeDate={setStartDate}
@@ -124,7 +124,7 @@ export default function CreateAuctionModal({
           setActionError={setActionError}
         />
         <DateTimeInput
-          label={literals.CreateAuctionModal.endDate}
+          label={literals.createAuctionModal.endDate}
           valueDate={endDate}
           valueHour={endHour}
           onChangeDate={setEndDate}

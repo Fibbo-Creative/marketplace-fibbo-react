@@ -252,14 +252,6 @@ export default function ItemPage() {
 
     profileOwnerData.current = profileOwnerResponse;
 
-    const marketContract = await getMarketContract();
-    console.log(
-      await marketContract.offers(
-        collectionResponse.contractAddress,
-        tokenId,
-        wallet
-      )
-    );
     setChainInfo({
       collection: collectionResponse.contractAddress,
       tokenId: tokenId,

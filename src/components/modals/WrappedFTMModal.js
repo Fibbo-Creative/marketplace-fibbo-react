@@ -19,7 +19,7 @@ export default function WrappedFTMModal({
 }) {
   const { getWFTMBalance, wrapFTM, unwrapFTM, unwrapFTMGassless } =
     useWFTMContract();
-  const [{ userProfile }, literals, dispatch] = useStateContext();
+  const [{ userProfile, literals }, dispatch] = useStateContext();
   const [ftmAmount, setFtmAmount] = useState(0);
   const [completedAction, setCompletedAction] = useState(false);
   const [fromFTM, setFromFTM] = useState(true);
@@ -102,7 +102,7 @@ export default function WrappedFTMModal({
 
   return (
     <BasicModal
-      title={literals.WrappedFTMModal.station}
+      title={literals.wrappedFTMModal.station}
       size="large"
       showModal={showModal}
       handleCloseModal={handleCloseModal}
@@ -132,11 +132,12 @@ export default function WrappedFTMModal({
                   </div>
                 </div>
                 <div className="text-gray-400 flex w-full justify-end">
-                  {literals.WrappedFTMModal.balance} {parseFloat(ftmBalance).toFixed(4)}
+                  {literals.wrappedFTMModal.balance}{" "}
+                  {parseFloat(ftmBalance).toFixed(4)}
                 </div>
                 {ftmAmount > ftmBalance && (
                   <div className="text-red-600 text-sm">
-                    {literals.WrappedFTMModal.notFTM}
+                    {literals.wrappedFTMModal.notFTM}
                   </div>
                 )}
               </div>
@@ -166,7 +167,8 @@ export default function WrappedFTMModal({
                   </div>
                 </div>
                 <div className="text-gray-400 flex w-full justify-end">
-                {literals.WrappedFTMModal.balance} {parseFloat(WftmBalance).toFixed(4)}
+                  {literals.wrappedFTMModal.balance}{" "}
+                  {parseFloat(WftmBalance).toFixed(4)}
                 </div>
               </div>
             </div>
@@ -192,11 +194,12 @@ export default function WrappedFTMModal({
                   </div>
                 </div>
                 <div className="text-gray-400 flex w-full justify-end">
-                {literals.WrappedFTMModal.balance} {parseFloat(WftmBalance).toFixed(4)}
+                  {literals.wrappedFTMModal.balance}{" "}
+                  {parseFloat(WftmBalance).toFixed(4)}
                 </div>
                 {ftmAmount > WftmBalance && (
                   <div className="text-red-600 text-sm">
-                    {literals.WrappedFTMModal.notWFTM}
+                    {literals.wrappedFTMModal.notWFTM}
                   </div>
                 )}
               </div>
@@ -222,7 +225,8 @@ export default function WrappedFTMModal({
                   </div>
                 </div>
                 <div className="text-gray-400 flex w-full justify-end">
-                {literals.WrappedFTMModal.balance} {parseFloat(ftmBalance).toFixed(4)}
+                  {literals.wrappedFTMModal.balance}{" "}
+                  {parseFloat(ftmBalance).toFixed(4)}
                 </div>
               </div>
             </div>
@@ -233,7 +237,11 @@ export default function WrappedFTMModal({
                 fromFTM ? ftmAmount > ftmBalance : ftmAmount > WftmBalance
               }
               buttonAction={fromFTM ? handleWrapFTM : handleUnwrapFTM}
-              text={fromFTM ? literals.WrappedFTMModal.changeWFTM : literals.WrappedFTMModal.sendFTM }
+              text={
+                fromFTM
+                  ? literals.wrappedFTMModal.changeWFTM
+                  : literals.wrappedFTMModal.sendFTM
+              }
               size="large"
             />
           </div>
@@ -253,7 +261,7 @@ export default function WrappedFTMModal({
             <ActionButton
               size="large"
               variant={"contained"}
-              text={literals.WrappedFTMModal.close}
+              text={literals.wrappedFTMModal.close}
               buttonAction={closeModal}
             />
           </div>

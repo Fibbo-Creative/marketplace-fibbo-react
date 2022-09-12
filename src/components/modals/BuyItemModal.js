@@ -62,7 +62,7 @@ export default function BuyItemModal({
                 </div>
                 <div className="flex flex-col gap-2">
                   <div className="flex gap-2">
-                    <b>{literals.BuyItemModal.name}</b>
+                    <b>{literals.buyItemModal.name}</b>
                     <p>{tokenInfo?.name}</p>
                   </div>
 
@@ -77,7 +77,7 @@ export default function BuyItemModal({
                     <p>{listing?.payToken.name}</p>
                   </div>
                   <div className="flex gap-2">
-                    <b>{literals.BuyItemModal.royalties}</b>
+                    <b>{literals.buyItemModal.royalties}</b>
                     <p>{tokenInfo?.royalty}</p>
                     <HelpTooltip
                       tooltip="royalty-info"
@@ -87,13 +87,13 @@ export default function BuyItemModal({
                   </div>
                   {wftmBalance < tokenInfo?.price && (
                     <div className="text-xs text-red-700">
-                      {literals.BuyItemModal.notWFTM}
+                      {literals.buyItemModal.notWFTM}
                     </div>
                   )}
                 </div>
               </div>
               <div className="text-xs text-center mt-5">
-                {literals.BuyItemModal.fibboEarns}
+                {literals.buyItemModal.fibboEarns}
               </div>
             </div>
           </div>

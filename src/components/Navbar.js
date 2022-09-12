@@ -269,7 +269,7 @@ export default function Navbar() {
                           className={` px-4 py-2 ${
                             _width < 1200 ? "w-[200px]" : "w-[350px]"
                           } outline-none dark:bg-dark-1`}
-                          placeholder= {actions.navbar.searchItems}
+                          placeholder={literals.navbar.searchItems}
                           onChange={(e) => searchItems(e.target.value)}
                           value={searchText}
                         />

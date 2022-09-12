@@ -22,14 +22,14 @@ export default function UnlistItemModal({
   const [{ literals }] = useStateContext();
   return (
     <ActionModal
-      title={literals.UnlistItemModal.quitItem}
+      title={literals.unlistItemModal.quitItem}
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       size="large"
       onSubmit={() => unlistItem()}
-      submitLabel={literals.UnlistItemModal.deleteItem}
-      completedText={literals.UnlistItemModal.deletedOk}
-      completedLabel={literals.UnlistItemModal.itemUpdated}
+      submitLabel={literals.unlistItemModal.deleteItem}
+      completedText={literals.unlistItemModal.deletedOk}
+      completedLabel={literals.unlistItemModal.itemUpdated}
       completedAction={handleCloseModal}
     >
       <div className="my-10 mx-8 flex flex-col items-center gap-10">
@@ -37,11 +37,11 @@ export default function UnlistItemModal({
           <div className="flex flex-col md:flex-row items-center gap-3 justify-evenly">
             <div className="flex flex-col gap-3">
               <div className="flex gap-2">
-                <b>{literals.UnlistItemModal.name}</b>
+                <b>{literals.unlistItemModal.name}</b>
                 <p>{tokenInfo?.name}</p>
               </div>
               <div className="flex gap-2">
-                <b>{literals.UnlistItemModal.royalties}</b>
+                <b>{literals.unlistItemModal.royalties}</b>
                 <p>{tokenInfo?.royalty}</p>
               </div>
               <div className="flex gap-2">

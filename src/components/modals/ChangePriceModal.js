@@ -28,7 +28,7 @@ export default function ChangePriceModal({
   };
   return (
     <ActionModal
-      title={literals.ChangePriceModal.changePrice}
+      title={literals.changePriceModal.changePrice}
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       size="large"
@@ -38,12 +38,12 @@ export default function ChangePriceModal({
         priceFor,
         payTokenSelected?.name,
       ])}
-      completedLabel={literals.ChangePriceModal.updatedItem}
+      completedLabel={literals.changePriceModal.updatedItem}
       completedAction={handleCloseModal}
     >
       <div className="my-10 mx-8 flex flex-col items-center gap-10 pb-10">
         <Erc20AmountInput
-          label={literals.ChangePriceModal.price}
+          label={literals.changePriceModal.price}
           value={priceFor}
           onChange={setPriceFor}
           selectedToken={payTokenSelected}

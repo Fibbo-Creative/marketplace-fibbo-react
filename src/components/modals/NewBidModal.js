@@ -65,22 +65,17 @@ export default function MakeBidModal({
   }, [updatedWFTM]);
   return (
     <ActionModal
-      title={literals.NewBidModal.makeBid}
+      title={literals.newBidModal.makeBid}
       size="large"
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       onSubmit={() => handleMakeBid()}
-<<<<<<< HEAD
-      submitLabel={"Realizar Puja"}
-      completedLabel={`Ver tu puja`}
-=======
-      submitLabel={literals.NewBidModal.makeBid}
-      completedText={formatLiteral(literals.modals.bidAmmount, [
+      submitLabel={literals.newBidModal.makeBid}
+      completedText={formatLiteral(literals.modals.bidPlaced, [
         bidAmmount,
         payTokenSelected?.name,
       ])}
-      completedLabel={literals.NewBidModal.viewBid}
->>>>>>> 9af3b2757684d9d561d45c7432a433edbb896ef3
+      completedLabel={literals.newBidModal.viewBid}
       completedAction={handleCloseModal}
       submitDisabled={
         highestBid
@@ -94,7 +89,7 @@ export default function MakeBidModal({
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-4">
             <div className="flex flex-row items-center gap-3 ">
-              <p>{literals.NewBidModal.reservedPrice}</p>
+              <p>{literals.newBidModal.reservedPrice}</p>
               <img
                 width={32}
                 src={auctionInfo?.payToken.image}
@@ -103,7 +98,7 @@ export default function MakeBidModal({
               <p>{auctionInfo?.reservePrice} wFTM </p>
             </div>
             <div className="flex flex-row gap-6">
-              <div>{literals.NewBidModal.highestBid} </div>
+              <div>{literals.newBidModal.highestBid} </div>
               <div>
                 {highestBid ? (
                   <div className="flex gap-2 items-center">
@@ -123,7 +118,7 @@ export default function MakeBidModal({
             </div>
             {highestBid && (
               <div className="flex flex-row gap-6">
-                <div>{literals.NewBidModal.doneBy}</div>
+                <div>{literals.newBidModal.doneBy}</div>
                 <div className="flex gap-2 items-center">
                   <img
                     className="rounded-full"
@@ -150,7 +145,7 @@ export default function MakeBidModal({
           </div>
           <div className="flex flex-col items-center">
             <Erc20AmountInput
-              label={literals.NewBidModal.bidPrice}
+              label={literals.newBidModal.bidPrice}
               value={bidAmmount}
               onChange={setBidAmmount}
               error={
@@ -163,13 +158,13 @@ export default function MakeBidModal({
               errorMessage={`${
                 highestBid
                   ? parseFloat(bidAmmount) < parseFloat(highestBid.bid)
-                    ? literals.NewBidModal.biggerBid
+                    ? literals.newBidModal.biggerBid
                     : bidAmmount < parseFloat(highestBid.bid) + 1
-                    ? literals.NewBidModal.text1
-                    : literals.makeOffer.notWFTM
+                    ? literals.newBidModal.text1
+                    : literals.newBidModal.notWFTM
                   : parseFloat(auctionInfo?.minBid) > parseFloat(bidAmmount)
                   ? literals.NewBidModal.text2
-                  : literals.makeOffer.notWFTM
+                  : literals.newBidModal.notWFTM
               }`}
               selectedToken={payTokenSelected}
               setSelectedToken={setPayTokenSelected}

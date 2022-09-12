@@ -12,7 +12,7 @@ export default function RedirectModal({
   onSaveOptions,
   link,
 }) {
-  const [{literals}] = useStateContext();
+  const [{ literals }] = useStateContext();
   const [notShow, setNowShow] = useState(false);
 
   const redirectToModal = async () => {
@@ -27,25 +27,25 @@ export default function RedirectModal({
 
   return (
     <BasicModal
-      title={literals.RedirectModal.redirect}
+      title={literals.redirectModal.redirect}
       showModal={showModal}
       handleCloseModal={handleCloseModal}
     >
       <div className="my-10 mx-3 md:mx-8 flex flex-col items-center gap-10">
-        <div>{literals.RedirectModal.externalLink}</div>
+        <div>{literals.redirectModal.externalLink}</div>
         <div className="text-blue-600">{link}</div>
 
-        <div>{literals.RedirectModal.fibboNotResponsable}</div>
+        <div>{literals.redirectModal.fibboNotResponsable}</div>
         <div className="flex gap-3 items-center">
           <input
             checked={notShow}
             onChange={(e) => setNowShow(!notShow)}
             type="checkbox"
           />
-          <div>{literals.RedirectModal.dontShow}</div>
+          <div>{literals.redirectModal.dontShow}</div>
         </div>
         <ActionButton
-          text={literals.RedirectModal.goToLink}
+          text={literals.redirectModal.goToLink}
           size="small"
           buttonAction={redirectToModal}
         />

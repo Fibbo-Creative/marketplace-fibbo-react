@@ -26,17 +26,17 @@ export default function PutForSaleModal({
   };
   return (
     <ActionModal
-      title={literals.PutForSaleModal.sellNft}
+      title={literals.putForSaleModal.sellNft}
       size="large"
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       onSubmit={putItemForSale}
-      submitLabel={literals.PutForSaleModal.sellItem}
+      submitLabel={literals.putForSaleModal.sellItem}
       completedText={formatLiteral(literals.modals.changedPrice, [
         priceFor,
         payTokenSelected?.name,
       ])}
-      completedLabel={literals.PutForSaleModal.viewUpdated}
+      completedLabel={literals.putForSaleModal.viewUpdated}
       completedAction={handleCloseModal}
     >
       <div className="my-10 mx-8 flex flex-col items-center gap-10 pb-10">

@@ -50,13 +50,13 @@ export default function UpdateAuctionModal({
 
   return (
     <ActionModal
-      title={literals.UpdateAuctionModal.updateAuction}
+      title={literals.updateAuctionModal.updateAuction}
       size="large"
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       onSubmit={() => handleUpdateAuction()}
-      submitLabel={literals.UpdateAuctionModal.update}
-      completedText={literals.UpdateAuctionModal.auctionUpdated}
+      submitLabel={literals.updateAuctionModal.update}
+      completedText={literals.updateAuctionModal.auctionUpdated}
       completedLabel={literals.modals.seeUpdatedItem}
       completedAction={handleCloseModal}
       submitDisabled={actionError}
@@ -68,12 +68,12 @@ export default function UpdateAuctionModal({
               <Erc20AmountInput
                 value={newReservePrice}
                 onChange={setNewReservePrice}
-                label={literals.UpdateAuctionModal.reservedPrice}
+                label={literals.updateAuctionModal.reservedPrice}
                 error={
                   parseFloat(newReservePrice) ===
                   parseFloat(auctionInfo.reservePrice)
                 }
-                errorMessage={literals.UpdateAuctionModal.newPrice}
+                errorMessage={literals.updateAuctionModal.newPrice}
                 selectedToken={payTokenSelected}
                 setSelectedToken={setPayTokenSelected}
               />
@@ -81,7 +81,7 @@ export default function UpdateAuctionModal({
           )}
           {!auctionStarted && (
             <DateTimeInput
-              label={literals.UpdateAuctionModal.beginDate}
+              label={literals.updateAuctionModal.beginDate}
               valueDate={startDate}
               valueHour={startHour}
               onChangeDate={setStartDate}
@@ -96,7 +96,7 @@ export default function UpdateAuctionModal({
             />
           )}
           <DateTimeInput
-            label={literals.UpdateAuctionModal.endDate}
+            label={literals.updateAuctionModal.endDate}
             valueDate={endDate}
             valueHour={endHour}
             onChangeDate={setEndDate}
