@@ -36,7 +36,6 @@ export const useMarketplace = () => {
       marketContract.address
     );
     if (!isApproved) {
-      console.log("Approivng");
       await approvalForAllGasless(ERC721contract, marketContract.address, true);
       await sleep(5000);
     }
@@ -102,7 +101,6 @@ export const useMarketplace = () => {
     );
 
     if (!isApproved) {
-      console.log("Approving");
       await approvalForAllGasless(ERC721contract, marketContract.address);
     }
   };

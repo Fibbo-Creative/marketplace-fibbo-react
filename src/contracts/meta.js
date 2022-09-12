@@ -31,6 +31,5 @@ export const sendMetaTx = async (contract, provider, signer, txParams) => {
     },
   });
 
-  console.log(res);
   return res.data;
 };
