@@ -2,8 +2,11 @@ import React from "react";
 import DropDown from "./DropDown";
 import { useNavigate } from "react-router-dom";
 import NftCard from "./NftCard";
+import { useStateContext } from "../context/StateProvider";
+
 export const MoreItems = ({ nfts, collectionInfo }) => {
   const navigate = useNavigate();
+  const [{ literals }] = useStateContext();
   const redirectToItem = (item) => {
     navigate(
       `/explore/${
@@ -19,7 +22,7 @@ export const MoreItems = ({ nfts, collectionInfo }) => {
       opened={true}
       className={`mb-5 dark:bg-dark-2`}
       icon="ri:price-tag-2-fill"
-      title="Mas de la colección"
+      title={literals.itemPage.moreCollection}
     >
       <div className={`${" overflow-x-scroll"}`}>
         <div className="flex flex-row gap-3">

@@ -12,7 +12,7 @@ import { NotVerified } from "../../components/basic/NotVerified";
 export default function FeaturesContainer() {
   const navigate = useNavigate();
   const { getSuggestionsInProgress } = useCommunity();
-  const [{ verifiedAddress }] = useStateContext();
+  const [{ verifiedAddress, literals }] = useStateContext();
   const { getProfileInfo } = useApi();
 
   const [loading, setLoading] = useState(true);
@@ -65,21 +65,19 @@ export default function FeaturesContainer() {
           <>
             <div className="w-full dark:bg-gray-1 flex flex-col justify-center items-center gap-4">
               <div className="uppercase font-bold text-4xl mt-10">
-                Sugerencias
+                {literals.features.suggestions}
               </div>
               <div className=" w-5/6 text-sm md:text-lg md:w-2/3 text-center">
-                Vota y contribuye a decidir la evolución del marketplace de
-                FIBBO, la comunidad es la desencadenante de los próximos pasos a
-                añadir para conseguir el producto de todos
+                {literals.features.sentence}
               </div>
             </div>
             <div className="w-full flex flex-col justify-center items-center gap-4">
               <div className="uppercase font-bold text-xl mt-10">
-                Sugiere algun cambio
+                {literals.features.suggest}
               </div>
               <ActionButton
                 buttonAction={() => setShowNewSuggestion(true)}
-                text="Añadir Sugerencia"
+                text={literals.actions.addSuggestion}
                 size="large"
               />
             </div>
@@ -92,10 +90,7 @@ export default function FeaturesContainer() {
             </div>{" "}
           </>
         ) : (
-          <NotVerified
-            text=" No eres un artista verificado para poder sugerir cambios,
-          verificate y se parte de la comunidad!"
-          />
+          <NotVerified text={literals.modals.artistNotVerified} />
         )}
         <NewFeatureModal
           showModal={showNewSuggestion}

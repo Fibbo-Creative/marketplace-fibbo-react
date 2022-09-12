@@ -17,6 +17,7 @@ import { ProfileTab } from "./components/ProfileTab";
 import ProfileActivityTable from "./components/ProfileActivityTable";
 import { ProfileOffersTable } from "./components/ProfileOffersTable";
 import { ProfileMyOffersTable } from "./components/ProfileMyOffersTable";
+import { ProfileBidsTable } from "./components/ProfileBidsTable";
 
 export default function ProfileContainer() {
   const { wallet } = useAccount();
@@ -29,12 +30,14 @@ export default function ProfileContainer() {
     getNftsFromCreator,
     getWalletHistory,
     getWalletOffers,
+    getWalletBids,
   } = useApi();
   const navigate = useNavigate();
   const { address } = useParams();
   const [userItems, setUserItems] = useState([]);
   const [userSmallview, setSmallViewUser] = useState(true);
-  const [{ userProfile, verifiedAddress }, stateDispatch] = useStateContext();
+  const [{ userProfile, verifiedAddress, literals }, stateDispatch] =
+    useStateContext();
   const { theme } = useContext(ThemeContext);
 
   const [myProfile, setMyprofile] = useState(false);
@@ -50,6 +53,7 @@ export default function ProfileContainer() {
   const [activity, setActivity] = useState([]);
   const [offers, setOffers] = useState([]);
   const [myOffers, setMyOffers] = useState([]);
+  const [walletBids, setWalletBids] = useState([]);
 
   const profileData = useRef(null);
 
@@ -156,6 +160,9 @@ export default function ProfileContainer() {
         const { myOffers, offers } = await getWalletOffers(address);
         setMyOffers(myOffers);
         setOffers(offers);
+
+        const bids = await getWalletBids(address);
+        setWalletBids(bids);
 
         setLoadingInfo(false);
       }
@@ -283,8 +290,7 @@ export default function ProfileContainer() {
                 <div
                   data-for={profileData.current?.verified && "verify-info"}
                   data-tip={
-                    profileData.current?.verified &&
-                    "Artista verificado por <br/> el equipo de FIBOO"
+                    profileData.current?.verified && literals.profile.sentence
                   }
                   className={`flex cursorPointer ${
                     profileData.current?.verified && "gap-5 items-center"
@@ -332,7 +338,7 @@ export default function ProfileContainer() {
               {!loadingInfo && (
                 <>
                   <ProfileTab
-                    title={"En posesión"}
+                    title={literals.profile.collected}
                     count={collectedItems.length}
                     type={{
                       type: "Collected",
@@ -347,7 +353,7 @@ export default function ProfileContainer() {
                     }
                   />
                   <ProfileTab
-                    title={"Creados"}
+                    title={literals.profile.created}
                     count={createdItems.length}
                     type={{ type: "Created", viewAs: "grid" }}
                     selectedType={itemsType}
@@ -356,7 +362,7 @@ export default function ProfileContainer() {
                     }
                   />
                   <ProfileTab
-                    title={"Actividad"}
+                    title={literals.profile.activity}
                     count={activity.length}
                     type={{ type: "Activity", viewAs: "table" }}
                     selectedType={itemsType}
@@ -365,7 +371,7 @@ export default function ProfileContainer() {
                     }
                   />
                   <ProfileTab
-                    title={"Ofertas"}
+                    title={literals.profile.offers}
                     count={offers.length}
                     type={{ type: "Offers", viewAs: "table" }}
                     selectedType={itemsType}
@@ -373,15 +379,34 @@ export default function ProfileContainer() {
                       handleSetItemsType({ type: "Offers", viewAs: "table" })
                     }
                   />
-                  <ProfileTab
-                    title={"Mis Ofertas"}
-                    count={myOffers.length}
-                    type={{ type: "MyOffers", viewAs: "table" }}
-                    selectedType={itemsType}
-                    onClick={() =>
-                      handleSetItemsType({ type: "MyOffers", viewAs: "table" })
-                    }
-                  />
+                  {myProfile && (
+                    <ProfileTab
+                      title={literals.profile.myOffers}
+                      count={myOffers.length}
+                      type={{ type: "MyOffers", viewAs: "table" }}
+                      selectedType={itemsType}
+                      onClick={() =>
+                        handleSetItemsType({
+                          type: "MyOffers",
+                          viewAs: "table",
+                        })
+                      }
+                    />
+                  )}
+                  {myProfile && (
+                    <ProfileTab
+                      title={literals.profile.bids}
+                      count={myOffers.length}
+                      type={{ type: "Bids", viewAs: "table" }}
+                      selectedType={itemsType}
+                      onClick={() =>
+                        handleSetItemsType({
+                          type: "Bids",
+                          viewAs: "table",
+                        })
+                      }
+                    />
+                  )}
                 </>
               )}
             </div>
@@ -435,10 +460,17 @@ export default function ProfileContainer() {
                     <ProfileActivityTable historyItems={activity} />
                   ) : (
                     <>
-                      {itemsType.type === "Offers" ? (
-                        <ProfileOffersTable offers={offers} />
+                      {itemsType.type === "Offers" ||
+                      itemsType.type === "MyOffers" ? (
+                        <>
+                          {itemsType.type === "Offers" ? (
+                            <ProfileOffersTable offers={offers} />
+                          ) : (
+                            <ProfileMyOffersTable offers={myOffers} />
+                          )}
+                        </>
                       ) : (
-                        <ProfileMyOffersTable offers={myOffers} />
+                        <ProfileBidsTable bids={walletBids} />
                       )}
                     </>
                   )}

@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react";
 import React from "react";
 import FilterBottomDropDown from "./FilterBottomDropDown";
 import FilterButtons from "./FilterButtons";
+import { useStateContext } from "../context/StateProvider";
 
 export default function FiltersCollectionSidebar({
   items,
@@ -16,6 +17,8 @@ export default function FiltersCollectionSidebar({
     setOpenedSidebar(show);
   };
 
+  const [{ literals }] = useStateContext();
+
   return (
     <div className="hidden md:flex ">
       {openedSidebar ? (
@@ -28,7 +31,9 @@ export default function FiltersCollectionSidebar({
             className="flex flex-row px-4 py-5  justify-between items-center cursor-pointer"
             onClick={() => handleShowSidebar(!openedSidebar)}
           >
-            <div className="text-2xl font-semibold ">Filtros</div>
+            <div className="text-2xl font-semibold ">
+              {literals.filters.filters}
+            </div>
             <button>
               <Icon
                 icon="eva:menu-arrow-outline"
@@ -39,7 +44,7 @@ export default function FiltersCollectionSidebar({
             </button>
           </div>
           <div className="flex flex-col font-medium w-full">
-            <FilterBottomDropDown name="Estado">
+            <FilterBottomDropDown name={literals.filters.state}>
               <FilterButtons
                 options={statusFilters}
                 filtersSelected={filtersSelected}

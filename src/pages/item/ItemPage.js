@@ -40,6 +40,8 @@ import { useStateContext } from "../../context/StateProvider";
 import { actionTypes } from "../../context/stateReducer";
 import RedirectModal from "../../components/modals/RedirectModal";
 import ModifyOfferModal from "../../components/modals/ModifyOfferModal";
+import TransferModal from "../../components/modals/TransferModal";
+import DeleteItemModal from "../../components/modals/DeleteItemModal";
 
 const formatPriceInUsd = (price) => {
   let priceStr = price.toString().split(".");
@@ -79,11 +81,15 @@ export default function ItemPage() {
     getPayTokenInfo,
     getCollectionInfo,
     setShowRedirectProfile,
+    setAcceptedOffer,
+    deleteNftItem,
+    registerSentItem,
   } = useApi();
   const {
     getListingInfo,
     listItem,
     cancelListing,
+    getMarketContract,
     updateListing,
     makeOffer,
     getOffer,
@@ -92,7 +98,7 @@ export default function ItemPage() {
     acceptOffer,
     modifyOrder,
   } = useMarketplace();
-  const { getERC721Contract } = useTokens();
+  const { getERC721Contract, sendItemGassles, burnItemGassles } = useTokens();
 
   const {
     getAuction,
@@ -115,6 +121,8 @@ export default function ItemPage() {
   const [openAdditionalModal, setOpenAdditionalModal] = useState(false);
   const [openCancelOfferModal, setOpenCancelOfferModal] = useState(false);
   const [openModifyOfferModal, setOpenModifyOfferModal] = useState(false);
+  const [openTransferModal, setOpenTransferModal] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   const [openCreateAuction, setOpenCreateAuction] = useState(false);
   const [openBidModal, setOpenBidModal] = useState(false);
@@ -318,11 +326,30 @@ export default function ItemPage() {
       const now = new Date().getTime();
       const deadline = new Date(hasMyOffer.deadline * 1000).getTime();
       if (now < deadline) {
-        setMyOffer(hasMyOffer);
+        const now = new Date().getTime();
+        const deadline = new Date(hasMyOffer.deadline * 1000);
+
+        if (now < deadline) {
+          setMyOffer(hasMyOffer);
+        }
       }
     }
   };
 
+  const handleSendItem = async (to) => {
+    await sendItemGassles(collectionInfo.contractAddress, wallet, to, tokenId);
+
+    await registerSentItem(collectionInfo.contractAddress, tokenId, wallet, to);
+    const newOwner = await getProfileInfo(to);
+
+    profileOwnerData.current = newOwner;
+    setIsOwner(false);
+  };
+  const handleDeleteItem = async () => {
+    //Lamar a la api y eliminar item
+    await burnItemGassles(collectionInfo.contractAddress, tokenId);
+    await deleteNftItem(collectionInfo.contractAddress, tokenId);
+  };
   const handleListItem = async (price, payToken) => {
     /*  if (!isFreezedMetadata) {
       await setFreezedMetadata(
@@ -334,14 +361,9 @@ export default function ItemPage() {
     } */
     await listItem(collectionInfo.contractAddress, tokenId, price, payToken);
 
-    let listingInfo = await getListingInfo(
-      collectionInfo.contractAddress,
-      tokenId,
-      wallet
-    );
     let payTokenInfo = await getPayTokenInfo(payToken.contractAddress);
     listing.current = {
-      ...listingInfo,
+      price: price,
       payToken: payTokenInfo,
     };
 
@@ -382,15 +404,11 @@ export default function ItemPage() {
       payToken
     );
 
-    let _offer = await getOffer(
-      collectionInfo.contractAddress,
-      tokenId,
-      wallet
-    );
     const offerCreator = await getProfileInfo(wallet);
     const payTokenInfo = await getPayTokenInfo(payToken.contractAddress);
-    _offer = {
-      ..._offer,
+    const _offer = {
+      price: offerPrice,
+      deadline: deadline,
       creator: offerCreator,
       payToken: payTokenInfo,
     };
@@ -414,6 +432,7 @@ export default function ItemPage() {
       );
       setIsFreezedMetadata(true);
     } */
+    await setAcceptedOffer(collectionInfo.contractAddress, tokenId, from);
     await acceptOffer(collectionInfo.contractAddress, tokenId, from);
 
     listing.current = null;
@@ -437,37 +456,32 @@ export default function ItemPage() {
   };
 
   const handleModifyOffer = async (offerPrice, deadline, payToken) => {
-    try {
-      await modifyOrder(
-        wallet,
-        collectionInfo.contractAddress,
-        tokenId,
-        offerPrice,
-        deadline,
-        payToken
-      );
+    await modifyOrder(
+      wallet,
+      collectionInfo.contractAddress,
+      tokenId,
+      offerPrice,
+      deadline,
+      payToken
+    );
 
-      let newOffer = await getOffer(
-        collectionInfo.contractAddress,
-        tokenId,
-        wallet
-      );
+    let newOffer = await getOffer(
+      collectionInfo.contractAddress,
+      tokenId,
+      wallet
+    );
 
-      newOffer = {
-        ...newOffer,
-        creator: userProfile,
-      };
+    newOffer = {
+      ...newOffer,
+      creator: userProfile,
+    };
 
-      offers.current = offers.current.filter(
-        (offer) => offer.creator.wallet !== wallet
-      );
+    offers.current = offers.current.filter(
+      (offer) => offer.creator.wallet !== wallet
+    );
 
-      offers.current.push(newOffer);
+    offers.current.push(newOffer);
 
-      return "OK";
-    } catch (e) {
-      return "ERROR";
-    }
     //Modify offer!
   };
 
@@ -500,15 +514,6 @@ export default function ItemPage() {
     endTime,
     payToken
   ) => {
-    /*  if (!isFreezedMetadata) {
-      await setFreezedMetadata(
-        collectionInfo.contractAddress,
-        tokenInfo.current,
-        tokenId
-      );
-      setIsFreezedMetadata(true);
-    } */
-
     await createAuction(
       wallet,
       collectionInfo.contractAddress,
@@ -521,10 +526,13 @@ export default function ItemPage() {
       payToken
     );
 
-    const _auction = await getAuction(collectionInfo.contractAddress, tokenId);
     const payTokenInfo = await getPayTokenInfo(payToken.contractAddress);
     auctionInfo.current = {
-      ..._auction,
+      owner: wallet,
+      reservePrice: reservePrice,
+      buyNowPrice: buyNowPrice,
+      startTime: startTime,
+      endTime: endTime,
       payToken: payTokenInfo,
     };
 
@@ -577,13 +585,9 @@ export default function ItemPage() {
   const handleMakeBid = async (bidAmount) => {
     await makeBid(wallet, collectionInfo.contractAddress, tokenId, bidAmount);
 
-    let _highestBid = await getHighestBid(
-      collectionInfo.contractAddress,
-      tokenId
-    );
-    const profile = await getProfileInfo(_highestBid.bidder);
-    _highestBid = {
-      ..._highestBid,
+    const profile = await getProfileInfo(wallet);
+    let _highestBid = {
+      bid: bidAmount,
       bidder: profile,
     };
     setHighestBid(_highestBid);
@@ -616,11 +620,11 @@ export default function ItemPage() {
       await getAuctions().then(() => {
         getBid();
         hasAnOffer();
+        setLoading(false);
       });
       const CoinGeckoClient = new CoinGecko();
       let data = await CoinGeckoClient.simple.price({ ids: ["fantom"] });
       setCoinPrice(data.data.fantom.usd);
-      setLoading(false);
     };
     fetchData();
   }, [collection, tokenId, wallet, refreshMetadata]);
@@ -669,13 +673,22 @@ export default function ItemPage() {
                   <div className="flex flex-col  items-start gap-2 w-full">
                     {_width < 900 && (
                       <div className="flex w-full justify-center mb-2">
-                        <div className="flex border  border-2 h-fit rounded-xl dark:text-white">
+                        <div className="flex border  h-fit rounded-xl dark:text-white">
                           <ItemPageOption
                             icon="charm:refresh"
                             tooltip="refresh-item"
                             onClick={() => setRefreshMetadata(!refreshMetadata)}
-                            tooltipText="Refrescar Metadata"
+                            tooltipText={literals.itemPage.refreshMeta}
                           />
+                          {isOwner && !isForSale && !isOnAuction && (
+                            <ItemPageOption
+                              icon="fluent:send-16-filled"
+                              tooltip="transfer-item"
+                              onClick={() => setOpenTransferModal(true)}
+                              tooltipText="Enviar NFT"
+                            />
+                          )}
+
                           {!isFreezedMetadata &&
                             isOwner &&
                             !isForSale &&
@@ -688,6 +701,14 @@ export default function ItemPage() {
                                 tooltipText="Editar Item"
                               />
                             )}
+                          {isOwner && !isForSale && !isOnAuction && (
+                            <ItemPageOption
+                              icon="fluent:delete-dismiss-24-filled"
+                              tooltip="delete-item"
+                              onClick={() => setOpenDeleteModal(true)}
+                              tooltipText="Eliminar NFT"
+                            />
+                          )}
                           {tokenInfo?.current.externalLink &&
                             tokenInfo?.current.externalLink !== "" && (
                               <ItemPageOption
@@ -734,13 +755,29 @@ export default function ItemPage() {
                     </div>
                   </div>
                   {_width > 900 && (
-                    <div className="flex border border-2 h-fit rounded-xl dark:text-white">
+                    <div className="flex border  h-fit rounded-xl dark:text-white">
                       <ItemPageOption
                         icon="charm:refresh"
                         tooltip="refresh-item"
                         onClick={() => setRefreshMetadata(!refreshMetadata)}
-                        tooltipText="Refrescar Metadata"
+                        tooltipText={literals.itemPage.refreshMeta}
                       />
+                      {isOwner && !isForSale && !isOnAuction && (
+                        <ItemPageOption
+                          icon="fluent:send-16-filled"
+                          tooltip="transfer-item"
+                          onClick={() => setOpenTransferModal(true)}
+                          tooltipText="Enviar NFT"
+                        />
+                      )}
+                      {isOwner && !isForSale && !isOnAuction && (
+                        <ItemPageOption
+                          icon="fluent:delete-dismiss-24-filled"
+                          tooltip="delete-item"
+                          onClick={() => setOpenDeleteModal(true)}
+                          tooltipText="Eliminar NFT"
+                        />
+                      )}
                       {!isFreezedMetadata &&
                         isOwner &&
                         !isForSale &&
@@ -789,7 +826,7 @@ export default function ItemPage() {
                   <div className="w-full h-full animate-pulse bg-gray-300"></div>
                 ) : (
                   <div className="flex items-center gap-4">
-                    <b> Pertenece a: </b>
+                    <b>{literals.itemPage.owner} </b>
                     <div
                       onClick={() => redirectToProfile()}
                       className="flex items-center gap-2 border border-gray-200 p-2 rounded-full cursor-pointer hover:bg-gray-200 transition duration-150 ease-in-out"
@@ -828,7 +865,7 @@ export default function ItemPage() {
                   <div>Ver contendido adicional</div>
                 </div>
               )}
-              <div className="flex dark:bg-dark-2 flex-col justify-center flex-wrap border-grey border-2 p-3 rounded-md ">
+              <div className="flex flex-col justify-center flex-wrap py-3 rounded-md ">
                 <>
                   {isOnAuction ? (
                     <div className="">
@@ -1040,7 +1077,7 @@ export default function ItemPage() {
                                 ? setOpenConnectionModal(true)
                                 : setOpenOfferModal(true)
                             }
-                            text="Realizar Oferta"
+                            text={literals.actions.makeOffer}
                           />
                         ) : (
                           <ActionButton
@@ -1138,7 +1175,7 @@ export default function ItemPage() {
                                 ? setOpenConnectionModal(true)
                                 : setOpenBidModal(true)
                             }
-                            text="Realizar Puja"
+                            text={literals.actions.makeBid}
                           />
                         )}
                         <ActionButton
@@ -1149,7 +1186,7 @@ export default function ItemPage() {
                               ? setOpenConnectionModal(true)
                               : setOpenBuyNowModal(true)
                           }
-                          text="Comprar ya"
+                          text={literals.actions.buyNow}
                         />
                       </>
                     )}
@@ -1184,6 +1221,17 @@ export default function ItemPage() {
         link={tokenInfo?.current.externalLink}
         showModal={showRedirect}
         handleCloseModal={() => setShowRedirect(false)}
+      />
+      <TransferModal
+        showModal={openTransferModal}
+        handleCloseModal={() => setOpenTransferModal(false)}
+        onSendItem={handleSendItem}
+      />
+      <DeleteItemModal
+        showModal={openDeleteModal}
+        collectionInfo={collectionInfo}
+        handleCloseModal={() => setOpenDeleteModal(false)}
+        onDeleteItem={handleDeleteItem}
       />
       <ConnectionModal
         showModal={openConnectionModal}
@@ -1339,7 +1387,7 @@ const ItemPageOption = ({
     <div
       className={`${
         disabled ? "cursor-not-allowed" : "cursor-pointer"
-      } p-2 hover b ${position === "last" ? "" : "border-r"} ${
+      } p-2 hover b  ${
         disabled
           ? "dark:text-gray-600 text-gray-200"
           : "dark:hover:text-gray-400 hover:text-gray-400"

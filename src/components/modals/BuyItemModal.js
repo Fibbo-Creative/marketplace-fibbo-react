@@ -17,7 +17,7 @@ export default function BuyItemModal({
   const [wftmBalance, setWftmBalance] = useState(0);
   const [{ updatedWFTM }] = useStateContext();
   const { getWFTMBalance } = useWFTMContract();
-
+  const [{ literals }] = useStateContext();
   const handleBuyItem = async () => {
     try {
       await onBuyItem();
@@ -38,14 +38,14 @@ export default function BuyItemModal({
   }, [updatedWFTM]);
   return (
     <ActionModal
-      title="Comprar NFT"
+      title={literals.actions.buyItem}
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       size="large"
       onSubmit={() => handleBuyItem()}
-      submitLabel={"Comprar Ítem"}
-      completedText={`Item comprado correctamente`}
-      completedLabel={`Ver item en posesión`}
+      submitLabel={literals.actions.buyItem}
+      completedText={literals.modals.buySuccess}
+      completedLabel={literals.modals.seeOwnedItem}
       completedAction={handleCloseModal}
     >
       {wallet !== "" && (
@@ -62,12 +62,12 @@ export default function BuyItemModal({
                 </div>
                 <div className="flex flex-col gap-2">
                   <div className="flex gap-2">
-                    <b>Nombre:</b>
+                    <b>{literals.buyItemModal.name}</b>
                     <p>{tokenInfo?.name}</p>
                   </div>
 
                   <div className="flex gap-2">
-                    <b>Precio:</b>
+                    <b>{literals.detailNFT.price2}</b>
                     <img
                       src={listing?.payToken.image}
                       width={26}
@@ -77,7 +77,7 @@ export default function BuyItemModal({
                     <p>{listing?.payToken.name}</p>
                   </div>
                   <div className="flex gap-2">
-                    <b>Royalties:</b>
+                    <b>{literals.buyItemModal.royalties}</b>
                     <p>{tokenInfo?.royalty}</p>
                     <HelpTooltip
                       tooltip="royalty-info"
@@ -87,13 +87,13 @@ export default function BuyItemModal({
                   </div>
                   {wftmBalance < tokenInfo?.price && (
                     <div className="text-xs text-red-700">
-                      Insuficientes WFTM para comprar!
+                      {literals.buyItemModal.notWFTM}
                     </div>
                   )}
                 </div>
               </div>
               <div className="text-xs text-center mt-5">
-                Fibbo recoge un 2% de comisiones en cada venta de item
+                {literals.buyItemModal.fibboEarns}
               </div>
             </div>
           </div>

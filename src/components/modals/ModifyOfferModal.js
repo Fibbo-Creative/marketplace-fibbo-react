@@ -18,7 +18,7 @@ export default function ModifyOfferModal({
   const [expireHour, setExpireHour] = useState(0);
   const [actionError, setActionError] = useState(false);
   const [payTokenSelected, setPayTokenSelected] = useState(null);
-  const [{ updatedWFTM }] = useStateContext();
+  const [{ updatedWFTM, literals }] = useStateContext();
 
   const { getWFTMBalance } = useWFTMContract();
   const handleMakeOffer = async () => {
@@ -30,6 +30,7 @@ export default function ModifyOfferModal({
 
       return "OK";
     } catch (e) {
+      console.log(e);
       return "ERROR";
     }
   };
@@ -64,14 +65,14 @@ export default function ModifyOfferModal({
   }, [updatedWFTM]);
   return (
     <ActionModal
-      title={"Modificar oferta"}
+      title={literals.ModifyOfferModal.modifyOffer}
       size="large"
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       onSubmit={() => handleMakeOffer()}
-      submitLabel={"Actualizar"}
-      completedText={`Oferta actualizada correctamente`}
-      completedLabel={`Ver tu oferta`}
+      submitLabel={literals.ModifyOfferModal.update}
+      completedText={literals.ModifyOfferModal.offerUpdated}
+      completedLabel={literals.ModifyOfferModal.viewOffer}
       completedAction={handleCloseModal}
       submitDisabled={
         parseFloat(wftmBalance) < parseFloat(offerPrice) ||
@@ -83,22 +84,22 @@ export default function ModifyOfferModal({
         <div className="flex flex-col gap-4">
           <div className="flex flex-col items-center">
             <Erc20AmountInput
-              label={"Que precio quieres ofertar?"}
+              label={literals.ModifyOfferModal.price}
               value={offerPrice}
               onChange={setOfferPrice}
               error={parseFloat(wftmBalance) < parseFloat(offerPrice)}
-              errorMessage={"No tienes suficientes WFTM"}
+              errorMessage={literals.makeOffer.notWFTM}
               selectedToken={payTokenSelected}
               setSelectedToken={setPayTokenSelected}
               showBalance={true}
             />
           </div>
           <DateTimeInput
-            label={"Fecha de Expiración"}
+            label={literals.ModifyOfferModal.expires}
             valueDate={expireDate}
             valueHour={expireHour}
             onChangeDate={setExpireDate}
-            onChange={setExpireHour}
+            onChangeHour={setExpireHour}
             errorType={{
               type: "AFTER",
               params: {

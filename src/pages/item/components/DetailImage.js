@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import QRCode from "qrcode";
 import { useState } from "react";
+import { useStateContext } from "../../../context/StateProvider";
 import { Icon } from "@iconify/react";
 import { saveAs } from "file-saver";
 import ReactTooltip from "react-tooltip";
@@ -15,6 +16,7 @@ export default function DetailImage({
   collectionInfo,
 }) {
   const [imgOrQR, setImgOrQr] = useState(tokenImage);
+  const [{literals}] = useStateContext();
   const [qrcode, setQrcode] = useState("");
   const [showingQr, setShowingQr] = useState(false);
   const [showImageDetail, setShowImageDetail] = useState(false);
@@ -71,7 +73,7 @@ export default function DetailImage({
               </div>
 
               <div className="flex items-center">
-                <div data-for="chain-icon" data-tip="Red de Fantom">
+                <div data-for="chain-icon" data-tip={literals.itemPage.fantomNetwork}>
                   <img
                     width={28}
                     className="flex w-[32px] "
@@ -89,7 +91,7 @@ export default function DetailImage({
                 {isFreezedMetadata && (
                   <div
                     data-for="freezed-icon"
-                    data-tip="El item tiene sus datos congelados"
+                    data-tip={literals.itemPage.itemFreezed}
                   >
                     <Icon
                       width={28}
@@ -108,7 +110,7 @@ export default function DetailImage({
                 {collectionInfo.explicitContent && (
                   <div
                     data-for="nfsw-icon"
-                    data-tip="Este item tiene contenido explicito"
+                    data-tip={literals.detailNFT.explicitContent}
                   >
                     <Icon
                       width={28}

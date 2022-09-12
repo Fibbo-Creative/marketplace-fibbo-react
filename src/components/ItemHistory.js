@@ -6,6 +6,7 @@ import { ADDRESS_ZERO } from "../constants/networks";
 import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
+import { useStateContext } from "../context/StateProvider";
 
 const eventTypes = [
   {
@@ -36,6 +37,8 @@ export default function ItemHistory({ historyItems }) {
   const [filtersSelected, setFiltersSelected] = useState([]);
   const [openFilters, setOpenFilters] = useState(false);
   const filtersRef = useRef();
+
+  const [{ literals }] = useStateContext();
 
   const filterByType = (type) => {
     let isSelected = filtersSelected.find((item) => item === type);
@@ -85,13 +88,13 @@ export default function ItemHistory({ historyItems }) {
     <DropDown
       className={`mb-5 dark:bg-dark-2`}
       icon="bytesize:activity"
-      title="Actividad"
+      title={literals.itemPage.activity}
     >
       <button
         onClick={() => setOpenFilters(!openFilters)}
         className="w-[200px] border dark:border-dark-4 px-6 py-3 font-bold text-lg rounded-lg dark:bg-dark-1 bg-gray-300 hover:dark:bg-dark-4 transition hover:bg-gray-400"
       >
-        Filtrar Historial
+        {literals.detailNFT.filterHistorial}
       </button>
       {openFilters && (
         <div
@@ -129,7 +132,7 @@ export default function ItemHistory({ historyItems }) {
             onClick={() => setFiltersSelected([])}
             className=" cursor-pointer transition ml-5 text-gray-400 dark:hover:text-white hover:text-black"
           >
-            Limpiar Todos
+            {literals.filters.clearAll}
           </div>
         )}
       </div>
@@ -144,19 +147,19 @@ export default function ItemHistory({ historyItems }) {
             <thead className="bg-gray-200 dark:bg-dark-3 p-2">
               <tr className="p-2">
                 <th scope="col" className="px-6 py-3">
-                  Evento
+                  {literals.itemHistory.event}
                 </th>
                 <th cope="col" className="px-6 py-3">
-                  Precio
+                  {literals.detailNFT.price}
                 </th>
                 <th cope="col" className="px-6 py-3">
-                  De
+                  {literals.itemHistory.from}
                 </th>
                 <th cope="col" className="px-6 py-3">
-                  A
+                  {literals.itemHistory.to}
                 </th>
                 <th cope="col" className="px-6 py-3">
-                  Fecha
+                  {literals.itemHistory.date}
                 </th>
               </tr>
             </thead>
@@ -253,13 +256,13 @@ export default function ItemHistory({ historyItems }) {
                 >
                   <div className="flex justify-between">
                     <div>
-                      <b>Evento</b>
+                      <b>{literals.itemHistory.event}</b>
                     </div>
                     <div>{item.eventDesc}</div>
                   </div>
                   <div className="flex justify-between">
                     <div>
-                      <b>Precio</b>
+                      <b>{literals.detailNFT.price}</b>
                     </div>
                     <div>
                       {" "}
@@ -275,7 +278,7 @@ export default function ItemHistory({ historyItems }) {
                   </div>
                   <div className="flex justify-between">
                     <div>
-                      <b>De</b>
+                      <b>{literals.itemHistory.from}</b>
                     </div>
                     <div>
                       {item.from === ADDRESS_ZERO ? (
@@ -305,7 +308,7 @@ export default function ItemHistory({ historyItems }) {
                   </div>
                   <div className="flex justify-between">
                     <div>
-                      <b>A</b>
+                      <b>{literals.itemHistory.to}</b>
                     </div>
                     <div>
                       {item.to === ADDRESS_ZERO ? (
@@ -335,7 +338,7 @@ export default function ItemHistory({ historyItems }) {
                   </div>
                   <div className="flex justify-between">
                     <div>
-                      <b>Fecha</b>
+                      <b>{literals.itemHistory.date}</b>
                     </div>
                     <div> {new Date(item.timestamp).toLocaleString()}</div>
                   </div>

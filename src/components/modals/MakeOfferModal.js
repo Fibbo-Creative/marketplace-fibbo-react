@@ -5,6 +5,7 @@ import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
 import { DateTimeInput } from "../inputs/DateTimeInput";
 import { ActionModal } from "./ActionModal";
 import { useStateContext } from "../../context/StateProvider";
+import { formatLiteral } from "../../utils/language";
 export default function MakeOfferModal({
   showModal,
   handleCloseModal,
@@ -17,7 +18,7 @@ export default function MakeOfferModal({
   const [expireHour, setExpireHour] = useState(0);
   const [actionError, setActionError] = useState(false);
   const [payTokenSelected, setPayTokenSelected] = useState(null);
-  const [{ updatedWFTM }] = useStateContext();
+  const [{ updatedWFTM, literals }] = useStateContext();
 
   const { getWFTMBalance } = useWFTMContract();
   const handleMakeOffer = async () => {
@@ -59,14 +60,13 @@ export default function MakeOfferModal({
   }, [updatedWFTM]);
   return (
     <ActionModal
-      title={"Realizar oferta"}
+      title={literals.actions.makeOffer}
       size="large"
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       onSubmit={() => handleMakeOffer()}
-      submitLabel={"Realizar Oferta"}
-      completedText={`Oferta por ${offerPrice} wFTM creada correctamente`}
-      completedLabel={`Ver tu oferta`}
+      submitLabel={literals.actions.makeOffer}
+      completedLabel={literals.actions.viewYourOffer}
       completedAction={handleCloseModal}
       submitDisabled={
         parseFloat(wftmBalance) < parseFloat(offerPrice) ||
@@ -78,22 +78,22 @@ export default function MakeOfferModal({
         <div className="flex flex-col gap-4">
           <div className="flex flex-col items-center">
             <Erc20AmountInput
-              label={"Que precio quieres ofertar?"}
+              label={literals.makeOffer.offerPrice}
               value={offerPrice}
               onChange={setOfferPrice}
               error={parseFloat(wftmBalance) < parseFloat(offerPrice)}
-              errorMessage={"No tienes suficientes WFTM"}
+              errorMessage={literals.makeOffer.notWFTM}
               selectedToken={payTokenSelected}
               setSelectedToken={setPayTokenSelected}
               showBalance={true}
             />
           </div>
           <DateTimeInput
-            label={"Fecha de Expiración"}
+            label={literals.makeOffer.expires}
             valueDate={expireDate}
             valueHour={expireHour}
             onChangeDate={setExpireDate}
-            onChange={setExpireHour}
+            onChangeHour={setExpireHour}
             errorType={{
               type: "AFTER",
               params: {

@@ -1,4 +1,4 @@
-/* import ethSigUtil from "eth-sig-util";
+import ethSigUtil from "eth-sig-util";
 
 const EIP712Domain = [
   { name: "name", type: "string" },
@@ -69,4 +69,3 @@ async function signMetaTxRequest(signer, forwarder, input) {
 }
 
 export { signMetaTxRequest, buildRequest, buildTypedData };
- */

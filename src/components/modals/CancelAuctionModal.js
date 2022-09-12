@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { isMobile } from "react-device-detect";
 import { ActionModal } from "./ActionModal";
+import { useStateContext } from "../../context/StateProvider";
 
 export default function CancelAuctionModal({
   showModal,
@@ -12,7 +13,7 @@ export default function CancelAuctionModal({
   onCancelAuction,
 }) {
   const navigate = useNavigate();
-
+  const [{ literals }] = useStateContext();
   const handleCancelAuction = async () => {
     try {
       await onCancelAuction();
@@ -24,21 +25,21 @@ export default function CancelAuctionModal({
 
   return (
     <ActionModal
-      title={"Cancelar Subasta"}
+      title={literals.cancelAuctionModal.cancelAuction}
       size="large"
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       onSubmit={() => handleCancelAuction()}
-      submitLabel={"Cancelar"}
-      completedText={`Subasta cancelada correctamente`}
-      completedLabel={`Ver Item acutalizado`}
+      submitLabel={literals.cancelAuctionModal.cancel}
+      completedText={literals.cancelAuctionModal.canceledOk}
+      completedLabel={literals.modals.seeUpdatedItem}
       completedAction={handleCloseModal}
     >
       <div className="my-10 mx-8 flex flex-col gap-10">
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-4">
             <div className="flex flex-row items-center gap-3 ">
-              <p>Precio Reservado</p>
+              <p>{literals.cancelAuctionModal.reservedPrice}</p>
               <img
                 width={32}
                 src={auctionInfo?.payToken.image}
@@ -49,7 +50,7 @@ export default function CancelAuctionModal({
               </p>
             </div>
             <div className="flex flex-row gap-6">
-              <div>Puja mas alta: </div>
+              <div>{literals.cancelAuctionModal.highestBid}</div>
               {highestBid ? (
                 <div className="flex gap-2 items-center">
                   <img
@@ -67,7 +68,7 @@ export default function CancelAuctionModal({
             </div>
             {highestBid && (
               <div className="flex flex-row gap-6">
-                <div>Realizada Por: </div>
+                <div>{literals.cancelAuctionModal.doneBy}</div>
                 <div className="flex gap-2 items-center">
                   <img
                     className="rounded-full"
@@ -92,7 +93,9 @@ export default function CancelAuctionModal({
               </div>
             )}
           </div>
-          <div className="mt-5 text-lg">Quieres cancelar la subasta?</div>
+          <div className="mt-5 text-lg">
+            {literals.cancelAuctionModal.doYouCancel}
+          </div>
         </div>
       </div>
     </ActionModal>

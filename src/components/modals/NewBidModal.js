@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useStateContext } from "../../context/StateProvider";
 import { formatEther } from "ethers/lib/utils";
 import { useWFTMContract } from "../../contracts/wftm";
 import { isMobile } from "react-device-detect";
 import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
 import { ActionModal } from "./ActionModal";
-import { useStateContext } from "../../context/StateProvider";
+import { formatLiteral } from "../../utils/language";
 
 export default function MakeBidModal({
   collection,
@@ -20,6 +20,7 @@ export default function MakeBidModal({
   onMakeBid,
 }) {
   const navigate = useNavigate();
+  const [{ literals }] = useStateContext();
   const [bidAmmount, setBidAmmount] = useState(0);
   const [wftmBalance, setWftmBalance] = useState(0);
   const [payTokenSelected, setPayTokenSelected] = useState(null);
@@ -64,14 +65,17 @@ export default function MakeBidModal({
   }, [updatedWFTM]);
   return (
     <ActionModal
-      title={"Realizar puja"}
+      title={literals.newBidModal.makeBid}
       size="large"
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       onSubmit={() => handleMakeBid()}
-      submitLabel={"Realizar Puja"}
-      completedText={`Puja por ${bidAmmount} wFTM creada correctamente`}
-      completedLabel={`Ver tu puja`}
+      submitLabel={literals.newBidModal.makeBid}
+      completedText={formatLiteral(literals.modals.bidPlaced, [
+        bidAmmount,
+        payTokenSelected?.name,
+      ])}
+      completedLabel={literals.newBidModal.viewBid}
       completedAction={handleCloseModal}
       submitDisabled={
         highestBid
@@ -85,7 +89,7 @@ export default function MakeBidModal({
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-4">
             <div className="flex flex-row items-center gap-3 ">
-              <p>Precio Reservado</p>
+              <p>{literals.newBidModal.reservedPrice}</p>
               <img
                 width={32}
                 src={auctionInfo?.payToken.image}
@@ -94,7 +98,7 @@ export default function MakeBidModal({
               <p>{auctionInfo?.reservePrice} wFTM </p>
             </div>
             <div className="flex flex-row gap-6">
-              <div>Puja mas alta: </div>
+              <div>{literals.newBidModal.highestBid} </div>
               <div>
                 {highestBid ? (
                   <div className="flex gap-2 items-center">
@@ -114,7 +118,7 @@ export default function MakeBidModal({
             </div>
             {highestBid && (
               <div className="flex flex-row gap-6">
-                <div>Realizada Por: </div>
+                <div>{literals.newBidModal.doneBy}</div>
                 <div className="flex gap-2 items-center">
                   <img
                     className="rounded-full"
@@ -141,7 +145,7 @@ export default function MakeBidModal({
           </div>
           <div className="flex flex-col items-center">
             <Erc20AmountInput
-              label={"Que precio quieres pujar?"}
+              label={literals.newBidModal.bidPrice}
               value={bidAmmount}
               onChange={setBidAmmount}
               error={
@@ -154,13 +158,13 @@ export default function MakeBidModal({
               errorMessage={`${
                 highestBid
                   ? parseFloat(bidAmmount) < parseFloat(highestBid.bid)
-                    ? "La puja debe ser mayor a la actual"
+                    ? literals.newBidModal.biggerBid
                     : bidAmmount < parseFloat(highestBid.bid) + 1
-                    ? "La diferencia con la puja actual debe ser 1 o mayor"
-                    : "No tienes suficientes WFTM"
+                    ? literals.newBidModal.text1
+                    : literals.newBidModal.notWFTM
                   : parseFloat(auctionInfo?.minBid) > parseFloat(bidAmmount)
-                  ? "La puja debe ser mayor o igual que el precio reservado"
-                  : "No tienes suficientes WFTM"
+                  ? literals.NewBidModal.text2
+                  : literals.newBidModal.notWFTM
               }`}
               selectedToken={payTokenSelected}
               setSelectedToken={setPayTokenSelected}

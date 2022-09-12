@@ -10,7 +10,7 @@ import { useStateContext } from "../../context/StateProvider";
 export default function MyCollectionsContainer() {
   const navigate = useNavigate();
   const { getMyCollections } = useApi();
-  const [{ verifiedAddress }] = useStateContext();
+  const [{ verifiedAddress, literals }] = useStateContext();
   const { wallet, connectToWallet } = useAccount();
   const [loading, setLoading] = useState(true);
 
@@ -28,7 +28,7 @@ export default function MyCollectionsContainer() {
     }
   };
 
-  const redirectToCreateItem = (col) => {
+  const redirectToCreate = (col) => {
     if (col.customURL) {
       navigate(`/collection/${col.customURL}/create`);
     } else {
@@ -55,21 +55,16 @@ export default function MyCollectionsContainer() {
     >
       <div className="flex w-full p-[40px] content-center justify-center">
         <div className="text-2xl">
-          {" "}
-          <b>Mis colecciones </b>
+          <b>{literals.myCollections.mycollections}</b>
         </div>
       </div>
       <div className="flex w-full px-8 md:mx-0  justify-center">
-        <div className="text-lg">
-          {" "}
-          Crea y administra tus colecciones de NFTs únicos para poder
-          compartirlos y venderlos.{" "}
-        </div>
+        <div className="text-lg">{literals.myCollections.text}</div>
       </div>
       <div className="flex w-full content-center justify-center p-[40px]">
         {verifiedAddress && (
           <ActionButton
-            text="Crear Colección"
+            text={literals.actions.createCollection}
             size="large"
             buttonAction={() => goToCreateCollection()}
           />
@@ -110,7 +105,7 @@ export default function MyCollectionsContainer() {
                   <b>{col.name}</b>
                 </div>
                 <div
-                  onClick={() => redirectToCreateItem(col)}
+                  onClick={() => redirectToCreate(col)}
                   className="flexflex-col font-bold items-center justify-center hover:-translate-y-1   "
                 >
                   <Icon color="black" width="40px" icon="carbon:add-filled" />

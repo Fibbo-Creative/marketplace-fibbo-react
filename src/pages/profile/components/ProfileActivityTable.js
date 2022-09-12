@@ -3,7 +3,9 @@ import React, { useEffect, useRef, useState } from "react";
 
 import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
+import { useApi } from "../../../api";
 import { ADDRESS_ZERO } from "../../../constants/networks";
+import { useStateContext } from "../../../context/StateProvider";
 import useResponsive from "../../../hooks/useResponsive";
 import { truncateWallet } from "../../../utils/wallet";
 
@@ -37,6 +39,8 @@ export default function ProfileActivityTable({ historyItems }) {
   const [filtersSelected, setFiltersSelected] = useState([]);
   const [openFilters, setOpenFilters] = useState(false);
   const filtersRef = useRef();
+  const [{ literals }] = useStateContext();
+  const { getCollectionInfo } = useApi();
 
   const filterByType = (type) => {
     let isSelected = filtersSelected.find((item) => item === type);
@@ -44,6 +48,22 @@ export default function ProfileActivityTable({ historyItems }) {
       setFiltersSelected(filtersSelected.filter((item) => item !== type));
     } else {
       setFiltersSelected([...filtersSelected, type]);
+    }
+  };
+
+  const navigateToItem = async (item) => {
+    const collectionInfo = await getCollectionInfo(item.item.collectionAddress);
+    let finalURL = "";
+    if (collectionInfo.customURL !== "") {
+      finalURL = `/explore/${collectionInfo.customURL}/${item.item.tokenId}`;
+    } else {
+      finalURL = `/explore/${collectionInfo.contractAddress}/${item.item.tokenId}`;
+    }
+
+    if (isMobile) {
+      navigate(finalURL);
+    } else {
+      window.open(finalURL, "_blank");
     }
   };
 
@@ -89,7 +109,7 @@ export default function ProfileActivityTable({ historyItems }) {
         onClick={() => setOpenFilters(!openFilters)}
         className="w-[200px] border dark:border-dark-4 px-6 py-3 font-bold text-lg rounded-lg dark:bg-dark-1 bg-gray-300 hover:dark:bg-dark-4 transition hover:bg-gray-400"
       >
-        Filtrar Historial
+        {literals.detailNFT.filterHistorial}
       </button>
       {openFilters && (
         <div
@@ -142,22 +162,22 @@ export default function ProfileActivityTable({ historyItems }) {
             <thead className="bg-gray-200 dark:bg-dark-3 p-2">
               <tr className="p-2">
                 <th scope="col" className="px-6 py-3">
-                  Evento
+                  {literals.itemHistory.event}
                 </th>
                 <th cope="col" className="px-6 py-3">
-                  Item
+                  {literals.itemHistory.item}
                 </th>
                 <th cope="col" className="px-6 py-3">
-                  Precio
+                  {literals.itemHistory.price}
                 </th>
                 <th cope="col" className="px-6 py-3">
-                  Iniciador
+                  {literals.itemHistory.initiator}
                 </th>
                 <th cope="col" className="px-6 py-3">
-                  Recipiente
+                  {literals.itemHistory.recipient}
                 </th>
                 <th cope="col" className="px-6 py-3">
-                  Fecha
+                  {literals.itemHistory.date}
                 </th>
               </tr>
             </thead>
@@ -176,16 +196,7 @@ export default function ProfileActivityTable({ historyItems }) {
                         />
                         <p
                           className="text-primary-2 underline cursor-pointer"
-                          onClick={() =>
-                            isMobile
-                              ? navigate(
-                                  `/explore/${item.item?.collectionAddress}/${item.item.tokenId}`
-                                )
-                              : window.open(
-                                  `/explore/${item.item?.collectionAddress}/${item.item.tokenId}`,
-                                  "_blank"
-                                )
-                          }
+                          onClick={() => navigateToItem(item)}
                         >
                           {item.item?.name}
                         </p>
@@ -214,14 +225,7 @@ export default function ProfileActivityTable({ historyItems }) {
                           />
                           <p
                             className="text-primary-2 underline cursor-pointer"
-                            onClick={() =>
-                              isMobile
-                                ? navigate(`/account/${item.from.wallet}`)
-                                : window.open(
-                                    `/profile/${item.from.wallet}`,
-                                    "_blank"
-                                  )
-                            }
+                            onClick={() => navigateToItem(item)}
                           >
                             {item.from.username}
                           </p>
@@ -279,13 +283,13 @@ export default function ProfileActivityTable({ historyItems }) {
                 >
                   <div className="flex justify-between">
                     <div>
-                      <b>Evento</b>
+                      <b>{literals.itemHistory.event}</b>
                     </div>
                     <div>{item.eventDesc}</div>
                   </div>
                   <div className="flex justify-between">
                     <div>
-                      <b>Item</b>
+                      <b>{literals.itemHistory.item}</b>
                     </div>
                     <div>
                       <div className="flex gap-2 items-center">
@@ -315,7 +319,7 @@ export default function ProfileActivityTable({ historyItems }) {
                   </div>
                   <div className="flex justify-between">
                     <div>
-                      <b>Precio</b>
+                      <b>{literals.detailNFT.price}</b>
                     </div>
                     <div>
                       {" "}
@@ -331,7 +335,7 @@ export default function ProfileActivityTable({ historyItems }) {
                   </div>
                   <div className="flex justify-between">
                     <div>
-                      <b>Iniciador</b>
+                      <b>{literals.itemHistory.initiator}</b>
                     </div>
                     <div>
                       {item.from === ADDRESS_ZERO ? (
@@ -361,7 +365,7 @@ export default function ProfileActivityTable({ historyItems }) {
                   </div>
                   <div className="flex justify-between">
                     <div>
-                      <b>Recipiente</b>
+                      <b>{literals.itemHistory.recipient}</b>
                     </div>
                     <div>
                       {item.to === ADDRESS_ZERO ? (
@@ -391,7 +395,7 @@ export default function ProfileActivityTable({ historyItems }) {
                   </div>
                   <div className="flex justify-between">
                     <div>
-                      <b>Fecha</b>
+                      <b>{literals.itemHistory.date}</b>
                     </div>
                     <div> {new Date(item.timestamp).toLocaleString()}</div>
                   </div>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Erc20AmountInput } from "../inputs/Erc20AmountInput";
 import { DateTimeInput } from "../inputs/DateTimeInput";
 import { ActionModal } from "./ActionModal";
+import { useStateContext } from "../../context/StateProvider";
 
 export default function UpdateAuctionModal({
   showModal,
@@ -9,6 +10,8 @@ export default function UpdateAuctionModal({
   auctionInfo,
   onUpdateAuction,
 }) {
+  const [{ literals }] = useStateContext();
+
   const [newReservePrice, setNewReservePrice] = useState(0);
   const [startDate, setStartDate] = useState(0);
   const [startHour, setStartHour] = useState(0);
@@ -47,14 +50,14 @@ export default function UpdateAuctionModal({
 
   return (
     <ActionModal
-      title={"Actualizar Subasta"}
+      title={literals.updateAuctionModal.updateAuction}
       size="large"
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       onSubmit={() => handleUpdateAuction()}
-      submitLabel={"Actualizar"}
-      completedText={`Subasta actualizada correctamente`}
-      completedLabel={`Ver Item acutalizado`}
+      submitLabel={literals.updateAuctionModal.update}
+      completedText={literals.updateAuctionModal.auctionUpdated}
+      completedLabel={literals.modals.seeUpdatedItem}
       completedAction={handleCloseModal}
       submitDisabled={actionError}
     >
@@ -65,12 +68,12 @@ export default function UpdateAuctionModal({
               <Erc20AmountInput
                 value={newReservePrice}
                 onChange={setNewReservePrice}
-                label={"Precio Reservado"}
+                label={literals.updateAuctionModal.reservedPrice}
                 error={
                   parseFloat(newReservePrice) ===
                   parseFloat(auctionInfo.reservePrice)
                 }
-                errorMessage={"El nuevo precio reservado debe ser diferente"}
+                errorMessage={literals.updateAuctionModal.newPrice}
                 selectedToken={payTokenSelected}
                 setSelectedToken={setPayTokenSelected}
               />
@@ -78,7 +81,7 @@ export default function UpdateAuctionModal({
           )}
           {!auctionStarted && (
             <DateTimeInput
-              label={"Fecha de Inicio"}
+              label={literals.updateAuctionModal.beginDate}
               valueDate={startDate}
               valueHour={startHour}
               onChangeDate={setStartDate}
@@ -93,7 +96,7 @@ export default function UpdateAuctionModal({
             />
           )}
           <DateTimeInput
-            label={"Fecha de Fin"}
+            label={literals.updateAuctionModal.endDate}
             valueDate={endDate}
             valueHour={endHour}
             onChangeDate={setEndDate}

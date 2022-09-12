@@ -32,6 +32,11 @@ export const useApi = () => {
     return res.data;
   };
 
+  const getWalletBids = async (address) => {
+    const res = await marketplaceApi.get(`users/bids?address=${address}`);
+    return res.data;
+  };
+
   const createNewProfile = async (address) => {
     const res = await marketplaceApi.post("users/newProfile", {
       wallet: address,
@@ -77,6 +82,35 @@ export const useApi = () => {
     );
 
     return imgAddedToSanity.data;
+  };
+
+  const setProfileData = async (
+    username,
+    wallet,
+    email,
+    bio,
+    profileImg,
+    profileBanner
+  ) => {
+    await marketplaceApi.post("users/update", {
+      username: username,
+      wallet: wallet,
+      email: email,
+      bio: bio,
+      profileImg: profileImg,
+      profileBanner: profileBanner,
+    });
+
+    return "OK";
+  };
+
+  const setUserEmail = async (wallet, email) => {
+    await marketplaceApi.post("users/updateEmail", {
+      wallet: wallet,
+      email: email,
+    });
+
+    return "OK";
   };
 
   const setProfileImg = async (address, file) => {
@@ -152,6 +186,15 @@ export const useApi = () => {
     return res.data;
   };
 
+  const registerSentItem = async (collection, tokenId, from, to) => {
+    await marketplaceApi.post("nfts/sentItem", {
+      collection: collection,
+      tokenId: tokenId,
+      from: from,
+      to: to,
+    });
+  };
+
   const saveMintedItem = async (
     name,
     description,
@@ -224,6 +267,17 @@ export const useApi = () => {
     }
   };
 
+  const deleteNftItem = async (collection, tokenId) => {
+    try {
+      await marketplaceApi.post("nfts/delete", {
+        collection: collection,
+        tokenId: tokenId,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   //#endregion
 
   //#region Offers
@@ -231,6 +285,17 @@ export const useApi = () => {
     const offers = await marketplaceApi.get(
       `/offers/get?collection=${collection}&tokenId=${tokenId}`
     );
+    const offersResult = offers.data;
+
+    return offersResult;
+  };
+
+  const setAcceptedOffer = async (collection, tokenId, creator) => {
+    const offers = await marketplaceApi.post(`/offers/accept`, {
+      collection: collection,
+      tokenId: tokenId,
+      creator: creator,
+    });
     const offersResult = offers.data;
 
     return offersResult;
@@ -247,6 +312,13 @@ export const useApi = () => {
     return res.data;
   };
 
+  const getItemsFromCollection = async (collection) => {
+    const res = await marketplaceApi.get(
+      `collections/items?address=${collection}`
+    );
+    return res.data;
+  };
+
   const getCollectionDetail = async (collection) => {
     const res = await marketplaceApi.get(
       `collections/collectionDetail?collection=${collection}`
@@ -254,10 +326,13 @@ export const useApi = () => {
     return res.data;
   };
 
-  const getCollectionsAvailable = async (owner) => {
-    const res = await marketplaceApi.get(
-      `collections/available?owner=${owner}`
-    );
+  const getCollectionsAvailable = async () => {
+    const res = await marketplaceApi.get(`collections/available`);
+    return res.data;
+  };
+
+  const getAllCollections = async () => {
+    const res = await marketplaceApi.get(`collections/all`);
     return res.data;
   };
 
@@ -291,7 +366,6 @@ export const useApi = () => {
   };
 
   const saveCollectionDetails = async (
-    contractAddress,
     creator,
     name,
     description,
@@ -306,7 +380,6 @@ export const useApi = () => {
     explicitContent
   ) => {
     const res = await marketplaceApi.post(`collections/new`, {
-      contractAddress,
       creator,
       name,
       description,
@@ -320,7 +393,7 @@ export const useApi = () => {
       instagramURL,
       explicitContent,
     });
-    return res.data;
+    return res;
   };
 
   const editCollectionDetails = async (
@@ -459,6 +532,21 @@ export const useApi = () => {
 
   //#endregion
 
+  //#region Notifications
+
+  const getUserNotifications = async (wallet) => {
+    const res = await marketplaceApi.get(`api/notifications?address=${wallet}`);
+    return res.data;
+  };
+
+  const deleteNotification = async (notificationId) => {
+    const res = await marketplaceApi.post(`api/deleteNotification`, {
+      notificationId: notificationId,
+    });
+    return res.data;
+  };
+
+  //#endregion
   return {
     getProfileInfo,
     createNewProfile,
@@ -477,26 +565,37 @@ export const useApi = () => {
     createUserCollectionOptions,
     setShowRedirectToLink,
     getCollectionsAvailable,
+    getAllCollections,
     getNftsFromAddress,
     getNftHistory,
     saveMintedItem,
     registerNftRoyalties,
+    deleteNftItem,
     saveCollectionDetails,
     searchItemsAndProfiles,
     uploadImgToCDN,
     uploadJSONMetadata,
     createNewSuggestion,
     getVerificatedArtists,
+    registerSentItem,
     newVerifyRequest,
+    setProfileData,
+    setUserEmail,
     getNftsFromCreator,
     getWalletHistory,
     getWalletOffers,
+    getWalletBids,
+    setAcceptedOffer,
     getAllPayTokens,
     getPayTokenInfo,
     setImportWFTM,
     setShowRedirectProfile,
+
     getMyCollections,
     editNftData,
     editCollectionDetails,
+    getUserNotifications,
+    getItemsFromCollection,
+    deleteNotification,
   };
 };

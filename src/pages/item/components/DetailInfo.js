@@ -3,9 +3,10 @@ import DropDown from "../../../components/DropDown";
 import { truncateWallet } from "../../../utils/wallet";
 import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
+import { useStateContext } from "../../../context/StateProvider";
 export default function DetailInfo({ properties, chainInfo, loading }) {
   const navigate = useNavigate();
-
+  const [{ literals }] = useStateContext();
   const redirectToCollecion = () => {
     let collectionURL = "";
     if (properties.collection.customURL) {
@@ -23,14 +24,14 @@ export default function DetailInfo({ properties, chainInfo, loading }) {
 
   return (
     <div className="col-span-1 flex flex-col rounded-md border-2 dark:bg-dark-2 ">
-      <DropDown icon="bxs:info-square" title={"Chain Data"}>
+      <DropDown icon="bxs:info-square" title={literals.itemPage.chainData}>
         {loading ? (
           <div className="w-full h-full animate-pulse bg-gray-300"></div>
         ) : (
           <div className="flex flex-col gap-2">
             <div className="flex justify-between">
               <div>
-                <b>Colección</b>
+                <b>{literals.detailNFT.collection}</b>
               </div>
               <p
                 onClick={() =>
@@ -50,19 +51,19 @@ export default function DetailInfo({ properties, chainInfo, loading }) {
             </div>
             <div className="flex justify-between">
               <div>
-                <b>Cadena</b>
+                <b>{literals.detailNFT.chain}</b>
               </div>
               <div>{chainInfo?.network}</div>
             </div>
             <div className="flex justify-between">
               <div>
-                <b>Id Cadena</b>
+                <b>{literals.detailNFT.idchain}</b>
               </div>
               <div>{chainInfo?.chainId}</div>
             </div>
             <div className="flex justify-between">
               <div>
-                <b>Id Token</b>
+                <b>{literals.detailNFT.idtoken}</b>
               </div>
               <div>
                 {chainInfo?.tokenId} / {properties?.totalItems}
@@ -72,20 +73,20 @@ export default function DetailInfo({ properties, chainInfo, loading }) {
         )}
       </DropDown>
 
-      <DropDown icon="dashicons:tag" title={"Propiedades"}>
+      <DropDown icon="dashicons:tag" title={literals.itemPage.properties}>
         {loading ? (
           <div className="w-full h-full animate-pulse bg-gray-300"></div>
         ) : (
           <div className="flex flex-col gap-2">
             <div className="flex justify-between">
               <div>
-                <b>Royalties</b>
+                <b>{literals.detailNFT.royalties}</b>
               </div>
               <div>{properties?.royalty}%</div>
             </div>
             <div className="flex justify-between items-center">
               <div>
-                <b>Recipiente</b>
+                <b>{literals.detailNFT.recipient}</b>
               </div>
               <div className="flex gap-3 items-center">
                 <img
@@ -108,7 +109,7 @@ export default function DetailInfo({ properties, chainInfo, loading }) {
             </div>
             <div className="flex justify-between items-center">
               <div>
-                <b>Colección</b>
+                <b>{literals.detailNFT.collection}</b>
               </div>
               <div className="flex gap-3 items-center">
                 <img

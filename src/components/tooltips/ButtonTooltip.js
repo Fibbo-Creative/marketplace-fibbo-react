@@ -9,6 +9,7 @@ export const ButtonTooltip = ({
   onClick,
   disabled,
   children,
+  className,
 }) => {
   const { theme } = useContext(ThemeContext);
   return (
@@ -24,7 +25,7 @@ export const ButtonTooltip = ({
       onClick={() => !disabled && onClick()}
       data-tip={tooltipText}
     >
-      {children}
+      <div className={`${className} z-99`}>{children}</div>
       {tooltip && !disabled && (
         <ReactTooltip
           id={tooltip}

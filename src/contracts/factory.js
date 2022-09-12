@@ -1,5 +1,6 @@
 import axios from "axios";
 import { ethers } from "ethers";
+import { Contracts } from "../constants/networks";
 import useContract from "../hooks/useContract";
 import useProvider from "../hooks/useProvider";
 import { calculateGasMargin, getHigherGWEI } from "../utils/gas";
@@ -8,9 +9,16 @@ import { useAddressRegistry } from "./addressRegistry";
 import { createForwarderInstance } from "./forwarder";
 import { signMetaTxRequest } from "./signer";
 import { useTokens } from "./token";
+import { ChainId } from "@sushiswap/sdk";
+import { sendMetaTx } from "./meta";
+
+const forwarder = Contracts[ChainId.FANTOM_TESTNET].minimalForwarder;
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export const useFactory = () => {
   const { getFactoryAddress, getAuctionAddress, getMarketplaceAddress } =
     useAddressRegistry();
+  const { createProvider } = useProvider();
   const { getContract } = useContract();
   const { getERC721Contract } = useTokens();
   /*   const { createProvider } = useProvider(); */
@@ -22,42 +30,9 @@ export const useFactory = () => {
     return await getContract(address, FACTORY_ABI);
   };
 
-  /* const sendMetaTx = async (factory, provider, signer, name, symbol) => {
-    console.log(`Sending register meta-tx to create=${name}`);
-    const url = process.env.REACT_APP_WEBHOOK_URL;
-    if (!url) throw new Error(`Missing relayer url`);
-
-    const forwarder = createForwarderInstance(provider);
-
-    console.log(forwarder.address);
-    const from = await signer.getAddress();
-    const data = factory.interface.encodeFunctionData("createNFTContract", [
-      name,
-      symbol,
-      from,
-    ]);
-    console.log(from);
-    const to = factory.address;
-
-    const request = await signMetaTxRequest(signer.provider, forwarder, {
-      to,
-      from,
-      data,
-    });
-
-    const res = await fetch(url, {
-      method: "POST",
-      body: JSON.stringify(request),
-      headers: { "Content-Type": "application/json" },
-    });
-
-    console.log(res);
-    return res.data;
-  }; */
-
   const createNFTContract = async (name, symbol, from) => {
     const factoryContract = await getFactoryContract();
-    const args = [name, symbol];
+    const args = [name, symbol, forwarder];
 
     const options = {
       from,
@@ -81,9 +56,6 @@ export const useFactory = () => {
       wallet,
       auctionAddress
     );
-
-    console.log(isApprovedAuctionForAll);
-
     if (!isApprovedAuctionForAll) {
       const approveAuctionTx = await contract.setApprovalForAll(
         auctionAddress,
@@ -106,7 +78,7 @@ export const useFactory = () => {
     }
   };
 
-  /* const createNFTContractGasless = async (name, symbol) => {
+  const createNFTContractGasless = async (name, symbol) => {
     const factoryContract = await getFactoryContract();
     const provider = createProvider();
     await window.ethereum.enable();
@@ -114,14 +86,19 @@ export const useFactory = () => {
     const signer = userProvider.getSigner();
     const from = await signer.getAddress();
 
-    return await sendMetaTx(factoryContract, provider, signer, name, symbol);
-  }; */
+    await sendMetaTx(factoryContract, provider, signer, {
+      functionName: "createNFTContract",
+      args: [name, symbol, forwarder],
+    });
+
+    await sleep(12000);
+  };
 
   return {
     getContractAddress,
     getFactoryContract,
     createNFTContract,
     approveCollection,
-    //createNFTContractGasless,
+    createNFTContractGasless,
   };
 };

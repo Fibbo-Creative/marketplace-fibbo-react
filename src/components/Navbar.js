@@ -10,17 +10,22 @@ import { useStateContext } from "../context/StateProvider";
 import useRespnsive from "../hooks/useResponsive";
 import SearchResult from "./SearchResult";
 import { useApi } from "../api";
+import { NotificationsMenu } from "./NotificationsMenu";
 
 export default function Navbar() {
-  const { searchItemsAndProfiles } = useApi();
+  const { searchItemsAndProfiles, getUserNotifications, deleteNotification } =
+    useApi();
   const [searchText, setSearchText] = useState("");
   const { wallet, connectToWallet, disconnectWallet } = useAccount();
   const [openModal, setOpenModal] = useState(false);
   const [openedMenu, setOpenedMenu] = useState(false);
-  const [{ userProfile, verifiedAddress }] = useStateContext();
+  const [{ userProfile, verifiedAddress, literals }] = useStateContext();
   const [searchItemsData, setSearchItemsData] = useState([]);
   const [searchProfilesData, setSearchProfilesData] = useState([]);
   const [searchCollectionsData, setSearchCollectionsData] = useState([]);
+
+  const [notifications, setNotifications] = useState([]);
+  const [showNotificationsMenu, setShowNotificationsMenu] = useState(false);
 
   const [openSearchResult, setOpenSearchResult] = useState(false);
 
@@ -42,7 +47,7 @@ export default function Navbar() {
       if (items.length === 0) {
         setSearchItemsData([
           {
-            name: "No items found...",
+            name: literals.navbar.noItem,
             image:
               "https://cdn2.iconfinder.com/data/icons/documents-and-files-v-2/100/doc-03-512.png",
           },
@@ -54,7 +59,7 @@ export default function Navbar() {
       if (profiles.length === 0) {
         setSearchProfilesData([
           {
-            username: "No profiles found",
+            username: literals.navbar.noProfile,
             profileImg:
               "https://cdn2.iconfinder.com/data/icons/documents-and-files-v-2/100/doc-03-512.png",
           },
@@ -66,7 +71,7 @@ export default function Navbar() {
       if (collections.length === 0) {
         setSearchCollectionsData([
           {
-            username: "No Collections found",
+            username: literals.navbar.noCollections,
             profileImg:
               "https://cdn2.iconfinder.com/data/icons/documents-and-files-v-2/100/doc-03-512.png",
           },
@@ -93,6 +98,17 @@ export default function Navbar() {
     setOpenedMenu(false);
   };
 
+  const openNotifications = () => {
+    setShowNotificationsMenu(true);
+  };
+
+  const removeNotification = async (notificationId) => {
+    await deleteNotification(notificationId);
+
+    let filtered = notifications.filter((item) => item._id !== notificationId);
+    setNotifications(filtered);
+  };
+
   useEffect(() => {
     if (_width >= 1024) {
       setOpenedMenu(false);
@@ -100,8 +116,15 @@ export default function Navbar() {
   }, [_width]);
 
   useEffect(() => {
-    setOpenedMenu(false);
-  }, [location.pathname]);
+    const fetchData = async () => {
+      setOpenedMenu(false);
+      if (wallet !== "") {
+        const userNotifications = await getUserNotifications(wallet);
+        setNotifications(userNotifications);
+      }
+    };
+    fetchData();
+  }, [location.pathname, wallet]);
   return (
     <header className="fixed top-0 w-full h-[81px] bg-gradient-to-r from-[#7E29F1] z-10 to-[#b9dafe] ">
       <div className="h-[79px] bg-white dark:bg-dark-1 flex flex-row justify-between w-full items-center px-2">
@@ -128,7 +151,7 @@ export default function Navbar() {
                     className={`px-4 py-2 ${
                       _width < 1200 ? "w-[200px]" : "w-[350px]"
                     }  outline-none dark:bg-dark-1`}
-                    placeholder="Buscar Items..."
+                    placeholder={literals.navbar.searchItems}
                     onChange={(e) => searchItems(e.target.value)}
                     value={searchText}
                   />
@@ -153,19 +176,47 @@ export default function Navbar() {
             <div className="flex ">
               <NavbarItem text="Marketplace" to="/explore" />
               {verifiedAddress && (
-                <NavbarItem text="Colecciones" to="/myCollections" />
+                <NavbarItem
+                  text={literals.navbar.collections}
+                  to="/collections"
+                />
               )}
 
               {!verifiedAddress && (
-                <NavbarItem text="Verifícate!" to="/verificate/request" />
+                <NavbarItem
+                  text={literals.navbar.verify}
+                  to="/verificate/request"
+                />
               )}
+
               {/* {verifiedAddress && (
                 <NavbarItem text="Comunidad" to="/community" />
               )} */}
               {/* {verifiedAddress && <NavbarItem text="Creación" to="/create" />} */}
             </div>
           </div>
-          <div className=" gap-10 flex flex-row justify-between items-center ">
+          <div className=" gap-5 flex flex-row justify-between items-center ">
+            {wallet !== "" && (
+              <div className="flex flex-col  cursor-pointer">
+                <div className="flex" onClick={() => openNotifications()}>
+                  <Icon
+                    className="text-3xl text-gray-600 dark:text-gray-300"
+                    icon="ic:baseline-notifications"
+                    width={32}
+                  />
+                  <div className="rounded-lg absolute text-white w-4 h-4 bg-red-400 text-xs flex items-center justify-center">
+                    {notifications.length}
+                  </div>
+                </div>
+                {showNotificationsMenu && (
+                  <NotificationsMenu
+                    notifications={notifications}
+                    setOpenMenu={setShowNotificationsMenu}
+                    removeNotification={removeNotification}
+                  />
+                )}
+              </div>
+            )}
             <WalletButton
               userProfile={userProfile}
               openModal={handleOpenModal}
@@ -173,6 +224,7 @@ export default function Navbar() {
               connectToWallet={connectToWallet}
               disconnectWallet={disconnectWallet}
             />
+
             <div className="flex">
               <div id="iconOpenBurguer" className="lg:hidden flex w-auto">
                 {!openedMenu ? (
@@ -217,7 +269,7 @@ export default function Navbar() {
                           className={` px-4 py-2 ${
                             _width < 1200 ? "w-[200px]" : "w-[350px]"
                           } outline-none dark:bg-dark-1`}
-                          placeholder="Buscar Items..."
+                          placeholder={literals.navbar.searchItems}
                           onChange={(e) => searchItems(e.target.value)}
                           value={searchText}
                         />
@@ -235,10 +287,16 @@ export default function Navbar() {
               </div>
               <NavbarItemMobile text="Marketplace" to="/explore" />
               {verifiedAddress && (
-                <NavbarItemMobile text="Colecciones" to="/myCollections" />
+                <NavbarItemMobile
+                  text={literals.navbar.collections}
+                  to="/collections"
+                />
               )}
               {!verifiedAddress && (
-                <NavbarItemMobile text="Verifícate!" to="/verificate/request" />
+                <NavbarItemMobile
+                  text={literals.navbar.verify}
+                  to="/verificate/request"
+                />
               )}
               {/*  {verifiedAddress && (
                 <NavbarItemMobile text="Comunidad" to="/community" />

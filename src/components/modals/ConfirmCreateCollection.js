@@ -4,18 +4,19 @@ import { useApi } from "../../api";
 import { ActionModal } from "./ActionModal";
 import { useFactory } from "../../contracts/factory";
 import { ethers } from "ethers";
+import { useStateContext } from "../../context/StateProvider";
+
 export const ConfirmCreateCollection = ({
   showModal,
   handleCloseModal,
   collectionData,
   wallet,
 }) => {
-  const { createNFTContract } = useFactory();
   const { saveCollectionDetails } = useApi();
   const [address, setAddress] = useState("");
 
   const navigate = useNavigate();
-
+  const [{ literals }] = useStateContext();
   const createCollection = async (e) => {
     const {
       logoImage,
@@ -33,33 +34,25 @@ export const ConfirmCreateCollection = ({
     const customURL = url.split("https://fibbo-market.web.app/collection/")[1];
 
     try {
-      const tx = await createNFTContract(name, "FBBOART", wallet);
-      const res = await tx.wait();
-      res.events.map(async (evt) => {
-        if (
-          evt.topics[0] ===
-          "0x2d49c67975aadd2d389580b368cfff5b49965b0bd5da33c144922ce01e7a4d7b"
-        ) {
-          const address = ethers.utils.hexDataSlice(evt.data, 44);
+      const response = await saveCollectionDetails(
+        wallet,
+        name,
+        description,
+        logoImage,
+        mainImage !== "" ? mainImage : logoImage,
+        bannerImage,
+        customURL,
+        websiteURL,
+        discordURL,
+        telegramURL,
+        instagramURL,
+        explicitContent
+      );
 
-          setAddress(address);
-          await saveCollectionDetails(
-            address,
-            wallet,
-            name,
-            description,
-            logoImage,
-            mainImage !== "" ? mainImage : logoImage,
-            bannerImage,
-            customURL,
-            websiteURL,
-            discordURL,
-            telegramURL,
-            instagramURL,
-            explicitContent
-          );
-        }
-      });
+      if (response.status !== 200) {
+        return "ERROR";
+      }
+
       return "OK";
     } catch (e) {
       return "ERROR";
@@ -81,13 +74,13 @@ export const ConfirmCreateCollection = ({
   return (
     <ActionModal
       size="large"
-      title="Confirma tu creación"
+      title={literals.modals.confirmCreation}
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       onSubmit={() => createCollection()}
-      submitLabel={"Crear Colección"}
-      completedText={`Colección creada correctamente`}
-      completedLabel={`Ver Colección Creada`}
+      submitLabel={literals.actions.createCollection}
+      completedText={literals.confirmCreateCollection.collectionCreated}
+      completedLabel={literals.confirmCreateCollection.viewCollection}
       completedAction={seeResult}
     >
       <div className="flex flex-col gap-10  items-center mb-10">
@@ -102,18 +95,18 @@ export const ConfirmCreateCollection = ({
           </div>
           <div className="flex flex-col gap-3 w-60">
             <div className="flex gap-2">
-              <b>Nombre:</b>
+              <b>{literals.createCollection.collectionName2}</b>
               <p>{collectionData.name}</p>
             </div>
             <div className="flex flex-col gap-2">
-              <b>Descripción:</b>
+              <b>{literals.createCollection.description2}</b>
               <p className="text-sm ">{collectionData.description}</p>
             </div>
             {collectionData.url.split(
               "https://fibbo-market.web.app/collection/"
             )[1] && (
               <div className="flex  items-center gap-2">
-                <b>URL personalizada:</b>
+                <b>{literals.confirmCreateCollection.customURL}</b>
                 <p className="text-sm ">
                   /
                   {

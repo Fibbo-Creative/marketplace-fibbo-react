@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useStateContext } from "../../context/StateProvider";
 import { isMobile } from "react-device-detect";
 import { ActionModal } from "./ActionModal";
 export default function RemoveOfferModal({
@@ -10,7 +10,7 @@ export default function RemoveOfferModal({
   onCancelOffer,
 }) {
   const navigate = useNavigate();
-
+  const [{ literals }] = useStateContext();
   const handleRemoveOffer = async () => {
     try {
       await onCancelOffer();
@@ -21,19 +21,19 @@ export default function RemoveOfferModal({
   };
   return (
     <ActionModal
-      title={"Cancelar tu oferta"}
+      title={literals.removeOfferModal.cancelYourOffer}
       size="large"
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       onSubmit={() => handleRemoveOffer()}
-      submitLabel={"Cancelar Oferta"}
-      completedText={`Oferta cancelada correctamente`}
-      completedLabel={`Ver ítem acutalizado`}
+      submitLabel={literals.removeOfferModal.cancelOffer}
+      completedText={literals.removeOfferModal.canceledOk}
+      completedLabel={literals.removeOfferModal.updated}
       completedAction={handleCloseModal}
     >
       <div className="my-10 mx-8 flex flex-col gap-10">
         <div className="flex flex-col gap-10 w-full text-center ">
-          <div>Quieres cancelar la oferta realizada?</div>
+          <div>{literals.removeOfferModal.cancel}</div>
           <div className="flex items-center justify-evenly">
             <div className="flex gap-2 items-center p-2 rounded-lg dark:bg-dark-4">
               <img
@@ -53,10 +53,10 @@ export default function RemoveOfferModal({
                       )
                 }
               >
-                Tú
+                {literals.removeOfferModal.you}
               </p>
             </div>
-            <p> ofreces </p>
+            <p> {literals.removeOfferModal.offer} </p>
             <div className="flex gap-3 items-center  p-2 rounded-lg dark:bg-dark-4">
               <p>{offer?.price}</p>
               <img

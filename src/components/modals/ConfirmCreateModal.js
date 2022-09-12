@@ -5,6 +5,7 @@ import ActionButton from "../ActionButton";
 import { Check } from "../lottie/Check";
 import { BasicModal } from "./BasicModal";
 import { useTokens } from "../../contracts/token";
+import { useStateContext } from "../../context/StateProvider";
 export const ConfirmCreateModal = ({
   showModal,
   handleCloseModal,
@@ -12,8 +13,10 @@ export const ConfirmCreateModal = ({
   collection,
   wallet,
 }) => {
-  const { getERC721Contract } = useTokens();
-  const { saveMintedItem, uploadJSONMetadata } = useApi();
+  const [{ literals }] = useStateContext();
+  const { getERC721Contract, mintGassless } = useTokens();
+  const { saveMintedItem, uploadJSONMetadata, getItemsFromCollection } =
+    useApi();
   const [newTokenId, setNewTokenId] = useState(0);
   const [address, setAddress] = useState("");
   const [completedAction, setCompletedAction] = useState(false);
@@ -31,13 +34,8 @@ export const ConfirmCreateModal = ({
 
       const ipfsFileURL = `https://ipfs.io/ipfs/${ipfsCID}`;
 
-      const contract = await getERC721Contract(collection.contractAddress);
-      let mintTx = await contract.mint(wallet, ipfsFileURL);
-      let tx = await mintTx.wait();
-
-      let event = tx.events[0];
-      let value = event.args[2];
-      let newTokenId = value.toNumber();
+      await mintGassless(collection.contractAddress, wallet, ipfsFileURL);
+      let newTokenId = collection.numberOfItems + 1;
       //Si todo va bien, crear a sanity
       await saveMintedItem(
         itemData.name,
@@ -71,7 +69,7 @@ export const ConfirmCreateModal = ({
   return (
     <BasicModal
       size="large"
-      title="Confirma tu creación"
+      title={literals.modals.confirmCreation}
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       createNFT
@@ -89,24 +87,24 @@ export const ConfirmCreateModal = ({
             </div>
             <div className="flex flex-col gap-3 w-60">
               <div className="flex gap-2">
-                <b>Colleción:</b>
+                <b>{literals.confirmCreateModal.collection}</b>
                 <p>{collection?.name}</p>
               </div>
               <div className="flex gap-2">
-                <b>Nombre:</b>
+                <b>{literals.confirmCreateModal.name}</b>
                 <p>{itemData.name}</p>
               </div>
               <div className="flex flex-col gap-2">
-                <b>Descripción:</b>
+                <b>{literals.confirmCreateModal.description}</b>
                 <p className="text-sm">{itemData.description}</p>
               </div>
               <div className="flex gap-2">
-                <b>Royalties:</b>
+                <b>{literals.confirmCreateModal.royalties}</b>
                 <p>{itemData.royalty} %</p>
               </div>
               {itemData.hiddenContent && (
                 <div className="flex gap-2 items-center">
-                  <b>Contenido adicional </b>
+                  <b>{literals.confirmCreateModal.aditionalContent} </b>
                   <input type="checkbox" checked={true} disabled={true} />
                 </div>
               )}
@@ -115,7 +113,7 @@ export const ConfirmCreateModal = ({
           <ActionButton
             variant={"contained"}
             size="large"
-            text="Crear NFT"
+            text={literals.confirmCreateModal.createNFT}
             buttonAction={createNFT}
           />
         </div>
@@ -123,13 +121,13 @@ export const ConfirmCreateModal = ({
         <div className="my-10 mx-8 flex flex-col gap-10 items-center">
           <div className="flex gap-5 items-center">
             <Check />
-            <p>Item creado correctamente</p>
+            <p>{literals.confirmCreateModal.itemCreated} </p>
           </div>
           <div className="w-full flex items-center justify-center">
             <ActionButton
               variant="contained"
               size="large"
-              text="Ver Item Creado"
+              text={literals.confirmCreateModal.viewItem}
               buttonAction={(e) => seeResult()}
             />
           </div>

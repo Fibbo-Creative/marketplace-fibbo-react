@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useStateContext } from "../../context/StateProvider";
+import { formatLiteral } from "../../utils/language";
 import { isMobile } from "react-device-detect";
 import { ActionModal } from "./ActionModal";
 export default function AcceptOfferModal({
@@ -10,7 +11,7 @@ export default function AcceptOfferModal({
   onAcceptOffer,
 }) {
   const navigate = useNavigate();
-
+  const [{ literals }] = useStateContext();
   const handleAcceptOffer = async () => {
     try {
       await onAcceptOffer(offer.creator.wallet);
@@ -21,19 +22,22 @@ export default function AcceptOfferModal({
   };
   return (
     <ActionModal
-      title={"Aceptar Oferta"}
+      title={literals.acceptOfferModal.acceptOffer}
       size="large"
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       onSubmit={() => handleAcceptOffer()}
-      submitLabel={"Aceptar Oferta"}
-      completedText={`Oferta acceptada por ${offer.price} wFTM correctamente`}
-      completedLabel={`Ver item actualizado`}
+      submitLabel={literals.acceptOfferModal.acceptOffer}
+      completedText={formatLiteral(literals.modals.offerAccepted, [
+        offer?.price,
+        offer?.payToken?.name,
+      ])}
+      completedLabel={literals.modals.seeUpdatedItem}
       completedAction={handleCloseModal}
     >
       <div className="my-10 mx-8 flex flex-col gap-10">
         <div className="flex flex-col gap-10 w-full text-center ">
-          <div>Quieres aceptar la siguiente oferta?</div>
+          <div>{literals.acceptOfferModal.doYouAccept}</div>
           <div className="flex items-center justify-evenly">
             <div className="flex gap-2 items-center p-2 rounded-lg dark:bg-dark-4">
               <img
@@ -56,7 +60,7 @@ export default function AcceptOfferModal({
                 {offer?.creator?.username}
               </p>
             </div>
-            <p> Te ofrece </p>
+            <p> {literals.acceptOfferModal.isOffering} </p>
             <div className="flex gap-3 items-center  p-2 rounded-lg dark:bg-dark-4">
               <p>{offer.price}</p>
               <img

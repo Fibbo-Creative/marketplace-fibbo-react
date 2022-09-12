@@ -6,19 +6,14 @@ import { useStateContext } from "../../../context/StateProvider";
 
 import useResponsive from "../../../hooks/useResponsive";
 
-export const ProfileMyOffersTable = ({
-  offers,
-  isOwner,
-  onAcceptOffer,
-  onCancelOffer,
-}) => {
+export const ProfileBidsTable = ({ bids }) => {
   const { _width } = useResponsive();
   const navigate = useNavigate();
   const { getCollectionInfo } = useApi();
   const [{ literals }] = useStateContext();
-  const formatDate = (offer) => {
+  const formatDate = (bid) => {
     const now = new Date().getTime();
-    const deadline = offer.deadline;
+    const deadline = bid.auction.endTime;
 
     const date = new Date(deadline * 1000).toLocaleString();
 
@@ -26,13 +21,13 @@ export const ProfileMyOffersTable = ({
     return isExpired ? "EXPIRED" : date;
   };
 
-  const navigateToItem = async (offer) => {
-    const collectionInfo = await getCollectionInfo(offer.collectionAddress);
+  const navigateToItem = async (bid) => {
+    const collectionInfo = await getCollectionInfo(bid.collectionAddress);
     let finalURL = "";
     if (collectionInfo.customURL !== "") {
-      finalURL = `/explore/${collectionInfo.customURL}/${offer.item.tokenId}`;
+      finalURL = `/explore/${collectionInfo.customURL}/${bid.item.tokenId}`;
     } else {
-      finalURL = `/explore/${collectionInfo.contractAddress}/${offer.item.tokenId}`;
+      finalURL = `/explore/${collectionInfo.contractAddress}/${bid.item.tokenId}`;
     }
 
     if (isMobile) {
@@ -54,15 +49,15 @@ export const ProfileMyOffersTable = ({
                 </th>
 
                 <th cope="col" className="px-6 py-3">
-                  {literals.detailNFT.price}
+                  {literals.profile.biddedFor}
                 </th>
                 <th cope="col" className="px-6 py-3">
-                  {literals.detailNFT.expires}
+                  {literals.profile.endsAt}
                 </th>
               </tr>
             </thead>
             <tbody>
-              {offers.map((offer) => {
+              {bids.map((bid) => {
                 return (
                   <tr key={Math.random(9999) * 1000}>
                     <td className="px-6 py-4">
@@ -70,25 +65,25 @@ export const ProfileMyOffersTable = ({
                         <img
                           className="rounded-full"
                           width={32}
-                          src={offer.item.image}
-                          alt={`from-${offer._id}-img`}
+                          src={bid.item.image}
+                          alt={`from-${bid._id}-img`}
                         />
                         <p
                           className="text-primary-2 underline cursor-pointer"
-                          onClick={() => navigateToItem(offer)}
+                          onClick={() => navigateToItem(bid)}
                         >
-                          {offer.item.name}
+                          {bid.item.name}
                         </p>
                       </div>
                     </td>
                     <td className="px-6 py-4">
                       {" "}
                       <div className="flex items-center gap-3">
-                        <img src={offer.payToken?.image} width={26} />
-                        <div className="text-lg">{offer.price}</div>
+                        <img src={bid.payToken?.image} width={26} />
+                        <div className="text-lg">{bid.bid}</div>
                       </div>
                     </td>
-                    <td className="px-6 py-4">{formatDate(offer)}</td>
+                    <td className="px-6 py-4">{formatDate(bid)}</td>
                   </tr>
                 );
               })}
@@ -97,7 +92,7 @@ export const ProfileMyOffersTable = ({
         </>
       ) : (
         <div className="flex flex-col gap-10">
-          {offers.map((offer) => {
+          {bids.map((bid) => {
             return (
               <div
                 key={Math.random(9999) * 100}
@@ -105,41 +100,41 @@ export const ProfileMyOffersTable = ({
               >
                 <div className="flex justify-between">
                   <div>
-                    <b>{literals.itemHistory.item}</b>
+                    <b>Item</b>
                   </div>
                   <div>
                     <div className="flex gap-2 items-center">
                       <img
                         className="rounded-full"
                         width={32}
-                        src={offer.item.image}
-                        alt={`from-${offer._id}-img`}
+                        src={bid.item.image}
+                        alt={`from-${bid._id}-img`}
                       />
                       <p
                         className="text-primary-2 underline cursor-pointer"
-                        onClick={() => navigateToItem(offer)}
+                        onClick={() => navigateToItem(bid)}
                       >
-                        {offer.item.name}
+                        {bid.item.name}
                       </p>
                     </div>
                   </div>
                 </div>
                 <div className="flex justify-between">
                   <div>
-                    <b>{literals.detailNFT.price}</b>
+                    <b>{literals.profile.biddedFor}</b>
                   </div>
                   <div>
                     <div className="flex items-center gap-3">
-                      <img src={offer.payToken?.image} width={26} />
-                      <div className="text-lg">{offer.price}</div>
+                      <img src={bid.payToken?.image} width={26} />
+                      <div className="text-lg">{bid.bid}</div>
                     </div>
                   </div>
                 </div>
                 <div className="flex justify-between">
                   <div>
-                    <b> {literals.detailNFT.expires}</b>
+                    <b>{literals.profile.endsAt}</b>
                   </div>
-                  <div>{formatDate(offer)}</div>
+                  <div>{formatDate(bid)}</div>
                 </div>
               </div>
             );

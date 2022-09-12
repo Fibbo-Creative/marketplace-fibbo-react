@@ -1,4 +1,5 @@
 import React from "react";
+import {useStateContext} from "../context/StateProvider";
 
 export default function FilterRange({
   min_state,
@@ -7,6 +8,7 @@ export default function FilterRange({
   setMaxState,
   applyFilter,
 }) {
+  const [{literals}] = useStateContext();
   return (
     <div className="flex flex-col items-center justify-center gap-2 w-full border-t p-1  border-black bg-[#E3DEFC] ">
       <div className="flex flex-row justify-center items-center w-full gap-3 p-2">
@@ -55,7 +57,7 @@ export default function FilterRange({
         className="flex items-center bg-purple-600 text-white font-bold py-2 px-4 rounded justify-center border border-gray-300 hover:bg-[#B27FF7]"
         onClick={(e) => applyFilter()}
       >
-        Filtrar
+        {literals.actions.filter}
       </button>
     </div>
   );

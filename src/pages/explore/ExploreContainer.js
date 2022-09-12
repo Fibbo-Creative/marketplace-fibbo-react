@@ -22,10 +22,12 @@ import {
   orderByRecentlyListed,
   sortMarketItems,
 } from "../../utils/sort";
+import { useStateContext } from "../../context/StateProvider";
 
 export default function ExploreContainer() {
+  const [{ literals }] = useStateContext();
   const navigate = useNavigate();
-  const { getAllTokens, getAllPayTokens } = useApi();
+  const { getAllTokens, getAllPayTokens, getCollectionsAvailable } = useApi();
   const { wallet } = useAccount();
   const [marketItems, setMarketItems] = useState([]);
   const [allMarketItems, setAllMarketItems] = useState([]);
@@ -39,6 +41,7 @@ export default function ExploreContainer() {
   const [loading, setLoading] = useState(true);
   const [loadingInfo, setLoadingInfo] = useState(false);
 
+  const [allCollections, setAllCollections] = useState([]);
   const [allErc20Tokens, setAllErc20Tokens] = useState([]);
 
   useEffect(() => {
@@ -48,6 +51,9 @@ export default function ExploreContainer() {
       const _payTokens = await getAllPayTokens();
       setAllErc20Tokens(_payTokens);
 
+      const _collections = await getCollectionsAvailable();
+
+      setAllCollections(_collections);
       //const firstItems = await getAllTokens(20);
       //setAllMarketItems(firstItems);
       //setVisibleMarketItems(firstItems.slice(0, 12));
@@ -282,58 +288,76 @@ export default function ExploreContainer() {
   };
 
   const filterBySelling = () => {
-    let isSelected = filtersSelected.find((item) => item === "En Venta");
+    let isSelected = filtersSelected.find(
+      (item) => item === literals.filters.onSale
+    );
     if (isSelected) {
-      setFiltersSelected(filtersSelected.filter((item) => item !== "En Venta"));
+      setFiltersSelected(
+        filtersSelected.filter((item) => item !== literals.filters.onSale)
+      );
     } else {
-      setFiltersSelected([...filtersSelected, "En Venta"]);
+      setFiltersSelected([...filtersSelected, literals.filters.onSale]);
     }
   };
 
   const filterByOffered = () => {
-    let isSelected = filtersSelected.find((item) => item === "Ofertado");
+    let isSelected = filtersSelected.find(
+      (item) => item === literals.filters.offered
+    );
     if (isSelected) {
-      setFiltersSelected(filtersSelected.filter((item) => item !== "Ofertado"));
+      setFiltersSelected(
+        filtersSelected.filter((item) => item !== literals.filters.offered)
+      );
     } else {
-      setFiltersSelected([...filtersSelected, "Ofertado"]);
+      setFiltersSelected([...filtersSelected, literals.filters.offered]);
     }
   };
 
   const filterByAuctioned = () => {
-    let isSelected = filtersSelected.find((item) => item === "En Subasta");
+    let isSelected = filtersSelected.find(
+      (item) => item === literals.filters.onAuction
+    );
     if (isSelected) {
       setFiltersSelected(
-        filtersSelected.filter((item) => item !== "En Subasta")
+        filtersSelected.filter((item) => item !== literals.filters.onAuction)
       );
     } else {
-      setFiltersSelected([...filtersSelected, "En Subasta"]);
+      setFiltersSelected([...filtersSelected, literals.filters.onAuction]);
     }
   };
 
   const filterByBidded = () => {
-    let isSelected = filtersSelected.find((item) => item === "Pujado");
+    let isSelected = filtersSelected.find(
+      (item) => item === literals.filters.hasBids
+    );
     if (isSelected) {
-      setFiltersSelected(filtersSelected.filter((item) => item !== "Pujado"));
+      setFiltersSelected(
+        filtersSelected.filter((item) => item !== literals.filters.hasBids)
+      );
     } else {
-      setFiltersSelected([...filtersSelected, "Pujado"]);
+      setFiltersSelected([...filtersSelected, literals.filters.hasBids]);
     }
   };
 
   const removeFilter = (filter) => {
     if (typeof filter === "object") {
-      selectPayTokenFilter(filter);
+      if (filter.collection) {
+        removeCollectionFilter(filter);
+      } else {
+        selectPayTokenFilter(filter);
+      }
     } else {
       switch (filter) {
-        case "En Venta":
+        case literals.filters.onSale:
           filterBySelling();
           break;
-        case "Ofertado":
+        case literals.filters.offered:
           filterByOffered();
           break;
-        case "En Subasta":
+        case literals.filters.onAuction:
           filterByAuctioned();
           break;
-        case "Pujado":
+        case literals.filters.hasBids:
           filterByBidded();
           break;
         default:
@@ -358,54 +382,85 @@ export default function ExploreContainer() {
     }
   };
 
+  const selectCollection = (collectionItem) => {
+    let isSelected = filtersSelected.find(
+      (item) => item.collection === collectionItem.contractAddress
+    );
+
+    if (isSelected) {
+      setVisibleMarketItems(allMarketItems);
+      setFiltersSelected(
+        filtersSelected.filter(
+          (item) => item.collection !== collectionItem.contractAddress
+        )
+      );
+    } else {
+      setFiltersSelected([
+        ...filtersSelected,
+        {
+          collection: collectionItem.contractAddress,
+          name: collectionItem.name,
+        },
+      ]);
+    }
+  };
+
+  const removeCollectionFilter = (collectionItem) => {
+    let isSelected = filtersSelected.find(
+      (item) => item.collection === collectionItem.collection
+    );
+    if (isSelected) {
+      setVisibleMarketItems(allMarketItems);
+      setFiltersSelected(
+        filtersSelected.filter(
+          (item) => item.collection !== collectionItem.collection
+        )
+      );
+    }
+  };
+
   useEffect(() => {
     //Status Filter
     if (filtersSelected.length > 0) {
       let filtered = [];
       filtersSelected.forEach((filter) => {
-        if (filter === "En Venta") {
-          let result = allMarketItems.filter(
-            (item) => item.price !== undefined
-          );
+        if (filter === literals.filters.onSale) {
+          let result = marketItems.filter((item) => item.price !== undefined);
           filtered = [...filtered, ...result];
         }
-        if (filter === "Ofertado") {
-          let result = allMarketItems.filter(
-            (item) => item.offer !== undefined
-          );
+        if (filter === literals.filters.offered) {
+          let result = marketItems.filter((item) => item.offer !== undefined);
           filtered = [...filtered, ...result];
         }
-        if (filter === "En Subasta") {
-          let result = allMarketItems.filter(
-            (item) => item.auction !== undefined
-          );
+        if (filter === literals.filters.onAuction) {
+          let result = marketItems.filter((item) => item.auction !== undefined);
           filtered = [...filtered, ...result];
         }
-        if (filter === "Pujado") {
-          let result = allMarketItems.filter(
+        if (filter === literals.filters.hasBids) {
+          let result = marketItems.filter(
             (item) => item.auction?.topBid !== undefined
           );
           filtered = [...filtered, ...result];
         }
         if (filter.contractAddress) {
           let _result = [];
-          if (filtersSelected.includes("En Venta")) {
+          if (filtersSelected.includes(literals.filters.onSale)) {
             _result = allMarketItems.filter(
               (item) =>
                 item.payToken?.contractAddress === filter.contractAddress
             );
-          } else if (filtersSelected.includes("Ofertado")) {
+          } else if (filtersSelected.includes(literals.filters.offered)) {
             _result = allMarketItems.filter(
               (item) =>
                 item.offer?.payToken.contractAddress === filter.contractAddress
             );
-          } else if (filtersSelected.includes("En Subasta")) {
+          } else if (filtersSelected.includes(literals.filters.onAuction)) {
             _result = allMarketItems.filter(
               (item) =>
                 item.auction?.payToken.contractAddress ===
                 filter.contractAddress
             );
-          } else if (filtersSelected.includes("Pujado")) {
+          } else if (filtersSelected.includes(literals.filters.hasBids)) {
             _result = allMarketItems.filter(
               (item) =>
                 item.auction?.topBid !== undefined &&
@@ -423,6 +478,13 @@ export default function ExploreContainer() {
             );
           }
 
+          filtered = [...filtered, ..._result];
+        }
+        if (filter.collection) {
+          let _result = [];
+          _result = marketItems.filter(
+            (item) => item.collectionAddress === filter.collection
+          );
           filtered = [...filtered, ..._result];
         }
       });
@@ -468,10 +530,10 @@ export default function ExploreContainer() {
               visibleMarketItems={visibleMarketItems}
               setVisibleMarketItems={setVisibleMarketItems}
               statusFilters={[
-                { name: "En Venta", filter: filterBySelling },
-                { name: "Ofertado", filter: filterByOffered },
-                { name: "En Subasta", filter: filterByAuctioned },
-                { name: "Pujado", filter: filterByBidded },
+                { name: literals.filters.onSale, filter: filterBySelling },
+                { name: literals.filters.offered, filter: filterByOffered },
+                { name: literals.filters.onAuction, filter: filterByAuctioned },
+                { name: literals.filters.hasBids, filter: filterByBidded },
               ]}
               payTokenFilters={allErc20Tokens.map((item) => {
                 return {
@@ -479,6 +541,8 @@ export default function ExploreContainer() {
                   filter: selectPayTokenFilter,
                 };
               })}
+              collections={allCollections}
+              selectCollection={selectCollection}
             />
           )}
           <div className={`flex flex-col ${openedSidebar && "ml-[17vw]"}`}>
@@ -509,14 +573,18 @@ export default function ExploreContainer() {
                   className="cursor-pointer h-10 w-40 md:w-60 flex border border-gray-300 bg-white dark:bg-dark-1 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   onChange={(e) => sortItems(e.target.value)}
                 >
-                  <option value={1}>Ordenar Por</option>
-                  <option value={2}>Creados Recientemente</option>
-                  <option value={3}>Mas antiguos</option>
-                  <option value={4}>Listados Recientemiente</option>
-                  <option value={5}>Listados mas antiguos</option>
-                  <option value={6}>Mas caros</option>
-                  <option value={7}>Mas baratos</option>
-                  <option value={8}>Termina antes</option>
+                  <option value={1}>{literals.explore.filterSort}</option>
+                  <option value={2}>{literals.explore.filterRecently}</option>
+                  <option value={3}>{literals.explore.filterOldest}</option>
+                  <option value={4}>
+                    {literals.explore.filterRecentlyListed}
+                  </option>
+                  <option value={5}>
+                    {literals.explore.filterOldestListed}
+                  </option>
+                  <option value={6}>{literals.explore.filterHighPrice}</option>
+                  <option value={7}>{literals.explore.filterLowPrice}</option>
+                  <option value={8}>{literals.explore.filterEnding}</option>
                 </select>
                 <div className="flex flex-row items-center justify-center gap-2 md:gap-5 ">
                   <button
@@ -571,7 +639,7 @@ export default function ExploreContainer() {
                     onClick={() => setFiltersSelected([])}
                     className=" cursor-pointer transition ml-5 text-gray-400 dark:hover:text-white hover:text-black"
                   >
-                    Limpiar Todos
+                    {literals.filters.clearAll}
                   </div>
                 )}
               </div>
@@ -607,10 +675,10 @@ export default function ExploreContainer() {
               openSidebar={openedSidebar}
               setOpenSidebar={setOpenedSidebar}
               statusFilters={[
-                { name: "En Venta", filter: filterBySelling },
-                { name: "Ofertado", filter: filterByOffered },
-                { name: "En Subasta", filter: filterByAuctioned },
-                { name: "Pujado", filter: filterByBidded },
+                { name: literals.filters.onSale, filter: filterBySelling },
+                { name: literals.filters.offered, filter: filterByOffered },
+                { name: literals.filters.onAuction, filter: filterByAuctioned },
+                { name: literals.filters.hasBids, filter: filterByBidded },
               ]}
               filtersSelected={filtersSelected}
               payTokenFilters={allErc20Tokens.map((item) => {
@@ -619,6 +687,8 @@ export default function ExploreContainer() {
                   filter: selectPayTokenFilter,
                 };
               })}
+              collections={allCollections}
+              selectCollection={selectCollection}
             />
           )}
         </>

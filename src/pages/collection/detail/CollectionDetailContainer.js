@@ -24,11 +24,17 @@ import useResponsive from "../../../hooks/useResponsive";
 import ReactTooltip from "react-tooltip";
 import { ThemeContext } from "../../../context/ThemeContext";
 import { ButtonTooltip } from "../../../components/tooltips/ButtonTooltip";
+import { useStateContext } from "../../../context/StateProvider";
+import { useTokens } from "../../../contracts/token";
+import OwnersModal from "../../../components/modals/OwnersModal";
 
 export const CollectionDetailContainer = () => {
   const [loading, setLoading] = useState(true);
   const { collection } = useParams();
   const { _width } = useResponsive();
+  const { getERC721Contract } = useTokens();
+
+  const [{ literals }] = useStateContext();
   const {
     getCollectionDetail,
     getProfileInfo,
@@ -57,6 +63,7 @@ export const CollectionDetailContainer = () => {
 
   const collectionUserOptions = useRef(null);
   const [showRedirect, setShowRedirect] = useState(false);
+  const [showOwners, setShowOwners] = useState(false);
 
   const navigate = useNavigate();
   const redirectToItem = (item) => {
@@ -451,7 +458,7 @@ export const CollectionDetailContainer = () => {
       <div className="flex flex-col mt-[79px] mb-[10px] w-screen items-center justify-center">
         {collectionInfo?.bannerImage !== "" ? (
           <img
-            className="flex w-full h-[200px] md:h-[300px]"
+            className="flex w-full h-[200px] md:h-[300px] object-cover"
             src={collectionInfo?.bannerImage}
             alt={`banner-${collectionInfo?._id}`}
           ></img>
@@ -471,72 +478,83 @@ export const CollectionDetailContainer = () => {
           <div className="flex md:items-end md:ml-[50px] mb-[20px] md:w-full mt-[20px] ">
             <div className="flex text-2xl flex-col md:flex-row items-center gap-4">
               {_width < 900 && (
-                <div className="flex border border-2 h-fit rounded-xl dark:text-white">
-                  {isOwner && (
+                <div className="flex h-fit rounded-xl dark:text-white">
+                  <div className="flex items-center">
+                    {isOwner && (
+                      <ItemPageOption
+                        icon="carbon:add-alt"
+                        tooltip="add-item"
+                        onClick={redirectToCreateItem}
+                        tooltipText="Crear NFT"
+                      />
+                    )}
+                    {isOwner && (
+                      <ItemPageOption
+                        icon="bxs:edit-alt"
+                        tooltip="edit-item"
+                        onClick={redirectToEditCollection}
+                        tooltipText="Editar coleccion"
+                      />
+                    )}
+                  </div>
+                  <div className="mx-5"></div>
+
+                  <div className="flex items-center">
                     <ItemPageOption
-                      icon="carbon:add-alt"
-                      tooltip="add-item"
-                      onClick={redirectToCreateItem}
-                      tooltipText="Crear NFT"
+                      disabled
+                      icon="bi:share-fill"
+                      tooltip="share-item"
+                      tooltipText="Compartir"
                     />
-                  )}
-                  {isOwner && (
                     <ItemPageOption
-                      icon="bxs:edit-alt"
-                      tooltip="edit-item"
-                      onClick={redirectToEditCollection}
-                      tooltipText="Editar coleccion"
+                      disabled
+                      position="last"
+                      icon="akar-icons:more-vertical"
+                      tooltip="more-item"
+                      tooltipText="Mas opciones"
                     />
-                  )}
-                  <ItemPageOption
-                    disabled
-                    icon="bi:share-fill"
-                    tooltip="share-item"
-                    tooltipText="Compartir"
-                  />
-                  <ItemPageOption
-                    disabled
-                    position="last"
-                    icon="akar-icons:more-vertical"
-                    tooltip="more-item"
-                    tooltipText="Mas opciones"
-                  />
+                  </div>
                 </div>
               )}
               <b>{collectionInfo?.name}</b>
             </div>
           </div>
           {_width > 900 && (
-            <div className="flex border border-2 h-fit mr-10 rounded-xl dark:text-white">
-              {isOwner && (
+            <div className="flex h-fit mr-10 rounded-xl dark:text-white">
+              <div className="flex items-center">
+                {isOwner && (
+                  <ItemPageOption
+                    icon="carbon:add-alt"
+                    tooltip="add-item"
+                    onClick={redirectToCreateItem}
+                    tooltipText="Crear NFT"
+                  />
+                )}
+                {isOwner && (
+                  <ItemPageOption
+                    icon="bxs:edit-alt"
+                    tooltip="edit-item"
+                    onClick={redirectToEditCollection}
+                    tooltipText="Editar coleccion"
+                  />
+                )}
+              </div>
+              <div className="mx-5 w-[1px] border-2"></div>
+              <div className="flex items-center">
                 <ItemPageOption
-                  icon="carbon:add-alt"
-                  tooltip="add-item"
-                  onClick={redirectToCreateItem}
-                  tooltipText="Crear NFT"
+                  disabled
+                  icon="bi:share-fill"
+                  tooltip="share-item"
+                  tooltipText="Compartir"
                 />
-              )}
-              {isOwner && (
                 <ItemPageOption
-                  icon="bxs:edit-alt"
-                  tooltip="edit-item"
-                  onClick={redirectToEditCollection}
-                  tooltipText="Editar coleccion"
+                  disabled
+                  position="last"
+                  icon="akar-icons:more-vertical"
+                  tooltip="more-item"
+                  tooltipText="Mas opciones"
                 />
-              )}
-              <ItemPageOption
-                disabled
-                icon="bi:share-fill"
-                tooltip="share-item"
-                tooltipText="Compartir"
-              />
-              <ItemPageOption
-                disabled
-                position="last"
-                icon="akar-icons:more-vertical"
-                tooltip="more-item"
-                tooltipText="Mas opciones"
-              />
+              </div>
             </div>
           )}
         </div>
@@ -595,11 +613,16 @@ export const CollectionDetailContainer = () => {
               </div>
               <div className="flex items-end">Articulos</div>
             </div>
-            <div className="flex flex-col gap-3 items-center">
+            <div
+              onClick={() => setShowOwners(true)}
+              className="cursor-pointer flex flex-col gap-3 items-center hover:text-gray-300"
+            >
               <div className="flex text-xl">
                 <b>{collectionInfo?.owners.length}</b>
               </div>
-              <div className="flex items-end">Propietarios</div>
+              <div className="flex items-end">
+                {literals.colectionDetail.owners}
+              </div>
             </div>
             <div className="flex flex-col gap-3 items-center">
               <div className="flex text-xl">
@@ -697,7 +720,7 @@ export const CollectionDetailContainer = () => {
                   type="text"
                   value={queryText}
                   className={`px-4 py-2 outline-none dark:bg-dark-1`}
-                  placeholder="Buscar Items..."
+                  placeholder={literals.navbar.searchItems}
                 />
               </div>
               <div className="flex flex-row items-center gap-2">
@@ -838,6 +861,12 @@ export const CollectionDetailContainer = () => {
           showModal={showRedirect}
           handleCloseModal={() => setShowRedirect(false)}
         />
+        <OwnersModal
+          owners={collectionInfo?.owners}
+          link={detailLink}
+          showModal={showOwners}
+          handleCloseModal={() => setShowOwners(false)}
+        />
       </div>
     </PageWithLoading>
   );
@@ -857,7 +886,7 @@ const ItemPageOption = ({
     <div
       className={`${
         disabled ? "cursor-not-allowed" : "cursor-pointer"
-      } p-2 hover b ${position === "last" ? "" : "border-r"} ${
+      } p-2 hover ${
         disabled
           ? "dark:text-gray-600 text-gray-200"
           : "dark:hover:text-gray-400 hover:text-gray-400"

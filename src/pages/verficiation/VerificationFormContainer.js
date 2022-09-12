@@ -11,9 +11,9 @@ import { InfoCard } from "../../components/InfoCard";
 emailjs.init("A9IZio99Pk7PWQVes");
 
 export const VerificationFormContainer = () => {
-  const { newVerifyRequest } = useApi();
+  const { newVerifyRequest, setUserEmail } = useApi();
   const { wallet } = useAccount();
-  const [{ verifiedAddress, userProfile }] = useStateContext();
+  const [{ verifiedAddress, userProfile, literals }] = useStateContext();
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
   const [description, setDescription] = useState("");
@@ -26,6 +26,7 @@ export const VerificationFormContainer = () => {
   const sendNewVerifyRequest = async () => {
     if (name !== "" && lastName !== "" && description !== "") {
       await newVerifyRequest(wallet, name, lastName, description, email);
+      await setUserEmail(wallet, email);
       setCompletedAction(true);
     }
   };
@@ -53,23 +54,23 @@ export const VerificationFormContainer = () => {
       <div className="flex flex-col items-center justify-center w-full gap-10 py-10 px-10">
         <div className="flex flex-col items-center gap-10">
           <div className="text-2xl font-bold">
-            Porqué verificarme cómo Artista?
+            {literals.verify.title}
           </div>
           <div className="flex flex-wrap gap-5 justify-center">
             <InfoCard
               icon="ic:round-build-circle"
-              title="Crear NFTs"
-              content="Podrás mintear y poner a la venta tus obras artísticas, beneficiandote de los royalties"
+              title= {literals.verify.title1}
+              content= {literals.verify.sentence1}
             />
             <InfoCard
               icon="fluent:people-community-add-28-filled"
-              title="Sugerir cambios"
-              content="Serás capaz de ayudar a escalar el marketplace, siendo recompensado"
+              title={literals.verify.title2}
+              content={literals.verify.sentence2}
             />
             <InfoCard
               icon="icon-park-solid:emotion-happy"
-              title="Fees reducidas"
-              content="Si eres un artista verificado, asumiremos gran parte de las comisiones"
+              title={literals.verify.title3}
+              content={literals.verify.sentence3}
             />
           </div>
         </div>

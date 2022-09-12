@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { Dialog } from "@headlessui/react";
 import { Check } from "../lottie/Check";
 import ActionButton from "../ActionButton";
+import { useStateContext } from "../../context/StateProvider";
+
 
 export const ActionModal = ({
   children,
@@ -20,6 +22,7 @@ export const ActionModal = ({
   const [loadingAction, setLoadingAction] = useState(false);
   const [completed, setCompleted] = useState(false);
   const [error, setError] = useState(false);
+  const [{literals}] = useStateContext();
 
   const handleSumbit = async () => {
     setLoadingAction(true);
@@ -87,7 +90,7 @@ export const ActionModal = ({
                   />
                   {error && (
                     <p className="text-red-600">
-                      Ha ocurrido un error al realizar la acción
+                      {literals.actionModal.error}
                     </p>
                   )}
                 </div>
