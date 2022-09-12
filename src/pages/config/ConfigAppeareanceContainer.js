@@ -64,10 +64,10 @@ export default function ConfigAppeareanceContainer() {
           text={literals.userMenu.darkMode}
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
         />
-        <UserMenuItemToggle
+        {/*  <UserMenuItemToggle
           text={literals.userMenu.autoDarkMode}
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-        />
+        /> */}
       </div>
 
       <div className="flex w-full gap-10 mt-6">
