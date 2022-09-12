@@ -375,15 +375,13 @@ export default function EditContainer() {
       ) : (
         <>
           {!isOwner ? (
-            <NotOwner
-              text={"No puedes editar el item, No eres el propietario."}
-            />
+            <NotOwner text={literals.createItem.notOwnerEdit} />
           ) : (
             <NotOwner
               text={
                 hasMetadataFreezed
-                  ? "El item no puede ser editado, tiene su metadata congelada"
-                  : "No puedes editar la colección, No eres el propietario de la colección."
+                  ? literals.createItem.isFreezed
+                  : literals.createItem.notOwnerEdit2
               }
             />
           )}
