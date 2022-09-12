@@ -11,6 +11,15 @@ const engLiterals = {
     buttonVerify: "Verify Account",
     buttonSuggestion: "Suggest changes",
   },
+  verify:{
+    title: "Why verify myself as an Artist?",
+    title1: "Create NFTs",
+    sentence1: "You will be able to mint and put your artistic works up for sale, benefiting from the royalties",
+    title2: "Suggest changes",
+    sentence2: "You will be able to help scale the marketplace, being rewarded",
+    title3: "Reduced fees",
+    sentence3: "If you are a verified artist, we will assume a large part of the commissions",
+  },
   navbar: {
     searchItems: "Search Items...",
     verify: "Verify Your Account!",
@@ -463,6 +472,15 @@ const espLiterals = {
     buttonExplore: "Explorar",
     buttonVerify: "Verifícate",
     buttonSuggestion: "Sugerir cambios",
+  },
+  verify:{
+    title: "Porqué verificarme cómo Artista?",
+    title1: "Crear NFTs",
+    sentence1: "Podrás mintear y poner a la venta tus obras artísticas, beneficiandote de los royalties",
+    title2: "Sugerir cambios",
+    sentence2: "Serás capaz de ayudar a escalar el marketplace, siendo recompensado",
+    title3: "Fees reducidas",
+    sentence3: "Si eres un artista verificado, asumiremos gran parte de las comisiones",
   },
   navbar: {
     searchItems: "Buscar Items...",
