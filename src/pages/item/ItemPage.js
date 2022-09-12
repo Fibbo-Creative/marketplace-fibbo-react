@@ -1042,7 +1042,7 @@ export default function ItemPage() {
                                   ? setOpenConnectionModal(true)
                                   : setOpenModifyOfferModal(true)
                               }
-                              text="Modificar oferta"
+                              text={literals.actions.modifyOffer}
                             />
                             <ActionButton
                               size="small"
@@ -1051,7 +1051,7 @@ export default function ItemPage() {
                                   ? setOpenConnectionModal(true)
                                   : setOpenCancelOfferModal(true)
                               }
-                              text="Cancelar Oferta"
+                              text={literals.actions.cancelOffer}
                             />
                           </>
                         )}
@@ -1080,15 +1080,26 @@ export default function ItemPage() {
                             text={literals.actions.makeOffer}
                           />
                         ) : (
-                          <ActionButton
-                            size="small"
-                            buttonAction={() =>
-                              !wallet
-                                ? setOpenConnectionModal(true)
-                                : setOpenCancelOfferModal(true)
-                            }
-                            text="Cancelar Oferta"
-                          />
+                          <>
+                            <ActionButton
+                              size="small"
+                              buttonAction={() =>
+                                !wallet
+                                  ? setOpenConnectionModal(true)
+                                  : setOpenModifyOfferModal(true)
+                              }
+                              text={literals.actions.modifyOffer}
+                            />
+                            <ActionButton
+                              size="small"
+                              buttonAction={() =>
+                                !wallet
+                                  ? setOpenConnectionModal(true)
+                                  : setOpenCancelOfferModal(true)
+                              }
+                              text={literals.actions.cancelOffer}
+                            />
+                          </>
                         )}
                       </>
                     )}

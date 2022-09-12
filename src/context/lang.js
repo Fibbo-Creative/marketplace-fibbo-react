@@ -255,6 +255,8 @@ const engLiterals = {
     cancel: "Cancel",
     buy: "Buy",
     createNFT: "Create NFT",
+    modifyOffer: "Modify Offer",
+    cancelOffer: "Cancel Offer",
   },
   modals: {
     connectSentence: "Connect a wallet",
@@ -275,6 +277,7 @@ const engLiterals = {
     notEnoughWftm: "Not enough {0} to buy the item",
     offerMade: "Succesfully placed offer for  {0} {1}",
     bidPlaced: "Succesfully placed  bid for  {0} {1}",
+    close: "Cerrar",
   },
   acceptOfferModal: {
     acceptOffer: "Accept offer",
@@ -736,6 +739,8 @@ const espLiterals = {
     cancel: "Cancelar",
     buy: "Comprar",
     createNFT: "Crear NFT",
+    modifyOffer: "Modificar Oferta",
+    cancelOffer: "Cancelar Oferta",
   },
   modals: {
     connectSentence: "Conectar una billetera",
@@ -756,6 +761,7 @@ const espLiterals = {
     notEnoughWftm: "No tienes suficientes {0} para comprar el item",
     offerMade: "Oferta por {0} {1} creada correctamente",
     bidPlaced: "Puja por {0} {1} creada correctamente",
+    close: "Cerrar",
   },
   acceptOfferModal: {
     acceptOffer: "Aceptar oferta",

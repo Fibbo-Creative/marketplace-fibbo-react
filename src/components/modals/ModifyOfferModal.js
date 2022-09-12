@@ -65,14 +65,14 @@ export default function ModifyOfferModal({
   }, [updatedWFTM]);
   return (
     <ActionModal
-      title={literals.ModifyOfferModal.modifyOffer}
+      title={literals.modifyOfferModal.modifyOffer}
       size="large"
       showModal={showModal}
       handleCloseModal={handleCloseModal}
       onSubmit={() => handleMakeOffer()}
-      submitLabel={literals.ModifyOfferModal.update}
-      completedText={literals.ModifyOfferModal.offerUpdated}
-      completedLabel={literals.ModifyOfferModal.viewOffer}
+      submitLabel={literals.modifyOfferModal.update}
+      completedText={literals.modifyOfferModal.offerUpdated}
+      completedLabel={literals.modifyOfferModal.viewOffer}
       completedAction={handleCloseModal}
       submitDisabled={
         parseFloat(wftmBalance) < parseFloat(offerPrice) ||
@@ -84,7 +84,7 @@ export default function ModifyOfferModal({
         <div className="flex flex-col gap-4">
           <div className="flex flex-col items-center">
             <Erc20AmountInput
-              label={literals.ModifyOfferModal.price}
+              label={literals.modifyOfferModal.price}
               value={offerPrice}
               onChange={setOfferPrice}
               error={parseFloat(wftmBalance) < parseFloat(offerPrice)}
@@ -95,7 +95,7 @@ export default function ModifyOfferModal({
             />
           </div>
           <DateTimeInput
-            label={literals.ModifyOfferModal.expires}
+            label={literals.modifyOfferModal.expires}
             valueDate={expireDate}
             valueHour={expireHour}
             onChangeDate={setExpireDate}
