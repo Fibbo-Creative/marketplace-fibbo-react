@@ -35,6 +35,7 @@ export const useMarketplace = () => {
       wallet,
       marketContract.address
     );
+
     if (!isApproved) {
       await approvalForAllGasless(ERC721contract, marketContract.address, true);
       await sleep(5000);

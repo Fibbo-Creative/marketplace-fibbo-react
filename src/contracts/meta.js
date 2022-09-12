@@ -12,7 +12,6 @@ export const sendMetaTx = async (contract, provider, signer, txParams) => {
   const { functionName, args } = txParams;
 
   const forwarder = createForwarderInstance(provider);
-
   const from = await signer.getAddress();
 
   const data = contract.interface.encodeFunctionData(functionName, args);
