@@ -1,8 +1,11 @@
+import { Contracts } from "../constants/networks";
 import { createForwarderInstance } from "./forwarder";
 import { signMetaTxRequest } from "./signer";
+import { ChainId } from "@sushiswap/sdk";
 
+const autotaksURL = Contracts[ChainId.FANTOM_TESTNET].autotaskURL;
 export const sendMetaTx = async (contract, provider, signer, txParams) => {
-  const url = process.env.REACT_APP_WEBHOOK_URL;
+  const url = autotaksURL;
   if (!url) throw new Error(`Missing relayer url`);
 
   const { functionName, args } = txParams;

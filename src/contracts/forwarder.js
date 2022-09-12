@@ -1,5 +1,9 @@
 import { ethers } from "ethers";
-const address = "0x7687D1fcF56779b19beCBFae93cabAD1EA77878b";
+import { ChainId } from "@sushiswap/sdk";
+import { Contracts } from "../constants/networks";
+
+const minimalForwarder = Contracts[ChainId.FANTOM_TESTNET].minimalForwarder;
+
 const abi = [
   { inputs: [], stateMutability: "nonpayable", type: "constructor" },
   {
@@ -59,5 +63,5 @@ const abi = [
 ];
 
 export function createForwarderInstance(provider) {
-  return new ethers.Contract(address, abi, provider);
+  return new ethers.Contract(minimalForwarder, abi, provider);
 }
