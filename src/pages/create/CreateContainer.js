@@ -155,7 +155,6 @@ export default function CreateContainer() {
         setCollectionsSelected(_collection);
       }
 
-      console.log(_collection);
       if (!_collection) setIsOwner(false);
       else setIsOwner(_collection.creator === wallet);
 
