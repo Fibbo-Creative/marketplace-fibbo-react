@@ -1,6 +1,15 @@
 const engLiterals = {
   home: {
     slogan: "FIBBO : The art of expressing youre art",
+    sentence1: "Marketplace focused with special emphasis on artists and content creators.",
+    title2: "Join our community",
+    sentence2: "Verify yourself as an Artist and contribute your talent to the ecosystem. Enjoy the advantages of being part of our active community",
+    title3: "Help us create your ideal product",
+    sentence3: "Suggest changes to the Marketplace and get rewarded for your help",
+    buttonCreate: "Create",
+    buttonExplore: "Explore",
+    buttonVerify: "Verify Account",
+    buttonSuggestion: "Suggest changes",
   },
   navbar: {
     searchItems: "Search Items...",
@@ -445,6 +454,15 @@ const engLiterals = {
 const espLiterals = {
   home: {
     slogan: "FIBBO : El Arte de expresar tu Arte",
+    sentence1: "Marketplace enfocado con especial énfasis en artistas y creadores de contenido.",
+    title2: "Únete a nuestra comunidad",
+    sentence2: "Verifícate cómo Artista y aporta tu talento al ecosistema. Disfruta de las ventajas de ser parte de nuestra comunidad activa",
+    title3: "Ayúdanos a crear tu producto ideal",
+    sentence3: "Sugiere cambios a realizar en el Marketplace y recibe recompensas por tu ayuda",
+    buttonCreate: "Crear",
+    buttonExplore: "Explorar",
+    buttonVerify: "Verifícate",
+    buttonSuggestion: "Sugerir cambios",
   },
   navbar: {
     searchItems: "Buscar Items...",
