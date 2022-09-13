@@ -322,6 +322,7 @@ export default function CreateCollectionContainer() {
               backgroundImage={true}
               className="rounded-xl w-[300px] h-[200px]"
               onFileSelected={onSelectMainImage}
+              setImageURL={setMainImage}
               imageError={mainImageError}
               imageMessageError={mainImageMessageError}
               icon={true}
@@ -339,6 +340,7 @@ export default function CreateCollectionContainer() {
               inputId="bannerImageInput"
               className="rounded-xl w-11/12 h-[130px] sm:w-[600px] sm:h-[200px]"
               onFileSelected={onSelectBannerImage}
+              setImageURL={setBannerImage}
               imageError={bannerImageError}
               imageMessageError={bannerImageMessageError}
               icon={true}

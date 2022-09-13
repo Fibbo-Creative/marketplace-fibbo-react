@@ -117,7 +117,9 @@ export default function NftCard({ item, onClick, isSmall, selectFavorite }) {
                   isSmall && "text-xs"
                 } text-gray-500 dark:text-gray-300`}
               >
-                {isSmall ? literals.detailNFT.offer : literals.detailNFT.bidBy}
+                {isSmall
+                  ? literals.detailNFT.offerOf
+                  : literals.detailNFT.offerOf}
               </div>
               <img src={item?.offer?.payToken.image} width={22} />
               <div>{item.offer.price} </div>

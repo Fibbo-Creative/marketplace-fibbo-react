@@ -85,7 +85,6 @@ const engLiterals = {
     expires: "Expires",
     expiresIn: "Expires in",
     actions: "Actions",
-
     explicitContent: "This article may contain explicit content",
     favorite: "Favorite",
     starts: "Starts in",
@@ -112,6 +111,7 @@ const engLiterals = {
     createAuction: "Start Auction",
     update: "Update",
     cancel: "Cancel",
+    offeredFor: "Offered for",
   },
   itemPage: {
     chainData: "Chain Data",
