@@ -42,29 +42,12 @@ import RedirectModal from "../../components/modals/RedirectModal";
 import ModifyOfferModal from "../../components/modals/ModifyOfferModal";
 import TransferModal from "../../components/modals/TransferModal";
 import DeleteItemModal from "../../components/modals/DeleteItemModal";
+import { formatLiteral } from "../../utils/language";
 
 const formatPriceInUsd = (price) => {
   let priceStr = price.toString().split(".");
   let finalPrice = `${priceStr[0]},${priceStr[1]}`;
   return finalPrice;
-};
-
-const formatDate = (datetime) => {
-  const nowTimestamp = Math.floor(new Date().getTime() / 1000);
-  const period = datetime - nowTimestamp;
-
-  const days = Math.round(period / 3600 / 24);
-  if (days === 0) {
-    const hours = Math.round(period / 3600);
-    if (hours === 0) {
-      const minutes = Math.round(period / 60);
-      return `${minutes} ${minutes > 1 ? "minutos " : "minuto"}`;
-    } else {
-      return `${hours} ${hours > 1 ? "horas" : "hora"}`;
-    }
-  } else {
-    return `${days} ${days > 1 ? "días" : "día"}`;
-  }
 };
 
 export default function ItemPage() {
@@ -154,6 +137,30 @@ export default function ItemPage() {
   const offers = useRef([]);
   const listing = useRef(null);
   const auctionInfo = useRef(null);
+
+  const formatDate = (datetime) => {
+    const nowTimestamp = Math.floor(new Date().getTime() / 1000);
+    const period = datetime - nowTimestamp;
+
+    const days = Math.round(period / 3600 / 24);
+    if (days === 0) {
+      const hours = Math.round(period / 3600);
+      if (hours === 0) {
+        const minutes = Math.round(period / 60);
+        return `${minutes} ${
+          minutes > 1 ? literals.detailNFT.minutes : literals.detailNFT.minute
+        }`;
+      } else {
+        return `${hours} ${
+          hours > 1 ? literals.detailNFT.hours : literals.detailNFT.hour
+        }`;
+      }
+    } else {
+      return `${days} ${
+        days > 1 ? literals.detailNFT.days : literals.detailNFT.day
+      }`;
+    }
+  };
 
   const auctionStarted =
     new Date().getTime() / 1000 >= auctionInfo?.current?.startTime;
@@ -839,7 +846,7 @@ export default function ItemPage() {
                       />
                       <p className="text-md">
                         {isOwner ? (
-                          `You (${profileOwnerData?.current.username})`
+                          `${literals.detailNFT.you} (${profileOwnerData?.current.username})`
                         ) : (
                           <>
                             {profileOwnerData?.current.username ===
@@ -862,7 +869,7 @@ export default function ItemPage() {
                   className="flex bg-gray-800 cursor-pointer  items-center text-gray-500 text-lg border-gray border-2 p-3 rounded-md gap-3"
                 >
                   <Icon icon="dashicons:unlock" width={48} />
-                  <div>Ver contendido adicional</div>
+                  <div>{literals.detailNFT.seeAdditional}</div>
                 </div>
               )}
               <div className="flex flex-col justify-center flex-wrap py-3 rounded-md ">
@@ -871,20 +878,22 @@ export default function ItemPage() {
                     <div className="">
                       <div className="pt-2">
                         {auctionStarted
-                          ? `La subasta termina en ${formatDate(
-                              auctionInfo.current?.endTime
-                            )}(${new Date(
-                              auctionInfo.current?.endTime * 1000
-                            ).toLocaleString()})`
-                          : `La subasta empieza en en ${formatDate(
-                              auctionInfo.current?.startTime
-                            )} (${new Date(
-                              auctionInfo.current?.startTime * 1000
-                            ).toLocaleString()})`}
+                          ? formatLiteral(literals.detailNFT.bidStarts, [
+                              formatDate(auctionInfo.current?.endTime),
+                              new Date(
+                                auctionInfo.current?.endTime * 1000
+                              ).toLocaleString(),
+                            ])
+                          : formatLiteral(literals.detailNFT.bidStarts, [
+                              formatDate(auctionInfo.current?.endTime),
+                              new Date(
+                                auctionInfo.current?.endTime * 1000
+                              ).toLocaleString(),
+                            ])}
                       </div>
                       <div className="flex flex-col gap-4 border-t mt-2 pt-5 border-b pb-5 ">
                         <div className="flex flex-col md:flex-row items-center justify-between gap-3 ">
-                          <p>Precio Reservado</p>
+                          <p>{literals.detailNFT.reservedPrice}</p>
                           <div className="flex items-center  gap-2">
                             <img
                               width={32}
@@ -907,7 +916,7 @@ export default function ItemPage() {
                           </div>
                         </div>
                         <div className="flex flex-col md:flex-row items-center justify-between  gap-3 ">
-                          <p>Precio Compra ya</p>
+                          <p>{literals.detailNFT.buyNowPrice}</p>
                           <div className="flex items-center  gap-2">
                             <img
                               width={32}
@@ -992,7 +1001,7 @@ export default function ItemPage() {
                     <div>
                       {isForSale && (
                         <>
-                          <p>Precio Actual</p>
+                          <p>{literals.detailNFT.actualPrice}</p>
                           <div className="flex flex-row items-center gap-3 ">
                             <img
                               width={32}
@@ -1067,7 +1076,7 @@ export default function ItemPage() {
                               ? setOpenConnectionModal(true)
                               : setOpenBuyModal(true)
                           }
-                          text="Comprar NFT"
+                          text={literals.actions.buy}
                         />
                         {!myOffer ? (
                           <ActionButton
@@ -1136,7 +1145,7 @@ export default function ItemPage() {
                               ? setOpenConnectionModal(true)
                               : setOpenChangePriceModal(true)
                           }
-                          text="Cambiar Precio"
+                          text={literals.actions.changePrice}
                         />
                         <ActionButton
                           size="small"
@@ -1145,7 +1154,7 @@ export default function ItemPage() {
                               ? setOpenConnectionModal(true)
                               : setOpenUnlistItemModal(true)
                           }
-                          text="Quitar en venta"
+                          text={literals.actions.unlist}
                         />
                       </div>
                     )}
