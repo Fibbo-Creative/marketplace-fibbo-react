@@ -68,10 +68,13 @@ export const useWFTMContract = () => {
     const userProvider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = userProvider.getSigner();
     const from = await signer.getAddress();
-    return await sendMetaTx(contract, provider, signer, {
+
+    const tx = await contract.withdraw(value);
+    await tx.wait();
+    /* return await sendMetaTx(contract, provider, signer, {
       functionName: "withdraw",
       args: [value],
-    });
+    }); */
   };
 
   const wrapFTM = async (isImported, wallet, value, from) => {

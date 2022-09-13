@@ -224,7 +224,7 @@ export const ItemDirectOffers = ({
                       <div>
                         {isOwner && (
                           <ActionButton
-                            text="Acceptar"
+                            text={literals.actions.accpet}
                             size="smaller"
                             buttonAction={() => handleShowAcceptOffer(offer)}
                           />
@@ -232,7 +232,7 @@ export const ItemDirectOffers = ({
                         {wallet === offer.creator.wallet && (
                           <>
                             <ActionButton
-                              text="Cancelar"
+                              text={literals.actions.cancel}
                               size="smaller"
                               buttonAction={() => handleShowRemoveOffer(offer)}
                             />

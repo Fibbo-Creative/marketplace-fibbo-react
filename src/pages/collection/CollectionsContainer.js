@@ -97,7 +97,7 @@ export default function CollectionsContainer() {
                   >
                     <img
                       src={col.logoImage}
-                      className="object-cover rounded-lg"
+                      className="object-cover rounded-lg w-[150px] h-[150px]"
                       alt={`colection-${col._id}`}
                     />
                   </div>
