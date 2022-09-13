@@ -36,7 +36,8 @@ export const Erc20AmountInput = ({
     setSelectedToken(token);
     if (token.name === "WFTM") {
       const wftBalance = await getWFTMBalance(wallet);
-      setTokenBalance(formatEther(wftBalance.toString()));
+
+      setTokenBalance(formatEther(wftBalance));
     }
     setOpenSelect(false);
   };
@@ -64,9 +65,10 @@ export const Erc20AmountInput = ({
       let _payTokens = await getAllPayTokens();
       setPayTokens(_payTokens);
       setSelectedToken(_payTokens[0]);
-      if (_payTokens[0].name === "WFTM") {
+      if (_payTokens[0].name === "FBOFTM") {
         const wftBalance = await getWFTMBalance(wallet);
-        setTokenBalance(formatEther(wftBalance.toString()));
+
+        setTokenBalance(formatEther(wftBalance));
       }
       const CoinGeckoClient = new CoinGecko();
       let data = await CoinGeckoClient.simple.price({ ids: ["fantom"] });

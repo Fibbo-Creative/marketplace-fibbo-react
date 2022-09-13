@@ -10,6 +10,7 @@ import { useAuction } from "./auction";
 import useProvider from "../hooks/useProvider";
 import { sendMetaTx } from "./meta";
 import { Contracts } from "../constants/networks";
+import { formatEther } from "ethers/lib/utils";
 
 const tokenSymbol = "FBOFTM";
 const tokenDecimals = 18;
