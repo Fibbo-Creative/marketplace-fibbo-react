@@ -85,6 +85,7 @@ const engLiterals = {
     expires: "Expires",
     expiresIn: "Expires in",
     actions: "Actions",
+
     explicitContent: "This article may contain explicit content",
     favorite: "Favorite",
     starts: "Starts in",
@@ -270,6 +271,7 @@ const engLiterals = {
     modifyOffer: "Modify Offer",
     cancelOffer: "Cancel Offer",
     unlist: "Unlist",
+    editNFT: "Edit NFT",
   },
   modals: {
     connectSentence: "Connect a wallet",
@@ -767,6 +769,7 @@ const espLiterals = {
     modifyOffer: "Modificar Oferta",
     cancelOffer: "Cancelar Oferta",
     unlist: "Quitar en venta",
+    editNFT: "Editar NFT",
   },
   modals: {
     connectSentence: "Conectar una billetera",

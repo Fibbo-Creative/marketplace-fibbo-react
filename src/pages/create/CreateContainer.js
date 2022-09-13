@@ -157,10 +157,8 @@ export default function CreateContainer() {
 
       if (!_collection) setIsOwner(false);
       else setIsOwner(_collection.creator === wallet);
-
-      setLoading(false);
     };
-    fetchData();
+    fetchData().then(() => setLoading(false));
   }, [wallet, connectToWallet]);
 
   return (

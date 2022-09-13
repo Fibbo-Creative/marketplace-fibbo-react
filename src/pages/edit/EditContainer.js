@@ -16,6 +16,8 @@ import { ImageInput } from "../../components/inputs/ImageInput";
 import { NotOwner } from "../../components/basic/NotOwner";
 import { useCollections } from "../../contracts/collection";
 
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 const validateName = (name) => {
   if (name.length > 4 && name.length < 30) return true;
   else return false;
@@ -75,7 +77,7 @@ export default function EditContainer() {
     setExternalLink(nftData.externalLink);
 
     const collectionInfo = await getCollectionInfo(collection);
-
+    setIsOwner(collectionInfo.creator === wallet);
     setCollectionSelected(collectionInfo);
 
     if (nftData.additionalContent) {
@@ -88,9 +90,6 @@ export default function EditContainer() {
       tokenId
     );
     setHasMetadataFreezed(isFreezed);
-    setIsOwner(collectionInfo.creator === wallet);
-
-    setLoading(false);
   };
 
   const onFileSelected = async (e) => {
@@ -200,7 +199,7 @@ export default function EditContainer() {
   useEffect(() => {
     const fetchData = async () => {
       await connectToWallet();
-      getItemDetails();
+      getItemDetails().then(() => setLoading(false));
     };
     fetchData();
   }, [wallet]);
@@ -347,7 +346,7 @@ export default function EditContainer() {
                 <ActionButton
                   variant={"contained"}
                   size="large"
-                  text={literals.actions.createNFT}
+                  text={literals.actions.editNFT}
                   buttonAction={handleEdit}
                 />
               </div>
