@@ -12,6 +12,8 @@ import { NotOwner } from "../../../components/basic/NotOwner";
 import { HelpTooltip } from "../../../components/tooltips/HelpTooltip";
 import { useStateContext } from "../../../context/StateProvider";
 
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export default function EditCollectionContainer() {
   const {
     uploadImgToCDN,
@@ -313,33 +315,35 @@ export default function EditCollectionContainer() {
     }
   };
 
+  const getCollectionDetails = async () => {
+    const collectionDetail = await getCollectionDetail(collection);
+    setIsOwner(collectionDetail.creator === wallet);
+
+    setCollectionInfo(collectionDetail);
+
+    setName(collectionDetail.name);
+    setLogoImage(collectionDetail.logoImage);
+    setMainImage(collectionDetail.featuredImage);
+    setBannerImage(collectionDetail.bannerImage);
+    setDesc(collectionDetail.description);
+    setExplicitContent(collectionDetail.explicitContent);
+
+    setUrl(
+      `https://fibbo-market.web.app/collection/${collectionDetail.customURL}`
+    );
+    setWebsite(collectionDetail.websiteURL);
+    setDiscord(collectionDetail.discordURL);
+    setInstagram(collectionDetail.instagramURL);
+    setTelegram(collectionDetail.telegramURL);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       await connectToWallet();
-      const collectionDetail = await getCollectionDetail(collection);
-      setIsOwner(collectionDetail.creator === wallet);
-
-      /* if (collectionDetail.creator !== wallet) {
-        navigate("/myCollections");
-      } */
-      setCollectionInfo(collectionDetail);
-
-      setName(collectionDetail.name);
-      setLogoImage(collectionDetail.logoImage);
-      setMainImage(collectionDetail.featuredImage);
-      setBannerImage(collectionDetail.bannerImage);
-      setDesc(collectionDetail.description);
-      setExplicitContent(collectionDetail.explicitContent);
-
-      setUrl(
-        `https://fibbo-market.web.app/collection/${collectionDetail.customURL}`
-      );
-      setWebsite(collectionDetail.websiteURL);
-      setDiscord(collectionDetail.discordURL);
-      setInstagram(collectionDetail.instagramURL);
-      setTelegram(collectionDetail.telegramURL);
-
-      setLoading(false);
+      await getCollectionDetails().then(async () => {
+        await sleep(2000);
+        setLoading(false);
+      });
     };
     fetchData();
     // TO DO -> Recuperar todos los datos de la colección
@@ -528,7 +532,9 @@ export default function EditCollectionContainer() {
           </div>
         </div>
       ) : (
-        <NotOwner text={literals.editCollection.notAllowed} />
+        <>
+          {!loading && <NotOwner text={literals.editCollection.notAllowed} />}
+        </>
       )}
     </PageWithLoading>
   );
