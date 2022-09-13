@@ -1131,7 +1131,7 @@ export default function ItemPage() {
                               ? setOpenConnectionModal(true)
                               : setOpenCreateAuction(true)
                           }
-                          text={literals.detailNFT.crateAuction}
+                          text={literals.detailNFT.createAuction}
                         />
                       </>
                     )}
