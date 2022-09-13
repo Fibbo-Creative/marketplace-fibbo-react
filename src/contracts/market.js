@@ -180,7 +180,6 @@ export const useMarketplace = () => {
 
     offerPrice = parseEther(offerPrice.toString());
     let allowance = await erc20.allowance(buyer, marketContract.address);
-    console.log(formatEther(allowance), formatEther(offerPrice));
     if (allowance.lt(offerPrice)) {
       await sendMetaTx(erc20, provider, signer, {
         functionName: "approve",

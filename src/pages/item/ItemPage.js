@@ -240,8 +240,6 @@ export default function ItemPage() {
       collectionResponse.contractAddress
     );
 
-    console.log(await contract.ownerOf(tokenId));
-
     const isFreezed = await contract.isFreezedMetadata(tokenId);
     setIsFreezedMetadata(isFreezed);
     if (wallet) {

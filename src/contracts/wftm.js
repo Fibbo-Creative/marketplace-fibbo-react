@@ -3,20 +3,13 @@ import { ChainId } from "@sushiswap/sdk";
 import { WFTM_ABI } from "./abi";
 import { calculateGasMargin, getHigherGWEI } from "../utils/gas";
 import useContract from "../hooks/useContract";
-import { ethers } from "ethers";
+import { Contract, ethers } from "ethers";
 import { useMarketplace } from "./market";
 import { useApi } from "../api";
 import { useAuction } from "./auction";
 import useProvider from "../hooks/useProvider";
-import { createForwarderInstance } from "./forwarder";
-import { signMetaTxRequest } from "./signer";
-import { formatEther, parseEther } from "ethers/lib/utils";
 import { sendMetaTx } from "./meta";
-
-const WFTM_ADDRESS = {
-  [ChainId.FANTOM]: "0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83",
-  [ChainId.FANTOM_TESTNET]: "0x4EEf747dC4f5d110d9bCfA5C6F24b3359bD4B2d4",
-};
+import { Contracts } from "../constants/networks";
 
 const tokenSymbol = "FBOFTM";
 const tokenDecimals = 18;
@@ -34,7 +27,7 @@ export const useWFTMContract = () => {
   const { getAuctionContract } = useAuction();
   const { createProvider } = useProvider();
 
-  const wftmAddress = WFTM_ADDRESS[CHAIN];
+  const wftmAddress = Contracts[CHAIN].wftmAddress;
 
   const getWFTMContract = async () => await getContract(wftmAddress, WFTM_ABI);
 
@@ -69,12 +62,10 @@ export const useWFTMContract = () => {
     const signer = userProvider.getSigner();
     const from = await signer.getAddress();
 
-    const tx = await contract.withdraw(value);
-    await tx.wait();
-    /* return await sendMetaTx(contract, provider, signer, {
+    return await sendMetaTx(contract, provider, signer, {
       functionName: "withdraw",
       args: [value],
-    }); */
+    });
   };
 
   const wrapFTM = async (isImported, wallet, value, from) => {
