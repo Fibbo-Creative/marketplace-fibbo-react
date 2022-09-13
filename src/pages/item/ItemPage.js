@@ -939,7 +939,7 @@ export default function ItemPage() {
                           </div>
                         </div>
                         <div className="flex flex-row justify-between border-t mt-2 pt-4 gap-6">
-                          <div>Puja mas alta: </div>
+                          <div>{literals.detailNFT.highestBid}:</div>
                           <div className="flex items-center  gap-2">
                             {highestBid ? (
                               <>
@@ -1122,7 +1122,7 @@ export default function ItemPage() {
                               ? setOpenConnectionModal(true)
                               : setOpenSellModal(true)
                           }
-                          text="Poner en Venta"
+                          text={literals.detailNFT.putForSale}
                         />
                         <ActionButton
                           size="small"
@@ -1131,7 +1131,7 @@ export default function ItemPage() {
                               ? setOpenConnectionModal(true)
                               : setOpenCreateAuction(true)
                           }
-                          text="Subastar Item"
+                          text={literals.detailNFT.crateAuction}
                         />
                       </>
                     )}
@@ -1168,7 +1168,7 @@ export default function ItemPage() {
                               ? setOpenConnectionModal(true)
                               : setOpenUpdateAuctionModal(true)
                           }
-                          text="Actualizar"
+                          text={literals.detailNFT.update}
                         />
                         {!highestBid && (
                           <ActionButton
@@ -1178,7 +1178,7 @@ export default function ItemPage() {
                                 ? setOpenConnectionModal(true)
                                 : setOpenCancelAuctionModal(true)
                             }
-                            text="Cancelar"
+                            text={literals.detailNFT.cancel}
                           />
                         )}
                       </>
