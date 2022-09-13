@@ -387,6 +387,7 @@ export default function EditCollectionContainer() {
                 info={literals.createCollection.imgPrincipalDesc}
                 label={literals.createCollection.imgPrincipal}
                 inputId="mainImageInput"
+                setImageURL={setMainImage}
                 backgroundImage={true}
                 className="rounded-xl w-[300px] h-[200px]"
                 onFileSelected={onSelectMainImage}
@@ -401,6 +402,7 @@ export default function EditCollectionContainer() {
             <div className="flex pt-[30px]">
               <ImageInput
                 imageURL={bannerImage}
+                setImageURL={setBannerImage}
                 info={literals.createCollection.bannerDesc}
                 label={literals.createCollection.banner}
                 backgroundImage={true}
