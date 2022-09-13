@@ -18,10 +18,10 @@ const WFTM_ADDRESS = {
   [ChainId.FANTOM_TESTNET]: "0x4EEf747dC4f5d110d9bCfA5C6F24b3359bD4B2d4",
 };
 
-const tokenSymbol = "WFTM";
+const tokenSymbol = "FBOFTM";
 const tokenDecimals = 18;
 const tokenImage =
-  "https://cdn.sanity.io/images/lmw8etck/dev-cdn/c96c66316b7cb8a818dfa7ac7ae1e836ace2067f-128x128.png";
+  "https://cdn.sanity.io/images/lmw8etck/dev-cdn/7d85bd9e849d164e634a3d72c9ee679be6370559-128x128.png";
 
 // eslint-disable-next-line no-undef
 const isMainnet = false;

@@ -59,6 +59,7 @@ export default function CreateContainer() {
           true,
           isExplicit
         );
+        console.log(sanity);
         setIpfsImageUrl(`https://ipfs.io/ipfs/${ipfs}`);
 
         if (error) {

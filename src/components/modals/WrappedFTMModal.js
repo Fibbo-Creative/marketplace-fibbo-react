@@ -18,8 +18,7 @@ export default function WrappedFTMModal({
   handleCloseModal,
   wallet,
 }) {
-  const { getWFTMBalance, wrapFTM, unwrapFTM, unwrapFTMGassless } =
-    useWFTMContract();
+  const { getWFTMBalance, wrapFTM, unwrapFTMGassless } = useWFTMContract();
   const [{ userProfile, literals }, dispatch] = useStateContext();
   const [ftmAmount, setFtmAmount] = useState(0);
   const [completedAction, setCompletedAction] = useState(false);
@@ -151,7 +150,7 @@ export default function WrappedFTMModal({
                 </div>
               </div>
               <div>
-                <div>wFTM</div>
+                <div>FBBOFTM</div>
                 <div className="flex">
                   <input
                     value={ftmAmount}
@@ -176,7 +175,7 @@ export default function WrappedFTMModal({
           ) : (
             <div className="my-10 mx-8 flex flex-col gap-10">
               <div>
-                <div>wFTM</div>
+                <div>FBOFTM</div>
                 <div className="flex">
                   <input
                     value={ftmAmount}
