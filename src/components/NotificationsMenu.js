@@ -10,7 +10,7 @@ export const NotificationsMenu = ({
   removeNotification,
 }) => {
   const ref = useRef(null);
-  const [{literals}] = useStateContext();
+  const [{ literals }] = useStateContext();
   const navigate = useNavigate();
 
   const redirectToItem = (notification) => {
@@ -81,9 +81,11 @@ export const NotificationsMenu = ({
     <>
       <div
         ref={ref}
-        className="w-[250px] md:w-[300px] bg-gray-100 dark:bg-dark-2 absolute  top-[60px] right-[200px]   z-20 flex flex-col  rounded-md"
+        className="w-[250px] md:w-[300px] bg-gray-100 dark:bg-dark-2 absolute  top-[60px] right-[50px] md:right-[200px]   z-20 flex flex-col  rounded-md"
       >
-        <div className="p-2 border-b">{literals.notifications.notifications}</div>
+        <div className="p-2 border-b">
+          {literals.notifications.notifications}
+        </div>
 
         {notifications.length > 0 ? (
           <div className="flex flex-col gap-2">
