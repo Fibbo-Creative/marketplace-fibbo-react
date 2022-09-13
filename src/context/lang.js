@@ -869,8 +869,8 @@ const espLiterals = {
     sellItem: "Poner Item en venta",
     viewUpdated: "Ver ítem acutalizado",
   },
-  RedirectModal: {
-    rredirect: "Redirección a link externo",
+  redirectModal: {
+    redirect: "Redirección a link externo",
     externalLink: "Vas a ser redireccionado a un enlace externo",
     fibboNotResponsable:
       "¡ FIBBO no se hace responsable de lo que pueda pasar !",
