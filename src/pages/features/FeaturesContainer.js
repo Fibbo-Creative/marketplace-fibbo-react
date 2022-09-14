@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FeatureItem } from "./components/FeatureItem";
 import ActionButton from "../../components/ActionButton";
 import NewFeatureModal from "./components/NewFeatureModal";
@@ -8,28 +8,42 @@ import { useNavigate } from "react-router-dom";
 import { useApi } from "../../api";
 import { PageWithLoading } from "../../components/basic/PageWithLoading";
 import { NotVerified } from "../../components/basic/NotVerified";
+import useAccount from "../../hooks/useAccount";
 
 export default function FeaturesContainer() {
-  const navigate = useNavigate();
-  const { getSuggestionsInProgress } = useCommunity();
+  const { wallet, connectToWallet } = useAccount();
   const [{ verifiedAddress, literals }] = useStateContext();
-  const { getProfileInfo } = useApi();
+  const { getProfileInfo, getActiveSuggestions, voteIntoSuggestion } = useApi();
 
   const [loading, setLoading] = useState(true);
   const [suggestionsInProgress, setSuggestionsInProgress] = useState([]);
   const [showNewSuggestion, setShowNewSuggestion] = useState(false);
 
-  const sortByProgress = (suggestionA, suggestionB) => {
-    let progressA = parseFloat(suggestionA.progress);
-    let totalAmountA = parseFloat(suggestionA.totalAmount);
+  const voteSuggestion = async (suggestion) => {
+    await voteIntoSuggestion(
+      wallet,
+      suggestion.title,
+      suggestion.proposer.wallet
+    );
 
-    let progressB = parseFloat(suggestionB.progress);
-    let totalAmountB = parseFloat(suggestionB.totalAmount);
+    let list = suggestionsInProgress.filter(
+      (item) =>
+        item.title !== suggestion.title &&
+        item.proposer.wallet !== suggestion.proposer.wallet
+    );
 
-    let progressPercentatgeA = (progressA / totalAmountA) * 100;
-    let progressPercentatgeB = (progressB / totalAmountB) * 100;
+    const updated = {
+      ...suggestion,
+      votes: suggestion.votes + 1,
+      voters: [...suggestion.voters, wallet],
+    };
+    let newList = [...list, updated];
+    console.log(sortSuggestions(newList));
+    setSuggestionsInProgress(sortSuggestions(newList));
+  };
 
-    if (progressPercentatgeA > progressPercentatgeB) {
+  const sortByVotes = (suggestionA, suggestionB) => {
+    if (suggestionA.votes > suggestionB.votes) {
       return -1;
     } else {
       return 1;
@@ -37,12 +51,13 @@ export default function FeaturesContainer() {
   };
 
   const sortSuggestions = (suggestions) => {
-    const sorted = suggestions.sort(sortByProgress);
+    const sorted = suggestions.sort(sortByVotes);
     return sorted;
   };
   useEffect(() => {
     const fetchSuggestions = async () => {
-      let _suggInProg = await getSuggestionsInProgress();
+      await connectToWallet();
+      let _suggInProg = await getActiveSuggestions();
       let formattedSugestions = await Promise.all(
         _suggInProg.map(async (item) => {
           const proposer = item.proposer;
@@ -53,6 +68,7 @@ export default function FeaturesContainer() {
           };
         })
       );
+      console.log(formattedSugestions);
       setSuggestionsInProgress(sortSuggestions(formattedSugestions));
       setLoading(false);
     };
@@ -84,7 +100,12 @@ export default function FeaturesContainer() {
             <div className="mt-10 flex flex-col justify-center items-center gap-2 mx-2 md:mx-20">
               {suggestionsInProgress.map((item) => {
                 return (
-                  <FeatureItem key={Math.random(999) * 100} suggestion={item} />
+                  <FeatureItem
+                    hasVoted={item.voters.includes(wallet)}
+                    onVote={() => voteSuggestion(item)}
+                    key={Math.random(999) * 100}
+                    suggestion={item}
+                  />
                 );
               })}
             </div>{" "}

@@ -4,68 +4,52 @@ import tw from "tailwind-styled-components";
 import ActionButton from "../../../components/ActionButton";
 import { useCommunity } from "../../../contracts/community";
 
-export const FeatureItem = ({ suggestion, suggestionsContract }) => {
-  const { addTokensToSuggestion } = useCommunity();
+export const FeatureItem = ({ suggestion, onVote, hasVoted }) => {
   const [depositValue, setDepositValue] = useState("");
 
-  const { suggestionId, title, description, totalAmount, progress, proposer } =
+  const { suggestionId, title, description, proposer, votes, voters } =
     suggestion;
 
-  const depositToSuggestion = async () => {
-    await addTokensToSuggestion(
-      suggestionId,
-      parseEther(depositValue.toString())
-    );
-
-    window.location.reload();
-  };
   return (
     <Container>
-      <TitleContainer>{title}</TitleContainer>
-      <DescriptionContainer>{description}</DescriptionContainer>
-      <div className="flex gap-5 mt-3 items-center">
-        <div>Propuesto por</div>
-        <div className="flex gap-2 items-center border p-2 rounded-xl">
-          <img
-            className="rounded-full"
-            width={32}
-            src={proposer.profileImg}
-            alt={`from-${proposer._id}-img`}
-          />
-          <p
-            className="text-primary-2 underline cursor-pointer"
-            onClick={() => window.open(`/profile/${proposer.wallet}`, "_blank")}
-          >
-            {proposer.username}
-          </p>
+      <button
+        disabled={hasVoted}
+        onClick={onVote}
+        className={`${
+          hasVoted ? "cursor-not-allowed" : "cursor-pointer"
+        } border-r pr-5`}
+      >
+        VOTE {votes}
+      </button>
+      <div>
+        <TitleContainer>{title}</TitleContainer>
+        <DescriptionContainer>{description}</DescriptionContainer>
+        <div className="flex gap-5 mt-3 items-center">
+          <div>Propuesto por</div>
+          <div className="flex gap-2 items-center border p-2 rounded-xl">
+            <img
+              className="rounded-full"
+              width={32}
+              src={proposer.profileImg}
+              alt={`from-${proposer._id}-img`}
+            />
+            <p
+              className="text-primary-2 underline cursor-pointer"
+              onClick={() =>
+                window.open(`/profile/${proposer.wallet}`, "_blank")
+              }
+            >
+              {proposer.username}
+            </p>
+          </div>
         </div>
       </div>
-      <ProgressContainer>
-        <div>Progreso</div>
-        <div>
-          {progress} / {totalAmount} FTM
-        </div>
-      </ProgressContainer>
-      <DepositContainer>
-        <Input
-          onChange={(e) => setDepositValue(e.target.value)}
-          value={depositValue}
-          type="number"
-          placeholder="Introduce la cantidad a donar..."
-          step=".01"
-        />
-        <ActionButton
-          buttonAction={depositToSuggestion}
-          text={"Contribuye"}
-          size={"small"}
-        />
-      </DepositContainer>
     </Container>
   );
 };
 
 const Container = tw.div`
-    flex flex-col w-full border rounded-md border-gray-300 p-2 dark:bg-dark-2
+    flex flex w-full border rounded-md border-gray-300 p-2 dark:bg-dark-2 gap-4
 `;
 
 const TitleContainer = tw.div`

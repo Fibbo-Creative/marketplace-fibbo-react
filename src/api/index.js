@@ -206,7 +206,8 @@ export const useApi = () => {
     ipfsMetadata,
     collection,
     externalLink,
-    additionalContent
+    additionalContent,
+    categories
   ) => {
     await marketplaceApi.post("nfts/newItem", {
       name: name,
@@ -220,6 +221,7 @@ export const useApi = () => {
       collection: collection,
       externalLink: externalLink,
       additionalContent: additionalContent,
+      categories: categories,
     });
   };
 
@@ -502,11 +504,23 @@ export const useApi = () => {
   //#endregion
 
   //#region Community
+
+  const getActiveSuggestions = async () => {
+    const active = await marketplaceApi.get("suggestions/activeSuggestions");
+    return active.data;
+  };
   const createNewSuggestion = async (wallet, title, desc) => {
     await marketplaceApi.post("suggestions/new", {
       wallet: wallet,
       title: title,
       description: desc,
+    });
+  };
+  const voteIntoSuggestion = async (wallet, title, proposer) => {
+    await marketplaceApi.post("suggestions/vote", {
+      title: title,
+      proposer: proposer,
+      voter: wallet,
     });
   };
   //#endregion
@@ -576,6 +590,7 @@ export const useApi = () => {
     uploadImgToCDN,
     uploadJSONMetadata,
     createNewSuggestion,
+    voteIntoSuggestion,
     getVerificatedArtists,
     registerSentItem,
     newVerifyRequest,
@@ -590,7 +605,7 @@ export const useApi = () => {
     getPayTokenInfo,
     setImportWFTM,
     setShowRedirectProfile,
-
+    getActiveSuggestions,
     getMyCollections,
     editNftData,
     editCollectionDetails,
