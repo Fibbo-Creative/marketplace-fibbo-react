@@ -147,8 +147,8 @@ export const useApi = () => {
 
   //#region Nfts
 
-  const getAllTokens = async (count) => {
-    let url = count ? `nfts/allNfts?count=${count}` : "nfts/allNfts";
+  const getAllTokens = async (user) => {
+    let url = user !== "" ? `nfts/allNfts?user=${user}` : "nfts/allNfts";
     const res = await marketplaceApi.get(url);
     return res.data;
   };
@@ -280,6 +280,30 @@ export const useApi = () => {
     }
   };
 
+  const addFavorite = async (collection, tokenId, user) => {
+    try {
+      await marketplaceApi.post("nfts/addFavorite", {
+        collection: collection,
+        tokenId: tokenId,
+        from: user,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const deleteFavorite = async (collection, tokenId, user) => {
+    try {
+      await marketplaceApi.post("nfts/deleteFavorite", {
+        collection: collection,
+        tokenId: tokenId,
+        from: user,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   //#endregion
 
   //#region Offers
@@ -314,16 +338,16 @@ export const useApi = () => {
     return res.data;
   };
 
-  const getItemsFromCollection = async (collection) => {
+  const getItemsFromCollection = async (collection, user) => {
     const res = await marketplaceApi.get(
-      `collections/items?address=${collection}`
+      `collections/items?address=${collection}&user=${user}`
     );
     return res.data;
   };
 
-  const getCollectionDetail = async (collection) => {
+  const getCollectionDetail = async (collection, user) => {
     const res = await marketplaceApi.get(
-      `collections/collectionDetail?collection=${collection}`
+      `collections/collectionDetail?collection=${collection}&user=${user}`
     );
     return res.data;
   };
@@ -443,6 +467,22 @@ export const useApi = () => {
     const res = await marketplaceApi.post(`collections/setShowRedirect`, {
       contractAddress,
       user,
+    });
+    return res.data;
+  };
+
+  const addToWatchlist = async (contractAddress, user) => {
+    const res = await marketplaceApi.post(`collections/addToWatchlist`, {
+      collection: contractAddress,
+      from: user,
+    });
+    return res.data;
+  };
+
+  const deleteFromWatchList = async (contractAddress, user) => {
+    const res = await marketplaceApi.post(`collections/removeFromWatchlist`, {
+      collection: contractAddress,
+      from: user,
     });
     return res.data;
   };
@@ -577,6 +617,8 @@ export const useApi = () => {
     getUserCollectionOptions,
     getCollectionDetail,
     createUserCollectionOptions,
+    addToWatchlist,
+    deleteFromWatchList,
     setShowRedirectToLink,
     getCollectionsAvailable,
     getAllCollections,
@@ -585,6 +627,8 @@ export const useApi = () => {
     saveMintedItem,
     registerNftRoyalties,
     deleteNftItem,
+    addFavorite,
+    deleteFavorite,
     saveCollectionDetails,
     searchItemsAndProfiles,
     uploadImgToCDN,

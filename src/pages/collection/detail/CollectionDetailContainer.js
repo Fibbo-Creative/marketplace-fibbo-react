@@ -332,7 +332,7 @@ export const CollectionDetailContainer = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const collectionDetail = await getCollectionDetail(collection);
+      const collectionDetail = await getCollectionDetail(collection, wallet);
       setIsOwner(collectionDetail.creator === wallet);
       if (collectionDetail.creator !== wallet) {
         let collOptions = await getUserCollectionOptions(
@@ -840,6 +840,7 @@ export const CollectionDetailContainer = () => {
                       <NftCard
                         key={item._id}
                         item={item}
+                        wallet={wallet}
                         onClick={() => redirectToItem(item)}
                         isSmall={userSmallview}
                       />

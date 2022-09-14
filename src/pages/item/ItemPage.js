@@ -228,7 +228,7 @@ export default function ItemPage() {
     });
 
     setIsCreator(wallet === nftData.creator);
-    const collectionResponse = await getCollectionDetail(collection);
+    const collectionResponse = await getCollectionDetail(collection, wallet);
     setCollectionInfo(collectionResponse);
 
     setMoreItems(
@@ -1243,7 +1243,11 @@ export default function ItemPage() {
               <ItemHistory historyItems={tokenHistoryInfo.current} />
             </div>
             <div className="col-span-1 md:col-span-2 row-span-3 ">
-              <MoreItems nfts={moreItems} collectionInfo={collectionInfo} />
+              <MoreItems
+                wallet={wallet}
+                nfts={moreItems}
+                collectionInfo={collectionInfo}
+              />
             </div>
           </>
         )}
