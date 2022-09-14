@@ -254,6 +254,9 @@ export default function ItemPage() {
       setIsForSale(true);
 
       listing.current = _listing;
+    } else {
+      setIsForSale(false);
+      listing.current = _listing;
     }
     const profileOwnerResponse = await getProfileInfo(nftData.owner);
 
@@ -293,6 +296,9 @@ export default function ItemPage() {
           ..._auction,
           payToken: payTokenInfo,
         };
+      } else {
+        setIsOnAuction(false);
+        auctionInfo.current = null;
       }
     } catch (e) {
       console.log(e);
