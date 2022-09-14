@@ -692,7 +692,7 @@ export default function ItemPage() {
                               icon="fluent:send-16-filled"
                               tooltip="transfer-item"
                               onClick={() => setOpenTransferModal(true)}
-                              tooltipText="Enviar NFT"
+                              tooltipText={literals.actions.sendNFT}
                             />
                           )}
 
@@ -705,38 +705,41 @@ export default function ItemPage() {
                                 onClick={goToEdit}
                                 icon="bxs:edit-alt"
                                 tooltip="edit-item"
-                                tooltipText="Editar Item"
+                                tooltipText={literals.actions.editNFT}
                               />
                             )}
-                          {isOwner && !isForSale && !isOnAuction && (
-                            <ItemPageOption
-                              icon="fluent:delete-dismiss-24-filled"
-                              tooltip="delete-item"
-                              onClick={() => setOpenDeleteModal(true)}
-                              tooltipText="Eliminar NFT"
-                            />
-                          )}
+                          {isOwner &&
+                            !isForSale &&
+                            !isOnAuction &&
+                            !isFreezedMetadata && (
+                              <ItemPageOption
+                                icon="fluent:delete-dismiss-24-filled"
+                                tooltip="delete-item"
+                                onClick={() => setOpenDeleteModal(true)}
+                                tooltipText={literals.actions.deleteNftItem}
+                              />
+                            )}
                           {tokenInfo?.current.externalLink &&
                             tokenInfo?.current.externalLink !== "" && (
                               <ItemPageOption
                                 onClick={goToExternalLink}
                                 icon="ooui:new-window-ltr"
                                 tooltip="external-item"
-                                tooltipText="Ver enlace externo"
+                                tooltipText={literals.actions.seeExternalLink}
                               />
                             )}
                           <ItemPageOption
                             disabled
                             icon="bi:share-fill"
                             tooltip="share-item"
-                            tooltipText="Compartir"
+                            tooltipText={literals.actions.share}
                           />
                           <ItemPageOption
                             disabled
                             position="last"
                             icon="akar-icons:more-vertical"
                             tooltip="more-item"
-                            tooltipText="Mas opciones"
+                            tooltipText={literals.actions.moreOptions}
                           />
                         </div>
                       </div>
@@ -774,17 +777,10 @@ export default function ItemPage() {
                           icon="fluent:send-16-filled"
                           tooltip="transfer-item"
                           onClick={() => setOpenTransferModal(true)}
-                          tooltipText="Enviar NFT"
+                          tooltipText={literals.actions.sendNFT}
                         />
                       )}
-                      {isOwner && !isForSale && !isOnAuction && (
-                        <ItemPageOption
-                          icon="fluent:delete-dismiss-24-filled"
-                          tooltip="delete-item"
-                          onClick={() => setOpenDeleteModal(true)}
-                          tooltipText="Eliminar NFT"
-                        />
-                      )}
+
                       {!isFreezedMetadata &&
                         isOwner &&
                         !isForSale &&
@@ -794,7 +790,18 @@ export default function ItemPage() {
                             onClick={goToEdit}
                             icon="bxs:edit-alt"
                             tooltip="edit-item"
-                            tooltipText="Editar Item"
+                            tooltipText={literals.actions.editNFT}
+                          />
+                        )}
+                      {isOwner &&
+                        !isForSale &&
+                        !isOnAuction &&
+                        !isFreezedMetadata && (
+                          <ItemPageOption
+                            icon="fluent:delete-dismiss-24-filled"
+                            tooltip="delete-item"
+                            onClick={() => setOpenDeleteModal(true)}
+                            tooltipText={literals.actions.deleteNftItem}
                           />
                         )}
                       {tokenInfo?.current.externalLink &&
@@ -803,21 +810,21 @@ export default function ItemPage() {
                             onClick={goToExternalLink}
                             icon="ooui:new-window-ltr"
                             tooltip="external-item"
-                            tooltipText="Ver enlace externo"
+                            tooltipText={literals.actions.seeExternalLink}
                           />
                         )}
                       <ItemPageOption
                         disabled
                         icon="bi:share-fill"
                         tooltip="share-item"
-                        tooltipText="Compartir"
+                        tooltipText={literals.actions.share}
                       />
                       <ItemPageOption
                         disabled
                         position="last"
                         icon="akar-icons:more-vertical"
                         tooltip="more-item"
-                        tooltipText="Mas opciones"
+                        tooltipText={literals.actions.moreOptions}
                       />
                     </div>
                   )}

@@ -239,40 +239,54 @@ export const CollectionDetailContainer = () => {
   };
 
   const filterBySelling = () => {
-    let isSelected = filtersSelected.find((item) => item === "En Venta");
+    let isSelected = filtersSelected.find(
+      (item) => item === literals.filters.onSale
+    );
     if (isSelected) {
-      setFiltersSelected(filtersSelected.filter((item) => item !== "En Venta"));
+      setFiltersSelected(
+        filtersSelected.filter((item) => item !== literals.filters.onSale)
+      );
     } else {
-      setFiltersSelected([...filtersSelected, "En Venta"]);
+      setFiltersSelected([...filtersSelected, literals.filters.onSale]);
     }
   };
 
   const filterByOffered = () => {
-    let isSelected = filtersSelected.find((item) => item === "Ofertado");
+    let isSelected = filtersSelected.find(
+      (item) => item === literals.filters.offered
+    );
     if (isSelected) {
-      setFiltersSelected(filtersSelected.filter((item) => item !== "Ofertado"));
+      setFiltersSelected(
+        filtersSelected.filter((item) => item !== literals.filters.offered)
+      );
     } else {
-      setFiltersSelected([...filtersSelected, "Ofertado"]);
+      setFiltersSelected([...filtersSelected, literals.filters.offered]);
     }
   };
 
   const filterByAuctioned = () => {
-    let isSelected = filtersSelected.find((item) => item === "En Subasta");
+    let isSelected = filtersSelected.find(
+      (item) => item === literals.filters.onAuction
+    );
     if (isSelected) {
       setFiltersSelected(
-        filtersSelected.filter((item) => item !== "En Subasta")
+        filtersSelected.filter((item) => item !== literals.filters.onAuction)
       );
     } else {
-      setFiltersSelected([...filtersSelected, "En Subasta"]);
+      setFiltersSelected([...filtersSelected, literals.filters.onAuction]);
     }
   };
 
   const filterByBidded = () => {
-    let isSelected = filtersSelected.find((item) => item === "Pujado");
+    let isSelected = filtersSelected.find(
+      (item) => item === literals.filters.hasBids
+    );
     if (isSelected) {
-      setFiltersSelected(filtersSelected.filter((item) => item !== "Pujado"));
+      setFiltersSelected(
+        filtersSelected.filter((item) => item !== literals.filters.hasBids)
+      );
     } else {
-      setFiltersSelected([...filtersSelected, "Pujado"]);
+      setFiltersSelected([...filtersSelected, literals.filters.hasBids]);
     }
   };
 
@@ -281,16 +295,16 @@ export const CollectionDetailContainer = () => {
       selectPayTokenFilter(filter);
     } else {
       switch (filter) {
-        case "En Venta":
+        case literals.filters.onSale:
           filterBySelling();
           break;
-        case "Ofertado":
+        case literals.filters.offered:
           filterByOffered();
           break;
-        case "En Subasta":
+        case literals.filters.onAuction:
           filterByAuctioned();
           break;
-        case "Pujado":
+        case literals.filters.hasBids:
           filterByBidded();
           break;
         default:
@@ -351,25 +365,25 @@ export const CollectionDetailContainer = () => {
     if (filtersSelected.length > 0) {
       let filtered = [];
       filtersSelected.forEach((filter) => {
-        if (filter === "En Venta") {
+        if (filter === literals.filters.onSale) {
           let result = collectionNfts.filter(
             (item) => item.price !== undefined
           );
           filtered = [...filtered, ...result];
         }
-        if (filter === "Ofertado") {
+        if (filter === literals.filters.offered) {
           let result = collectionNfts.filter(
             (item) => item.offer !== undefined
           );
           filtered = [...filtered, ...result];
         }
-        if (filter === "En Subasta") {
+        if (filter === literals.filters.onAuction) {
           let result = collectionNfts.filter(
             (item) => item.auction !== undefined
           );
           filtered = [...filtered, ...result];
         }
-        if (filter === "Pujado") {
+        if (filter === literals.filters.hasBids) {
           let result = collectionNfts.filter(
             (item) => item.auction?.topBid !== undefined
           );
@@ -377,23 +391,23 @@ export const CollectionDetailContainer = () => {
         }
         if (filter.contractAddress) {
           let _result = [];
-          if (filtersSelected.includes("En Venta")) {
+          if (filtersSelected.includes(literals.filters.onSale)) {
             _result = collectionNfts.filter(
               (item) =>
                 item.payToken?.contractAddress === filter.contractAddress
             );
-          } else if (filtersSelected.includes("Ofertado")) {
+          } else if (filtersSelected.includes(literals.filters.offered)) {
             _result = collectionNfts.filter(
               (item) =>
                 item.offer?.payToken.contractAddress === filter.contractAddress
             );
-          } else if (filtersSelected.includes("En Subasta")) {
+          } else if (filtersSelected.includes(literals.filters.onAuction)) {
             _result = collectionNfts.filter(
               (item) =>
                 item.auction?.payToken.contractAddress ===
                 filter.contractAddress
             );
-          } else if (filtersSelected.includes("Pujado")) {
+          } else if (filtersSelected.includes(literals.filters.hasBids)) {
             _result = collectionNfts.filter(
               (item) =>
                 item.auction?.topBid !== undefined &&
@@ -485,7 +499,7 @@ export const CollectionDetailContainer = () => {
                         icon="carbon:add-alt"
                         tooltip="add-item"
                         onClick={redirectToCreateItem}
-                        tooltipText="Crear NFT"
+                        tooltipText={literals.actions.createNFT}
                       />
                     )}
                     {isOwner && (
@@ -493,7 +507,7 @@ export const CollectionDetailContainer = () => {
                         icon="bxs:edit-alt"
                         tooltip="edit-item"
                         onClick={redirectToEditCollection}
-                        tooltipText="Editar coleccion"
+                        tooltipText={literals.actions.editCollection}
                       />
                     )}
                   </div>
@@ -504,14 +518,14 @@ export const CollectionDetailContainer = () => {
                       disabled
                       icon="bi:share-fill"
                       tooltip="share-item"
-                      tooltipText="Compartir"
+                      tooltipText={literals.actions.share}
                     />
                     <ItemPageOption
                       disabled
                       position="last"
                       icon="akar-icons:more-vertical"
                       tooltip="more-item"
-                      tooltipText="Mas opciones"
+                      tooltipText={literals.actions.moreOptions}
                     />
                   </div>
                 </div>
@@ -527,7 +541,7 @@ export const CollectionDetailContainer = () => {
                     icon="carbon:add-alt"
                     tooltip="add-item"
                     onClick={redirectToCreateItem}
-                    tooltipText="Crear NFT"
+                    tooltipText={literals.actions.createNFT}
                   />
                 )}
                 {isOwner && (
@@ -535,7 +549,7 @@ export const CollectionDetailContainer = () => {
                     icon="bxs:edit-alt"
                     tooltip="edit-item"
                     onClick={redirectToEditCollection}
-                    tooltipText="Editar coleccion"
+                    tooltipText={literals.actions.editCollection}
                   />
                 )}
               </div>
@@ -545,14 +559,14 @@ export const CollectionDetailContainer = () => {
                   disabled
                   icon="bi:share-fill"
                   tooltip="share-item"
-                  tooltipText="Compartir"
+                  tooltipText={literals.actions.share}
                 />
                 <ItemPageOption
                   disabled
                   position="last"
                   icon="akar-icons:more-vertical"
                   tooltip="more-item"
-                  tooltipText="Mas opciones"
+                  tooltipText={literals.actions.moreOptions}
                 />
               </div>
             </div>
@@ -562,7 +576,7 @@ export const CollectionDetailContainer = () => {
       <div className="flex flex-col w-full">
         <div className="flex items-center justify-left gap-5 ml-[50px] mt-[20px] ">
           <div className="flex text-md ">
-            <b>Creada por: </b>
+            <b>{literals.collectionDetail.creator}: </b>
           </div>
           <div className="flex gap-3 items-center">
             <img
@@ -579,7 +593,9 @@ export const CollectionDetailContainer = () => {
               }
               className="text-primary-2 underline cursor-pointer"
             >
-              {isOwner ? `You (${ownerInfo?.username})` : ownerInfo?.username}
+              {isOwner
+                ? `${literals.detailNFT.you} (${ownerInfo?.username})`
+                : ownerInfo?.username}
             </div>
           </div>
         </div>
@@ -601,34 +617,39 @@ export const CollectionDetailContainer = () => {
               onClick={() => setExpandedDesc(!expandedDesc)}
               className=" text-gray-400 mt-2 flex items-center gap-3 cursor-pointer"
             >
-              Ver más <Icon icon="akar-icons:chevron-down" />
+              {literals.collectionDetail.seeMore}
+              <Icon icon="akar-icons:chevron-down" />
             </p>
           )}
         </div>
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mt-2 sm:mr-[50px] sm:ml-[50px] mr-0 ml-0 items-center place-content-between gap-8">
           <div className="flex gap-8 ">
-            <div className="flex flex-col gap-3 items-center">
+            <div className="flex flex-col items-center">
               <div className="flex text-xl">
                 <b>{collectionNfts.length}</b>
               </div>
-              <div className="flex items-end">Articulos</div>
+              <div className="flex items-end text-sm text-gray-400">
+                {literals.collectionDetail.articles}
+              </div>
             </div>
             <div
               onClick={() => setShowOwners(true)}
-              className="cursor-pointer flex flex-col gap-3 items-center hover:text-gray-300"
+              className="cursor-pointer flex flex-col items-center hover:text-gray-300"
             >
               <div className="flex text-xl">
                 <b>{collectionInfo?.owners.length}</b>
               </div>
-              <div className="flex items-end">
-                {literals.colectionDetail.owners}
+              <div className="flex items-end text-sm text-gray-400">
+                {literals.collectionDetail.owners}
               </div>
             </div>
-            <div className="flex flex-col gap-3 items-center">
+            <div className="flex flex-col  items-center">
               <div className="flex text-xl">
                 <b>{parseFloat(collectionInfo?.volumen)} WFTM</b>
               </div>
-              <div className="flex items-end">Volumen total</div>
+              <div className="flex items-end text-sm text-gray-400">
+                {literals.collectionDetail.totalVolume}
+              </div>
             </div>
           </div>
 
@@ -636,7 +657,7 @@ export const CollectionDetailContainer = () => {
             <ButtonTooltip
               tooltip="scan-tooltip"
               tooltipPlacement="top"
-              tooltipText="Ver en scaner"
+              tooltipText={literals.actions.seeInScanner}
               onClick={goToScan}
             >
               <div className="flex">
@@ -648,7 +669,7 @@ export const CollectionDetailContainer = () => {
               <ButtonTooltip
                 tooltip="web-tooltip"
                 tooltipPlacement="top"
-                tooltipText="Ver página web"
+                tooltipText={literals.actions.seeWebsite}
                 onClick={() => openRedirectPopUp(collectionInfo.websiteURL)}
               >
                 <Icon width={25} icon="dashicons:admin-site-alt3"></Icon>
@@ -658,7 +679,7 @@ export const CollectionDetailContainer = () => {
               <ButtonTooltip
                 tooltip="ds-tooltip"
                 tooltipPlacement="top"
-                tooltipText="Ver discord"
+                tooltipText={literals.actions.seeDiscord}
                 onClick={() => openRedirectPopUp(collectionInfo.discordURL)}
               >
                 <Icon width={25} icon="bi:discord"></Icon>
@@ -668,7 +689,7 @@ export const CollectionDetailContainer = () => {
               <ButtonTooltip
                 tooltip="telegram-tooltip"
                 tooltipPlacement="top"
-                tooltipText="Ver telegram"
+                tooltipText={literals.actions.seeTelegram}
                 onClick={() => openRedirectPopUp(collectionInfo.telegramURL)}
               >
                 <Icon width={25} icon="bxl:telegram"></Icon>
@@ -678,7 +699,7 @@ export const CollectionDetailContainer = () => {
               <ButtonTooltip
                 tooltip="insta-tooltip"
                 tooltipPlacement="top"
-                tooltipText="Ver Instagram"
+                tooltipText={literals.actions.seeInstagram}
                 onClick={() => openRedirectPopUp(collectionInfo.instagramURL)}
               >
                 <Icon width={25} icon="cib:instagram"></Icon>
@@ -696,10 +717,10 @@ export const CollectionDetailContainer = () => {
               items={filteredNfts}
               filtersSelected={filtersSelected}
               statusFilters={[
-                { name: "En Venta", filter: filterBySelling },
-                { name: "Ofertado", filter: filterByOffered },
-                { name: "En Subasta", filter: filterByAuctioned },
-                { name: "Pujado", filter: filterByBidded },
+                { name: literals.filters.onSale, filter: filterBySelling },
+                { name: literals.filters.offered, filter: filterByOffered },
+                { name: literals.filters.onAuction, filter: filterByAuctioned },
+                { name: literals.filters.hasBids, filter: filterByBidded },
               ]}
               payTokenFilters={allErc20Tokens.map((item) => {
                 return {
@@ -743,14 +764,18 @@ export const CollectionDetailContainer = () => {
                   onChange={(e) => sortItems(e.target.value)}
                   className="cursor-pointer h-10 w-40 md:w-60 flex border border-gray-300 bg-white dark:bg-dark-1 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
-                  <option value={1}>Ordenar Por</option>
-                  <option value={2}>Creados Recientemente</option>
-                  <option value={3}>Mas antiguos</option>
-                  <option value={4}>Listados Recientemiente</option>
-                  <option value={5}>Listados mas antiguos</option>
-                  <option value={6}>Mas caros</option>
-                  <option value={7}>Mas baratos</option>
-                  <option value={8}>Termina antes</option>
+                  <option value={1}>{literals.explore.filterSort}</option>
+                  <option value={2}>{literals.explore.filterRecently}</option>
+                  <option value={3}>{literals.explore.filterOldest}</option>
+                  <option value={4}>
+                    {literals.explore.filterRecentlyListed}
+                  </option>
+                  <option value={5}>
+                    {literals.explore.filterOldestListed}
+                  </option>
+                  <option value={6}>{literals.explore.filterHighPrice}</option>
+                  <option value={7}>{literals.explore.filterLowPrice}</option>
+                  <option value={8}>{literals.explore.filterEnding}</option>
                 </select>
 
                 <button
@@ -824,10 +849,9 @@ export const CollectionDetailContainer = () => {
               ) : (
                 <>
                   <div>
-                    {" "}
                     {filtersSelected.length > 0 || queryText.length > 0
-                      ? "No se han encontrado items"
-                      : "La collección no tiene NFTS"}
+                      ? literals.collectionDetail.notFoundItems
+                      : literals.collectionDetail.noItems}
                   </div>
                 </>
               )}
@@ -838,10 +862,10 @@ export const CollectionDetailContainer = () => {
               openSidebar={openedSidebar}
               setOpenSidebar={setOpenedSidebar}
               statusFilters={[
-                { name: "En Venta", filter: filterBySelling },
-                { name: "Ofertado", filter: filterByOffered },
-                { name: "En Subasta", filter: filterByAuctioned },
-                { name: "Pujado", filter: filterByBidded },
+                { name: literals.filters.onSale, filter: filterBySelling },
+                { name: literals.filters.offered, filter: filterByOffered },
+                { name: literals.filters.onAuction, filter: filterByAuctioned },
+                { name: literals.filters.hasBids, filter: filterByBidded },
               ]}
               filtersSelected={filtersSelected}
               payTokenFilters={allErc20Tokens.map((item) => {

@@ -55,7 +55,7 @@ export const ProfileOffersTable = ({ offers }) => {
                   {literals.detailNFT.price}
                 </th>
                 <th cope="col" className="px-6 py-3">
-                  Expira
+                  {literals.detailNFT.expires}
                 </th>
               </tr>
             </thead>
@@ -186,7 +186,7 @@ export const ProfileOffersTable = ({ offers }) => {
                 </div>
                 <div className="flex justify-between">
                   <div>
-                    <b>Expira en</b>
+                    <b>{literals.detailNFT.expiresIn}</b>
                   </div>
                   <div>{formatDate(offer)}</div>
                 </div>

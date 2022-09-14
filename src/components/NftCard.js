@@ -55,7 +55,7 @@ export default function NftCard({ item, onClick, isSmall, selectFavorite }) {
   };
   return (
     <div className="flex flex-col gap-3 shadow-lg bg-gray-200 dark:border-dark-2 dark:bg-dark-3 border-gray-30  shadow-gray-300 dark:shadow-dark-4   border-2 p-3 rounded-md cursor-pointer hover:shadow-lg hover:border-3 hover:-translate-y-1">
-      <div className="w-full flex gap-2 items-end justify-end text-gray-400">
+      {/*   <div className="w-full flex gap-2 items-end justify-end text-gray-400">
         <ButtonTooltip
           tooltip={`favorite-${item.tokenId}-${item.collection.contractAddress}`}
           tooltipText="Favorite"
@@ -70,7 +70,7 @@ export default function NftCard({ item, onClick, isSmall, selectFavorite }) {
           />
           0
         </ButtonTooltip>
-      </div>
+      </div> */}
       <div
         onClick={onClick}
         className={`${
