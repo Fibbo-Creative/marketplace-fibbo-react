@@ -169,6 +169,7 @@ export const useMarketplace = () => {
   ) => {
     const marketContract = await getMarketContract();
     const tokenAddress = payToken.contractAddress;
+
     const erc20 = await getERC20Contract(tokenAddress);
 
     const provider = createProvider();
@@ -177,14 +178,14 @@ export const useMarketplace = () => {
     const signer = userProvider.getSigner();
     const from = await signer.getAddress();
 
-    const allowance = await erc20.allowance(buyer, marketContract.address);
-
-    if (allowance.lt(parseEther(offerPrice).toString())) {
+    offerPrice = parseEther(offerPrice.toString());
+    let allowance = await erc20.allowance(buyer, marketContract.address);
+    if (allowance.lt(offerPrice)) {
       await sendMetaTx(erc20, provider, signer, {
         functionName: "approve",
-        args: [marketContract.address, parseEther(offerPrice.toString())],
+        args: [marketContract.address, offerPrice],
       });
-      await sleep(3000);
+      await sleep(5000);
     }
 
     await sendMetaTx(marketContract, provider, signer, {
@@ -193,7 +194,7 @@ export const useMarketplace = () => {
         collection,
         ethers.BigNumber.from(tokenId),
         tokenAddress,
-        parseEther(offerPrice.toString()),
+        offerPrice,
         ethers.BigNumber.from(deadline),
       ],
     });
@@ -257,10 +258,13 @@ export const useMarketplace = () => {
       await sleep(4000);
     }
 
-    await sendMetaTx(marketContract, provider, signer, {
+    const tx = await marketContract.acceptOffer(collection, tokenId, creator);
+    await tx.wait();
+
+    /*  await sendMetaTx(marketContract, provider, signer, {
       functionName: "acceptOffer",
       args: [collection, tokenId, creator],
-    });
+    }); */
   };
 
   const cancelOffer = async (collection, tokenId) => {

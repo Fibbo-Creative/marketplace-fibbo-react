@@ -23,7 +23,7 @@ export default function OwnersModal({
   };
   return (
     <BasicModal
-      title={literals.colectionDetail.owners}
+      title={literals.collectionDetail.owners}
       showModal={showModal}
       handleCloseModal={handleCloseModal}
     >

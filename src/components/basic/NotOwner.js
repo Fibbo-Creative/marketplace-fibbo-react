@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom";
 import ActionButton from "../ActionButton";
 import Lottie from "react-lottie-player";
 import lottieJson from "../../assets/notOwner.json";
-import useRespnsive from "../../hooks/useResponsive";
-import useStateContext from "../../context/StateProvider";
+import useResponsive from "../../hooks/useResponsive";
+import { useStateContext } from "../../context/StateProvider";
 
 export const NotOwner = ({ text }) => {
   const navigate = useNavigate();
   const [{ literals }] = useStateContext();
-  const { _width } = useRespnsive();
+  const { _width } = useResponsive();
   return (
     <div className="flex flex-col gap-10 md:flex-row justify-center items-center w-full h-screen">
       <div className="flex flex-col  justify-center items-center">

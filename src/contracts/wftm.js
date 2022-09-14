@@ -3,25 +3,19 @@ import { ChainId } from "@sushiswap/sdk";
 import { WFTM_ABI } from "./abi";
 import { calculateGasMargin, getHigherGWEI } from "../utils/gas";
 import useContract from "../hooks/useContract";
-import { ethers } from "ethers";
+import { Contract, ethers } from "ethers";
 import { useMarketplace } from "./market";
 import { useApi } from "../api";
 import { useAuction } from "./auction";
 import useProvider from "../hooks/useProvider";
-import { createForwarderInstance } from "./forwarder";
-import { signMetaTxRequest } from "./signer";
-import { formatEther, parseEther } from "ethers/lib/utils";
 import { sendMetaTx } from "./meta";
+import { Contracts } from "../constants/networks";
+import { formatEther } from "ethers/lib/utils";
 
-const WFTM_ADDRESS = {
-  [ChainId.FANTOM]: "0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83",
-  [ChainId.FANTOM_TESTNET]: "0x4EEf747dC4f5d110d9bCfA5C6F24b3359bD4B2d4",
-};
-
-const tokenSymbol = "WFTM";
+const tokenSymbol = "FBOFTM";
 const tokenDecimals = 18;
 const tokenImage =
-  "https://cdn.sanity.io/images/lmw8etck/dev-cdn/c96c66316b7cb8a818dfa7ac7ae1e836ace2067f-128x128.png";
+  "https://cdn.sanity.io/images/lmw8etck/dev-cdn/7d85bd9e849d164e634a3d72c9ee679be6370559-128x128.png";
 
 // eslint-disable-next-line no-undef
 const isMainnet = false;
@@ -34,7 +28,7 @@ export const useWFTMContract = () => {
   const { getAuctionContract } = useAuction();
   const { createProvider } = useProvider();
 
-  const wftmAddress = WFTM_ADDRESS[CHAIN];
+  const wftmAddress = Contracts[CHAIN].wftmAddress;
 
   const getWFTMContract = async () => await getContract(wftmAddress, WFTM_ABI);
 
@@ -68,6 +62,7 @@ export const useWFTMContract = () => {
     const userProvider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = userProvider.getSigner();
     const from = await signer.getAddress();
+
     return await sendMetaTx(contract, provider, signer, {
       functionName: "withdraw",
       args: [value],

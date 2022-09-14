@@ -59,6 +59,7 @@ export default function CreateContainer() {
           true,
           isExplicit
         );
+
         setIpfsImageUrl(`https://ipfs.io/ipfs/${ipfs}`);
 
         if (error) {
@@ -157,10 +158,8 @@ export default function CreateContainer() {
 
       if (!_collection) setIsOwner(false);
       else setIsOwner(_collection.creator === wallet);
-
-      setLoading(false);
     };
-    fetchData();
+    fetchData().then(() => setLoading(false));
   }, [wallet, connectToWallet]);
 
   return (

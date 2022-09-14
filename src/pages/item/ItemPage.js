@@ -42,29 +42,12 @@ import RedirectModal from "../../components/modals/RedirectModal";
 import ModifyOfferModal from "../../components/modals/ModifyOfferModal";
 import TransferModal from "../../components/modals/TransferModal";
 import DeleteItemModal from "../../components/modals/DeleteItemModal";
+import { formatLiteral } from "../../utils/language";
 
 const formatPriceInUsd = (price) => {
   let priceStr = price.toString().split(".");
   let finalPrice = `${priceStr[0]},${priceStr[1]}`;
   return finalPrice;
-};
-
-const formatDate = (datetime) => {
-  const nowTimestamp = Math.floor(new Date().getTime() / 1000);
-  const period = datetime - nowTimestamp;
-
-  const days = Math.round(period / 3600 / 24);
-  if (days === 0) {
-    const hours = Math.round(period / 3600);
-    if (hours === 0) {
-      const minutes = Math.round(period / 60);
-      return `${minutes} ${minutes > 1 ? "minutos " : "minuto"}`;
-    } else {
-      return `${hours} ${hours > 1 ? "horas" : "hora"}`;
-    }
-  } else {
-    return `${days} ${days > 1 ? "días" : "día"}`;
-  }
 };
 
 export default function ItemPage() {
@@ -154,6 +137,30 @@ export default function ItemPage() {
   const offers = useRef([]);
   const listing = useRef(null);
   const auctionInfo = useRef(null);
+
+  const formatDate = (datetime) => {
+    const nowTimestamp = Math.floor(new Date().getTime() / 1000);
+    const period = datetime - nowTimestamp;
+
+    const days = Math.round(period / 3600 / 24);
+    if (days === 0) {
+      const hours = Math.round(period / 3600);
+      if (hours === 0) {
+        const minutes = Math.round(period / 60);
+        return `${minutes} ${
+          minutes > 1 ? literals.detailNFT.minutes : literals.detailNFT.minute
+        }`;
+      } else {
+        return `${hours} ${
+          hours > 1 ? literals.detailNFT.hours : literals.detailNFT.hour
+        }`;
+      }
+    } else {
+      return `${days} ${
+        days > 1 ? literals.detailNFT.days : literals.detailNFT.day
+      }`;
+    }
+  };
 
   const auctionStarted =
     new Date().getTime() / 1000 >= auctionInfo?.current?.startTime;
@@ -247,6 +254,9 @@ export default function ItemPage() {
       setIsForSale(true);
 
       listing.current = _listing;
+    } else {
+      setIsForSale(false);
+      listing.current = _listing;
     }
     const profileOwnerResponse = await getProfileInfo(nftData.owner);
 
@@ -286,6 +296,9 @@ export default function ItemPage() {
           ..._auction,
           payToken: payTokenInfo,
         };
+      } else {
+        setIsOnAuction(false);
+        auctionInfo.current = null;
       }
     } catch (e) {
       console.log(e);
@@ -685,7 +698,7 @@ export default function ItemPage() {
                               icon="fluent:send-16-filled"
                               tooltip="transfer-item"
                               onClick={() => setOpenTransferModal(true)}
-                              tooltipText="Enviar NFT"
+                              tooltipText={literals.actions.sendNFT}
                             />
                           )}
 
@@ -698,38 +711,41 @@ export default function ItemPage() {
                                 onClick={goToEdit}
                                 icon="bxs:edit-alt"
                                 tooltip="edit-item"
-                                tooltipText="Editar Item"
+                                tooltipText={literals.actions.editNFT}
                               />
                             )}
-                          {isOwner && !isForSale && !isOnAuction && (
-                            <ItemPageOption
-                              icon="fluent:delete-dismiss-24-filled"
-                              tooltip="delete-item"
-                              onClick={() => setOpenDeleteModal(true)}
-                              tooltipText="Eliminar NFT"
-                            />
-                          )}
+                          {isOwner &&
+                            !isForSale &&
+                            !isOnAuction &&
+                            !isFreezedMetadata && (
+                              <ItemPageOption
+                                icon="fluent:delete-dismiss-24-filled"
+                                tooltip="delete-item"
+                                onClick={() => setOpenDeleteModal(true)}
+                                tooltipText={literals.actions.deleteNftItem}
+                              />
+                            )}
                           {tokenInfo?.current.externalLink &&
                             tokenInfo?.current.externalLink !== "" && (
                               <ItemPageOption
                                 onClick={goToExternalLink}
                                 icon="ooui:new-window-ltr"
                                 tooltip="external-item"
-                                tooltipText="Ver enlace externo"
+                                tooltipText={literals.actions.seeExternalLink}
                               />
                             )}
                           <ItemPageOption
                             disabled
                             icon="bi:share-fill"
                             tooltip="share-item"
-                            tooltipText="Compartir"
+                            tooltipText={literals.actions.share}
                           />
                           <ItemPageOption
                             disabled
                             position="last"
                             icon="akar-icons:more-vertical"
                             tooltip="more-item"
-                            tooltipText="Mas opciones"
+                            tooltipText={literals.actions.moreOptions}
                           />
                         </div>
                       </div>
@@ -767,17 +783,10 @@ export default function ItemPage() {
                           icon="fluent:send-16-filled"
                           tooltip="transfer-item"
                           onClick={() => setOpenTransferModal(true)}
-                          tooltipText="Enviar NFT"
+                          tooltipText={literals.actions.sendNFT}
                         />
                       )}
-                      {isOwner && !isForSale && !isOnAuction && (
-                        <ItemPageOption
-                          icon="fluent:delete-dismiss-24-filled"
-                          tooltip="delete-item"
-                          onClick={() => setOpenDeleteModal(true)}
-                          tooltipText="Eliminar NFT"
-                        />
-                      )}
+
                       {!isFreezedMetadata &&
                         isOwner &&
                         !isForSale &&
@@ -787,7 +796,18 @@ export default function ItemPage() {
                             onClick={goToEdit}
                             icon="bxs:edit-alt"
                             tooltip="edit-item"
-                            tooltipText="Editar Item"
+                            tooltipText={literals.actions.editNFT}
+                          />
+                        )}
+                      {isOwner &&
+                        !isForSale &&
+                        !isOnAuction &&
+                        !isFreezedMetadata && (
+                          <ItemPageOption
+                            icon="fluent:delete-dismiss-24-filled"
+                            tooltip="delete-item"
+                            onClick={() => setOpenDeleteModal(true)}
+                            tooltipText={literals.actions.deleteNftItem}
                           />
                         )}
                       {tokenInfo?.current.externalLink &&
@@ -796,21 +816,21 @@ export default function ItemPage() {
                             onClick={goToExternalLink}
                             icon="ooui:new-window-ltr"
                             tooltip="external-item"
-                            tooltipText="Ver enlace externo"
+                            tooltipText={literals.actions.seeExternalLink}
                           />
                         )}
                       <ItemPageOption
                         disabled
                         icon="bi:share-fill"
                         tooltip="share-item"
-                        tooltipText="Compartir"
+                        tooltipText={literals.actions.share}
                       />
                       <ItemPageOption
                         disabled
                         position="last"
                         icon="akar-icons:more-vertical"
                         tooltip="more-item"
-                        tooltipText="Mas opciones"
+                        tooltipText={literals.actions.moreOptions}
                       />
                     </div>
                   )}
@@ -839,7 +859,7 @@ export default function ItemPage() {
                       />
                       <p className="text-md">
                         {isOwner ? (
-                          `You (${profileOwnerData?.current.username})`
+                          `${literals.detailNFT.you} (${profileOwnerData?.current.username})`
                         ) : (
                           <>
                             {profileOwnerData?.current.username ===
@@ -862,7 +882,7 @@ export default function ItemPage() {
                   className="flex bg-gray-800 cursor-pointer  items-center text-gray-500 text-lg border-gray border-2 p-3 rounded-md gap-3"
                 >
                   <Icon icon="dashicons:unlock" width={48} />
-                  <div>Ver contendido adicional</div>
+                  <div>{literals.detailNFT.seeAdditional}</div>
                 </div>
               )}
               <div className="flex flex-col justify-center flex-wrap py-3 rounded-md ">
@@ -871,20 +891,22 @@ export default function ItemPage() {
                     <div className="">
                       <div className="pt-2">
                         {auctionStarted
-                          ? `La subasta termina en ${formatDate(
-                              auctionInfo.current?.endTime
-                            )}(${new Date(
-                              auctionInfo.current?.endTime * 1000
-                            ).toLocaleString()})`
-                          : `La subasta empieza en en ${formatDate(
-                              auctionInfo.current?.startTime
-                            )} (${new Date(
-                              auctionInfo.current?.startTime * 1000
-                            ).toLocaleString()})`}
+                          ? formatLiteral(literals.detailNFT.bidStarts, [
+                              formatDate(auctionInfo.current?.endTime),
+                              new Date(
+                                auctionInfo.current?.endTime * 1000
+                              ).toLocaleString(),
+                            ])
+                          : formatLiteral(literals.detailNFT.bidStarts, [
+                              formatDate(auctionInfo.current?.endTime),
+                              new Date(
+                                auctionInfo.current?.endTime * 1000
+                              ).toLocaleString(),
+                            ])}
                       </div>
                       <div className="flex flex-col gap-4 border-t mt-2 pt-5 border-b pb-5 ">
                         <div className="flex flex-col md:flex-row items-center justify-between gap-3 ">
-                          <p>Precio Reservado</p>
+                          <p>{literals.detailNFT.reservedPrice}</p>
                           <div className="flex items-center  gap-2">
                             <img
                               width={32}
@@ -907,7 +929,7 @@ export default function ItemPage() {
                           </div>
                         </div>
                         <div className="flex flex-col md:flex-row items-center justify-between  gap-3 ">
-                          <p>Precio Compra ya</p>
+                          <p>{literals.detailNFT.buyNowPrice}</p>
                           <div className="flex items-center  gap-2">
                             <img
                               width={32}
@@ -930,7 +952,7 @@ export default function ItemPage() {
                           </div>
                         </div>
                         <div className="flex flex-row justify-between border-t mt-2 pt-4 gap-6">
-                          <div>Puja mas alta: </div>
+                          <div>{literals.detailNFT.highestBid}:</div>
                           <div className="flex items-center  gap-2">
                             {highestBid ? (
                               <>
@@ -992,7 +1014,7 @@ export default function ItemPage() {
                     <div>
                       {isForSale && (
                         <>
-                          <p>Precio Actual</p>
+                          <p>{literals.detailNFT.actualPrice}</p>
                           <div className="flex flex-row items-center gap-3 ">
                             <img
                               width={32}
@@ -1067,7 +1089,7 @@ export default function ItemPage() {
                               ? setOpenConnectionModal(true)
                               : setOpenBuyModal(true)
                           }
-                          text="Comprar NFT"
+                          text={literals.actions.buy}
                         />
                         {!myOffer ? (
                           <ActionButton
@@ -1113,7 +1135,7 @@ export default function ItemPage() {
                               ? setOpenConnectionModal(true)
                               : setOpenSellModal(true)
                           }
-                          text="Poner en Venta"
+                          text={literals.detailNFT.putForSale}
                         />
                         <ActionButton
                           size="small"
@@ -1122,7 +1144,7 @@ export default function ItemPage() {
                               ? setOpenConnectionModal(true)
                               : setOpenCreateAuction(true)
                           }
-                          text="Subastar Item"
+                          text={literals.detailNFT.createAuction}
                         />
                       </>
                     )}
@@ -1136,7 +1158,7 @@ export default function ItemPage() {
                               ? setOpenConnectionModal(true)
                               : setOpenChangePriceModal(true)
                           }
-                          text="Cambiar Precio"
+                          text={literals.actions.changePrice}
                         />
                         <ActionButton
                           size="small"
@@ -1145,7 +1167,7 @@ export default function ItemPage() {
                               ? setOpenConnectionModal(true)
                               : setOpenUnlistItemModal(true)
                           }
-                          text="Quitar en venta"
+                          text={literals.actions.unlist}
                         />
                       </div>
                     )}
@@ -1159,7 +1181,7 @@ export default function ItemPage() {
                               ? setOpenConnectionModal(true)
                               : setOpenUpdateAuctionModal(true)
                           }
-                          text="Actualizar"
+                          text={literals.detailNFT.update}
                         />
                         {!highestBid && (
                           <ActionButton
@@ -1169,7 +1191,7 @@ export default function ItemPage() {
                                 ? setOpenConnectionModal(true)
                                 : setOpenCancelAuctionModal(true)
                             }
-                            text="Cancelar"
+                            text={literals.detailNFT.cancel}
                           />
                         )}
                       </>

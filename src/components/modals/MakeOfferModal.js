@@ -67,6 +67,10 @@ export default function MakeOfferModal({
       onSubmit={() => handleMakeOffer()}
       submitLabel={literals.actions.makeOffer}
       completedLabel={literals.actions.viewYourOffer}
+      completedText={formatLiteral(literals.modals.offerMade, [
+        offerPrice,
+        payTokenSelected?.name,
+      ])}
       completedAction={handleCloseModal}
       submitDisabled={
         parseFloat(wftmBalance) < parseFloat(offerPrice) ||

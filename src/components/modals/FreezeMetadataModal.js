@@ -16,7 +16,7 @@ export default function FreezeMetadataModal({
   const { setFreezedMetadata } = useCollections();
   const navigate = useNavigate();
   const [secure, setSecure] = useState(false);
-  const [{literals}] = useStateContext();
+  const [{ literals }] = useStateContext();
 
   const goToItem = () => {
     if (collectionInfo.customURL) {
@@ -41,22 +41,20 @@ export default function FreezeMetadataModal({
 
   return (
     <ActionModal
-      title={literals.FreezeMetadataModal.freezeMeta}
+      title={literals.freezeMetadataModal.freezeMeta}
       showModal={showModal}
       handleCloseModal={handleCloseModal}
-      submitLabel={literals.FreezeMetadataModal.freeze}
+      submitLabel={literals.freezeMetadataModal.freeze}
       submitDisabled={!secure}
       onSubmit={handleFreezeMetadata}
-      completedLabel={literals.FreezeMetadataModal.viewItem}
-      completedText={literals.FreezeMetadataModal.infoFreezed}
+      completedLabel={literals.freezeMetadataModal.viewItem}
+      completedText={literals.freezeMetadataModal.infoFreezed}
       completedAction={goToItem}
     >
       <div className="my-10 mx-3 md:mx-8 flex flex-col items-center gap-10">
-        <div>
-        {literals.FreezeMetadataModal.ifYouAccept}
-        </div>
+        <div>{literals.freezeMetadataModal.ifYouAccept}</div>
 
-        <div>{literals.FreezeMetadataModal.correctInfo}</div>
+        <div>{literals.freezeMetadataModal.correctInfo}</div>
         <label className="">
           <input
             type="checkbox"
@@ -64,7 +62,7 @@ export default function FreezeMetadataModal({
             checked={secure}
           />
           <span className="font-bold text-lg text-gray-700 dark:text-gray-400 border-gray-300 p-3">
-            {literals.FreezeMetadataModal.yes}
+            {literals.freezeMetadataModal.yes}
           </span>
         </label>
       </div>

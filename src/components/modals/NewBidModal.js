@@ -163,7 +163,7 @@ export default function MakeBidModal({
                     ? literals.newBidModal.text1
                     : literals.newBidModal.notWFTM
                   : parseFloat(auctionInfo?.minBid) > parseFloat(bidAmmount)
-                  ? literals.NewBidModal.text2
+                  ? literals.newBidModal.text2
                   : literals.newBidModal.notWFTM
               }`}
               selectedToken={payTokenSelected}

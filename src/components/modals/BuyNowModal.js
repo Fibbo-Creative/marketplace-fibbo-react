@@ -74,7 +74,7 @@ export default function BuyNowModal({
         <div className="w-full flex flex-col gap-2 items-center justify-center">
           {auctionInfo?.buyNowPrice > wftmBalance && (
             <p className="text-sm text-red-600">
-              {formatLiteral(literals.modals.notEnoughtWftm, [
+              {formatLiteral(literals.modals.notEnoughWftm, [
                 auctionInfo?.payToken.name,
               ])}
             </p>

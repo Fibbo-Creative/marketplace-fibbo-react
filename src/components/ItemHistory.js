@@ -10,10 +10,6 @@ import { useStateContext } from "../context/StateProvider";
 
 const eventTypes = [
   {
-    _id: "SALE",
-    label: "Ventas",
-  },
-  {
     _id: "TRANSFER",
     label: "Transfers",
   },
@@ -37,6 +33,24 @@ export default function ItemHistory({ historyItems }) {
   const [filtersSelected, setFiltersSelected] = useState([]);
   const [openFilters, setOpenFilters] = useState(false);
   const filtersRef = useRef();
+
+  const getTypeLiteral = (eventType) => {
+    console.log(eventType);
+    switch (eventType._id) {
+      case "TRANSFER":
+        return literals.filters.transfers;
+      case "LISTING":
+        return literals.filters.listings;
+
+      case "OFFER":
+        return literals.filters.offers;
+
+      case "AUCTION":
+        return literals.filters.auctions;
+      default:
+        return "";
+    }
+  };
 
   const getLiteral = (event) => {
     const { eventType, eventDesc } = event;
@@ -153,6 +167,7 @@ export default function ItemHistory({ historyItems }) {
             return (
               <FilterItem
                 type={type}
+                label={getTypeLiteral(type)}
                 onClick={filterByType}
                 key={type._id}
                 filtersSelected={filtersSelected}
@@ -400,7 +415,7 @@ export default function ItemHistory({ historyItems }) {
   );
 }
 
-const FilterItem = ({ type, onClick, filtersSelected }) => {
+const FilterItem = ({ type, label, onClick, filtersSelected }) => {
   const [isSelected, setIsSelected] = useState(false);
 
   const handleSelect = () => {
@@ -419,7 +434,7 @@ const FilterItem = ({ type, onClick, filtersSelected }) => {
         isSelected && "dark:bg-dark-4"
       } `}
     >
-      {type.label}
+      {label}
     </div>
   );
 };

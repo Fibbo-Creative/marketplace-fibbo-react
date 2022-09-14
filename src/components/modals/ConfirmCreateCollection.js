@@ -52,7 +52,7 @@ export const ConfirmCreateCollection = ({
       if (response.status !== 200) {
         return "ERROR";
       }
-
+      setAddress(response.data);
       return "OK";
     } catch (e) {
       return "ERROR";
