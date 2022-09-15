@@ -9,6 +9,7 @@ export const UserMenu = ({
   setOpenMenu,
   wallet,
   disconnectWallet,
+  buttonRef,
 }) => {
   const ref = useRef(null);
   const { theme, setTheme } = React.useContext(ThemeContext);
@@ -47,7 +48,11 @@ export const UserMenu = ({
 
   useEffect(() => {
     function handleClickOutside(event) {
-      if (ref.current && !ref.current.contains(event.target)) {
+      if (
+        ref.current &&
+        !ref.current.contains(event.target) &&
+        !buttonRef.current.contains(event.target)
+      ) {
         setOpenMenu(false);
       }
     }

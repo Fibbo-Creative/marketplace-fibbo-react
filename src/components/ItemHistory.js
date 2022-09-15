@@ -35,7 +35,6 @@ export default function ItemHistory({ historyItems }) {
   const filtersRef = useRef();
 
   const getTypeLiteral = (eventType) => {
-    console.log(eventType);
     switch (eventType._id) {
       case "TRANSFER":
         return literals.filters.transfers;

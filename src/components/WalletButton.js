@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import WrappedFTMModal from "./modals/WrappedFTMModal";
 import { UserMenu } from "./UserMenu";
 import { useStateContext } from "../context/StateProvider";
@@ -11,13 +11,15 @@ export default function WalletButton({
 }) {
   const [{ literals }] = useStateContext();
   const [openMenu, setOpenMenu] = useState(false);
+  const walletButtonRef = useRef(null);
   const [openStation, setOpenStation] = useState(false);
   const showMenu = (e) => {
-    setOpenMenu(true);
+    setOpenMenu(!openMenu);
   };
   return (
     <div className="w-full">
       <button
+        ref={walletButtonRef}
         onClick={!wallet ? openModal : showMenu}
         className=" hover:bg-gray-100 dark:hover:bg-gray-700  border border-gray-400 text-gray-600 dark:text-gray-400 rounded shadow w-[150px] md:w-[200px]"
       >
@@ -46,6 +48,7 @@ export default function WalletButton({
       </button>
       {openMenu && (
         <UserMenu
+          buttonRef={walletButtonRef}
           wallet={wallet}
           setOpenMenu={setOpenMenu}
           setOpenStation={setOpenStation}
