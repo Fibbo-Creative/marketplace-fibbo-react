@@ -891,16 +891,16 @@ export default function ItemPage() {
                     <div className="">
                       <div className="pt-2">
                         {auctionStarted
-                          ? formatLiteral(literals.detailNFT.bidStarts, [
+                          ? formatLiteral(literals.detailNFT.bidEnds, [
                               formatDate(auctionInfo.current?.endTime),
                               new Date(
                                 auctionInfo.current?.endTime * 1000
                               ).toLocaleString(),
                             ])
                           : formatLiteral(literals.detailNFT.bidStarts, [
-                              formatDate(auctionInfo.current?.endTime),
+                              formatDate(auctionInfo.current?.startTime),
                               new Date(
-                                auctionInfo.current?.endTime * 1000
+                                auctionInfo.current?.startTime * 1000
                               ).toLocaleString(),
                             ])}
                       </div>
