@@ -16,6 +16,7 @@ export const Erc20AmountInput = ({
   selectDisabled,
   setSelectedToken = true,
   showBalance,
+  nonSelect,
 }) => {
   const { getAllPayTokens } = useApi();
   const { getWFTMBalance } = useWFTMContract();
