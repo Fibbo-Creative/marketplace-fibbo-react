@@ -4,6 +4,7 @@ import { useWFTMContract } from "../../contracts/wftm";
 import { ActionModal } from "./ActionModal";
 import { useStateContext } from "../../context/StateProvider";
 import { HelpTooltip } from "../tooltips/HelpTooltip";
+import useProvider from "../../hooks/useProvider";
 
 export default function BuyItemModal({
   children,
@@ -15,8 +16,11 @@ export default function BuyItemModal({
   wallet,
 }) {
   const [wftmBalance, setWftmBalance] = useState(0);
+  const [balanceFTM, setBalanceFTM] = useState(0);
+
   const [{ updatedWFTM }] = useStateContext();
-  const { getWFTMBalance } = useWFTMContract();
+  const { getTotalFTMBalance } = useWFTMContract();
+  const { getWalletBalance } = useProvider();
   const [{ literals }] = useStateContext();
   const handleBuyItem = async () => {
     try {
@@ -30,12 +34,13 @@ export default function BuyItemModal({
   useEffect(() => {
     const fetchData = async () => {
       if (wallet) {
-        const walletBalanceWFTM = await getWFTMBalance(wallet);
-        setWftmBalance(formatEther(walletBalanceWFTM));
+        const balanceFTM = await getTotalFTMBalance(wallet);
+        console.log(balanceFTM);
+        setBalanceFTM(balanceFTM);
       }
     };
     fetchData();
-  }, [updatedWFTM]);
+  }, [wallet]);
   return (
     <ActionModal
       title={literals.actions.buyItem}
@@ -47,6 +52,7 @@ export default function BuyItemModal({
       completedText={literals.modals.buySuccess}
       completedLabel={literals.modals.seeOwnedItem}
       completedAction={handleCloseModal}
+      submitDisabled={balanceFTM < listing?.price}
     >
       {wallet !== "" && (
         <div className="my-5 mx-8 flex flex-col gap-10">
@@ -85,7 +91,7 @@ export default function BuyItemModal({
                       tooltipText={`Un ${tokenInfo?.royalty}% del precio de compra <br/> será enviado al creador del item <br/>`}
                     />
                   </div>
-                  {wftmBalance < tokenInfo?.price && (
+                  {balanceFTM < listing?.price && (
                     <div className="text-xs text-red-700">
                       {literals.buyItemModal.notWFTM}
                     </div>

@@ -24,9 +24,8 @@ const CHAIN = isMainnet ? ChainId.FANTOM : ChainId.FANTOM_TESTNET;
 export const useWFTMContract = () => {
   const { getContract } = useContract();
   const { setImportWFTM } = useApi();
-  const { getContractAddress } = useMarketplace();
-  const { getAuctionContract } = useAuction();
-  const { createProvider } = useProvider();
+
+  const { createProvider, getWalletBalance } = useProvider();
 
   const wftmAddress = Contracts[CHAIN].wftmAddress;
 
@@ -35,6 +34,13 @@ export const useWFTMContract = () => {
   const getWFTMBalance = async (address) => {
     const contract = await getWFTMContract();
     return await contract.balanceOf(address);
+  };
+
+  const getTotalFTMBalance = async (address) => {
+    const wftBalance = formatEther(await getWFTMBalance(address));
+    const ftmBalance = await getWalletBalance(address);
+    let result = parseFloat(wftBalance) + parseFloat(ftmBalance);
+    return result;
   };
 
   const importWFTM = async (wallet) => {
@@ -73,10 +79,6 @@ export const useWFTMContract = () => {
     if (!isImported) await importWFTM(wallet);
     const contract = await getWFTMContract();
 
-    const marketAddress = await getContractAddress();
-
-    const auctionContract = await getAuctionContract();
-
     const options = {
       value,
       from,
@@ -88,8 +90,6 @@ export const useWFTMContract = () => {
 
     let tx = await contract.deposit(options);
     tx.wait();
-
-    await approve(marketAddress, value);
   };
 
   const unwrapFTM = async (value) => {
@@ -127,5 +127,6 @@ export const useWFTMContract = () => {
     unwrapFTM,
     getAllowance,
     approve,
+    getTotalFTMBalance,
   };
 };

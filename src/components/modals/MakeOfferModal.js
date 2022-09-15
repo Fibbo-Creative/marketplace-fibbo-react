@@ -20,7 +20,7 @@ export default function MakeOfferModal({
   const [payTokenSelected, setPayTokenSelected] = useState(null);
   const [{ updatedWFTM, literals }] = useStateContext();
 
-  const { getWFTMBalance } = useWFTMContract();
+  const { getWFTMBalance, getTotalFTMBalance } = useWFTMContract();
   const handleMakeOffer = async () => {
     try {
       var endTime = new Date(`${expireDate}T${expireHour}`);
@@ -42,8 +42,8 @@ export default function MakeOfferModal({
       setExpireHour("23:59");
 
       if (wallet) {
-        const walletBalanceWFTM = await getWFTMBalance(wallet);
-        setWftmBalance(formatEther(walletBalanceWFTM));
+        const walletBalanceFTM = await getTotalFTMBalance(wallet);
+        setWftmBalance(walletBalanceFTM);
       }
     };
     fetchData();

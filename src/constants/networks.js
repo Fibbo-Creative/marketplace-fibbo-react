@@ -13,7 +13,7 @@ export const Contracts = {
   [ChainId.FANTOM_TESTNET]: {
     addressRegistry: "0x1C2123D5E78FE2a107c0bC76d5260393F7775DD8",
     minimalForwarder: "0x944f2A65742dbe3963BeDeE9d55cdF02572db6Da",
-    wftmAddress: "0x4F749478513C5433C02d31721f21Dc8f73A003Af",
+    wftmAddress: "0x2b513ea648453a3Cf6EF3A801356d54A2dB625e9",
     autotaskURL:
       "https://api.defender.openzeppelin.com/autotasks/8b6b204b-dd98-4269-8753-6bf66920a47c/runs/webhook/3185bde5-abcb-4ba8-90ca-3f40635cca92/8SmByTspP4oQxdD6WfFea9",
   },

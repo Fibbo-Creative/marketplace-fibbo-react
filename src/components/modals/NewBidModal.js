@@ -26,7 +26,7 @@ export default function MakeBidModal({
   const [payTokenSelected, setPayTokenSelected] = useState(null);
   const [{ updatedWFTM }] = useStateContext();
 
-  const { getWFTMBalance } = useWFTMContract();
+  const { getWFTMBalance, getTotalFTMBalance } = useWFTMContract();
 
   const handleMakeBid = async () => {
     try {
@@ -40,8 +40,8 @@ export default function MakeBidModal({
   useEffect(() => {
     const fetchData = async () => {
       if (wallet) {
-        const walletBalanceWFTM = await getWFTMBalance(wallet);
-        setWftmBalance(parseFloat(formatEther(walletBalanceWFTM)));
+        const walletBalanceWFTM = await getTotalFTMBalance(wallet);
+        setWftmBalance(walletBalanceWFTM);
         if (highestBid) {
           setBidAmmount(highestBid ? parseFloat(highestBid.bid) + 1 : 0);
         } else {
@@ -57,8 +57,8 @@ export default function MakeBidModal({
   useEffect(() => {
     const fetchData = async () => {
       if (wallet) {
-        const walletBalanceWFTM = await getWFTMBalance(wallet);
-        setWftmBalance(formatEther(walletBalanceWFTM));
+        const walletBalanceFTM = await getTotalFTMBalance(wallet);
+        setWftmBalance(walletBalanceFTM);
       }
     };
     fetchData();
@@ -95,7 +95,9 @@ export default function MakeBidModal({
                 src={auctionInfo?.payToken.image}
                 alt="Fantom coin"
               />
-              <p>{auctionInfo?.reservePrice} wFTM </p>
+              <p>
+                {auctionInfo?.reservePrice} {auctionInfo?.payToken.name}{" "}
+              </p>
             </div>
             <div className="flex flex-row gap-6">
               <div>{literals.newBidModal.highestBid} </div>

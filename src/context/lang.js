@@ -329,7 +329,7 @@ const engLiterals = {
   buyItemModal: {
     name: "Name:",
     royalties: "Royalties:",
-    notWFTM: "Not enough FBOFTM to buy!",
+    notWFTM: "Not enough FTM to buy!",
     fibboEarns: "Fibbo collects 2% commission on each item sale",
   },
   buyNowModal: {

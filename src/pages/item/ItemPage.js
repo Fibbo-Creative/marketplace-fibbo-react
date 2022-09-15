@@ -345,6 +345,7 @@ export default function ItemPage() {
     let hasMyOffer = offers.current.find(
       (offer) => offer.creator.wallet === wallet
     );
+
     if (hasMyOffer) {
       const now = new Date().getTime();
       const deadline = new Date(hasMyOffer.deadline * 1000).getTime();
@@ -470,7 +471,7 @@ export default function ItemPage() {
   };
 
   const handleCancelOffer = async () => {
-    await cancelOffer(collectionInfo.contractAddress, tokenId);
+    await cancelOffer(collectionInfo.contractAddress, tokenId, myOffer.price);
 
     offers.current = offers.current.filter(
       (offer) => offer.creator.wallet !== wallet

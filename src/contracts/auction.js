@@ -10,6 +10,7 @@ import { useFactory } from "./factory";
 
 import useProvider from "../hooks/useProvider";
 import { sendMetaTx } from "./meta";
+import { useWFTMContract } from "./wftm";
 
 const CHAIN = ChainId.FANTOM_TESTNET;
 const WFTM_ADDRESS = Contracts[CHAIN].wftmAddress;
@@ -42,6 +43,7 @@ export const useAuction = () => {
   const { createProvider } = useProvider();
   const { getContract } = useContract();
   const { getFactoryContract } = useFactory();
+  const { getWFTMBalance, wrapFTM, unwrapFTMGassless } = useWFTMContract();
 
   const getContractAddress = async () => await getAuctionAddress();
 
@@ -183,7 +185,6 @@ export const useAuction = () => {
 
   const makeBid = async (bidder, collection, tokenId, bidAmount) => {
     try {
-      bidAmount = parseEther(bidAmount.toString());
       const auctionContract = await getAuctionContract();
       const erc20 = await getERC20Contract(WFTM_ADDRESS);
 
@@ -193,6 +194,14 @@ export const useAuction = () => {
 
       const signer = userProvider.getSigner();
       const from = await signer.getAddress();
+
+      bidAmount = parseEther(bidAmount.toString());
+      const wftmBalance = await getWFTMBalance(bidder);
+
+      if (wftmBalance.lt(bidAmount)) {
+        await wrapFTM(true, bidder, bidAmount, bidder);
+        await sleep(2000);
+      }
 
       const allowance = await erc20.allowance(bidder, auctionContract.address);
 
@@ -228,6 +237,14 @@ export const useAuction = () => {
       const from = await signer.getAddress();
 
       const formattedPrice = parseEther(buyNowPrice.toString());
+
+      const wftmBalance = await getWFTMBalance(buyer);
+
+      if (wftmBalance.lt(formattedPrice)) {
+        await wrapFTM(true, buyer, formattedPrice, buyer);
+        await sleep(2000);
+      }
+
       const allowance = await erc20.allowance(buyer, auctionContract.address);
 
       if (allowance.lt(formattedPrice)) {

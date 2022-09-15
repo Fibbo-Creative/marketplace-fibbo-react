@@ -6,6 +6,7 @@ import { Icon } from "@iconify/react";
 import { useWFTMContract } from "../../contracts/wftm";
 import useAccount from "../../hooks/useAccount";
 import { formatEther } from "ethers/lib/utils";
+import useProvider from "../../hooks/useProvider";
 export const Erc20AmountInput = ({
   label,
   value,
@@ -19,7 +20,8 @@ export const Erc20AmountInput = ({
   nonSelect,
 }) => {
   const { getAllPayTokens } = useApi();
-  const { getWFTMBalance } = useWFTMContract();
+  const { getWFTMBalance, getTotalFTMBalance } = useWFTMContract();
+  const { getWalletBalance } = useProvider();
   const { wallet } = useAccount();
   const [coinPrice, setCoinPrice] = useState(0);
   const [payTokens, setPayTokens] = useState([]);
@@ -35,10 +37,10 @@ export const Erc20AmountInput = ({
 
   const handleSelectPayToken = async (token) => {
     setSelectedToken(token);
-    if (token.name === "WFTM") {
-      const wftBalance = await getWFTMBalance(wallet);
+    if (token.name === "FBOFTM") {
+      const wftBalance = await getTotalFTMBalance(wallet);
 
-      setTokenBalance(formatEther(wftBalance));
+      setTokenBalance(wftBalance);
     }
     setOpenSelect(false);
   };
@@ -67,9 +69,8 @@ export const Erc20AmountInput = ({
       setPayTokens(_payTokens);
       setSelectedToken(_payTokens[0]);
       if (_payTokens[0].name === "FBOFTM") {
-        const wftBalance = await getWFTMBalance(wallet);
-
-        setTokenBalance(formatEther(wftBalance));
+        const balance = await getTotalFTMBalance(wallet);
+        setTokenBalance(balance);
       }
       const CoinGeckoClient = new CoinGecko();
       let data = await CoinGeckoClient.simple.price({ ids: ["fantom"] });

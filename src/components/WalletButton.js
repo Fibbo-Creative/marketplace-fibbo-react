@@ -55,11 +55,13 @@ export default function WalletButton({
           disconnectWallet={disconnectWallet}
         />
       )}
-      <WrappedFTMModal
-        showModal={openStation}
-        wallet={wallet}
-        handleCloseModal={() => setOpenStation(false)}
-      />
+      {openStation && (
+        <WrappedFTMModal
+          showModal={openStation}
+          wallet={wallet}
+          handleCloseModal={() => setOpenStation(false)}
+        />
+      )}
     </div>
   );
 }
