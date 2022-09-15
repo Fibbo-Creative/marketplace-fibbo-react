@@ -234,6 +234,8 @@ const engLiterals = {
     newSuggestionDescription: "DESCRIPTION",
     suggestionDoneText:
       "Thank you for your suggestion, we will review your request and process it.",
+    proposedFor: "Proposer",
+    vote: "Vote",
   },
   makeOffer: {
     offerPrice: "What price do you want to offer?",
@@ -757,6 +759,8 @@ const espLiterals = {
     newSuggestionDescription: "DESCRIPCIÓN",
     suggestionDoneText:
       "Gracias por tu sugerencia, revisaremos tu solicitud y la procesaremos.",
+    proposedFor: "Proposer",
+    vote: "Votar",
   },
   makeOffer: {
     offerPrice: "Que precio quieres ofertar?",

@@ -158,9 +158,9 @@ export const useApi = () => {
     return res.data;
   };
 
-  const getNftInfo = async (collection, tokenId) => {
+  const getNftInfo = async (collection, tokenId, user) => {
     const res = await marketplaceApi.get(
-      `nfts/nftInfo?collection=${collection}&nftId=${tokenId}`
+      `nfts/nftInfo?collection=${collection}&nftId=${tokenId}&user=${user}`
     );
     return res.data;
   };

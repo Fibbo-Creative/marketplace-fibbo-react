@@ -43,6 +43,7 @@ import ModifyOfferModal from "../../components/modals/ModifyOfferModal";
 import TransferModal from "../../components/modals/TransferModal";
 import DeleteItemModal from "../../components/modals/DeleteItemModal";
 import { formatLiteral } from "../../utils/language";
+import { ButtonTooltip } from "../../components/tooltips/ButtonTooltip";
 
 const formatPriceInUsd = (price) => {
   let priceStr = price.toString().split(".");
@@ -67,6 +68,8 @@ export default function ItemPage() {
     setAcceptedOffer,
     deleteNftItem,
     registerSentItem,
+    deleteFavorite,
+    addFavorite,
   } = useApi();
   const {
     getListingInfo,
@@ -127,6 +130,8 @@ export default function ItemPage() {
   const [isCreator, setIsCreator] = useState(false);
   const [isFreezedMetadata, setIsFreezedMetadata] = useState(false);
   const [showRedirect, setShowRedirect] = useState(false);
+  const [likes, setLikes] = useState(0);
+  const [isLiked, setIsLiked] = useState(false);
 
   const [refreshMetadata, setRefreshMetadata] = useState(false);
 
@@ -214,7 +219,9 @@ export default function ItemPage() {
       offers: _offers,
       history,
       listing: _listing,
-    } = await getNftInfo(collection, tokenId);
+      favorites,
+      isFavorited,
+    } = await getNftInfo(collection, tokenId, wallet);
 
     tokenInfo.current = nftData;
     tokenHistoryInfo.current = history;
@@ -279,6 +286,9 @@ export default function ItemPage() {
       collection: collectionResponse,
       totalItems: numberOfTokens.toNumber(),
     });
+
+    setIsLiked(isFavorited);
+    setLikes(favorites);
   };
 
   const getAuctions = async () => {
@@ -627,6 +637,18 @@ export default function ItemPage() {
     setActionMade(1);
   };
 
+  const toggleFavorite = async () => {
+    if (isLiked) {
+      await deleteFavorite(collectionInfo.contractAddress, tokenId, wallet);
+      setIsLiked(false);
+      setLikes(likes - 1);
+    } else {
+      await addFavorite(collectionInfo.contractAddress, tokenId, wallet);
+      setIsLiked(true);
+      setLikes(likes + 1);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       await getItemDetails();
@@ -764,10 +786,10 @@ export default function ItemPage() {
                         {properties?.collection?.name}
                       </div>
                     </div>
-                    <div className="flex  items-centerl">
-                      <p className="text-3xl">
+                    <div className="flex  items-center gap-4">
+                      <div className="text-3xl">
                         <b>{tokenInfo?.current.name}</b>
-                      </p>
+                      </div>
                     </div>
                   </div>
                   {_width > 900 && (
@@ -872,6 +894,36 @@ export default function ItemPage() {
                           </>
                         )}
                       </p>
+                    </div>
+                    <div>
+                      <ButtonTooltip
+                        tooltip={`favorite-${tokenInfo?.current.tokenId}`}
+                        tooltipText={
+                          isLiked
+                            ? literals.detailNFT.unFavorite
+                            : literals.detailNFT.favorite
+                        }
+                        tooltipPlacement="top"
+                        className="flex flex-row gap-2"
+                      >
+                        <Icon
+                          onClick={() =>
+                            wallet && wallet !== "" && toggleFavorite()
+                          }
+                          icon={
+                            isLiked
+                              ? "carbon:favorite-filled"
+                              : "carbon:favorite"
+                          }
+                          width={22}
+                          className={` ${
+                            wallet && wallet !== ""
+                              ? "cursor-pointer"
+                              : "cursor-not-allowed"
+                          }hover:text-primary-2`}
+                        />
+                        {likes} likes
+                      </ButtonTooltip>
                     </div>
                   </div>
                 )}
