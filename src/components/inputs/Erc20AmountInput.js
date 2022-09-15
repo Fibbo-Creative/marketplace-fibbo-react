@@ -89,7 +89,7 @@ export const Erc20AmountInput = ({
       >
         <div
           onClick={() => (!selectDisabled ? setOpenSelect(!openSelect) : null)}
-          className={`flex rounded py-2 px-1  w-[300px] md:w-[225px]  bg-gray-300 dark:bg-dark-3 dark:hover:bg-dark-4 justify-evenly ${
+          className={`flex rounded text-xs md:text-base  py-2 px-1  w-[300px] md:w-[225px]  bg-gray-300 dark:bg-dark-3 dark:hover:bg-dark-4 justify-evenly ${
             selectDisabled ? "cursor-not-allowed" : "cursor-pointer"
           } items-center `}
         >
@@ -99,7 +99,7 @@ export const Erc20AmountInput = ({
               src={selectedToken?.image}
               alt={`token-${selectedToken?._id}`}
             />
-            <div className="px-2">{selectedToken?.name}</div>
+            <div className="px-2  ">{selectedToken?.name}</div>
           </div>
           {openSelect && (
             <div className="absolute rounded top-[170px]  w-[130px] bg-gray-300 dark:bg-dark-3">

@@ -31,6 +31,7 @@ export default function Navbar() {
 
   const searchInputRef = useRef(null);
 
+  const showNotificationsRef = useRef(null);
   const { _width } = useRespnsive();
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -99,7 +100,7 @@ export default function Navbar() {
   };
 
   const openNotifications = () => {
-    setShowNotificationsMenu(true);
+    setShowNotificationsMenu(!showNotificationsMenu);
   };
 
   const removeNotification = async (notificationId) => {
@@ -198,7 +199,11 @@ export default function Navbar() {
           <div className=" gap-5 flex flex-row justify-between items-center ">
             {wallet !== "" && (
               <div className="flex flex-col  cursor-pointer">
-                <div className="flex" onClick={() => openNotifications()}>
+                <div
+                  className="flex"
+                  ref={showNotificationsRef}
+                  onClick={() => openNotifications()}
+                >
                   <Icon
                     className="text-3xl text-gray-600 dark:text-gray-300"
                     icon="ic:baseline-notifications"
@@ -211,6 +216,7 @@ export default function Navbar() {
                 {showNotificationsMenu && (
                   <NotificationsMenu
                     notifications={notifications}
+                    buttonRef={showNotificationsRef}
                     setOpenMenu={setShowNotificationsMenu}
                     removeNotification={removeNotification}
                   />

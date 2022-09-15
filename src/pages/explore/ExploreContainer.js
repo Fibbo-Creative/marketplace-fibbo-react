@@ -545,7 +545,11 @@ export default function ExploreContainer() {
               selectCollection={selectCollection}
             />
           )}
-          <div className={`flex flex-col ${openedSidebar && "ml-[17vw]"}`}>
+          <div
+            className={`flex flex-col ${
+              openedSidebar ? "ml-[20vw]" : "ml-[5vw]"
+            }`}
+          >
             <div
               className={`flex flex-col ${
                 openedSidebar

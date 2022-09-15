@@ -30,7 +30,21 @@ export default function WrappedFTMModal({
   const { getWalletBalance } = useProvider();
 
   const handleInputChange = (value) => {
-    setFtmAmount(parseFloat(value));
+    if (value.includes(".") || value.includes(",")) {
+      let numberOfDecimals = 0;
+      if (value.includes(".")) {
+        numberOfDecimals = value.split(".")[1].length;
+      } else if (value.includes(",")) {
+        numberOfDecimals = value.split(",")[1].length;
+      }
+      if (numberOfDecimals > 2) {
+        setFtmAmount(parseFloat(value).toFixed(2));
+      } else {
+        setFtmAmount(value);
+      }
+    } else {
+      setFtmAmount(value);
+    }
   };
 
   const handleChangeFromFTM = (value) => {
