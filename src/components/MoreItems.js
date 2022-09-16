@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import NftCard from "./NftCard";
 import { useStateContext } from "../context/StateProvider";
 
-export const MoreItems = ({ nfts, collectionInfo }) => {
+export const MoreItems = ({ nfts, collectionInfo, wallet }) => {
   const navigate = useNavigate();
   const [{ literals }] = useStateContext();
   const redirectToItem = (item) => {
@@ -29,6 +29,7 @@ export const MoreItems = ({ nfts, collectionInfo }) => {
           {nfts?.map((item) => {
             return (
               <NftCard
+                wallet={wallet}
                 key={item.tokenId}
                 isSmall={true}
                 item={{ ...item, collection: collectionInfo }}

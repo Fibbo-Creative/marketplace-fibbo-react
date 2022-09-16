@@ -189,7 +189,7 @@ export default function WrappedFTMModal({
           ) : (
             <div className="my-10 mx-8 flex flex-col gap-10">
               <div>
-                <div>FBOFTM</div>
+                <div>FTM</div>
                 <div className="flex">
                   <input
                     value={ftmAmount}

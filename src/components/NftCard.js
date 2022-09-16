@@ -1,10 +1,14 @@
 import { Icon } from "@iconify/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useApi } from "../api";
 import { useStateContext } from "../context/StateProvider";
 import { ButtonTooltip } from "./tooltips/ButtonTooltip";
-export default function NftCard({ item, onClick, isSmall, selectFavorite }) {
+export default function NftCard({ item, onClick, isSmall, wallet }) {
   const [{ literals }] = useStateContext();
+  const { addFavorite, deleteFavorite } = useApi();
 
+  const [likes, setLikes] = useState(0);
+  const [liked, setLiked] = useState(false);
   const formatDate = () => {
     const now = new Date();
     const auctionInfo = item.auction;
@@ -53,24 +57,47 @@ export default function NftCard({ item, onClick, isSmall, selectFavorite }) {
       }
     }
   };
+
+  useEffect(() => {
+    setLiked(item.isFavorited);
+    setLikes(item.favorites);
+  }, [item]);
+
+  const toggleFavorite = async () => {
+    if (liked) {
+      await deleteFavorite(item.collectionAddress, item.tokenId, wallet);
+      setLiked(false);
+      setLikes(likes - 1);
+    } else {
+      await addFavorite(item.collectionAddress, item.tokenId, wallet);
+      setLiked(true);
+      setLikes(likes + 1);
+    }
+  };
   return (
     <div className="flex flex-col gap-3 shadow-lg bg-gray-200 dark:border-dark-2 dark:bg-dark-3 border-gray-30  shadow-gray-300 dark:shadow-dark-4   border-2 p-3 rounded-md cursor-pointer hover:shadow-lg hover:border-3 hover:-translate-y-1">
-      {/*   <div className="w-full flex gap-2 items-end justify-end text-gray-400">
-        <ButtonTooltip
-          tooltip={`favorite-${item.tokenId}-${item.collection.contractAddress}`}
-          tooltipText="Favorite"
-          tooltipPlacement="left"
-          onClick={selectFavorite}
-          className="flex flex-row gap-2"
-        >
-          <Icon
-            icon="carbon:favorite"
-            width={22}
-            className="hover:text-primary-2"
-          />
-          0
-        </ButtonTooltip>
-      </div> */}
+      {wallet && wallet !== "" && (
+        <div className="w-full flex gap-2 items-end justify-end text-gray-400">
+          <ButtonTooltip
+            tooltip={`favorite-${item.tokenId}-${item.collection.contractAddress}`}
+            tooltipText={
+              liked
+                ? literals.detailNFT.unFavorite
+                : literals.detailNFT.favorite
+            }
+            tooltipPlacement="left"
+            onClick={toggleFavorite}
+            className="flex flex-row gap-2"
+          >
+            <Icon
+              icon={liked ? "carbon:favorite-filled" : "carbon:favorite"}
+              width={22}
+              className="hover:text-primary-2"
+            />
+            {likes}
+          </ButtonTooltip>
+        </div>
+      )}
       <div
         onClick={onClick}
         className={`${

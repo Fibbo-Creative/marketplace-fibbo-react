@@ -18,7 +18,7 @@ export default function BuyNowModal({
   onBuyNow,
 }) {
   const [wftmBalance, setWftmBalance] = useState(0);
-  const { getWFTMBalance } = useWFTMContract();
+  const { getTotalFTMBalance } = useWFTMContract();
   const [{ literals }] = useStateContext();
   const handleBuyNow = async () => {
     try {
@@ -32,8 +32,8 @@ export default function BuyNowModal({
   useEffect(() => {
     const fetchData = async () => {
       if (wallet) {
-        const walletBalanceWFTM = await getWFTMBalance(wallet);
-        setWftmBalance(parseFloat(formatEther(walletBalanceWFTM)));
+        const walletBalanceFTM = await getTotalFTMBalance(wallet);
+        setWftmBalance(walletBalanceFTM);
       }
     };
     fetchData();

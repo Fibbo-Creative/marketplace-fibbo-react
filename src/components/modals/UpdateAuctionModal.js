@@ -39,11 +39,19 @@ export default function UpdateAuctionModal({
       setNewReservePrice(parseFloat(auctionInfo?.reservePrice));
       let _startDate = new Date(auctionInfo?.startTime * 1000);
       setStartDate(_startDate.toISOString().split("T")[0]);
-      setStartHour(_startDate.toLocaleTimeString());
+      setStartHour(
+        `${
+          _startDate.toLocaleTimeString().split(":")[0].length === 1 && "0"
+        }${_startDate.toLocaleTimeString()}`
+      );
 
       let _endDate = new Date(auctionInfo?.endTime * 1000);
       setEndDate(_endDate.toISOString().split("T")[0]);
-      setEndHour(_endDate.toLocaleTimeString());
+      setEndHour(
+        `${
+          _endDate.toLocaleTimeString().split(":")[0].length === 1 && "0"
+        }${_endDate.toLocaleTimeString()}`
+      );
     };
     fetchData();
   }, [auctionInfo]);
@@ -59,7 +67,10 @@ export default function UpdateAuctionModal({
       completedText={literals.updateAuctionModal.auctionUpdated}
       completedLabel={literals.modals.seeUpdatedItem}
       completedAction={handleCloseModal}
-      submitDisabled={actionError}
+      submitDisabled={
+        actionError ||
+        parseFloat(newReservePrice) === parseFloat(auctionInfo.reservePrice)
+      }
     >
       <div className="my-10 mx-8 flex flex-col gap-10">
         <div className="flex flex-col gap-4">

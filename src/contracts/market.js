@@ -5,6 +5,8 @@ import { useAddressRegistry } from "./addressRegistry";
 
 import { formatEther, parseEther } from "ethers/lib/utils";
 import { useTokens } from "./token";
+import { useWFTMContract } from "./wftm";
+
 import useAccount from "../hooks/useAccount";
 import useProvider from "../hooks/useProvider";
 import { sendMetaTx } from "./meta";
@@ -14,6 +16,8 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 export const useMarketplace = () => {
   const { getERC20Contract, getERC721Contract, approvalForAllGasless } =
     useTokens();
+
+  const { getWFTMBalance, wrapFTM, unwrapFTMGassless } = useWFTMContract();
   const { getMarketplaceAddress } = useAddressRegistry();
   const { wallet } = useAccount();
   const { createProvider } = useProvider();
@@ -76,8 +80,14 @@ export const useMarketplace = () => {
     const userProvider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = userProvider.getSigner();
     const from = await signer.getAddress();
-
     price = parseEther(price.toString());
+    const wftmBalance = await getWFTMBalance(wallet);
+
+    if (wftmBalance.lt(price)) {
+      await wrapFTM(true, wallet, price, wallet);
+      await sleep(4000);
+    }
+
     const allowance = await erc20.allowance(buyer, marketContract.address);
 
     if (allowance.lt(price)) {
@@ -179,6 +189,13 @@ export const useMarketplace = () => {
     const from = await signer.getAddress();
 
     offerPrice = parseEther(offerPrice.toString());
+    const wftmBalance = await getWFTMBalance(wallet);
+
+    if (wftmBalance.lt(offerPrice)) {
+      await wrapFTM(true, wallet, offerPrice, wallet);
+      await sleep(4000);
+    }
+
     let allowance = await erc20.allowance(buyer, marketContract.address);
     if (allowance.lt(offerPrice)) {
       await sendMetaTx(erc20, provider, signer, {
@@ -258,22 +275,26 @@ export const useMarketplace = () => {
       await sleep(4000);
     }
 
-    const tx = await marketContract.acceptOffer(collection, tokenId, creator);
-    await tx.wait();
-
-    /*  await sendMetaTx(marketContract, provider, signer, {
+    await sendMetaTx(marketContract, provider, signer, {
       functionName: "acceptOffer",
       args: [collection, tokenId, creator],
-    }); */
+    });
   };
 
-  const cancelOffer = async (collection, tokenId) => {
+  const cancelOffer = async (collection, tokenId, offerPrice) => {
     const marketContract = await getMarketContract();
     const provider = createProvider();
     await window.ethereum.enable();
     const userProvider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = userProvider.getSigner();
     const from = await signer.getAddress();
+
+    offerPrice = parseEther(offerPrice.toString());
+    const wftmBalance = await getWFTMBalance(from);
+    if (wftmBalance.gte(offerPrice)) {
+      await unwrapFTMGassless(offerPrice);
+      await sleep(2000);
+    }
 
     return await sendMetaTx(marketContract, provider, signer, {
       functionName: "cancelOffer",

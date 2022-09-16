@@ -88,11 +88,11 @@ export const UserMenu = ({
           icon="fluent:people-community-16-filled"
           onClick={() => goToCommunity()}
         />
-        <UserMenuItem
+        {/*     <UserMenuItem
           text={literals.userMenu.station}
           icon="carbon:gas-station-filled"
           onClick={() => setOpenStation(true)}
-        />
+        /> */}
         <UserMenuItem
           text={literals.userMenu.buyFTM}
           icon="fa6-solid:money-bill-transfer"

@@ -27,7 +27,13 @@ import { useStateContext } from "../../context/StateProvider";
 export default function ExploreContainer() {
   const [{ literals }] = useStateContext();
   const navigate = useNavigate();
-  const { getAllTokens, getAllPayTokens, getCollectionsAvailable } = useApi();
+  const {
+    getAllTokens,
+    getAllPayTokens,
+    getCollectionsAvailable,
+    addFavorite,
+    deleteFavorite,
+  } = useApi();
   const { wallet } = useAccount();
   const [marketItems, setMarketItems] = useState([]);
   const [allMarketItems, setAllMarketItems] = useState([]);
@@ -54,11 +60,8 @@ export default function ExploreContainer() {
       const _collections = await getCollectionsAvailable();
 
       setAllCollections(_collections);
-      //const firstItems = await getAllTokens(20);
-      //setAllMarketItems(firstItems);
-      //setVisibleMarketItems(firstItems.slice(0, 12));
 
-      let forSaleItems = await getAllTokens();
+      let forSaleItems = await getAllTokens(wallet);
       forSaleItems = forSaleItems.sort(orderByRecently);
       setAllMarketItems(forSaleItems);
       setMarketItems(forSaleItems);
@@ -68,7 +71,7 @@ export default function ExploreContainer() {
     };
     fetchData();
     setLoadingInfo(false);
-  }, []);
+  }, [wallet]);
 
   const addMoreItems = () => {
     const newCount = visibleItemsCount + 12;
@@ -663,6 +666,7 @@ export default function ExploreContainer() {
                         onClick={() => goToNftDetail(item)}
                         isSmall={userSmallview}
                         item={item}
+                        wallet={wallet}
                       />
                     </div>
                   );

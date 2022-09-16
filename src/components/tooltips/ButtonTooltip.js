@@ -21,9 +21,9 @@ export const ButtonTooltip = ({
           ? "dark:text-gray-600 text-gray-200"
           : "dark:hover:text-gray-400 hover:text-gray-400"
       }`}
-      data-for={tooltip}
+      data-for={!disabled && tooltip}
       onClick={() => !disabled && onClick()}
-      data-tip={tooltipText}
+      data-tip={!disabled ? tooltipText : null}
     >
       <div className={`${className} z-99`}>{children}</div>
       {tooltip && !disabled && (

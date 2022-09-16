@@ -4,7 +4,7 @@ const localURL = "http://localhost:9000/";
 const localDevURL = "http://192.168.1.48.sslip.io:9000";
 const herokuDevURL = "https://market-api-dev.herokuapp.com/";
 
-const marketplaceApi = axios.create({ baseURL: herokuDevURL });
+const marketplaceApi = axios.create({ baseURL: localURL });
 const isMainnet = false;
 
 export const useApi = () => {
@@ -147,8 +147,8 @@ export const useApi = () => {
 
   //#region Nfts
 
-  const getAllTokens = async (count) => {
-    let url = count ? `nfts/allNfts?count=${count}` : "nfts/allNfts";
+  const getAllTokens = async (user) => {
+    let url = user !== "" ? `nfts/allNfts?user=${user}` : "nfts/allNfts";
     const res = await marketplaceApi.get(url);
     return res.data;
   };
@@ -158,9 +158,9 @@ export const useApi = () => {
     return res.data;
   };
 
-  const getNftInfo = async (collection, tokenId) => {
+  const getNftInfo = async (collection, tokenId, user) => {
     const res = await marketplaceApi.get(
-      `nfts/nftInfo?collection=${collection}&nftId=${tokenId}`
+      `nfts/nftInfo?collection=${collection}&nftId=${tokenId}&user=${user}`
     );
     return res.data;
   };
@@ -206,7 +206,8 @@ export const useApi = () => {
     ipfsMetadata,
     collection,
     externalLink,
-    additionalContent
+    additionalContent,
+    categories
   ) => {
     await marketplaceApi.post("nfts/newItem", {
       name: name,
@@ -220,6 +221,7 @@ export const useApi = () => {
       collection: collection,
       externalLink: externalLink,
       additionalContent: additionalContent,
+      categories: categories,
     });
   };
 
@@ -278,6 +280,30 @@ export const useApi = () => {
     }
   };
 
+  const addFavorite = async (collection, tokenId, user) => {
+    try {
+      await marketplaceApi.post("nfts/addFavorite", {
+        collection: collection,
+        tokenId: tokenId,
+        from: user,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const deleteFavorite = async (collection, tokenId, user) => {
+    try {
+      await marketplaceApi.post("nfts/deleteFavorite", {
+        collection: collection,
+        tokenId: tokenId,
+        from: user,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   //#endregion
 
   //#region Offers
@@ -312,16 +338,16 @@ export const useApi = () => {
     return res.data;
   };
 
-  const getItemsFromCollection = async (collection) => {
+  const getItemsFromCollection = async (collection, user) => {
     const res = await marketplaceApi.get(
-      `collections/items?address=${collection}`
+      `collections/items?address=${collection}&user=${user}`
     );
     return res.data;
   };
 
-  const getCollectionDetail = async (collection) => {
+  const getCollectionDetail = async (collection, user) => {
     const res = await marketplaceApi.get(
-      `collections/collectionDetail?collection=${collection}`
+      `collections/collectionDetail?collection=${collection}&user=${user}`
     );
     return res.data;
   };
@@ -445,6 +471,22 @@ export const useApi = () => {
     return res.data;
   };
 
+  const addToWatchlist = async (contractAddress, user) => {
+    const res = await marketplaceApi.post(`collections/addToWatchlist`, {
+      collection: contractAddress,
+      from: user,
+    });
+    return res.data;
+  };
+
+  const deleteFromWatchList = async (contractAddress, user) => {
+    const res = await marketplaceApi.post(`collections/removeFromWatchlist`, {
+      collection: contractAddress,
+      from: user,
+    });
+    return res.data;
+  };
+
   const getUserCollectionOptions = async (contractAddress, user) => {
     const res = await marketplaceApi.get(
       `collections/collectionUserOptions?contractAddress=${contractAddress}&user=${user}`
@@ -502,11 +544,23 @@ export const useApi = () => {
   //#endregion
 
   //#region Community
+
+  const getActiveSuggestions = async () => {
+    const active = await marketplaceApi.get("suggestions/activeSuggestions");
+    return active.data;
+  };
   const createNewSuggestion = async (wallet, title, desc) => {
     await marketplaceApi.post("suggestions/new", {
       wallet: wallet,
       title: title,
       description: desc,
+    });
+  };
+  const voteIntoSuggestion = async (wallet, title, proposer) => {
+    await marketplaceApi.post("suggestions/vote", {
+      title: title,
+      proposer: proposer,
+      voter: wallet,
     });
   };
   //#endregion
@@ -563,6 +617,8 @@ export const useApi = () => {
     getUserCollectionOptions,
     getCollectionDetail,
     createUserCollectionOptions,
+    addToWatchlist,
+    deleteFromWatchList,
     setShowRedirectToLink,
     getCollectionsAvailable,
     getAllCollections,
@@ -571,11 +627,14 @@ export const useApi = () => {
     saveMintedItem,
     registerNftRoyalties,
     deleteNftItem,
+    addFavorite,
+    deleteFavorite,
     saveCollectionDetails,
     searchItemsAndProfiles,
     uploadImgToCDN,
     uploadJSONMetadata,
     createNewSuggestion,
+    voteIntoSuggestion,
     getVerificatedArtists,
     registerSentItem,
     newVerifyRequest,
@@ -590,7 +649,7 @@ export const useApi = () => {
     getPayTokenInfo,
     setImportWFTM,
     setShowRedirectProfile,
-
+    getActiveSuggestions,
     getMyCollections,
     editNftData,
     editCollectionDetails,

@@ -1,71 +1,89 @@
-import { parseEther } from "ethers/lib/utils";
-import React, { useState } from "react";
+import { Icon } from "@iconify/react";
+import React, { useEffect, useState } from "react";
 import tw from "tailwind-styled-components";
-import ActionButton from "../../../components/ActionButton";
-import { useCommunity } from "../../../contracts/community";
+import { useApi } from "../../../api";
+import { ButtonTooltip } from "../../../components/tooltips/ButtonTooltip";
+import { useStateContext } from "../../../context/StateProvider";
 
-export const FeatureItem = ({ suggestion, suggestionsContract }) => {
-  const { addTokensToSuggestion } = useCommunity();
-  const [depositValue, setDepositValue] = useState("");
+export const FeatureItem = ({ suggestion, wallet }) => {
+  const [{ literals }] = useStateContext();
+  const { voteIntoSuggestion } = useApi();
 
-  const { suggestionId, title, description, totalAmount, progress, proposer } =
+  const [hasVoted, setHasVoted] = useState(false);
+  const [numberOfVotes, setNumberOfVotes] = useState(0);
+
+  const { suggestionId, title, description, proposer, votes, voters } =
     suggestion;
 
-  const depositToSuggestion = async () => {
-    await addTokensToSuggestion(
-      suggestionId,
-      parseEther(depositValue.toString())
-    );
+  const voteSuggestion = async () => {
+    await voteIntoSuggestion(wallet, title, proposer.wallet);
 
-    window.location.reload();
+    setHasVoted(true);
+    setNumberOfVotes(numberOfVotes + 1);
   };
+
+  useEffect(() => {
+    setHasVoted(voters.includes(wallet));
+    setNumberOfVotes(votes);
+  }, []);
+
   return (
     <Container>
-      <TitleContainer>{title}</TitleContainer>
-      <DescriptionContainer>{description}</DescriptionContainer>
-      <div className="flex gap-5 mt-3 items-center">
-        <div>Propuesto por</div>
-        <div className="flex gap-2 items-center border p-2 rounded-xl">
-          <img
-            className="rounded-full"
+      <div
+        disabled={hasVoted}
+        onClick={voteSuggestion}
+        className={`border-r pr-4 flex flex-col gap-2 items-center justify-center`}
+      >
+        <ButtonTooltip
+          tooltip={`feature-${suggestionId}`}
+          tooltipText={literals.features.vote}
+          tooltipPlacement="top"
+          disabled={hasVoted}
+          onClick={voteSuggestion}
+        >
+          <Icon
+            className={`${
+              hasVoted
+                ? "cursor-not-allowed"
+                : "cursor-pointer hover:text-primary-2"
+            } `}
             width={32}
-            src={proposer.profileImg}
-            alt={`from-${proposer._id}-img`}
+            icon={!hasVoted ? "bx:upvote" : "bxs:upvote"}
           />
-          <p
-            className="text-primary-2 underline cursor-pointer"
-            onClick={() => window.open(`/profile/${proposer.wallet}`, "_blank")}
-          >
-            {proposer.username}
-          </p>
+        </ButtonTooltip>
+        <div className="text-lg">
+          <b>{numberOfVotes}</b>
         </div>
       </div>
-      <ProgressContainer>
-        <div>Progreso</div>
-        <div>
-          {progress} / {totalAmount} FTM
+      <div>
+        <TitleContainer>{title}</TitleContainer>
+        <DescriptionContainer>{description}</DescriptionContainer>
+        <div className="flex gap-5 mt-3 text-sm md:text-base items-center">
+          <div>{literals.features.proposedFor}</div>
+          <div className="flex gap-2 items-center border p-2 rounded-xl">
+            <img
+              className="rounded-full"
+              width={32}
+              src={proposer.profileImg}
+              alt={`from-${proposer._id}-img`}
+            />
+            <p
+              className="text-primary-2 underline cursor-pointer"
+              onClick={() =>
+                window.open(`/profile/${proposer.wallet}`, "_blank")
+              }
+            >
+              {proposer.username}
+            </p>
+          </div>
         </div>
-      </ProgressContainer>
-      <DepositContainer>
-        <Input
-          onChange={(e) => setDepositValue(e.target.value)}
-          value={depositValue}
-          type="number"
-          placeholder="Introduce la cantidad a donar..."
-          step=".01"
-        />
-        <ActionButton
-          buttonAction={depositToSuggestion}
-          text={"Contribuye"}
-          size={"small"}
-        />
-      </DepositContainer>
+      </div>
     </Container>
   );
 };
 
 const Container = tw.div`
-    flex flex-col w-full border rounded-md border-gray-300 p-2 dark:bg-dark-2
+    flex   w-full border rounded-md border-gray-300 p-2 dark:bg-dark-2 gap-4
 `;
 
 const TitleContainer = tw.div`
