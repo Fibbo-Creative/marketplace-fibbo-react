@@ -42,6 +42,8 @@ export const CollectionDetailContainer = () => {
     getUserCollectionOptions,
     createUserCollectionOptions,
     setShowRedirectToLink,
+    addCollectionToWatchlist,
+    deleteFromWatchList,
   } = useApi();
   const { wallet } = useAccount();
   const [collectionInfo, setCollectionInfo] = useState(null);
@@ -53,6 +55,8 @@ export const CollectionDetailContainer = () => {
 
   const [expandedDesc, setExpandedDesc] = useState(false);
   const [openedSidebar, setOpenedSidebar] = useState(false);
+
+  const [liked, setLiked] = useState(false);
 
   const [queryText, setQueryText] = useState("");
   const [allErc20Tokens, setAllErc20Tokens] = useState([]);
@@ -100,6 +104,16 @@ export const CollectionDetailContainer = () => {
         setDetailLink(link);
         setShowRedirect(true);
       }
+    }
+  };
+
+  const addToWatchList = async () => {
+    if (liked) {
+      await deleteFromWatchList(collectionInfo.contractAddress, wallet);
+      setLiked(false);
+    } else {
+      await addCollectionToWatchlist(collectionInfo.contractAddress, wallet);
+      setLiked(true);
     }
   };
 
@@ -354,6 +368,7 @@ export const CollectionDetailContainer = () => {
       const _payTokens = await getAllPayTokens();
       setAllErc20Tokens(_payTokens);
       setCollectionInfo(collectionDetail);
+      setLiked(collectionDetail.liked);
       setCollectionNfts(collectionDetail.nfts);
       setFilteredNfts(collectionDetail.nfts);
       setLoading(false);
@@ -514,6 +529,22 @@ export const CollectionDetailContainer = () => {
                   <div className="mx-5"></div>
 
                   <div className="flex items-center">
+                    {wallet !== "" && (
+                      <ItemPageOption
+                        disabled
+                        icon={
+                          liked
+                            ? "clarity:favorite-solid"
+                            : "clarity:favorite-line"
+                        }
+                        tooltip="watch-item"
+                        tooltipText={
+                          liked
+                            ? literals.actions.deleteFromWatchlist
+                            : literals.actions.addToWatchlist
+                        }
+                      />
+                    )}
                     <ItemPageOption
                       disabled
                       icon="bi:share-fill"
@@ -555,6 +586,20 @@ export const CollectionDetailContainer = () => {
               </div>
               <div className="mx-5 w-[1px] border-2"></div>
               <div className="flex items-center">
+                {wallet !== "" && (
+                  <ItemPageOption
+                    onClick={addToWatchList}
+                    icon={
+                      liked ? "clarity:favorite-solid" : "clarity:favorite-line"
+                    }
+                    tooltip="watch-item"
+                    tooltipText={
+                      liked
+                        ? literals.actions.deleteFromWatchlist
+                        : literals.actions.addToWatchlist
+                    }
+                  />
+                )}
                 <ItemPageOption
                   disabled
                   icon="bi:share-fill"
@@ -645,7 +690,7 @@ export const CollectionDetailContainer = () => {
             </div>
             <div className="flex flex-col  items-center">
               <div className="flex text-xl">
-                <b>{parseFloat(collectionInfo?.volumen)} WFTM</b>
+                <b>{parseFloat(collectionInfo?.volumen)} FTM</b>
               </div>
               <div className="flex items-end text-sm text-gray-400">
                 {literals.collectionDetail.totalVolume}

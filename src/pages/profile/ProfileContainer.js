@@ -31,6 +31,8 @@ export default function ProfileContainer() {
     getWalletHistory,
     getWalletOffers,
     getWalletBids,
+    getFavoritesFromAddress,
+    getCollectionInfo,
   } = useApi();
   const navigate = useNavigate();
   const { address } = useParams();
@@ -49,6 +51,8 @@ export default function ProfileContainer() {
   });
 
   const [collectedItems, setCollectedItems] = useState([]);
+  const [favoritedItems, setFavoritedItems] = useState([]);
+
   const [createdItems, setCreatedItems] = useState([]);
   const [activity, setActivity] = useState([]);
   const [offers, setOffers] = useState([]);
@@ -71,8 +75,14 @@ export default function ProfileContainer() {
     setSmallViewUser(false);
   };
 
-  const goToNftDetail = (item) => {
-    navigate(`/explore/${item.collectionAddress}/${item.tokenId}`);
+  const goToNftDetail = async (item) => {
+    const collectionInfo = await getCollectionInfo(item.collectionAddress);
+
+    if (collectionInfo.customURL) {
+      navigate(`/explore/${collectionInfo.customURL}/${item.tokenId}`);
+    } else {
+      navigate(`/explore/${collectionInfo.collectionAddress}/${item.tokenId}`);
+    }
   };
 
   const selectBannerImg = () => {
@@ -151,6 +161,9 @@ export default function ProfileContainer() {
         setUserItems(collectedItemsResponse);
         setCollectedItems(collectedItemsResponse);
 
+        const favoriteItemsResponse = await getFavoritesFromAddress(address);
+        setFavoritedItems(favoriteItemsResponse);
+
         const createdItemsResponse = await getNftsFromCreator(address);
         setCreatedItems(createdItemsResponse);
 
@@ -174,6 +187,9 @@ export default function ProfileContainer() {
     switch (newType.type) {
       case "Collected":
         setUserItems(collectedItems);
+        break;
+      case "Favorites":
+        setUserItems(favoritedItems);
         break;
       case "Created":
         setUserItems(createdItems);
@@ -352,6 +368,23 @@ export default function ProfileContainer() {
                       })
                     }
                   />
+                  {myProfile && (
+                    <ProfileTab
+                      title={literals.profile.favorites}
+                      count={favoritedItems.length}
+                      type={{
+                        type: "Favorites",
+                        viewAs: "grid",
+                      }}
+                      selectedType={itemsType}
+                      onClick={() =>
+                        handleSetItemsType({
+                          type: "Favorites",
+                          viewAs: "grid",
+                        })
+                      }
+                    />
+                  )}
                   <ProfileTab
                     title={literals.profile.created}
                     count={createdItems.length}

@@ -560,6 +560,9 @@ export default function ItemPage() {
       payToken: payTokenInfo,
     };
 
+    offers.current = [];
+    setMyOffer(null);
+
     setIsOnAuction(true);
   };
 

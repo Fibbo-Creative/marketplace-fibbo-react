@@ -27,6 +27,11 @@ export const useApi = () => {
     return res.data;
   };
 
+  const getFavoritesFromAddress = async (address) => {
+    const res = await marketplaceApi.get(`users/favorites?address=${address}`);
+    return res.data;
+  };
+
   const getWalletOffers = async (address) => {
     const res = await marketplaceApi.get(`users/offers?address=${address}`);
     return res.data;
@@ -471,7 +476,7 @@ export const useApi = () => {
     return res.data;
   };
 
-  const addToWatchlist = async (contractAddress, user) => {
+  const addCollectionToWatchlist = async (contractAddress, user) => {
     const res = await marketplaceApi.post(`collections/addToWatchlist`, {
       collection: contractAddress,
       from: user,
@@ -484,6 +489,11 @@ export const useApi = () => {
       collection: contractAddress,
       from: user,
     });
+    return res.data;
+  };
+
+  const getWatchlistedCollections = async (user) => {
+    const res = await marketplaceApi.get(`collections/watchlist?user=${user}`);
     return res.data;
   };
 
@@ -617,7 +627,7 @@ export const useApi = () => {
     getUserCollectionOptions,
     getCollectionDetail,
     createUserCollectionOptions,
-    addToWatchlist,
+    addCollectionToWatchlist,
     deleteFromWatchList,
     setShowRedirectToLink,
     getCollectionsAvailable,
@@ -645,6 +655,7 @@ export const useApi = () => {
     getWalletOffers,
     getWalletBids,
     setAcceptedOffer,
+    getFavoritesFromAddress,
     getAllPayTokens,
     getPayTokenInfo,
     setImportWFTM,
@@ -655,6 +666,7 @@ export const useApi = () => {
     editCollectionDetails,
     getUserNotifications,
     getItemsFromCollection,
+    getWatchlistedCollections,
     deleteNotification,
   };
 };
