@@ -43,7 +43,7 @@ export const useAuction = () => {
   const { createProvider } = useProvider();
   const { getContract } = useContract();
   const { getFactoryContract } = useFactory();
-  const { getWFTMBalance, wrapFTM, unwrapFTMGassless } = useWFTMContract();
+  const { getWFTMBalance, wrapFTM } = useWFTMContract();
 
   const getContractAddress = async () => await getAuctionAddress();
 

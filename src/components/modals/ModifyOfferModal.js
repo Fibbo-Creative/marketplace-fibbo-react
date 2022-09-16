@@ -20,7 +20,7 @@ export default function ModifyOfferModal({
   const [payTokenSelected, setPayTokenSelected] = useState(null);
   const [{ updatedWFTM, literals }] = useStateContext();
 
-  const { getWFTMBalance } = useWFTMContract();
+  const { getTotalFTMBalance } = useWFTMContract();
   const handleMakeOffer = async () => {
     try {
       var endTime = new Date(`${expireDate}T${expireHour}`);
@@ -47,22 +47,13 @@ export default function ModifyOfferModal({
       setOfferPrice(offer.price);
 
       if (wallet) {
-        const walletBalanceWFTM = await getWFTMBalance(wallet);
-        setWftmBalance(formatEther(walletBalanceWFTM));
+        const walletBalanceWFTM = await getTotalFTMBalance(wallet);
+        setWftmBalance(walletBalanceWFTM);
       }
     };
     fetchData();
   }, [wallet, offer]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (wallet) {
-        const walletBalanceWFTM = await getWFTMBalance(wallet);
-        setWftmBalance(formatEther(walletBalanceWFTM));
-      }
-    };
-    fetchData();
-  }, [updatedWFTM]);
   return (
     <ActionModal
       title={literals.modifyOfferModal.modifyOffer}

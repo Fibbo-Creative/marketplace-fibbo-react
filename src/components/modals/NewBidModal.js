@@ -26,7 +26,7 @@ export default function MakeBidModal({
   const [payTokenSelected, setPayTokenSelected] = useState(null);
   const [{ updatedWFTM }] = useStateContext();
 
-  const { getWFTMBalance, getTotalFTMBalance } = useWFTMContract();
+  const { getTotalFTMBalance } = useWFTMContract();
 
   const handleMakeBid = async () => {
     try {

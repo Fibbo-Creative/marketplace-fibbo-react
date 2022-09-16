@@ -20,8 +20,7 @@ export const Erc20AmountInput = ({
   nonSelect,
 }) => {
   const { getAllPayTokens } = useApi();
-  const { getWFTMBalance, getTotalFTMBalance } = useWFTMContract();
-  const { getWalletBalance } = useProvider();
+  const { getTotalFTMBalance } = useWFTMContract();
   const { wallet } = useAccount();
   const [coinPrice, setCoinPrice] = useState(0);
   const [payTokens, setPayTokens] = useState([]);
