@@ -36,7 +36,7 @@ export const Erc20AmountInput = ({
 
   const handleSelectPayToken = async (token) => {
     setSelectedToken(token);
-    if (token.name === "FBOFTM") {
+    if (token.name === "FTM") {
       const wftBalance = await getTotalFTMBalance(wallet);
 
       setTokenBalance(wftBalance);
@@ -67,7 +67,7 @@ export const Erc20AmountInput = ({
       let _payTokens = await getAllPayTokens();
       setPayTokens(_payTokens);
       setSelectedToken(_payTokens[0]);
-      if (_payTokens[0].name === "FBOFTM") {
+      if (_payTokens[0].name === "FTM") {
         const balance = await getTotalFTMBalance(wallet);
         setTokenBalance(balance);
       }

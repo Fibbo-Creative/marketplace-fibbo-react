@@ -61,7 +61,7 @@ export default function CreateContainer() {
         );
 
         setIpfsImageUrl(`https://ipfs.io/ipfs/${ipfs}`);
-
+        console.log(sanity);
         if (error) {
           setImageError(true);
           setImageMessageError("Imagen no permitida, contiene contenido NFSW");

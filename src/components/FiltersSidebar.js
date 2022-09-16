@@ -50,12 +50,12 @@ export default function FiltersSidebar({
                 filtersSelected={filtersSelected}
               />
             </FilterBottomDropDown>
-            <FilterBottomDropDown name="Token">
+            {/*             <FilterBottomDropDown name="Token">
               <FilterButtons
                 options={payTokenFilters}
                 filtersSelected={filtersSelected}
               />
-            </FilterBottomDropDown>
+            </FilterBottomDropDown> */}
             <FilterBottomDropDown name={literals.filters.colections}>
               <FiltersSelectList
                 list={collections}

@@ -38,7 +38,7 @@ const engLiterals = {
     profile: "Profile",
     settings: "Settings",
     community: "Community",
-    station: "FBOFTM Station",
+    station: "FTM Station",
     disconnect: "Disconnect",
     darkMode: "Dark Mode",
     autoDarkMode: "Auto Dark Mode",
@@ -240,7 +240,7 @@ const engLiterals = {
   makeOffer: {
     offerPrice: "What price do you want to offer?",
     expires: "Expires",
-    notWFTM: "You don't have enough FBOFTM",
+    notWFTM: "You don't have enough FTM",
     offerOf: "Offer of",
   },
   notifications: {
@@ -336,7 +336,7 @@ const engLiterals = {
     buyItem: "Do you want to buy the item for",
   },
   cancelAuctionModal: {
-    cancelAuction: "Cancela Auction",
+    cancelAuction: "Cancel Auction",
     cancel: "Cancel",
     canceledOk: "Auction successfully canceled",
     reservedPrice: "Reserved Price",
@@ -465,15 +465,15 @@ const engLiterals = {
     endDate: "End date",
   },
   wrappedFTMModal: {
-    station: "FTM / FBOFTM Station",
+    station: "FTM / FTM Station",
     balance: "Balance",
     notFTM: "You don't have enough FTMs to convert",
-    notWFTM: "You don't have enough FBOFTM to withdraw",
-    changeWFTM: "Convert to FBOFTM",
+    notWFTM: "You don't have enough FTM to withdraw",
+    changeWFTM: "Convert to FTM",
     sendFTM: "Withdraw FTM",
     close: "Close station",
-    succesWrap: "Succesfully wrapped {0} from FTM to FBOFTM",
-    succesUnWrap: "Succesfully withdrawed {0} FBOFTM",
+    succesWrap: "Succesfully wrapped {0} from FTM to FTM",
+    succesUnWrap: "Succesfully withdrawed {0} FTM",
   },
   editCollection: {
     title: "Edit Collection",
@@ -564,7 +564,7 @@ const espLiterals = {
     profile: "Perfil",
     settings: "Configuración",
     community: "Comunidad",
-    station: "Estación FBOFTM",
+    station: "Estación FTM",
     disconnect: "Desconectar",
     darkMode: "Tema Oscuro",
     autoDarkMode: "Auto Tema Oscuro",
@@ -765,7 +765,7 @@ const espLiterals = {
   makeOffer: {
     offerPrice: "Que precio quieres ofertar?",
     expires: "Fecha de Expiración",
-    notWFTM: "No tienes suficientes FBOFTM",
+    notWFTM: "No tienes suficientes FTM",
     offerOf: "Oferta por",
   },
   notifications: {
@@ -851,7 +851,7 @@ const espLiterals = {
   buyItemModal: {
     name: "Nombre:",
     royalties: "Regalías:",
-    notWFTM: "Insuficientes FBOFTM para comprar!",
+    notWFTM: "Insuficientes FTM para comprar!",
     fibboEarns: "Fibbo recoge un 2% de comisiones en cada venta de item",
   },
   buyNowModal: {
@@ -988,15 +988,15 @@ const espLiterals = {
     endDate: "Fecha de Fin",
   },
   wrappedFTMModal: {
-    station: "Esatación FTM / FBOFTM",
+    station: "Esatación FTM / FTM",
     balance: "Balance",
     notFTM: "No tienes suficientes FTM para convertir",
-    notWFTM: "No tienes suficientes FBOFTM para retirar",
-    changeWFTM: "Cambiar a FBOFTM",
+    notWFTM: "No tienes suficientes FTM para retirar",
+    changeWFTM: "Cambiar a FTM",
     sendFTM: "Retirar FTM",
     close: "Cerrar Estación",
-    succesWrap: "Transformados correctamente {0} FTM a FBOFTM",
-    succesUnWrap: "Retirados correctamente {0} FBOFTM",
+    succesWrap: "Transformados correctamente {0} FTM a FTM",
+    succesUnWrap: "Retirados correctamente {0} FTM",
   },
   editCollection: {
     title: "Editar Colección",

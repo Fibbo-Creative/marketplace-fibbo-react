@@ -12,7 +12,7 @@ import { sendMetaTx } from "./meta";
 import { Contracts } from "../constants/networks";
 import { formatEther } from "ethers/lib/utils";
 
-const tokenSymbol = "FBOFTM";
+const tokenSymbol = "FTM";
 const tokenDecimals = 18;
 const tokenImage =
   "https://cdn.sanity.io/images/lmw8etck/dev-cdn/7d85bd9e849d164e634a3d72c9ee679be6370559-128x128.png";
