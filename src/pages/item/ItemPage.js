@@ -888,7 +888,7 @@ export default function ItemPage() {
                     <b>{literals.itemPage.owner} </b>
                     <div
                       onClick={() => redirectToProfile()}
-                      className="flex items-center gap-2 border border-gray-200 p-2 rounded-full cursor-pointer hover:bg-gray-200 transition duration-150 ease-in-out"
+                      className="flex items-center gap-2 p-2 rounded-full cursor-pointer hover:bg-gray-200 transition duration-150 ease-in-out"
                     >
                       <img
                         className="rounded-full"
