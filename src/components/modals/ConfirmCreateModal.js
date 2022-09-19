@@ -48,7 +48,10 @@ export const ConfirmCreateModal = ({
         ipfsFileURL,
         collection.contractAddress,
         itemData.externalLink,
-        itemData.hiddenContent
+        itemData.hiddenContent,
+        itemData.categories.map((cat) => {
+          return cat.identifier;
+        })
       );
       setNewTokenId(newTokenId);
       setAddress(address);

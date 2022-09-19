@@ -20,6 +20,7 @@ export default function DetailImage({
   wallet,
   loading,
   collectionInfo,
+  categories,
 }) {
   const [imgOrQR, setImgOrQr] = useState(tokenImage);
   const [{ literals }] = useStateContext();
@@ -107,6 +108,24 @@ export default function DetailImage({
               </div>
 
               <div className="flex items-center">
+                {categories.map((cat) => {
+                  return (
+                    <div data-for={`${cat.name}-icon`} data-tip={cat.name}>
+                      <Icon
+                        width={28}
+                        className="flex w-[32px]"
+                        icon={cat.icon}
+                      />
+                      <ReactTooltip
+                        id={`${cat.name}-icon`}
+                        place="top"
+                        type={theme === "dark" ? "light" : "dark"}
+                        effect="solid"
+                        multiline={true}
+                      />
+                    </div>
+                  );
+                })}
                 <div
                   data-for="chain-icon"
                   data-tip={literals.itemPage.fantomNetwork}

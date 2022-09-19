@@ -15,6 +15,7 @@ import FreezeMetadataModal from "../../components/modals/FreezeMetadataModal";
 import { ImageInput } from "../../components/inputs/ImageInput";
 import { NotOwner } from "../../components/basic/NotOwner";
 import { useCollections } from "../../contracts/collection";
+import { MultipleSelect } from "../../components/inputs/MultipleSelect";
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -32,8 +33,13 @@ export default function EditContainer() {
   let { collection, tokenId } = useParams();
 
   const { checkFreezedMetadata } = useCollections();
-  const { uploadImgToCDN, getNftInfo, editNftData, getCollectionInfo } =
-    useApi();
+  const {
+    uploadImgToCDN,
+    getNftInfo,
+    editNftData,
+    getCollectionInfo,
+    getAllCategories,
+  } = useApi();
   const [ipfsImageUrl, setIpfsImageUrl] = useState("");
   const [ipfsMetadata, setIpfsMetadata] = useState("");
 
@@ -43,7 +49,7 @@ export default function EditContainer() {
   const [desc, setDesc] = useState("");
   const [royalty, setRoyalty] = useState("");
   const { connectToWallet, wallet } = useAccount();
-  const [{ verifiedAddress, literals }] = useStateContext();
+  const [{ lang, verifiedAddress, literals }] = useStateContext();
 
   const [loading, setLoading] = useState(true);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
@@ -60,9 +66,30 @@ export default function EditContainer() {
   const [royaltyError, setRoyaltyError] = useState(false);
 
   const [collectionSelected, setCollectionSelected] = useState(null);
+  const [categoriesSelected, setCategoriesSelected] = useState([]);
+  const [categoriesAvailable, setCategoriesAvailable] = useState([]);
 
   const [freezeMetadata, setFreezedMetadata] = useState(false);
   const [showFreeze, setShowFreeze] = useState(false);
+
+  const selectCategory = (cat) => {
+    const isSelected = categoriesSelected.find(
+      (c) => c.identifier === cat.identifier
+    );
+    if (!isSelected) {
+      setCategoriesSelected([...categoriesSelected, cat]);
+    }
+  };
+  const removeCategory = (cat) => {
+    const isSelected = categoriesSelected.find(
+      (c) => c.identifier === cat.identifier
+    );
+    if (isSelected) {
+      setCategoriesSelected(
+        categoriesSelected.filter((c) => c.identifier !== cat.identifier)
+      );
+    }
+  };
 
   const getItemDetails = async () => {
     setLoading(true);
@@ -84,6 +111,26 @@ export default function EditContainer() {
       setShowHiddenContent(true);
       setHiddenContent(nftData.additionalContent);
     }
+
+    const cats = await getAllCategories();
+    setCategoriesAvailable(cats);
+
+    const selected = [];
+    const itemCats = nftData.categories;
+    await Promise.all(
+      cats.map((cat) => {
+        itemCats.forEach((itemCat) => {
+          if (itemCat === cat.identifier) {
+            selected.push({
+              ...cat,
+              name: lang === "eng" ? cat.name.eng : cat.name.esp,
+            });
+          }
+        });
+      })
+    );
+
+    setCategoriesSelected(selected);
 
     let isFreezed = await checkFreezedMetadata(
       collectionInfo.contractAddress,
@@ -155,6 +202,7 @@ export default function EditContainer() {
     }
 
     if (!error) {
+      console.log(categoriesSelected);
       await editNftData(
         name,
         desc,
@@ -166,7 +214,10 @@ export default function EditContainer() {
         ipfsMetadata,
         collectionSelected.contractAddress,
         externalLink,
-        hiddenContent
+        hiddenContent,
+        categoriesSelected.map((cat) => {
+          return cat.identifier;
+        })
       );
 
       if (freezeMetadata) {
@@ -265,6 +316,19 @@ export default function EditContainer() {
                       literals.createCollection.descriptionCharacters
                     }
                     onChange={(e) => handleChangeDescription(e.target.value)}
+                  />
+                  <MultipleSelect
+                    label={literals.filters.categories}
+                    buttonLabel={literals.actions.addCategory}
+                    options={categoriesAvailable.map((col) => {
+                      return {
+                        ...col,
+                        name: lang === "eng" ? col.name.eng : col.name.esp,
+                      };
+                    })}
+                    selectOption={selectCategory}
+                    optionsSelected={categoriesSelected}
+                    removeOption={removeCategory}
                   />
                   <TextInput
                     label={literals.createItem.externalLink}

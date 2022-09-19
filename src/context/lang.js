@@ -308,6 +308,7 @@ const engLiterals = {
     sendNFT: "Send NFT",
     addToWatchlist: "Add to watchlist",
     deleteFromWatchlist: "Remove from watchlist",
+    addCategory: "Add",
   },
   modals: {
     connectSentence: "Connect a wallet",
@@ -842,6 +843,7 @@ const espLiterals = {
     sendNFT: "Enviar NFT",
     addToWatchlist: "Añadir a favoritos",
     deleteFromWatchlist: "Eliminar de favoritos",
+    addCategory: "Añadir",
   },
   modals: {
     connectSentence: "Conectar una billetera",

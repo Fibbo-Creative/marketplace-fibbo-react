@@ -54,7 +54,7 @@ const formatPriceInUsd = (price) => {
 export default function ItemPage() {
   const navigate = useNavigate();
   const { _width } = useResponsive();
-  const [{ userProfile, literals }, dispatch] = useStateContext();
+  const [{ lang, userProfile, literals }, dispatch] = useStateContext();
   let { collection, tokenId } = useParams();
   const { wallet, connectToWallet } = useAccount();
   const {
@@ -132,6 +132,7 @@ export default function ItemPage() {
   const [showRedirect, setShowRedirect] = useState(false);
   const [likes, setLikes] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
+  const [categories, setCategories] = useState([]);
 
   const [refreshMetadata, setRefreshMetadata] = useState(false);
 
@@ -221,8 +222,10 @@ export default function ItemPage() {
       listing: _listing,
       favorites,
       isFavorited,
+      categories,
     } = await getNftInfo(collection, tokenId, wallet);
 
+    setCategories(categories);
     tokenInfo.current = nftData;
     tokenHistoryInfo.current = history;
 
@@ -706,6 +709,12 @@ export default function ItemPage() {
               likes={likes}
               isLiked={isLiked}
               wallet={wallet}
+              categories={categories.map((cat) => {
+                return {
+                  ...cat,
+                  name: lang === "eng" ? cat.name.eng : cat.name.esp,
+                };
+              })}
               toggleFavorite={toggleFavorite}
             />
             <div className="col-span-1 row-span-3  flex flex-col gap-5 dark:">

@@ -246,7 +246,8 @@ export const useApi = () => {
     ipfsMetadataUrl,
     collection,
     externalLink,
-    additionalContent
+    additionalContent,
+    categories
   ) => {
     try {
       await marketplaceApi.post("nfts/editItem", {
@@ -261,6 +262,7 @@ export const useApi = () => {
         collection: collection,
         externalLink: externalLink,
         additionalContent: additionalContent,
+        categories: categories,
       });
     } catch (e) {
       console.log(e);
