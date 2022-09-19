@@ -26,11 +26,19 @@ export const NotificationsMenu = ({
       );
     }
   };
+
   const getNotificationText = (notification) => {
     let finalText = "";
     const { type, params } = notification;
     const paramsType = params.type;
     switch (type) {
+      case "LISTING":
+        if (paramsType === "FAV LISTED") {
+          finalText = literals.notifications.favListed;
+        } else if (paramsType === "COL LISTED") {
+          finalText = literals.notifications.colListed;
+        }
+        break;
       case "OFFER":
         if (paramsType === "RECIEVED") {
           finalText = literals.notifications.itemOfferted;
@@ -56,6 +64,14 @@ export const NotificationsMenu = ({
           finalText = literals.notifications.auctionWon;
         } else if (paramsType === "FINISHED") {
           finalText = literals.notifications.bidEnded;
+        } else if (paramsType === "FAV AUCTION") {
+          finalText = literals.notifications.favAuction;
+        } else if (paramsType === "COL AUCTION") {
+          finalText = literals.notifications.colAuction;
+        } else if (paramsType === "FAV STARTED") {
+          finalText = literals.notifications.favStarted;
+        } else if (paramsType === "COL STARTED") {
+          finalText = literals.notifications.colStarted;
         }
         break;
       default:

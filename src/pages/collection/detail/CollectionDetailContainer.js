@@ -529,7 +529,7 @@ export const CollectionDetailContainer = () => {
                   <div className="mx-5"></div>
 
                   <div className="flex items-center">
-                    {wallet !== "" && (
+                    {wallet !== "" && !isOwner && (
                       <ItemPageOption
                         disabled
                         icon={
@@ -586,7 +586,7 @@ export const CollectionDetailContainer = () => {
               </div>
               <div className="mx-5 w-[1px] border-2"></div>
               <div className="flex items-center">
-                {wallet !== "" && (
+                {wallet !== "" && !isOwner && (
                   <ItemPageOption
                     onClick={addToWatchList}
                     icon={
