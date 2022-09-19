@@ -35,7 +35,7 @@ export default function BuyItemModal({
     const fetchData = async () => {
       if (wallet) {
         const balanceFTM = await getTotalFTMBalance(wallet);
-        console.log(balanceFTM);
+
         setBalanceFTM(balanceFTM);
       }
     };

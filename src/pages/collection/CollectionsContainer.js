@@ -63,7 +63,7 @@ export default function CollectionsContainer() {
       setCollections(collections);
 
       const watchList = await getWatchlistedCollections(wallet);
-      console.log(watchList);
+
       setWatchlistCollections(watchList);
       setItems(collections);
       setFilteredCollections(collections);
