@@ -703,6 +703,10 @@ export default function ItemPage() {
               tokenImage={tokenInfo?.current.image}
               tokenName={tokenInfo?.current.name}
               loading={loading}
+              likes={likes}
+              isLiked={isLiked}
+              wallet={wallet}
+              toggleFavorite={toggleFavorite}
             />
             <div className="col-span-1 row-span-3  flex flex-col gap-5 dark:">
               {loading ? (
@@ -898,36 +902,6 @@ export default function ItemPage() {
                           </>
                         )}
                       </p>
-                    </div>
-                    <div>
-                      <ButtonTooltip
-                        tooltip={`favorite-${tokenInfo?.current.tokenId}`}
-                        tooltipText={
-                          isLiked
-                            ? literals.detailNFT.unFavorite
-                            : literals.detailNFT.favorite
-                        }
-                        tooltipPlacement="top"
-                        className="flex flex-row gap-2"
-                      >
-                        <Icon
-                          onClick={() =>
-                            wallet && wallet !== "" && toggleFavorite()
-                          }
-                          icon={
-                            isLiked
-                              ? "carbon:favorite-filled"
-                              : "carbon:favorite"
-                          }
-                          width={22}
-                          className={` ${
-                            wallet && wallet !== ""
-                              ? "cursor-pointer"
-                              : "cursor-not-allowed"
-                          }hover:text-primary-2`}
-                        />
-                        {likes} likes
-                      </ButtonTooltip>
                     </div>
                   </div>
                 )}
