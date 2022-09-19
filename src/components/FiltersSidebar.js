@@ -11,7 +11,9 @@ export default function FiltersSidebar({
   statusFilters,
   payTokenFilters,
   collections,
+  categories,
   selectCollection,
+  selectCategory,
 }) {
   const handleShowSidebar = (show) => {
     setOpenedSidebar(show);
@@ -50,6 +52,14 @@ export default function FiltersSidebar({
                 filtersSelected={filtersSelected}
               />
             </FilterBottomDropDown>
+            <FilterBottomDropDown name={literals.filters.categories}>
+              <FiltersSelectList
+                list={categories}
+                onClick={selectCategory}
+                filtersSelected={filtersSelected}
+                notFoundText={literals.actions.noCategories}
+              />
+            </FilterBottomDropDown>
             {/*             <FilterBottomDropDown name="Token">
               <FilterButtons
                 options={payTokenFilters}
@@ -61,6 +71,7 @@ export default function FiltersSidebar({
                 list={collections}
                 onClick={selectCollection}
                 filtersSelected={filtersSelected}
+                notFoundText={literals.actions.noCollections}
               />
             </FilterBottomDropDown>
 

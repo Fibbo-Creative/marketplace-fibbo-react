@@ -158,6 +158,11 @@ export const useApi = () => {
     return res.data;
   };
 
+  const getAllCategories = async () => {
+    const res = await marketplaceApi.get("nfts/categories");
+    return res.data;
+  };
+
   const getNftsForSale = async () => {
     const res = await marketplaceApi.get("nfts/nftsForSale");
     return res.data;
@@ -666,6 +671,7 @@ export const useApi = () => {
     editCollectionDetails,
     getUserNotifications,
     getItemsFromCollection,
+    getAllCategories,
     getWatchlistedCollections,
     deleteNotification,
   };

@@ -1,9 +1,14 @@
 import { Icon } from "@iconify/react";
 import React, { useEffect, useState } from "react";
-import {useStateContext} from "../context/StateProvider";
+import { useStateContext } from "../context/StateProvider";
 
-export default function FiltersSelectList({ list, onClick, filtersSelected }) {
-  const [{literals}] = useStateContext();
+export default function FiltersSelectList({
+  list,
+  onClick,
+  filtersSelected,
+  notFoundText,
+}) {
+  const [{ literals }] = useStateContext();
   const [searchText, setSearchText] = useState("");
   const [filtered, setFiltered] = useState(list);
   const searchItems = (query) => {
@@ -50,7 +55,7 @@ export default function FiltersSelectList({ list, onClick, filtersSelected }) {
             })}
           </>
         ) : (
-          <>{literals.actions.noCollections}</>
+          <>{notFoundText}</>
         )}
       </div>
     </div>
@@ -59,7 +64,7 @@ export default function FiltersSelectList({ list, onClick, filtersSelected }) {
 
 const ListItem = ({ item, onClick, filtersSelected }) => {
   const [selected, setIsSelected] = useState(false);
-
+  const [{ lang }] = useStateContext();
   const handleSelect = () => {
     setIsSelected(!selected);
     onClick(item);
@@ -78,14 +83,24 @@ const ListItem = ({ item, onClick, filtersSelected }) => {
         selected && "dark:bg-dark-4 bg-gray-300"
       } dark:hover:bg-dark-4 hover:bg-gray-300 cursor-pointer`}
     >
-      <img
-        src={item.logoImage}
-        alt="recipient-img"
-        className="rounded-full"
-        width={32}
-      />
+      {item.icon ? (
+        <Icon icon={item.icon} width={32} />
+      ) : (
+        <img
+          src={item.logoImage}
+          alt="recipient-img"
+          className="rounded-full"
+          width={32}
+        />
+      )}
       <div className="text-primary-2 cursor-pointer"></div>
-      <div>{item.name}</div>
+      <div>
+        {item.name?.eng
+          ? lang === "eng"
+            ? item.name.eng
+            : item.name.esp
+          : item.name}
+      </div>
     </div>
   );
 };

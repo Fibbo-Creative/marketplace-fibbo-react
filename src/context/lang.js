@@ -58,6 +58,7 @@ const engLiterals = {
     listings: "Listings",
     offers: "Offers",
     auctions: "Auctions",
+    categories: "Categories",
   },
   explore: {
     filterSort: "Sort By",
@@ -284,6 +285,8 @@ const engLiterals = {
     processing: "Processing...",
     filter: "Filter",
     noCollections: "There are no collections",
+    noCategories: "There are no categories",
+
     accept: "Accept",
     cancel: "Cancel",
     buy: "Buy",
@@ -593,6 +596,7 @@ const espLiterals = {
     listings: "Listados",
     offers: "Ofertas",
     auctions: "Subastas",
+    categories: "Categorias",
   },
   explore: {
     filterSort: "Ordenar Por",
@@ -815,6 +819,8 @@ const espLiterals = {
     processing: "Procesando...",
     filter: "Filtrar",
     noCollections: "No se han encontrado colecciones",
+    noCategories: "No se han encontrado categorias",
+
     accept: "Aceptar",
     cancel: "Cancelar",
     buy: "Comprar",

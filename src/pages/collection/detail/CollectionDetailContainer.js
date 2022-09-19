@@ -34,7 +34,7 @@ export const CollectionDetailContainer = () => {
   const { _width } = useResponsive();
   const { getERC721Contract } = useTokens();
 
-  const [{ literals }] = useStateContext();
+  const [{ lang, literals }] = useStateContext();
   const {
     getCollectionDetail,
     getProfileInfo,
@@ -44,6 +44,7 @@ export const CollectionDetailContainer = () => {
     setShowRedirectToLink,
     addCollectionToWatchlist,
     deleteFromWatchList,
+    getAllCategories,
   } = useApi();
   const { wallet } = useAccount();
   const [collectionInfo, setCollectionInfo] = useState(null);
@@ -60,6 +61,7 @@ export const CollectionDetailContainer = () => {
 
   const [queryText, setQueryText] = useState("");
   const [allErc20Tokens, setAllErc20Tokens] = useState([]);
+  const [allCategories, setAllCategories] = useState([]);
 
   const [ownerInfo, setOwnerInfo] = useState(null);
   const [isOwner, setIsOwner] = useState(false);
@@ -306,7 +308,10 @@ export const CollectionDetailContainer = () => {
 
   const removeFilter = (filter) => {
     if (typeof filter === "object") {
-      selectPayTokenFilter(filter);
+      //selectPayTokenFilter(filter);
+      if (filter.category) {
+        removeCategoryFilter(filter);
+      }
     } else {
       switch (filter) {
         case literals.filters.onSale:
@@ -367,6 +372,11 @@ export const CollectionDetailContainer = () => {
       setOwnerInfo(_ownerInfo);
       const _payTokens = await getAllPayTokens();
       setAllErc20Tokens(_payTokens);
+
+      const cats = await getAllCategories();
+
+      setAllCategories(cats);
+
       setCollectionInfo(collectionDetail);
       setLiked(collectionDetail.liked);
       setCollectionNfts(collectionDetail.nfts);
@@ -375,6 +385,42 @@ export const CollectionDetailContainer = () => {
     };
     fetchData();
   }, [wallet]);
+
+  const selectCategory = (categoryItem) => {
+    const categoryName =
+      lang === "eng" ? categoryItem.name.eng : categoryItem.name.esp;
+    let isSelected = filtersSelected.find(
+      (item) => item.category === categoryName
+    );
+
+    if (isSelected) {
+      setFilteredNfts(collectionNfts);
+      setFiltersSelected(
+        filtersSelected.filter((item) => item.category !== categoryName)
+      );
+    } else {
+      setFiltersSelected([
+        ...filtersSelected,
+        {
+          category: categoryName,
+          name: categoryName,
+          identifier: categoryItem.identifier,
+        },
+      ]);
+    }
+  };
+
+  const removeCategoryFilter = (categoryItem) => {
+    let isSelected = filtersSelected.find(
+      (item) => item.category === categoryItem.name
+    );
+    if (isSelected) {
+      setFilteredNfts(collectionNfts);
+      setFiltersSelected(
+        filtersSelected.filter((item) => item.category !== categoryItem.name)
+      );
+    }
+  };
 
   useEffect(() => {
     if (filtersSelected.length > 0) {
@@ -440,6 +486,13 @@ export const CollectionDetailContainer = () => {
             );
           }
 
+          filtered = [...filtered, ..._result];
+        }
+        if (filter.category) {
+          let _result = [];
+          _result = collectionNfts.filter((item) =>
+            item.categories?.includes(filter.identifier)
+          );
           filtered = [...filtered, ..._result];
         }
       });
@@ -773,6 +826,8 @@ export const CollectionDetailContainer = () => {
                   filter: selectPayTokenFilter,
                 };
               })}
+              categories={allCategories}
+              selectCategory={selectCategory}
             />
           )}
           <div className="h-full md:h-[800px] overflow-y-hidden flex w-full flex-col gap-4 md:overflow-y-scroll overflow-x-hidden ">
@@ -920,6 +975,8 @@ export const CollectionDetailContainer = () => {
                   filter: selectPayTokenFilter,
                 };
               })}
+              categories={allCategories}
+              selectCategory={selectCategory}
             />
           )}
         </div>
