@@ -12,7 +12,9 @@ export const FiltersSidebarModal = ({
   filtersSelected,
   payTokenFilters,
   collections,
+  categories,
   selectCollection,
+  selectCategory,
 }) => {
   const [{ literals }] = useStateContext();
   return (
@@ -64,19 +66,25 @@ export const FiltersSidebarModal = ({
                   filtersSelected={filtersSelected}
                 />
               </FilterBottomDropDown>
-              {/* <FilterBottomDropDown name={"Token"}>
-                <FilterButtons
-                  options={payTokenFilters}
-                  filtersSelected={filtersSelected}
-                />
-              </FilterBottomDropDown> */}
-              <FilterBottomDropDown name={literals.navbar.collections}>
+              <FilterBottomDropDown name={literals.filters.categories}>
                 <FiltersSelectList
-                  list={collections}
-                  onClick={selectCollection}
+                  list={categories}
+                  onClick={selectCategory}
                   filtersSelected={filtersSelected}
+                  notFoundText={literals.actions.noCategories}
                 />
               </FilterBottomDropDown>
+
+              {collections && (
+                <FilterBottomDropDown name={literals.filters.colections}>
+                  <FiltersSelectList
+                    list={collections}
+                    onClick={selectCollection}
+                    filtersSelected={filtersSelected}
+                    notFoundText={literals.actions.noCollections}
+                  />
+                </FilterBottomDropDown>
+              )}
             </div>
           </div>
         </Dialog.Panel>

@@ -12,6 +12,7 @@ import { PageWithLoading } from "../../components/basic/PageWithLoading";
 import { NotVerified } from "../../components/basic/NotVerified";
 import { ImageInput } from "../../components/inputs/ImageInput";
 import { NotOwner } from "../../components/basic/NotOwner";
+import { MultipleSelect } from "../../components/inputs/MultipleSelect";
 
 const validateName = (name) => {
   if (name.length > 4 && name.length < 30) return true;
@@ -24,7 +25,8 @@ const validateDesc = (desc) => {
 };
 export default function CreateContainer() {
   const { collection } = useParams();
-  const { uploadImgToCDN, getCollectionsAvailable } = useApi();
+  const { uploadImgToCDN, getCollectionsAvailable, getAllCategories } =
+    useApi();
   const [ipfsImageUrl, setIpfsImageUrl] = useState("");
   const [sanityImgUrl, setSanityImgUrl] = useState("");
   const [name, setName] = useState("");
@@ -32,9 +34,13 @@ export default function CreateContainer() {
   const [desc, setDesc] = useState("");
   const [royalty, setRoyalty] = useState("");
   const { connectToWallet, wallet } = useAccount();
-  const [{ verifiedAddress, literals }] = useStateContext();
+  const [{ lang, verifiedAddress, literals }] = useStateContext();
   const [collectionsAvailable, setCollectionsAvailable] = useState([]);
+  const [categoriesAvailable, setCategoriesAvailable] = useState([]);
+
   const [collectionSelected, setCollectionsSelected] = useState(null);
+  const [categoriesSelected, setCategoriesSelected] = useState([]);
+
   const [isOwner, setIsOwner] = useState(false);
 
   const [loading, setLoading] = useState(true);
@@ -48,6 +54,24 @@ export default function CreateContainer() {
   const [descError, setDescError] = useState(false);
   const [royaltyError, setRoyaltyError] = useState(false);
 
+  const selectCategory = (cat) => {
+    const isSelected = categoriesSelected.find(
+      (c) => c.identifier === cat.identifier
+    );
+    if (!isSelected) {
+      setCategoriesSelected([...categoriesSelected, cat]);
+    }
+  };
+  const removeCategory = (cat) => {
+    const isSelected = categoriesSelected.find(
+      (c) => c.identifier === cat.identifier
+    );
+    if (isSelected) {
+      setCategoriesSelected(
+        categoriesSelected.filter((c) => c.identifier !== cat.identifier)
+      );
+    }
+  };
   const onFileSelected = async (e) => {
     const file = e.target.files[0];
     if (file.type.includes("image")) {
@@ -156,6 +180,9 @@ export default function CreateContainer() {
         setCollectionsSelected(_collection);
       }
 
+      const cats = await getAllCategories();
+      setCategoriesAvailable(cats);
+
       if (!_collection) setIsOwner(false);
       else setIsOwner(_collection.creator === wallet);
     };
@@ -230,6 +257,19 @@ export default function CreateContainer() {
                     errorMessage={literals.createItem.descriptionError}
                     onChange={(e) => handleChangeDescription(e.target.value)}
                   />
+                  <MultipleSelect
+                    label={literals.filters.categories}
+                    buttonLabel={literals.actions.addCategory}
+                    options={categoriesAvailable.map((col) => {
+                      return {
+                        ...col,
+                        name: lang === "eng" ? col.name.eng : col.name.esp,
+                      };
+                    })}
+                    selectOption={selectCategory}
+                    optionsSelected={categoriesSelected}
+                    removeOption={removeCategory}
+                  />
                   <TextInput
                     label={literals.createItem.externalLink}
                     info={literals.createItem.externalLinkDesc}
@@ -299,6 +339,7 @@ export default function CreateContainer() {
                   hiddenContent: hiddenContent,
                   externalLink: externalLink,
                   ipfsImage: ipfsImageUrl,
+                  categories: categoriesSelected,
                 }}
                 wallet={wallet}
               />

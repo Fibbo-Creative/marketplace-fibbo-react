@@ -7,16 +7,23 @@ import { saveAs } from "file-saver";
 import ReactTooltip from "react-tooltip";
 import { ThemeContext } from "../../../context/ThemeContext";
 import SeeImageInDetailModal from "../../../components/modals/SeeImageInDetailModal";
+import { ButtonTooltip } from "../../../components/tooltips/ButtonTooltip";
 
 export default function DetailImage({
   isFreezedMetadata,
   tokenImage,
   tokenName,
+  tokenInfo,
+  likes,
+  isLiked,
+  toggleFavorite,
+  wallet,
   loading,
   collectionInfo,
+  categories,
 }) {
   const [imgOrQR, setImgOrQr] = useState(tokenImage);
-  const [{literals}] = useStateContext();
+  const [{ literals }] = useStateContext();
   const [qrcode, setQrcode] = useState("");
   const [showingQr, setShowingQr] = useState(false);
   const [showImageDetail, setShowImageDetail] = useState(false);
@@ -63,17 +70,66 @@ export default function DetailImage({
         ) : (
           <>
             <div className="flex w-full justify-between items-center">
-              <div>
+              <div className="flex gap-4 items-center">
                 <Icon
                   id="qrIcon"
                   className="flex w-[25px] h-[25px] cursor-pointer hover:w-[30px] hover:h-[30px]"
                   onClick={GenerateQRCode}
                   icon="ion:qr-code"
                 />
+                <div>
+                  <ButtonTooltip
+                    tooltip={`favorite-${tokenInfo?.current.tokenId}`}
+                    tooltipText={
+                      isLiked
+                        ? literals.detailNFT.unFavorite
+                        : literals.detailNFT.favorite
+                    }
+                    tooltipPlacement="top"
+                    className="flex flex-row gap-2"
+                  >
+                    <Icon
+                      onClick={() =>
+                        wallet && wallet !== "" && toggleFavorite()
+                      }
+                      icon={
+                        isLiked ? "carbon:favorite-filled" : "carbon:favorite"
+                      }
+                      width={22}
+                      className={` ${
+                        wallet && wallet !== ""
+                          ? "cursor-pointer"
+                          : "cursor-not-allowed"
+                      }hover:text-primary-2`}
+                    />
+                    {likes}
+                  </ButtonTooltip>
+                </div>
               </div>
 
               <div className="flex items-center">
-                <div data-for="chain-icon" data-tip={literals.itemPage.fantomNetwork}>
+                {categories.map((cat) => {
+                  return (
+                    <div data-for={`${cat.name}-icon`} data-tip={cat.name}>
+                      <Icon
+                        width={28}
+                        className="flex w-[32px]"
+                        icon={cat.icon}
+                      />
+                      <ReactTooltip
+                        id={`${cat.name}-icon`}
+                        place="top"
+                        type={theme === "dark" ? "light" : "dark"}
+                        effect="solid"
+                        multiline={true}
+                      />
+                    </div>
+                  );
+                })}
+                <div
+                  data-for="chain-icon"
+                  data-tip={literals.itemPage.fantomNetwork}
+                >
                   <img
                     width={28}
                     className="flex w-[32px] "

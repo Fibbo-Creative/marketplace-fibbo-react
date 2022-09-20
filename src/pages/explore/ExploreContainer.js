@@ -25,14 +25,13 @@ import {
 import { useStateContext } from "../../context/StateProvider";
 
 export default function ExploreContainer() {
-  const [{ literals }] = useStateContext();
+  const [{ lang, literals }] = useStateContext();
   const navigate = useNavigate();
   const {
     getAllTokens,
     getAllPayTokens,
     getCollectionsAvailable,
-    addFavorite,
-    deleteFavorite,
+    getAllCategories,
   } = useApi();
   const { wallet } = useAccount();
   const [marketItems, setMarketItems] = useState([]);
@@ -49,6 +48,7 @@ export default function ExploreContainer() {
 
   const [allCollections, setAllCollections] = useState([]);
   const [allErc20Tokens, setAllErc20Tokens] = useState([]);
+  const [allCategories, setAllCategories] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,6 +66,9 @@ export default function ExploreContainer() {
       setAllMarketItems(forSaleItems);
       setMarketItems(forSaleItems);
 
+      const cats = await getAllCategories();
+
+      setAllCategories(cats);
       setVisibleMarketItems(forSaleItems.slice(0, 12));
       setLoading(false);
     };
@@ -347,7 +350,10 @@ export default function ExploreContainer() {
       if (filter.collection) {
         removeCollectionFilter(filter);
       } else {
-        selectPayTokenFilter(filter);
+        //selectPayTokenFilter(filter);
+        if (filter.category) {
+          removeCategoryFilter(filter);
+        }
       }
     } else {
       switch (filter) {
@@ -422,6 +428,42 @@ export default function ExploreContainer() {
     }
   };
 
+  const selectCategory = (categoryItem) => {
+    const categoryName =
+      lang === "eng" ? categoryItem.name.eng : categoryItem.name.esp;
+    let isSelected = filtersSelected.find(
+      (item) => item.category === categoryName
+    );
+
+    if (isSelected) {
+      setVisibleMarketItems(allMarketItems);
+      setFiltersSelected(
+        filtersSelected.filter((item) => item.category !== categoryName)
+      );
+    } else {
+      setFiltersSelected([
+        ...filtersSelected,
+        {
+          category: categoryName,
+          name: categoryName,
+          identifier: categoryItem.identifier,
+        },
+      ]);
+    }
+  };
+
+  const removeCategoryFilter = (categoryItem) => {
+    let isSelected = filtersSelected.find(
+      (item) => item.category === categoryItem.name
+    );
+    if (isSelected) {
+      setVisibleMarketItems(allMarketItems);
+      setFiltersSelected(
+        filtersSelected.filter((item) => item.category !== categoryItem.name)
+      );
+    }
+  };
+
   useEffect(() => {
     //Status Filter
     if (filtersSelected.length > 0) {
@@ -490,6 +532,13 @@ export default function ExploreContainer() {
           );
           filtered = [...filtered, ..._result];
         }
+        if (filter.category) {
+          let _result = [];
+          _result = marketItems.filter((item) =>
+            item.categories?.includes(filter.identifier)
+          );
+          filtered = [...filtered, ..._result];
+        }
       });
       //remove duplicates
       let ids = [];
@@ -544,8 +593,10 @@ export default function ExploreContainer() {
                   filter: selectPayTokenFilter,
                 };
               })}
+              categories={allCategories}
               collections={allCollections}
               selectCollection={selectCollection}
+              selectCategory={selectCategory}
             />
           )}
           <div
@@ -695,8 +746,10 @@ export default function ExploreContainer() {
                   filter: selectPayTokenFilter,
                 };
               })}
+              categories={allCategories}
               collections={allCollections}
               selectCollection={selectCollection}
+              selectCategory={selectCategory}
             />
           )}
         </>

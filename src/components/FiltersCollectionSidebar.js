@@ -3,6 +3,7 @@ import React from "react";
 import FilterBottomDropDown from "./FilterBottomDropDown";
 import FilterButtons from "./FilterButtons";
 import { useStateContext } from "../context/StateProvider";
+import FiltersSelectList from "./FilterSelectList";
 
 export default function FiltersCollectionSidebar({
   items,
@@ -12,6 +13,8 @@ export default function FiltersCollectionSidebar({
   filtersSelected,
   statusFilters,
   payTokenFilters,
+  categories,
+  selectCategory,
 }) {
   const handleShowSidebar = (show) => {
     setOpenedSidebar(show);
@@ -48,6 +51,14 @@ export default function FiltersCollectionSidebar({
               <FilterButtons
                 options={statusFilters}
                 filtersSelected={filtersSelected}
+              />
+            </FilterBottomDropDown>
+            <FilterBottomDropDown name={literals.filters.categories}>
+              <FiltersSelectList
+                list={categories}
+                onClick={selectCategory}
+                filtersSelected={filtersSelected}
+                notFoundText={literals.actions.noCategories}
               />
             </FilterBottomDropDown>
             {/* <FilterBottomDropDown name="Token">

@@ -9,14 +9,19 @@ import { useStateContext } from "../../context/StateProvider";
 
 export default function CollectionsContainer() {
   const navigate = useNavigate();
-  const { getAllCollections } = useApi();
+  const { getAllCollections, getWatchlistedCollections } = useApi();
   const [{ verifiedAddress, literals }] = useStateContext();
   const { wallet, connectToWallet } = useAccount();
   const [loading, setLoading] = useState(true);
   const [queryText, setQueryText] = useState("");
 
   const [collections, setCollections] = useState([]);
+  const [watchListCollections, setWatchlistCollections] = useState([]);
+
   const [filteredCollections, setFilteredCollections] = useState([]);
+
+  const [itemsType, setItemsType] = useState("all");
+  const [items, setItems] = useState([]);
 
   const redirectToColectionPage = (col) => {
     if (col.customURL) {
@@ -30,13 +35,37 @@ export default function CollectionsContainer() {
     setQueryText(value);
   };
 
+  const handleSetItemsType = (newType) => {
+    switch (newType) {
+      case "watchlist":
+        setItems(watchListCollections);
+        setFilteredCollections(watchListCollections);
+        break;
+      case "all":
+        setItems(collections);
+        setFilteredCollections(collections);
+        break;
+      default:
+        setItems(collections);
+        setFilteredCollections(collections);
+
+        break;
+    }
+    setQueryText("");
+    setItemsType(newType);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       await connectToWallet();
 
       const collections = await getAllCollections();
-
       setCollections(collections);
+
+      const watchList = await getWatchlistedCollections(wallet);
+
+      setWatchlistCollections(watchList);
+      setItems(collections);
       setFilteredCollections(collections);
       setLoading(false);
     };
@@ -61,6 +90,22 @@ export default function CollectionsContainer() {
       loading={loading}
       className="flex flex-col mt-[79px] mb-[79px] w-screen content-center justify-center"
     >
+      <div className="my-10 flex gap-4 w-full  content-center justify-center">
+        <CollectionsTab
+          title={"WatchList"}
+          type={"watchlist"}
+          selectedType={itemsType}
+          count={watchListCollections.length}
+          onClick={() => handleSetItemsType("watchlist")}
+        />
+        <CollectionsTab
+          title={"All"}
+          type={"all"}
+          selectedType={itemsType}
+          count={collections.length}
+          onClick={() => handleSetItemsType("all")}
+        />
+      </div>
       <div className="flex w-full py-[20px] content-center justify-center">
         <div className="flex flex-col items-center gap-5">
           <div className="w-80 flex border-2 rounded">
@@ -112,3 +157,19 @@ export default function CollectionsContainer() {
     </PageWithLoading>
   );
 }
+
+const CollectionsTab = ({ title, count, type, selectedType, onClick }) => {
+  return (
+    <div
+      className={`flex text-2xl items-center gap-4 cursor-pointer hover:text-blue-400 transition ${
+        type === selectedType && "text-blue-400"
+      } `}
+      onClick={onClick}
+    >
+      <div className="font-extrabold">{title}</div>
+      <div className="rounded-full px-2 py-1 text-sm bg-gray-300 dark:bg-dark-4">
+        {count}
+      </div>
+    </div>
+  );
+};
