@@ -16,10 +16,11 @@ export const FeatureItem = ({ suggestion, wallet }) => {
     suggestion;
 
   const voteSuggestion = async () => {
-    await voteIntoSuggestion(wallet, title, proposer.wallet);
-
-    setHasVoted(true);
-    setNumberOfVotes(numberOfVotes + 1);
+    if (!hasVoted) {
+      await voteIntoSuggestion(wallet, title, proposer.wallet);
+      setHasVoted(true);
+      setNumberOfVotes(numberOfVotes + 1);
+    }
   };
 
   useEffect(() => {
@@ -39,7 +40,7 @@ export const FeatureItem = ({ suggestion, wallet }) => {
           tooltipText={literals.features.vote}
           tooltipPlacement="top"
           disabled={hasVoted}
-          onClick={voteSuggestion}
+          onClick={() => hasVoted && voteSuggestion()}
         >
           <Icon
             className={`${
