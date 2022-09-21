@@ -1,6 +1,6 @@
 const engLiterals = {
   home: {
-    slogan: "FIBBO : The art of expressing youre art",
+    slogan: "FIBBO : The art of expressing your art",
     sentence1:
       "Marketplace focused with special emphasis on artists and content creators.",
     title2: "Join our community",
