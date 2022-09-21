@@ -23,6 +23,7 @@ import {
   sortMarketItems,
 } from "../../utils/sort";
 import { useStateContext } from "../../context/StateProvider";
+import { ButtonTooltip } from "../../components/tooltips/ButtonTooltip";
 
 export default function ExploreContainer() {
   const [{ lang, literals }] = useStateContext();
@@ -63,6 +64,7 @@ export default function ExploreContainer() {
 
       let forSaleItems = await getAllTokens(wallet);
       forSaleItems = forSaleItems.sort(orderByRecently);
+      console.log(forSaleItems);
       setAllMarketItems(forSaleItems);
       setMarketItems(forSaleItems);
 
@@ -345,6 +347,20 @@ export default function ExploreContainer() {
     }
   };
 
+  const filterByFavorite = () => {
+    let isSelected = filtersSelected.find((item) => item.favorites === true);
+    if (isSelected) {
+      setFiltersSelected(
+        filtersSelected.filter((item) => item.favorites !== true)
+      );
+    } else {
+      setFiltersSelected([
+        ...filtersSelected,
+        { favorites: true, name: literals.filters.favorites },
+      ]);
+    }
+  };
+
   const removeFilter = (filter) => {
     if (typeof filter === "object") {
       if (filter.collection) {
@@ -353,6 +369,9 @@ export default function ExploreContainer() {
         //selectPayTokenFilter(filter);
         if (filter.category) {
           removeCategoryFilter(filter);
+        }
+        if (filter.favorites) {
+          removeFavoriteFilter(filter);
         }
       }
     } else {
@@ -463,6 +482,15 @@ export default function ExploreContainer() {
       );
     }
   };
+  const removeFavoriteFilter = (filter) => {
+    let isSelected = filtersSelected.find((item) => item.favorites === true);
+    if (isSelected) {
+      setVisibleMarketItems(allMarketItems);
+      setFiltersSelected(
+        filtersSelected.filter((item) => item.favorites !== true)
+      );
+    }
+  };
 
   useEffect(() => {
     //Status Filter
@@ -537,6 +565,11 @@ export default function ExploreContainer() {
           _result = marketItems.filter((item) =>
             item.categories?.includes(filter.identifier)
           );
+          filtered = [...filtered, ..._result];
+        }
+        if (filter.favorites) {
+          let _result = [];
+          _result = marketItems.filter((item) => item.isFavorited === true);
           filtered = [...filtered, ..._result];
         }
       });
@@ -627,6 +660,24 @@ export default function ExploreContainer() {
                     </button>
                   </>
                 )}
+                <div>
+                  <ButtonTooltip
+                    onClick={filterByFavorite}
+                    tooltip="filter-favorite"
+                    tooltipText={literals.filters.seeFavorites}
+                    tooltipPlacement="bottom"
+                  >
+                    <Icon
+                      icon={
+                        filtersSelected.find((f) => f.favorites === true)
+                          ? "uis:favorite"
+                          : "uit:favorite"
+                      }
+                      width={48}
+                    />
+                  </ButtonTooltip>
+                </div>
+
                 <select
                   className="cursor-pointer h-10 w-40 md:w-60 flex border border-gray-300 bg-white dark:bg-dark-1 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   onChange={(e) => sortItems(e.target.value)}

@@ -306,11 +306,28 @@ export const CollectionDetailContainer = () => {
     }
   };
 
+  const filterByFavorite = () => {
+    let isSelected = filtersSelected.find((item) => item.favorites === true);
+    if (isSelected) {
+      setFiltersSelected(
+        filtersSelected.filter((item) => item.favorites !== true)
+      );
+    } else {
+      setFiltersSelected([
+        ...filtersSelected,
+        { favorites: true, name: literals.filters.favorites },
+      ]);
+    }
+  };
+
   const removeFilter = (filter) => {
     if (typeof filter === "object") {
       //selectPayTokenFilter(filter);
       if (filter.category) {
         removeCategoryFilter(filter);
+      }
+      if (filter.favorites) {
+        removeFavoriteFilter(filter);
       }
     } else {
       switch (filter) {
@@ -418,6 +435,16 @@ export const CollectionDetailContainer = () => {
       setFilteredNfts(collectionNfts);
       setFiltersSelected(
         filtersSelected.filter((item) => item.category !== categoryItem.name)
+      );
+    }
+  };
+
+  const removeFavoriteFilter = (filter) => {
+    let isSelected = filtersSelected.find((item) => item.favorites === true);
+    if (isSelected) {
+      setFilteredNfts(collectionNfts);
+      setFiltersSelected(
+        filtersSelected.filter((item) => item.favorites !== true)
       );
     }
   };
@@ -860,6 +887,23 @@ export const CollectionDetailContainer = () => {
                     </button>
                   </>
                 )}
+                <div>
+                  <ButtonTooltip
+                    onClick={filterByFavorite}
+                    tooltip="filter-favorite"
+                    tooltipText={literals.filters.seeFavorites}
+                    tooltipPlacement="bottom"
+                  >
+                    <Icon
+                      icon={
+                        filtersSelected.find((f) => f.favorites === true)
+                          ? "uis:favorite"
+                          : "uit:favorite"
+                      }
+                      width={48}
+                    />
+                  </ButtonTooltip>
+                </div>
                 <select
                   onChange={(e) => sortItems(e.target.value)}
                   className="cursor-pointer h-10 w-40 md:w-60 flex border border-gray-300 bg-white dark:bg-dark-1 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"

@@ -59,6 +59,8 @@ const engLiterals = {
     offers: "Offers",
     auctions: "Auctions",
     categories: "Categories",
+    favorites: "Favorites",
+    seeFavorites: "See Favorites",
   },
   explore: {
     filterSort: "Sort By",
@@ -598,6 +600,8 @@ const espLiterals = {
     offers: "Ofertas",
     auctions: "Subastas",
     categories: "Categorias",
+    favorites: "Favoritos",
+    seeFavorites: "Ver Favoritos",
   },
   explore: {
     filterSort: "Ordenar Por",
