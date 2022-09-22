@@ -18,6 +18,7 @@ import ProfileActivityTable from "./components/ProfileActivityTable";
 import { ProfileOffersTable } from "./components/ProfileOffersTable";
 import { ProfileMyOffersTable } from "./components/ProfileMyOffersTable";
 import { ProfileBidsTable } from "./components/ProfileBidsTable";
+import ReportModal from "../../components/modals/ReportModal";
 
 export default function ProfileContainer() {
   const { wallet } = useAccount();
@@ -38,6 +39,7 @@ export default function ProfileContainer() {
   const { address } = useParams();
   const [userItems, setUserItems] = useState([]);
   const [userSmallview, setSmallViewUser] = useState(true);
+
   const [{ userProfile, verifiedAddress, literals }, stateDispatch] =
     useStateContext();
   const { theme } = useContext(ThemeContext);
@@ -61,8 +63,7 @@ export default function ProfileContainer() {
 
   const profileData = useRef(null);
 
-  const [newUsername, setNewUsername] = useState(userProfile.username);
-  const [showEditUsername, setShowEditUsername] = useState(false);
+  const [showReport, setShowReport] = useState(false);
   const { _width } = useRespnsive();
 
   const [loading, setLoading] = useState(false);
@@ -125,25 +126,6 @@ export default function ProfileContainer() {
     } catch (error) {
       console.log("Error uploading file: ", error);
     }
-  };
-
-  const editProfileUsername = async (e) => {
-    e.preventDefault();
-    try {
-      await setUsername(wallet, newUsername);
-      profileData.current.username = newUsername;
-      stateDispatch({
-        type: actionTypes.SET_USERNAME,
-        username: newUsername,
-      });
-    } catch (error) {
-      console.log("Error setting username: ", error);
-    }
-    setShowEditUsername(!showEditUsername);
-  };
-
-  const toggleEditUsername = async (e) => {
-    setShowEditUsername(!showEditUsername);
   };
 
   useEffect(() => {
@@ -294,55 +276,54 @@ export default function ProfileContainer() {
             {/*User info*/}
 
             <div className="flex gap-3 items-center text-2xl justify-center items-center ">
-              {myProfile && showEditUsername ? (
-                <form onSubmit={(e) => editProfileUsername(e)}>
-                  <input
-                    className="dark:bg-dark-4 px-2 bg-gray-300"
-                    value={newUsername}
-                    onChange={(e) => setNewUsername(e.target.value)}
-                  />
-                </form>
-              ) : (
-                <div
-                  data-for={profileData.current?.verified && "verify-info"}
-                  data-tip={
-                    profileData.current?.verified && literals.profile.sentence
-                  }
-                  className={`flex cursorPointer ${
-                    profileData.current?.verified && "gap-5 items-center"
-                  }`}
-                >
-                  {profileData.current?.verified && (
-                    <div>
-                      <Verified />
-                      <ReactTooltip
-                        id="verify-info"
-                        place="left"
-                        type={theme === "dark" ? "light" : "dark"}
-                        effect="solid"
-                        multiline={true}
-                      />
-                    </div>
-                  )}
-                  <b>{profileData.current?.username}</b>
-                </div>
-              )}
-              {myProfile && (
-                <button onClick={() => toggleEditUsername()}>
-                  <Icon icon="bxs:edit" />
-                </button>
-              )}
+              <div
+                data-for={profileData.current?.verified && "verify-info"}
+                data-tip={
+                  profileData.current?.verified && literals.profile.sentence
+                }
+                className={`flex cursorPointer ${
+                  profileData.current?.verified && "gap-5 items-center"
+                }`}
+              >
+                {profileData.current?.verified && (
+                  <div>
+                    <Verified />
+                    <ReactTooltip
+                      id="verify-info"
+                      place="left"
+                      type={theme === "dark" ? "light" : "dark"}
+                      effect="solid"
+                      multiline={true}
+                    />
+                  </div>
+                )}
+                <b>{profileData.current?.username}</b>
+              </div>
             </div>
             <div>
               <i>{_width < 500 ? truncateWallet(address) : address}</i>
             </div>
-            {myProfile && !verifiedAddress && (
+            {!myProfile && (
               <div className="absolute top-[300px] right-10">
-                <ActionButton
-                  buttonAction={() => navigate("/verificate/request")}
-                  text="Verificate"
-                  size="small"
-                />
+                <ItemMenuPageOption
+                  position="last"
+                  icon="akar-icons:more-vertical"
+                  tooltip="more-item"
+                  tooltipPlacement="left"
+                  tooltipText={literals.actions.moreOptions}
+                >
+                  <div
+                    onClick={() => setShowReport(true)}
+                    className="cursor-pointer flex items-center gap-2 px-2 py-2 hover:bg-gray-300"
+                  >
+                    <Icon icon="ic:baseline-report" width={32}></Icon>
+                    <div>Report Collection</div>
+                  </div>
+                  <ReportModal
+                    showModal={showReport}
+                    handleCloseModal={() => setShowReport(false)}
+                  />
+                </ItemMenuPageOption>
               </div>
             )}
           </div>
@@ -520,3 +501,86 @@ export default function ProfileContainer() {
     </div>
   );
 }
+
+const ItemMenuPageOption = ({
+  position,
+  icon,
+  tooltip,
+  tooltipText,
+  tooltipPlacement,
+  disabled,
+  children,
+}) => {
+  const { theme } = useContext(ThemeContext);
+  const buttonRef = useRef(null);
+  const [openMenu, setOpenMenu] = useState(false);
+
+  const showMenu = (e) => {
+    setOpenMenu(!openMenu);
+  };
+  return (
+    <div>
+      <div
+        onClick={showMenu}
+        ref={buttonRef}
+        className={`${
+          disabled ? "cursor-not-allowed" : "cursor-pointer"
+        } p-2 hover ${
+          disabled
+            ? "dark:text-gray-600 text-gray-200"
+            : "dark:hover:text-gray-400 hover:text-gray-400"
+        }`}
+        data-for={tooltip}
+        data-tip={tooltipText}
+      >
+        <Icon icon={icon} width={28} />
+        {tooltip && !disabled && (
+          <ReactTooltip
+            id={tooltip}
+            place={tooltipPlacement ? tooltipPlacement : "top"}
+            type={theme === "dark" ? "light" : "dark"}
+            effect="solid"
+            multiline={true}
+          />
+        )}
+      </div>
+      <MenuOptions
+        openMenu={openMenu}
+        setOpenMenu={setOpenMenu}
+        buttonRef={buttonRef}
+      >
+        {children}
+      </MenuOptions>
+    </div>
+  );
+};
+
+const MenuOptions = ({ openMenu, setOpenMenu, buttonRef, children }) => {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        ref.current &&
+        !ref.current.contains(event.target) &&
+        !buttonRef.current.contains(event.target)
+      ) {
+        setOpenMenu(false);
+      }
+    }
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [ref]);
+  return (
+    <div
+      ref={ref}
+      className="w-[175px] md:w-[200px] bg-gray-100 dark:bg-dark-2 absolute right-5 z-20 flex flex-col  rounded-md"
+    >
+      {openMenu && children}
+    </div>
+  );
+};

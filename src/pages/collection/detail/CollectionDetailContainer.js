@@ -27,6 +27,7 @@ import { ButtonTooltip } from "../../../components/tooltips/ButtonTooltip";
 import { useStateContext } from "../../../context/StateProvider";
 import { useTokens } from "../../../contracts/token";
 import OwnersModal from "../../../components/modals/OwnersModal";
+import ReportModal from "../../../components/modals/ReportModal";
 
 export const CollectionDetailContainer = () => {
   const [loading, setLoading] = useState(true);
@@ -70,6 +71,7 @@ export const CollectionDetailContainer = () => {
   const collectionUserOptions = useRef(null);
   const [showRedirect, setShowRedirect] = useState(false);
   const [showOwners, setShowOwners] = useState(false);
+  const [showReport, setShowReport] = useState(false);
 
   const navigate = useNavigate();
   const redirectToItem = (item) => {
@@ -631,13 +633,24 @@ export const CollectionDetailContainer = () => {
                       tooltip="share-item"
                       tooltipText={literals.actions.share}
                     />
-                    <ItemPageOption
-                      disabled
+                    <ItemMenuPageOption
                       position="last"
                       icon="akar-icons:more-vertical"
                       tooltip="more-item"
                       tooltipText={literals.actions.moreOptions}
-                    />
+                    >
+                      <div
+                        onClick={() => setShowReport(true)}
+                        className="cursor-pointer flex items-center gap-2 px-2 py-2 hover:bg-gray-300"
+                      >
+                        <Icon icon="ic:baseline-report" width={32}></Icon>
+                        <div>Report Collection</div>
+                      </div>
+                      <ReportModal
+                        showModal={showReport}
+                        handleCloseModal={() => setShowReport(false)}
+                      />
+                    </ItemMenuPageOption>
                   </div>
                 </div>
               )}
@@ -686,13 +699,24 @@ export const CollectionDetailContainer = () => {
                   tooltip="share-item"
                   tooltipText={literals.actions.share}
                 />
-                <ItemPageOption
-                  disabled
+                <ItemMenuPageOption
                   position="last"
                   icon="akar-icons:more-vertical"
                   tooltip="more-item"
                   tooltipText={literals.actions.moreOptions}
-                />
+                >
+                  <div
+                    onClick={() => setShowReport(true)}
+                    className="cursor-pointer flex items-center gap-2 px-2 py-2 hover:bg-gray-300"
+                  >
+                    <Icon icon="ic:baseline-report" width={32}></Icon>
+                    <div>Report Collection</div>
+                  </div>
+                  <ReportModal
+                    showModal={showReport}
+                    handleCloseModal={() => setShowReport(false)}
+                  />
+                </ItemMenuPageOption>
               </div>
             </div>
           )}
@@ -1076,6 +1100,89 @@ const ItemPageOption = ({
           multiline={true}
         />
       )}
+    </div>
+  );
+};
+
+const ItemMenuPageOption = ({
+  position,
+  icon,
+  tooltip,
+  tooltipText,
+  tooltipPlacement,
+  disabled,
+  children,
+}) => {
+  const { theme } = useContext(ThemeContext);
+  const buttonRef = useRef(null);
+  const [openMenu, setOpenMenu] = useState(false);
+
+  const showMenu = (e) => {
+    setOpenMenu(!openMenu);
+  };
+  return (
+    <div>
+      <div
+        onClick={showMenu}
+        ref={buttonRef}
+        className={`${
+          disabled ? "cursor-not-allowed" : "cursor-pointer"
+        } p-2 hover ${
+          disabled
+            ? "dark:text-gray-600 text-gray-200"
+            : "dark:hover:text-gray-400 hover:text-gray-400"
+        }`}
+        data-for={tooltip}
+        data-tip={tooltipText}
+      >
+        <Icon icon={icon} width={28} />
+        {tooltip && !disabled && (
+          <ReactTooltip
+            id={tooltip}
+            place={tooltipPlacement ? tooltipPlacement : "top"}
+            type={theme === "dark" ? "light" : "dark"}
+            effect="solid"
+            multiline={true}
+          />
+        )}
+      </div>
+      <MenuOptions
+        openMenu={openMenu}
+        setOpenMenu={setOpenMenu}
+        buttonRef={buttonRef}
+      >
+        {children}
+      </MenuOptions>
+    </div>
+  );
+};
+
+const MenuOptions = ({ openMenu, setOpenMenu, buttonRef, children }) => {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        ref.current &&
+        !ref.current.contains(event.target) &&
+        !buttonRef.current.contains(event.target)
+      ) {
+        setOpenMenu(false);
+      }
+    }
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [ref]);
+  return (
+    <div
+      ref={ref}
+      className="w-[175px] md:w-[200px] bg-gray-100 dark:bg-dark-2 absolute right-10 z-20 flex flex-col  rounded-md"
+    >
+      {openMenu && children}
     </div>
   );
 };
