@@ -317,13 +317,15 @@ export default function ProfileContainer() {
                     className="cursor-pointer flex items-center gap-2 px-2 py-2 hover:bg-gray-300"
                   >
                     <Icon icon="ic:baseline-report" width={32}></Icon>
-                    <div>Report Collection</div>
+                    <div>{literals.actions.reportProfile}</div>
                   </div>
+                </ItemMenuPageOption>
+                {showReport && (
                   <ReportModal
                     showModal={showReport}
                     handleCloseModal={() => setShowReport(false)}
                   />
-                </ItemMenuPageOption>
+                )}
               </div>
             )}
           </div>
@@ -544,13 +546,15 @@ const ItemMenuPageOption = ({
           />
         )}
       </div>
-      <MenuOptions
-        openMenu={openMenu}
-        setOpenMenu={setOpenMenu}
-        buttonRef={buttonRef}
-      >
-        {children}
-      </MenuOptions>
+      {openMenu && (
+        <MenuOptions
+          openMenu={openMenu}
+          setOpenMenu={setOpenMenu}
+          buttonRef={buttonRef}
+        >
+          {children}
+        </MenuOptions>
+      )}
     </div>
   );
 };
@@ -580,7 +584,7 @@ const MenuOptions = ({ openMenu, setOpenMenu, buttonRef, children }) => {
       ref={ref}
       className="w-[175px] md:w-[200px] bg-gray-100 dark:bg-dark-2 absolute right-5 z-20 flex flex-col  rounded-md"
     >
-      {openMenu && children}
+      {children}
     </div>
   );
 };

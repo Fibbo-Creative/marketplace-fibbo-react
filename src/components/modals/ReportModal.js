@@ -1,9 +1,11 @@
 import React from "react";
+import { useStateContext } from "../../context/StateProvider";
 import { ActionModal } from "./ActionModal";
 export default function ReportModal({ showModal, handleCloseModal }) {
+  const [{ literals }] = useStateContext();
   return (
     <ActionModal
-      title={"Realizar Reporte"}
+      title={literals.actions.makeReport}
       size="large"
       showModal={showModal}
       handleCloseModal={handleCloseModal}

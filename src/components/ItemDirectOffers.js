@@ -101,7 +101,7 @@ export const ItemDirectOffers = ({
                               isMobile
                                 ? navigate(`/account/${offer.creator.wallet}`)
                                 : window.open(
-                                    `/profile/${offer.creator.wallet}`,
+                                    `/account/${offer.creator.wallet}`,
                                     "_blank"
                                   )
                             }

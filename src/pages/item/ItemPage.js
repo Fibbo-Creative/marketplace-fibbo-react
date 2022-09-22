@@ -793,13 +793,15 @@ export default function ItemPage() {
                               className="cursor-pointer flex items-center gap-2 px-2 py-2 hover:bg-gray-300"
                             >
                               <Icon icon="ic:baseline-report" width={32}></Icon>
-                              <div>Report NFT</div>
+                              <div>{literals.actions.reportItem}</div>
                             </div>
+                          </ItemMenuPageOption>
+                          {showReport && (
                             <ReportModal
                               showModal={showReport}
                               handleCloseModal={() => setShowReport(false)}
                             />
-                          </ItemMenuPageOption>
+                          )}
                         </div>
                       </div>
                     )}
@@ -889,13 +891,15 @@ export default function ItemPage() {
                           className="cursor-pointer flex items-center gap-2 px-2 py-2 hover:bg-gray-300"
                         >
                           <Icon icon="ic:baseline-report" width={32}></Icon>
-                          <div>Report NFT</div>
+                          <div>{literals.actions.reportItem}</div>
                         </div>
+                      </ItemMenuPageOption>
+                      {showReport && (
                         <ReportModal
                           showModal={showReport}
                           handleCloseModal={() => setShowReport(false)}
                         />
-                      </ItemMenuPageOption>
+                      )}
                     </div>
                   )}
                 </div>
@@ -1059,10 +1063,10 @@ export default function ItemPage() {
                                 onClick={() =>
                                   isMobile
                                     ? navigate(
-                                        `/profile/${highestBid.bidder.wallet}`
+                                        `/account/${highestBid.bidder.wallet}`
                                       )
                                     : window.open(
-                                        `/profile/${highestBid.bidder.wallet}`,
+                                        `/account/${highestBid.bidder.wallet}`,
                                         "_blank"
                                       )
                                 }

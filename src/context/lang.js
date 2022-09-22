@@ -311,6 +311,10 @@ const engLiterals = {
     addToWatchlist: "Add to watchlist",
     deleteFromWatchlist: "Remove from watchlist",
     addCategory: "Add",
+    makeReport: "Make Report",
+    reportCollection: "Report Collection",
+    reportItem: "Report NFT",
+    reportProfile: "Report Account",
   },
   modals: {
     connectSentence: "Connect a wallet",
@@ -659,7 +663,6 @@ const espLiterals = {
     putForSale: "Poner en venta",
     createAuction: "Subastar NFT",
     update: "Actualizar",
-    cancel: "Cancelar",
   },
   itemPage: {
     chainData: "Datos de la cadena",
@@ -848,6 +851,10 @@ const espLiterals = {
     addToWatchlist: "Añadir a favoritos",
     deleteFromWatchlist: "Eliminar de favoritos",
     addCategory: "Añadir",
+    makeReport: "Realizar Reporte",
+    reportCollection: "Reportar Colección",
+    reportItem: "Reportar NFT",
+    reportProfile: "Reportar Cuenta",
   },
   modals: {
     connectSentence: "Conectar una billetera",

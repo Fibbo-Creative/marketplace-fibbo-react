@@ -71,7 +71,7 @@ export const FeatureItem = ({ suggestion, wallet }) => {
             <p
               className="text-primary-2 underline cursor-pointer"
               onClick={() =>
-                window.open(`/profile/${proposer.wallet}`, "_blank")
+                window.open(`/account/${proposer.wallet}`, "_blank")
               }
             >
               {proposer.username}
