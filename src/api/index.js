@@ -603,6 +603,18 @@ export const useApi = () => {
 
   //#endregion
 
+  //#region Reports
+  const createNewReport = async (type, reporter, descr, reported) => {
+    const rep = await marketplaceApi.post("admin/newReport", {
+      type,
+      reporter,
+      descr,
+      reported,
+    });
+    return rep.data;
+  };
+  //#endregion
+
   //#region Notifications
 
   const getUserNotifications = async (wallet) => {
@@ -676,5 +688,6 @@ export const useApi = () => {
     getAllCategories,
     getWatchlistedCollections,
     deleteNotification,
+    createNewReport,
   };
 };

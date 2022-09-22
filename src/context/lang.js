@@ -335,7 +335,12 @@ const engLiterals = {
     notEnoughWftm: "Not enough {0} to buy the NFT",
     offerMade: "Succesfully placed offer for  {0} {1}",
     bidPlaced: "Succesfully placed  bid for  {0} {1}",
-    close: "Cerrar",
+    close: "close",
+    sendReport: "Send Report",
+    completedReport:
+      "Your report has been sent and it will be checked with detail",
+    reportDesc: "Report Message",
+    reportInfo: "Explain with detail why you are reporting this content",
   },
   acceptOfferModal: {
     acceptOffer: "Accept offer",
@@ -876,6 +881,11 @@ const espLiterals = {
     offerMade: "Oferta por {0} {1} creada correctamente",
     bidPlaced: "Puja por {0} {1} creada correctamente",
     close: "Cerrar",
+    sendReport: "Enviar Reporte",
+    completedReport: "Tu reporte ha sido enviado y será revisado con detalle",
+    reportDesc: "Mensaje del Reporte",
+    reportInfo:
+      "Explicanos porque estas reportando este contenido, se lo más detallado y transparente",
   },
   acceptOfferModal: {
     acceptOffer: "Aceptar oferta",

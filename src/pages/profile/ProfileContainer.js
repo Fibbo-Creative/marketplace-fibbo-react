@@ -310,6 +310,7 @@ export default function ProfileContainer() {
                   icon="akar-icons:more-vertical"
                   tooltip="more-item"
                   tooltipPlacement="left"
+                  disabled={wallet === "" || !wallet}
                   tooltipText={literals.actions.moreOptions}
                 >
                   <div
@@ -324,6 +325,10 @@ export default function ProfileContainer() {
                   <ReportModal
                     showModal={showReport}
                     handleCloseModal={() => setShowReport(false)}
+                    type="PROFILE"
+                    reportedItem={{
+                      profile: profileData.current.wallet,
+                    }}
                   />
                 )}
               </div>
@@ -523,7 +528,7 @@ const ItemMenuPageOption = ({
   return (
     <div>
       <div
-        onClick={showMenu}
+        onClick={() => !disabled && showMenu()}
         ref={buttonRef}
         className={`${
           disabled ? "cursor-not-allowed" : "cursor-pointer"
@@ -582,7 +587,7 @@ const MenuOptions = ({ openMenu, setOpenMenu, buttonRef, children }) => {
   return (
     <div
       ref={ref}
-      className="w-[175px] md:w-[200px] bg-gray-100 dark:bg-dark-2 absolute right-5 z-20 flex flex-col  rounded-md"
+      className="w-[200px] md:w-[200px] bg-gray-100 dark:bg-dark-2 absolute right-[2px] md:right-5 z-20 flex flex-col  rounded-md"
     >
       {children}
     </div>

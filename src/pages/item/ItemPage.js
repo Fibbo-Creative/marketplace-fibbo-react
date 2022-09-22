@@ -786,6 +786,7 @@ export default function ItemPage() {
                             position="last"
                             icon="akar-icons:more-vertical"
                             tooltip="more-item"
+                            disabled={wallet === "" || !wallet}
                             tooltipText={literals.actions.moreOptions}
                           >
                             <div
@@ -800,6 +801,11 @@ export default function ItemPage() {
                             <ReportModal
                               showModal={showReport}
                               handleCloseModal={() => setShowReport(false)}
+                              type="NFT"
+                              reportedItem={{
+                                collection: collectionInfo.contractAddress,
+                                tokenId: tokenId,
+                              }}
                             />
                           )}
                         </div>
@@ -884,6 +890,7 @@ export default function ItemPage() {
                         position="last"
                         icon="akar-icons:more-vertical"
                         tooltip="more-item"
+                        disabled={wallet === "" || !wallet}
                         tooltipText={literals.actions.moreOptions}
                       >
                         <div
@@ -898,6 +905,11 @@ export default function ItemPage() {
                         <ReportModal
                           showModal={showReport}
                           handleCloseModal={() => setShowReport(false)}
+                          type="NFT"
+                          reportedItem={{
+                            collection: collectionInfo.contractAddress,
+                            tokenId: tokenId,
+                          }}
                         />
                       )}
                     </div>
@@ -1534,7 +1546,7 @@ const ItemMenuPageOption = ({
   return (
     <div>
       <div
-        onClick={showMenu}
+        onClick={() => !disabled && showMenu()}
         ref={buttonRef}
         className={`${
           disabled ? "cursor-not-allowed" : "cursor-pointer"
@@ -1591,7 +1603,7 @@ const MenuOptions = ({ openMenu, setOpenMenu, buttonRef, children }) => {
   return (
     <div
       ref={ref}
-      className="w-[175px] md:w-[200px] bg-gray-100 dark:bg-dark-2 absolute right-10 z-20 flex flex-col  rounded-md"
+      className="w-[175px] md:w-[200px] bg-gray-100 dark:bg-dark-2 absolute md:right-10 z-20 flex flex-col  rounded-md"
     >
       {openMenu && children}
     </div>
