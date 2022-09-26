@@ -338,7 +338,7 @@ export default function EditContainer() {
                     onChange={(e) => handleChangeLink(e.target.value)}
                   />
                   <NumberInput
-                    label={literals.createItem.royatlies}
+                    label={literals.createItem.royalties}
                     placeholder="ej. 2.5%"
                     value={royalty}
                     onChange={(e) => handleChangeRoyalty(e.target.value)}
@@ -399,7 +399,7 @@ export default function EditContainer() {
                           </div>
                         )}
                         <span className="font-bold text-lg text-gray-700 dark:text-gray-400 border-gray-300 p-3 flex-row ">
-                          Congelar Metadata
+                          {literals.createItem.freezeMedatadat}
                         </span>
                       </div>
                     </div>

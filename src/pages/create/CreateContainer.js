@@ -281,7 +281,7 @@ export default function CreateContainer() {
                   {nameError && <div className="text-xs text-red-400 "></div>}
 
                   <NumberInput
-                    label={literals.createItem.royatlies}
+                    label={literals.createItem.royalties}
                     placeholder="ej. 2.5%"
                     value={royalty}
                     onChange={(e) => handleChangeRoyalty(e.target.value)}
