@@ -706,6 +706,7 @@ export default function ItemPage() {
             <DetailImage
               isFreezedMetadata={isFreezedMetadata}
               collectionInfo={collectionInfo}
+              tokenInfo={tokenInfo?.current}
               tokenImage={tokenInfo?.current.image}
               tokenName={tokenInfo?.current.name}
               loading={loading}

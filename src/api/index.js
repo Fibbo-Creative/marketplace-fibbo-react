@@ -211,13 +211,15 @@ export const useApi = () => {
     creator,
     tokenId,
     royalty,
-    image,
+    sanityFileURL,
     ipfsImage,
     ipfsMetadata,
     collection,
     externalLink,
     additionalContent,
-    categories
+    categories,
+    contentType,
+    audio = null
   ) => {
     await marketplaceApi.post("nfts/newItem", {
       name: name,
@@ -225,13 +227,15 @@ export const useApi = () => {
       creator: creator,
       tokenId: tokenId,
       royalty: royalty,
-      sanityImgUrl: image,
+      sanityFileURL: sanityFileURL,
       ipfsImgUrl: ipfsImage,
       ipfsMetadataUrl: ipfsMetadata,
       collection: collection,
       externalLink: externalLink,
       additionalContent: additionalContent,
       categories: categories,
+      contentType: contentType,
+      sanityAudioURL: audio,
     });
   };
 
@@ -527,9 +531,15 @@ export const useApi = () => {
     };
   };
 
-  const uploadImgToCDN = async (file, uploadToIpfs, isExplicit = false) => {
+  const uploadToCDN = async (
+    file,
+    contentType,
+    uploadToIpfs,
+    isExplicit = false
+  ) => {
     var formData = new FormData();
-    formData.append("image", file);
+    formData.append("file", file);
+    formData.append("contentType", contentType);
     formData.append("uploadToIpfs", uploadToIpfs);
     formData.append("isExplicit", isExplicit);
 
@@ -549,12 +559,21 @@ export const useApi = () => {
     }
   };
 
-  const uploadJSONMetadata = async (name, desc, image, externalLink) => {
+  const uploadJSONMetadata = async (
+    name,
+    desc,
+    image,
+    externalLink,
+    contentType,
+    audio = null
+  ) => {
     const imgAddedToSanity = await marketplaceApi.post("api/uploadJson", {
       name: name,
       description: desc,
       image: image,
       externalLink: externalLink,
+      contentType: contentType,
+      audio: audio,
     });
     return imgAddedToSanity.data;
   };
@@ -660,7 +679,7 @@ export const useApi = () => {
     deleteFavorite,
     saveCollectionDetails,
     searchItemsAndProfiles,
-    uploadImgToCDN,
+    uploadToCDN,
     uploadJSONMetadata,
     createNewSuggestion,
     voteIntoSuggestion,

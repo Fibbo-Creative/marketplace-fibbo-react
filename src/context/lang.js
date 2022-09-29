@@ -188,9 +188,15 @@ const engLiterals = {
     nameCharacters: "The name must contain between 4 and 30 characters",
     descriptionCharacters:
       "The description must contain between 50 and 1000 characters",
-    imgInput: "Drag or select image files",
+
     incorrectFormat: "Not valid format",
     explicitContent: "Explícit or Sensible content",
+    imgInput: "Drag or select image files",
+    videoInput: "Drag or select video files",
+    imgTypes: "JPG, PNG, JPEG, GIF, SVG, WEBP.",
+    videoTypes: "MP4, WMV, AVI, MOV...",
+    audioInput: "Drag or select audio files",
+    audioTypes: "MP3, MPEG, OGG...",
   },
   profile: {
     collected: "Collected",
@@ -736,9 +742,14 @@ const espLiterals = {
     nameCharacters: "El nombre debe tener entre 4 y 30 carácteres",
     descriptionCharacters:
       "La descripción debe tener entre 50 y 1000 carácteres",
-    imgInput: "Arrastra o selecciona ficheros de imágen",
     incorrectFormat: "Formato incorrecto",
     explicitContent: "Contenido Explícito o Sensible",
+    imgInput: "Arrastra o selecciona ficheros de imágen",
+    videoInput: "Arrastra o selecciona ficheros de video",
+    imgTypes: "JPG, PNG, JPEG, GIF, SVG, WEBP.",
+    videoTypes: "MP4, WMV, AVI, MOV...",
+    audioInput: "Arrastra o selecciona ficheros de audio",
+    audioTypes: "MP3, MPEG, OGG...",
   },
   profile: {
     collected: "En posesión",

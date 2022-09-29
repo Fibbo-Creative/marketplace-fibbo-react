@@ -6,6 +6,7 @@ import { Check } from "../lottie/Check";
 import { BasicModal } from "./BasicModal";
 import { useTokens } from "../../contracts/token";
 import { useStateContext } from "../../context/StateProvider";
+import { IPFS_BASE_URL } from "../../constants/ipfs";
 export const ConfirmCreateModal = ({
   showModal,
   handleCloseModal,
@@ -14,9 +15,8 @@ export const ConfirmCreateModal = ({
   wallet,
 }) => {
   const [{ literals }] = useStateContext();
-  const { getERC721Contract, mintGassless } = useTokens();
-  const { saveMintedItem, uploadJSONMetadata, getItemsFromCollection } =
-    useApi();
+  const { mintGassless } = useTokens();
+  const { saveMintedItem, uploadJSONMetadata, uploadToCDN } = useApi();
   const [newTokenId, setNewTokenId] = useState(0);
   const [address, setAddress] = useState("");
   const [completedAction, setCompletedAction] = useState(false);
@@ -25,37 +25,120 @@ export const ConfirmCreateModal = ({
 
   const createNFT = async (e) => {
     try {
-      const ipfsCID = await uploadJSONMetadata(
-        itemData.name,
-        itemData.description,
-        itemData.ipfsImage,
-        itemData.externalLink
-      );
+      if (itemData.contentType === "AUDIO") {
+        const audioResponse = await uploadToCDN(
+          itemData.fileSelected.file,
+          itemData.contentType,
+          true,
+          itemData.isExplicit
+        );
+        const audioSanity = audioResponse.sanity;
+        const audioIpfs = audioResponse.ipfs;
+        const audioError = audioResponse.error;
 
-      const ipfsFileURL = `https://ipfs.io/ipfs/${ipfsCID}`;
+        if (audioError) {
+          throw Error(audioError);
+        }
 
-      await mintGassless(collection.contractAddress, wallet, ipfsFileURL);
-      let newTokenId = collection.numberOfItems + 1;
-      //Si todo va bien, crear a sanity
-      await saveMintedItem(
-        itemData.name,
-        itemData.description,
-        wallet,
-        newTokenId,
-        itemData.royalty ? itemData.royalty : 0,
-        itemData.image,
-        itemData.ipfsImage,
-        ipfsFileURL,
-        collection.contractAddress,
-        itemData.externalLink,
-        itemData.hiddenContent,
-        itemData.categories.map((cat) => {
-          return cat.identifier;
-        })
-      );
-      setNewTokenId(newTokenId);
-      setAddress(address);
-      setCompletedAction(true);
+        const audioIpfsURL = `${IPFS_BASE_URL}/${audioIpfs}`;
+
+        const coverResponse = await uploadToCDN(
+          itemData.coverSelected.file,
+          "IMG",
+          true,
+          itemData.isExplicit
+        );
+
+        const coverSanity = coverResponse.sanity;
+        const coverIpfs = coverResponse.ipfs;
+        const coverError = coverResponse.error;
+
+        if (coverError) {
+          throw Error(coverError);
+        }
+        const coverIpfsURL = `${IPFS_BASE_URL}/${coverIpfs}`;
+
+        const ipfsCID = await uploadJSONMetadata(
+          itemData.name,
+          itemData.description,
+          coverIpfsURL,
+          itemData.externalLink,
+          itemData.contentType,
+          audioIpfsURL
+        );
+
+        const ipfsFileURL = `${IPFS_BASE_URL}/${ipfsCID}`;
+        console.log(ipfsFileURL);
+        //await mintGassless(collection.contractAddress, wallet, ipfsFileURL);
+        //let newTokenId = collection.numberOfItems + 1;
+        //Si todo va bien, crear a sanity
+        await saveMintedItem(
+          itemData.name,
+          itemData.description,
+          wallet,
+          newTokenId,
+          itemData.royalty ? itemData.royalty : 0,
+          coverSanity,
+          itemData.ipfsImage,
+          ipfsFileURL,
+          collection.contractAddress,
+          itemData.externalLink,
+          itemData.hiddenContent,
+          itemData.categories.map((cat) => {
+            return cat.identifier;
+          }),
+          itemData.contentType,
+          audioSanity
+        );
+        setNewTokenId(newTokenId);
+        setAddress(address);
+        setCompletedAction(true);
+      } else {
+        const { sanity, ipfs, error } = await uploadToCDN(
+          itemData.fileSelected.file,
+          itemData.contentType,
+          true,
+          itemData.isExplicit
+        );
+        if (error) {
+          throw Error(error);
+        }
+        const ipfsURL = `${IPFS_BASE_URL}/${ipfs}`;
+
+        const ipfsCID = await uploadJSONMetadata(
+          itemData.name,
+          itemData.description,
+          ipfsURL,
+          itemData.externalLink,
+          itemData.contentType
+        );
+
+        const ipfsFileURL = `${IPFS_BASE_URL}/${ipfsCID}`;
+
+        await mintGassless(collection.contractAddress, wallet, ipfsFileURL);
+        let newTokenId = collection.numberOfItems + 1;
+        //Si todo va bien, crear a sanity
+        await saveMintedItem(
+          itemData.name,
+          itemData.description,
+          wallet,
+          newTokenId,
+          itemData.royalty ? itemData.royalty : 0,
+          sanity,
+          itemData.ipfsImage,
+          ipfsFileURL,
+          collection.contractAddress,
+          itemData.externalLink,
+          itemData.hiddenContent,
+          itemData.categories.map((cat) => {
+            return cat.identifier;
+          }),
+          itemData.contentType
+        );
+        setNewTokenId(newTokenId);
+        setAddress(address);
+        setCompletedAction(true);
+      }
     } catch (e) {
       console.log(e);
     }
@@ -81,12 +164,37 @@ export const ConfirmCreateModal = ({
         <div className="flex flex-col gap-10  items-center">
           <div className="flex flex-col md:flex-row md:justify-between gap-4 mt-10">
             <div className="w-[225px] lg:w-[300px] object-contain">
-              <img
-                src={itemData.image}
-                alt={`item-${itemData.name}`}
-                width={300}
-                className="object-contain"
-              />
+              {itemData.contentType === "VIDEO" ? (
+                <video controls type="video/mp4" className="w-full h-full z-50">
+                  <source src={itemData.fileSelected.preview} />
+                </video>
+              ) : (
+                <>
+                  {itemData.contentType === "AUDIO" ? (
+                    <>
+                      <img
+                        src={itemData.coverSelected?.preview}
+                        alt={`item-${itemData.name}`}
+                        width={300}
+                        className="object-contain"
+                      />
+                      <audio controls className="w-full">
+                        <source
+                          src={itemData.fileSelected.preview}
+                          type="audio/mp3"
+                        />
+                      </audio>
+                    </>
+                  ) : (
+                    <img
+                      src={itemData.fileSelected?.preview}
+                      alt={`item-${itemData.name}`}
+                      width={300}
+                      className="object-contain"
+                    />
+                  )}
+                </>
+              )}
             </div>
             <div className="flex flex-col gap-3 w-60">
               <div className="flex gap-2">

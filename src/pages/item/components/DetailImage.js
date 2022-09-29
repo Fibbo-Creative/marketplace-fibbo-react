@@ -79,7 +79,7 @@ export default function DetailImage({
                 />
                 <div>
                   <ButtonTooltip
-                    tooltip={`favorite-${tokenInfo?.current.tokenId}`}
+                    tooltip={`favorite-${tokenInfo?.tokenId}`}
                     tooltipText={
                       isLiked
                         ? literals.detailNFT.unFavorite
@@ -185,14 +185,34 @@ export default function DetailImage({
               </div>
             </div>
 
-            <img
-              onClick={() => !showingQr && setShowImageDetail(true)}
-              className={`  ${
-                !showingQr && "cursor-pointer"
-              } w-full h-5/6  object-contain`}
-              src={imgOrQR}
-              alt={tokenName}
-            />
+            {tokenInfo.contentType === "VIDEO" ? (
+              <video controls type="video/mp4" className="w-full h-full">
+                <source src={tokenInfo.video} />
+              </video>
+            ) : tokenInfo.contentType === "AUDIO" ? (
+              <div className=" flex flex-col items-center gap-2">
+                <img
+                  onClick={() => !showingQr && setShowImageDetail(true)}
+                  className={`  ${
+                    !showingQr && "cursor-pointer"
+                  } w-full h-5/6  object-contain`}
+                  src={imgOrQR}
+                  alt={tokenName}
+                />
+                <audio controls className="w-full">
+                  <source src={tokenInfo.audio} type="audio/mp3" />
+                </audio>
+              </div>
+            ) : (
+              <img
+                onClick={() => !showingQr && setShowImageDetail(true)}
+                className={`  ${
+                  !showingQr && "cursor-pointer"
+                } w-full h-5/6  object-contain`}
+                src={imgOrQR}
+                alt={tokenName}
+              />
+            )}
             <SeeImageInDetailModal
               image={tokenImage}
               showModal={showImageDetail}

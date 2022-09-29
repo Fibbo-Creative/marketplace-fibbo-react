@@ -13,6 +13,9 @@ import { NotVerified } from "../../components/basic/NotVerified";
 import { ImageInput } from "../../components/inputs/ImageInput";
 import { NotOwner } from "../../components/basic/NotOwner";
 import { MultipleSelect } from "../../components/inputs/MultipleSelect";
+import { Icon } from "@iconify/react";
+import { VideoInput } from "../../components/inputs/VideoInput";
+import { AudioInput } from "../../components/inputs/AudioInput";
 
 const validateName = (name) => {
   if (name.length > 4 && name.length < 30) return true;
@@ -29,6 +32,9 @@ export default function CreateContainer() {
     useApi();
   const [ipfsImageUrl, setIpfsImageUrl] = useState("");
   const [sanityImgUrl, setSanityImgUrl] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [coverSelected, setCoverSelected] = useState(null);
+
   const [name, setName] = useState("");
   const [externalLink, setExternalLink] = useState("");
   const [desc, setDesc] = useState("");
@@ -41,6 +47,7 @@ export default function CreateContainer() {
   const [collectionSelected, setCollectionsSelected] = useState(null);
   const [categoriesSelected, setCategoriesSelected] = useState([]);
 
+  const [contentType, setContentType] = useState("IMG");
   const [isOwner, setIsOwner] = useState(false);
 
   const [loading, setLoading] = useState(true);
@@ -54,6 +61,10 @@ export default function CreateContainer() {
   const [descError, setDescError] = useState(false);
   const [royaltyError, setRoyaltyError] = useState(false);
 
+  const selectContentType = (type) => {
+    setSelectedFile(null);
+    setContentType(type);
+  };
   const selectCategory = (cat) => {
     const isSelected = categoriesSelected.find(
       (c) => c.identifier === cat.identifier
@@ -74,28 +85,29 @@ export default function CreateContainer() {
   };
   const onFileSelected = async (e) => {
     const file = e.target.files[0];
-    if (file.type.includes("image")) {
-      setImageError(false);
-      try {
-        const isExplicit = collectionSelected.explicitContent;
-        const { sanity, ipfs, error } = await uploadImgToCDN(
-          file,
-          true,
-          isExplicit
-        );
+    if (
+      (contentType === "IMG" && file.type.includes("image")) ||
+      (contentType === "VIDEO" && file.type.includes("video")) ||
+      (contentType === "AUDIO" && file.type.includes("audio"))
+    ) {
+      console.log({ file: file, preview: URL.createObjectURL(file) });
+      setSelectedFile({ file: file, preview: URL.createObjectURL(file) });
+    } else {
+      setImageError(true);
+      setImageMessageError(
+        <div>
+          Selecciona un archivo de imagen
+          <br />
+          JPG, PNG, JPEG, GIF, SVG o WEBP
+        </div>
+      );
+    }
+  };
 
-        setIpfsImageUrl(`https://ipfs.io/ipfs/${ipfs}`);
-        console.log(sanity);
-        if (error) {
-          setImageError(true);
-          setImageMessageError("Imagen no permitida, contiene contenido NFSW");
-        } else {
-          setSanityImgUrl(sanity);
-          setImageError(false);
-        }
-      } catch (error) {
-        console.log("Error uploading file: ", error);
-      }
+  const onCoverSelected = async (e) => {
+    const file = e.target.files[0];
+    if (file.type.includes("image")) {
+      setCoverSelected({ file: file, preview: URL.createObjectURL(file) });
     } else {
       setImageError(true);
       setImageMessageError(
@@ -114,7 +126,7 @@ export default function CreateContainer() {
     setRoyaltyError(false);
 
     let error = false;
-    if (sanityImgUrl === "") {
+    if (!selectedFile) {
       if (!imageError) {
         setImageError(true);
         setImageMessageError("Selecciona una imágen");
@@ -197,16 +209,77 @@ export default function CreateContainer() {
             <div className="h-full flex-col w-full lg:h-screen justify-center items-center dark:bg-dark-1">
               <div className="flex lg:flex-row flex-col gap-10 p-8 justify-center items-center md:items-start">
                 <div className="flex flex-col gap-20">
-                  <ImageInput
-                    imageURL={sanityImgUrl}
-                    setImageURL={setSanityImgUrl}
-                    inputId="inputNFT"
-                    onFileSelected={onFileSelected}
-                    imageError={imageError}
-                    icon={false}
-                    imageMessageError={imageMessageError}
-                    className="rounded-md w-[300px] h-[300px] md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px]"
-                  />
+                  {contentType === "VIDEO" ? (
+                    <VideoInput
+                      fileSelected={selectedFile}
+                      videoURL={sanityImgUrl}
+                      setVideoURL={setSanityImgUrl}
+                      inputId="inputNFT"
+                      onFileSelected={onFileSelected}
+                      imageError={imageError}
+                      icon={false}
+                      imageMessageError={imageMessageError}
+                      className="rounded-md w-[300px] h-[300px] md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px]"
+                    />
+                  ) : contentType === "IMG" ? (
+                    <ImageInput
+                      fileSelected={selectedFile}
+                      inputId="inputNFT"
+                      onFileSelected={onFileSelected}
+                      imageError={imageError}
+                      icon={false}
+                      imageMessageError={imageMessageError}
+                      className="rounded-md w-[300px] h-[300px] md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px]"
+                    />
+                  ) : (
+                    <div>
+                      <ImageInput
+                        fileSelected={coverSelected}
+                        inputId="inputNFT"
+                        onFileSelected={onCoverSelected}
+                        imageError={imageError}
+                        icon={false}
+                        imageMessageError={imageMessageError}
+                        className="rounded-md w-[300px] h-[300px] md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px]"
+                      />
+                      <AudioInput
+                        fileSelected={selectedFile}
+                        inputId="audioNFT"
+                        onFileSelected={onFileSelected}
+                        imageError={imageError}
+                        icon={false}
+                        imageMessageError={imageMessageError}
+                        className="rounded-md w-[300px] h-[100px] md:w-[400px]  lg:w-[500px]"
+                      />
+                    </div>
+                  )}
+
+                  <div className="flex justify-evenly">
+                    <ContentTypeSelector
+                      contentType="IMG"
+                      selectedContent={contentType}
+                      text="Image"
+                      icon="bi:file-image"
+                      selectedIcon="bi:file-image-fill"
+                      onClick={() => selectContentType("IMG")}
+                    />
+                    <ContentTypeSelector
+                      contentType="VIDEO"
+                      selectedContent={contentType}
+                      text="Video"
+                      icon="bi:camera-video"
+                      selectedIcon="bi:camera-video-fill"
+                      onClick={() => selectContentType("VIDEO")}
+                    />
+                    <ContentTypeSelector
+                      contentType="AUDIO"
+                      selectedContent={contentType}
+                      text="Audio"
+                      icon="bi:file-music"
+                      selectedIcon="bi:file-music-fill"
+                      onClick={() => selectContentType("AUDIO")}
+                    />
+                  </div>
                 </div>
 
                 <div className="">
@@ -327,22 +400,26 @@ export default function CreateContainer() {
                   buttonAction={(e) => handleShowConfirmModal(e)}
                 />
               </div>
-              <ConfirmCreateModal
-                showModal={showConfirmationModal}
-                handleCloseModal={(e) => setShowConfirmationModal(false)}
-                collection={collectionSelected}
-                itemData={{
-                  image: sanityImgUrl,
-                  name: name,
-                  description: desc,
-                  royalty: royalty,
-                  hiddenContent: hiddenContent,
-                  externalLink: externalLink,
-                  ipfsImage: ipfsImageUrl,
-                  categories: categoriesSelected,
-                }}
-                wallet={wallet}
-              />
+              {showConfirmationModal && (
+                <ConfirmCreateModal
+                  showModal={showConfirmationModal}
+                  handleCloseModal={(e) => setShowConfirmationModal(false)}
+                  collection={collectionSelected}
+                  itemData={{
+                    fileSelected: selectedFile,
+                    name: name,
+                    description: desc,
+                    royalty: royalty,
+                    hiddenContent: hiddenContent,
+                    externalLink: externalLink,
+                    categories: categoriesSelected,
+                    isExplicit: collectionSelected.isExplicit,
+                    coverSelected: coverSelected ?? null,
+                    contentType: contentType,
+                  }}
+                  wallet={wallet}
+                />
+              )}
             </div>
           ) : (
             <NotVerified text={literals.modals.artistNotVerified2} />
@@ -354,3 +431,29 @@ export default function CreateContainer() {
     </PageWithLoading>
   );
 }
+
+const ContentTypeSelector = ({
+  text,
+  icon,
+  selectedIcon,
+  contentType,
+  selectedContent,
+  onClick,
+}) => {
+  return (
+    <div
+      className={`cursor-pointer rounded-lg flex flex-col items-center gap-2 border ${
+        selectedContent === contentType
+          ? "bg-gray-400 dark:bg-dark-4 "
+          : "bg-gray-400 dark:bg-dark-1"
+      } px-7 py-5`}
+      onClick={onClick}
+    >
+      <Icon
+        icon={selectedContent === contentType ? selectedIcon : icon}
+        width={32}
+      />
+      {text}
+    </div>
+  );
+};
