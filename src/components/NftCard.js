@@ -104,11 +104,15 @@ export default function NftCard({ item, onClick, isSmall, wallet }) {
           isSmall ? "h-[212px] w-[212px]" : "h-[322px] w-[322px]"
         } flex pb-3 border-b-2 border-gray-700 dark:border-gray-300 `}
       >
-        <img
-          className="object-contain w-full h-full"
-          src={item.nft ? item.nft.image : item.image}
-          alt={item.name}
-        />
+        {item.contentType === "VIDEO" ? (
+          <video src={item.video}></video>
+        ) : (
+          <img
+            className="object-contain w-full h-full"
+            src={item.nft ? item.nft.image : item.image}
+            alt={item.name}
+          />
+        )}
       </div>
       <div
         onClick={onClick}
@@ -118,8 +122,11 @@ export default function NftCard({ item, onClick, isSmall, wallet }) {
           <p className="text-xs text-gray-400">
             <i>{item.collection?.name}</i>
           </p>
-          <p>
+          <p className="flex gap-2 items-center">
             <b>{item.name}</b>
+            {item.contentType === "IMG" && <Icon icon="bi:file-image" />}
+            {item.contentType === "AUDIO" && <Icon icon="bi:file-music" />}
+            {item.contentType === "VIDEO" && <Icon icon="bi:camera-video" />}
           </p>
         </div>
         {item.price && (
@@ -127,7 +134,7 @@ export default function NftCard({ item, onClick, isSmall, wallet }) {
             <p className="text-xs text-gray-400">
               <i>{literals.detailNFT.price}</i>
             </p>
-            <div className="flex gap-2 flex gap-2 items-center">
+            <div className="flex gap-2 items-center">
               <img src={item?.payToken?.image} width={22} />
               <div>{item.price} </div>
             </div>

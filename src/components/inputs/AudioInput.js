@@ -14,7 +14,6 @@ export const AudioInput = ({
   onFileSelected,
   backgroundImage,
   className,
-
   icon,
   contentType,
 }) => {
