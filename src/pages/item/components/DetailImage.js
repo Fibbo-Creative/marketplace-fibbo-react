@@ -8,6 +8,8 @@ import ReactTooltip from "react-tooltip";
 import { ThemeContext } from "../../../context/ThemeContext";
 import SeeImageInDetailModal from "../../../components/modals/SeeImageInDetailModal";
 import { ButtonTooltip } from "../../../components/tooltips/ButtonTooltip";
+import { AudioPlayer } from "../../../components/AudioPlayer";
+import { VideoPlayer } from "../../../components/VideoPlayer";
 
 export default function DetailImage({
   isFreezedMetadata,
@@ -64,7 +66,7 @@ export default function DetailImage({
 
   return (
     <div className="col-span-1 flex items-center justify-center  ">
-      <div className="w-[450px] h-[450px] dark:bg-dark-2 border-gray border-2 p-2  m-2 rounded-md flex flex-col justify-center  gap-2 items-center ">
+      <div className="w-[450px] h-[450px] dark:bg-dark-2 border-gray border-2 p-2  m-2 rounded-md flex flex-col justify-between  gap-2">
         {loading ? (
           <div className="w-full h-full animate-pulse bg-gray-400"></div>
         ) : (
@@ -126,71 +128,94 @@ export default function DetailImage({
                     </div>
                   );
                 })}
-                <div
-                  data-for="chain-icon"
-                  data-tip={literals.itemPage.fantomNetwork}
-                >
-                  <img
-                    width={28}
-                    className="flex w-[32px] "
-                    alt="fantom-coin"
-                    src="https://dynamic-assets.coinbase.com/e17e84efa456c7d48f037588e37f8eb66c4be2c7ff8386258a0b99d78b3246afa4d8c21fa1f748f6a02b9487cb6f2b6f26d70bdb652a61db2b4cf058bec08dee/asset_icons/1bb53e9ac0259c3e341fea0e730521c42d44d226f60f4fb0cc68c9770296216d.png"
-                  />
-                  <ReactTooltip
-                    id="chain-icon"
-                    place="top"
-                    type={theme === "dark" ? "light" : "dark"}
-                    effect="solid"
-                    multiline={true}
-                  />
+                <div className="flex gap-2 items-center">
+                  <ButtonTooltip
+                    tooltip={`contenType-${tokenInfo?.tokenId}`}
+                    tooltipText={
+                      tokenInfo.contentType !== "IMG"
+                        ? tokenInfo.contentType === "AUDIO"
+                          ? "Audio Content"
+                          : "Video Content"
+                        : "Image Content"
+                    }
+                    tooltipPlacement="top"
+                    className="flex flex-row gap-2"
+                  >
+                    {tokenInfo.contentType === "IMG" && (
+                      <Icon width={28} icon="bi:file-image" />
+                    )}
+                    {tokenInfo.contentType === "AUDIO" && (
+                      <Icon width={28} icon="bi:file-music" />
+                    )}
+                    {tokenInfo.contentType === "VIDEO" && (
+                      <Icon width={28} icon="bi:camera-video" />
+                    )}
+                  </ButtonTooltip>
+
+                  <div
+                    data-for="chain-icon"
+                    data-tip={literals.itemPage.fantomNetwork}
+                  >
+                    <img
+                      width={28}
+                      className="flex w-[32px] "
+                      alt="fantom-coin"
+                      src="https://dynamic-assets.coinbase.com/e17e84efa456c7d48f037588e37f8eb66c4be2c7ff8386258a0b99d78b3246afa4d8c21fa1f748f6a02b9487cb6f2b6f26d70bdb652a61db2b4cf058bec08dee/asset_icons/1bb53e9ac0259c3e341fea0e730521c42d44d226f60f4fb0cc68c9770296216d.png"
+                    />
+                    <ReactTooltip
+                      id="chain-icon"
+                      place="top"
+                      type={theme === "dark" ? "light" : "dark"}
+                      effect="solid"
+                      multiline={true}
+                    />
+                  </div>
+                  {isFreezedMetadata && (
+                    <div
+                      data-for="freezed-icon"
+                      data-tip={literals.itemPage.itemFreezed}
+                    >
+                      <Icon
+                        width={28}
+                        className="flex w-[32px] "
+                        icon="material-symbols:severe-cold-rounded"
+                      />
+                      <ReactTooltip
+                        id="freezed-icon"
+                        place="top"
+                        type={theme === "dark" ? "light" : "dark"}
+                        effect="solid"
+                        multiline={true}
+                      />
+                    </div>
+                  )}
+                  {collectionInfo.explicitContent && (
+                    <div
+                      data-for="nfsw-icon"
+                      data-tip={literals.detailNFT.explicitContent}
+                    >
+                      <Icon
+                        width={28}
+                        className="flex w-[32px] "
+                        icon="uil:18-plus"
+                      />
+                      <ReactTooltip
+                        id="nfsw-icon"
+                        place="top"
+                        type={theme === "dark" ? "light" : "dark"}
+                        effect="solid"
+                        multiline={true}
+                      />
+                    </div>
+                  )}
                 </div>
-                {isFreezedMetadata && (
-                  <div
-                    data-for="freezed-icon"
-                    data-tip={literals.itemPage.itemFreezed}
-                  >
-                    <Icon
-                      width={28}
-                      className="flex w-[32px] "
-                      icon="material-symbols:severe-cold-rounded"
-                    />
-                    <ReactTooltip
-                      id="freezed-icon"
-                      place="top"
-                      type={theme === "dark" ? "light" : "dark"}
-                      effect="solid"
-                      multiline={true}
-                    />
-                  </div>
-                )}
-                {collectionInfo.explicitContent && (
-                  <div
-                    data-for="nfsw-icon"
-                    data-tip={literals.detailNFT.explicitContent}
-                  >
-                    <Icon
-                      width={28}
-                      className="flex w-[32px] "
-                      icon="uil:18-plus"
-                    />
-                    <ReactTooltip
-                      id="nfsw-icon"
-                      place="top"
-                      type={theme === "dark" ? "light" : "dark"}
-                      effect="solid"
-                      multiline={true}
-                    />
-                  </div>
-                )}
               </div>
             </div>
 
             {tokenInfo.contentType === "VIDEO" ? (
-              <video controls type="video/mp4" className="w-full h-full">
-                <source src={tokenInfo.video} />
-              </video>
+              <VideoPlayer videoId="video-preview" video={tokenInfo.video} />
             ) : tokenInfo.contentType === "AUDIO" ? (
-              <div className=" flex flex-col items-center gap-2">
+              <div className=" flex flex-col h-full  gap-2">
                 <img
                   onClick={() => !showingQr && setShowImageDetail(true)}
                   className={`  ${
@@ -199,9 +224,10 @@ export default function DetailImage({
                   src={imgOrQR}
                   alt={tokenName}
                 />
-                <audio controls className="w-full">
-                  <source src={tokenInfo.audio} type="audio/mp3" />
-                </audio>
+                <AudioPlayer
+                  audioId="itemPagePreview"
+                  audio={tokenInfo.audio}
+                />
               </div>
             ) : (
               <img

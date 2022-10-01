@@ -19,11 +19,11 @@ code {
 :root {
   --background: white;
   --text-primary: black;
-  --audioBackground: #202225;
+  --primary: #552aef;
+  --progress: lightgray;
 }
 [data-theme="dark"] {
   --background: #202225;
   --text-primary: white;
-  --audioBackground: #43474d;
-  --audioBorder: #414447;
+  --progress: white;
 }

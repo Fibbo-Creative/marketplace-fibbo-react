@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react";
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/StateProvider";
 import fibboLogo from "../../assets/logoNavbarSmall.png";
+import { VideoPlayer } from "../VideoPlayer";
 
 export const VideoInput = ({
   fileSelected,
@@ -78,11 +79,9 @@ export const VideoInput = ({
           />
 
           {!imageError && fileSelected ? (
-            <>
-              <video controls type="video/mp4" className="w-full h-full z-50">
-                <source src={fileSelected.preview} />
-              </video>
-            </>
+            <div className="flex flex-col justify-center items-center h-full px-2">
+              <VideoPlayer videoId="inputVideo" video={fileSelected.preview} />
+            </div>
           ) : (
             <>
               {!icon ? (

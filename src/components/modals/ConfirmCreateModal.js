@@ -7,6 +7,8 @@ import { BasicModal } from "./BasicModal";
 import { useTokens } from "../../contracts/token";
 import { useStateContext } from "../../context/StateProvider";
 import { IPFS_BASE_URL } from "../../constants/ipfs";
+import { AudioPlayer } from "../AudioPlayer";
+import { VideoPlayer } from "../VideoPlayer";
 export const ConfirmCreateModal = ({
   showModal,
   handleCloseModal,
@@ -165,9 +167,10 @@ export const ConfirmCreateModal = ({
           <div className="flex flex-col md:flex-row md:justify-between gap-4 mt-10">
             <div className="w-[225px] lg:w-[300px] object-contain">
               {itemData.contentType === "VIDEO" ? (
-                <video controls type="video/mp4" className="w-full h-full z-50">
-                  <source src={itemData.fileSelected.preview} />
-                </video>
+                <VideoPlayer
+                  videoId="previer-video"
+                  video={itemData.fileSelected.preview}
+                />
               ) : (
                 <>
                   {itemData.contentType === "AUDIO" ? (
@@ -178,12 +181,10 @@ export const ConfirmCreateModal = ({
                         width={300}
                         className="object-contain"
                       />
-                      <audio controls className="w-full">
-                        <source
-                          src={itemData.fileSelected.preview}
-                          type="audio/mp3"
-                        />
-                      </audio>
+                      <AudioPlayer
+                        audioId="preview"
+                        audio={itemData.fileSelected?.preview}
+                      />
                     </>
                   ) : (
                     <img

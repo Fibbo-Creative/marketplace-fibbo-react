@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react";
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/StateProvider";
 import fibboLogo from "../../assets/logoNavbarSmall.png";
+import { AudioPlayer } from "../AudioPlayer";
 
 export const AudioInput = ({
   fileSelected,
@@ -77,11 +78,12 @@ export const AudioInput = ({
           />
 
           {!imageError && fileSelected ? (
-            <>
-              <audio controls className="w-full">
-                <source src={fileSelected.preview} type="audio/mp3" />
-              </audio>
-            </>
+            <div className="w-full mx-4">
+              <AudioPlayer
+                audioId="previewInput"
+                audio={fileSelected.preview}
+              />
+            </div>
           ) : (
             <>
               {!icon ? (
