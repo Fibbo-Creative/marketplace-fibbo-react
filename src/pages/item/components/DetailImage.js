@@ -213,7 +213,11 @@ export default function DetailImage({
             </div>
 
             {tokenInfo.contentType === "VIDEO" ? (
-              <VideoPlayer videoId="video-preview" video={tokenInfo.video} />
+              <VideoPlayer
+                onClickVideo={() => !showingQr && setShowImageDetail(true)}
+                videoId="video-preview"
+                video={tokenInfo.video}
+              />
             ) : tokenInfo.contentType === "AUDIO" ? (
               <div className=" flex flex-col h-full  gap-2">
                 <img
@@ -241,7 +245,9 @@ export default function DetailImage({
             )}
             <SeeImageInDetailModal
               image={tokenImage}
+              tokenInfo={tokenInfo}
               showModal={showImageDetail}
+              contentType={tokenInfo.contentType}
               handleCloseModal={() => setShowImageDetail(false)}
             />
           </>

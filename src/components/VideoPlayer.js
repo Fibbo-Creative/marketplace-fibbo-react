@@ -4,7 +4,7 @@ import moment from "moment";
 import useVideoPlayer from "../hooks/useVideoPlayer";
 import momentDurationFormatSetup from "moment-duration-format";
 
-export const VideoPlayer = ({ videoId, video }) => {
+export const VideoPlayer = ({ videoId, video, onClickVideo }) => {
   const {
     curTime,
     duration,
@@ -47,12 +47,19 @@ export const VideoPlayer = ({ videoId, video }) => {
     });
   }
 
+  const handleClickVideo = () => {
+    console.log("ke");
+    onClickVideo();
+  };
+
   return (
     <div className="flex flex-col gap-4">
-      <video id={videoId}>
-        <source src={video} />
-        Your browser does not support the <code>video</code> element
-      </video>
+      <div className="cursor-pointer" onClick={handleClickVideo}>
+        <video id={videoId}>
+          <source src={video} />
+          Your browser does not support the <code>video</code> element
+        </video>
+      </div>
 
       <div
         className="flex items-center space-evenly py-3 gap-2 px-4 shadow-lg drop-shadow-xl backdrop-blur-lg rounded-lg"
