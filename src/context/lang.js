@@ -61,6 +61,10 @@ const engLiterals = {
     categories: "Categories",
     favorites: "Favorites",
     seeFavorites: "See Favorites",
+    contentType: "Content",
+    image: "Image",
+    video: "Video",
+    audio: "Audio",
   },
   explore: {
     filterSort: "Sort By",
@@ -617,6 +621,10 @@ const espLiterals = {
     categories: "Categorias",
     favorites: "Favoritos",
     seeFavorites: "Ver Favoritos",
+    contentType: "Contenido",
+    image: "Imágen",
+    video: "Video",
+    audio: "Audio",
   },
   explore: {
     filterSort: "Ordenar Por",

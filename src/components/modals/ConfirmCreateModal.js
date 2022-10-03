@@ -72,7 +72,7 @@ export const ConfirmCreateModal = ({
         const ipfsFileURL = `${IPFS_BASE_URL}/${ipfsCID}`;
         console.log(ipfsFileURL);
         //await mintGassless(collection.contractAddress, wallet, ipfsFileURL);
-        //let newTokenId = collection.numberOfItems + 1;
+        let newTokenId = collection.numberOfItems + 1;
         //Si todo va bien, crear a sanity
         await saveMintedItem(
           itemData.name,

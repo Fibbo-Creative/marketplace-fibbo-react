@@ -83,14 +83,13 @@ export default function CreateContainer() {
       );
     }
   };
-  const onFileSelected = async (e) => {
+  const onFileSelected = (e) => {
     const file = e.target.files[0];
     if (
       (contentType === "IMG" && file.type.includes("image")) ||
       (contentType === "VIDEO" && file.type.includes("video")) ||
       (contentType === "AUDIO" && file.type.includes("audio"))
     ) {
-      console.log({ file: file, preview: URL.createObjectURL(file) });
       setSelectedFile({ file: file, preview: URL.createObjectURL(file) });
     } else {
       setImageError(true);
@@ -215,7 +214,7 @@ export default function CreateContainer() {
                       videoURL={sanityImgUrl}
                       setVideoURL={setSanityImgUrl}
                       inputId="inputNFT"
-                      onFileSelected={onFileSelected}
+                      onFileSelected={(e) => onFileSelected(e)}
                       imageError={imageError}
                       icon={false}
                       imageMessageError={imageMessageError}

@@ -41,12 +41,15 @@ export const AudioPlayer = ({ audioId, audio }) => {
   }
 
   return (
-    <div className="w-full flex gap-2">
+    <div className="w-full flex-col gap-4">
       <audio id={audioId}>
         <source src={audio} />
         Your browser does not support the <code>audio</code> element.
       </audio>
-      <div className="flex items-center w-full gap-2">
+      <div
+        style={{ background: "rgba(255, 255, 255, 0.25)" }}
+        className="flex items-center space-evenly py-3 gap-2 px-4 shadow-lg drop-shadow-xl backdrop-blur-lg rounded-lg"
+      >
         <div className="flex w-full gap-2">
           {playing ? (
             <Icon

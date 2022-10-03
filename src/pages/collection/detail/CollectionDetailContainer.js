@@ -322,6 +322,45 @@ export const CollectionDetailContainer = () => {
     }
   };
 
+  const filterByImage = () => {
+    let isSelected = filtersSelected.find(
+      (item) => item === literals.filters.image
+    );
+    if (isSelected) {
+      setFiltersSelected(
+        filtersSelected.filter((item) => item !== literals.filters.image)
+      );
+    } else {
+      setFiltersSelected([...filtersSelected, literals.filters.image]);
+    }
+  };
+
+  const filterByVideo = () => {
+    let isSelected = filtersSelected.find(
+      (item) => item === literals.filters.video
+    );
+    if (isSelected) {
+      setFiltersSelected(
+        filtersSelected.filter((item) => item !== literals.filters.video)
+      );
+    } else {
+      setFiltersSelected([...filtersSelected, literals.filters.video]);
+    }
+  };
+
+  const filterByAudio = () => {
+    let isSelected = filtersSelected.find(
+      (item) => item === literals.filters.audio
+    );
+    if (isSelected) {
+      setFiltersSelected(
+        filtersSelected.filter((item) => item !== literals.filters.audio)
+      );
+    } else {
+      setFiltersSelected([...filtersSelected, literals.filters.audio]);
+    }
+  };
+
   const removeFilter = (filter) => {
     if (typeof filter === "object") {
       //selectPayTokenFilter(filter);
@@ -344,6 +383,15 @@ export const CollectionDetailContainer = () => {
           break;
         case literals.filters.hasBids:
           filterByBidded();
+          break;
+        case literals.filters.image:
+          filterByImage();
+          break;
+        case literals.filters.video:
+          filterByVideo();
+          break;
+        case literals.filters.audio:
+          filterByAudio();
           break;
         default:
           break;
@@ -479,44 +527,25 @@ export const CollectionDetailContainer = () => {
           );
           filtered = [...filtered, ...result];
         }
-        if (filter.contractAddress) {
-          let _result = [];
-          if (filtersSelected.includes(literals.filters.onSale)) {
-            _result = collectionNfts.filter(
-              (item) =>
-                item.payToken?.contractAddress === filter.contractAddress
-            );
-          } else if (filtersSelected.includes(literals.filters.offered)) {
-            _result = collectionNfts.filter(
-              (item) =>
-                item.offer?.payToken.contractAddress === filter.contractAddress
-            );
-          } else if (filtersSelected.includes(literals.filters.onAuction)) {
-            _result = collectionNfts.filter(
-              (item) =>
-                item.auction?.payToken.contractAddress ===
-                filter.contractAddress
-            );
-          } else if (filtersSelected.includes(literals.filters.hasBids)) {
-            _result = collectionNfts.filter(
-              (item) =>
-                item.auction?.topBid !== undefined &&
-                item.auction?.payToken.contractAddress ===
-                  filter.contractAddress
-            );
-          } else {
-            _result = collectionNfts.filter(
-              (item) =>
-                item.payToken?.contractAddress === filter.contractAddress ||
-                item.offer?.payToken.contractAddress ===
-                  filter.contractAddress ||
-                item.auction?.payToken.contractAddress ===
-                  filter.contractAddress
-            );
-          }
-
-          filtered = [...filtered, ..._result];
+        if (filter === literals.filters.image) {
+          let result = collectionNfts.filter(
+            (item) => item.contentType === "IMG"
+          );
+          filtered = [...filtered, ...result];
         }
+        if (filter === literals.filters.video) {
+          let result = collectionNfts.filter(
+            (item) => item.contentType === "VIDEO"
+          );
+          filtered = [...filtered, ...result];
+        }
+        if (filter === literals.filters.audio) {
+          let result = collectionNfts.filter(
+            (item) => item.contentType === "AUDIO"
+          );
+          filtered = [...filtered, ...result];
+        }
+
         if (filter.category) {
           let _result = [];
           _result = collectionNfts.filter((item) =>
@@ -887,6 +916,11 @@ export const CollectionDetailContainer = () => {
                 { name: literals.filters.onAuction, filter: filterByAuctioned },
                 { name: literals.filters.hasBids, filter: filterByBidded },
               ]}
+              contentFilters={[
+                { name: literals.filters.image, filter: filterByImage },
+                { name: literals.filters.video, filter: filterByVideo },
+                { name: literals.filters.audio, filter: filterByAudio },
+              ]}
               payTokenFilters={allErc20Tokens.map((item) => {
                 return {
                   ...item,
@@ -1051,6 +1085,11 @@ export const CollectionDetailContainer = () => {
                 { name: literals.filters.offered, filter: filterByOffered },
                 { name: literals.filters.onAuction, filter: filterByAuctioned },
                 { name: literals.filters.hasBids, filter: filterByBidded },
+              ]}
+              contentFilters={[
+                { name: literals.filters.image, filter: filterByImage },
+                { name: literals.filters.video, filter: filterByVideo },
+                { name: literals.filters.audio, filter: filterByAudio },
               ]}
               filtersSelected={filtersSelected}
               payTokenFilters={allErc20Tokens.map((item) => {

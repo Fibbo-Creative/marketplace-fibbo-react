@@ -361,6 +361,45 @@ export default function ExploreContainer() {
     }
   };
 
+  const filterByImage = () => {
+    let isSelected = filtersSelected.find(
+      (item) => item === literals.filters.image
+    );
+    if (isSelected) {
+      setFiltersSelected(
+        filtersSelected.filter((item) => item !== literals.filters.image)
+      );
+    } else {
+      setFiltersSelected([...filtersSelected, literals.filters.image]);
+    }
+  };
+
+  const filterByVideo = () => {
+    let isSelected = filtersSelected.find(
+      (item) => item === literals.filters.video
+    );
+    if (isSelected) {
+      setFiltersSelected(
+        filtersSelected.filter((item) => item !== literals.filters.video)
+      );
+    } else {
+      setFiltersSelected([...filtersSelected, literals.filters.video]);
+    }
+  };
+
+  const filterByAudio = () => {
+    let isSelected = filtersSelected.find(
+      (item) => item === literals.filters.audio
+    );
+    if (isSelected) {
+      setFiltersSelected(
+        filtersSelected.filter((item) => item !== literals.filters.audio)
+      );
+    } else {
+      setFiltersSelected([...filtersSelected, literals.filters.audio]);
+    }
+  };
+
   const removeFilter = (filter) => {
     if (typeof filter === "object") {
       if (filter.collection) {
@@ -387,6 +426,15 @@ export default function ExploreContainer() {
           break;
         case literals.filters.hasBids:
           filterByBidded();
+          break;
+        case literals.filters.image:
+          filterByImage();
+          break;
+        case literals.filters.video:
+          filterByVideo();
+          break;
+        case literals.filters.audio:
+          filterByAudio();
           break;
         default:
           break;
@@ -515,43 +563,21 @@ export default function ExploreContainer() {
           );
           filtered = [...filtered, ...result];
         }
-        if (filter.contractAddress) {
-          let _result = [];
-          if (filtersSelected.includes(literals.filters.onSale)) {
-            _result = allMarketItems.filter(
-              (item) =>
-                item.payToken?.contractAddress === filter.contractAddress
-            );
-          } else if (filtersSelected.includes(literals.filters.offered)) {
-            _result = allMarketItems.filter(
-              (item) =>
-                item.offer?.payToken.contractAddress === filter.contractAddress
-            );
-          } else if (filtersSelected.includes(literals.filters.onAuction)) {
-            _result = allMarketItems.filter(
-              (item) =>
-                item.auction?.payToken.contractAddress ===
-                filter.contractAddress
-            );
-          } else if (filtersSelected.includes(literals.filters.hasBids)) {
-            _result = allMarketItems.filter(
-              (item) =>
-                item.auction?.topBid !== undefined &&
-                item.auction?.payToken.contractAddress ===
-                  filter.contractAddress
-            );
-          } else {
-            _result = allMarketItems.filter(
-              (item) =>
-                item.payToken?.contractAddress === filter.contractAddress ||
-                item.offer?.payToken.contractAddress ===
-                  filter.contractAddress ||
-                item.auction?.payToken.contractAddress ===
-                  filter.contractAddress
-            );
-          }
-
-          filtered = [...filtered, ..._result];
+        if (filter === literals.filters.image) {
+          let result = marketItems.filter((item) => item.contentType === "IMG");
+          filtered = [...filtered, ...result];
+        }
+        if (filter === literals.filters.video) {
+          let result = marketItems.filter(
+            (item) => item.contentType === "VIDEO"
+          );
+          filtered = [...filtered, ...result];
+        }
+        if (filter === literals.filters.audio) {
+          let result = marketItems.filter(
+            (item) => item.contentType === "AUDIO"
+          );
+          filtered = [...filtered, ...result];
         }
         if (filter.collection) {
           let _result = [];
@@ -619,6 +645,11 @@ export default function ExploreContainer() {
                 { name: literals.filters.offered, filter: filterByOffered },
                 { name: literals.filters.onAuction, filter: filterByAuctioned },
                 { name: literals.filters.hasBids, filter: filterByBidded },
+              ]}
+              contentFilters={[
+                { name: literals.filters.image, filter: filterByImage },
+                { name: literals.filters.video, filter: filterByVideo },
+                { name: literals.filters.audio, filter: filterByAudio },
               ]}
               payTokenFilters={allErc20Tokens.map((item) => {
                 return {
@@ -789,6 +820,11 @@ export default function ExploreContainer() {
                 { name: literals.filters.offered, filter: filterByOffered },
                 { name: literals.filters.onAuction, filter: filterByAuctioned },
                 { name: literals.filters.hasBids, filter: filterByBidded },
+              ]}
+              contentFilters={[
+                { name: literals.filters.image, filter: filterByImage },
+                { name: literals.filters.video, filter: filterByVideo },
+                { name: literals.filters.audio, filter: filterByAudio },
               ]}
               filtersSelected={filtersSelected}
               payTokenFilters={allErc20Tokens.map((item) => {

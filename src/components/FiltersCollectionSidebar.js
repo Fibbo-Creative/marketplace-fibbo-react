@@ -12,6 +12,7 @@ export default function FiltersCollectionSidebar({
   setVisibleMarketItems,
   filtersSelected,
   statusFilters,
+  contentFilters,
   payTokenFilters,
   categories,
   selectCategory,
@@ -50,6 +51,12 @@ export default function FiltersCollectionSidebar({
             <FilterBottomDropDown name={literals.filters.state}>
               <FilterButtons
                 options={statusFilters}
+                filtersSelected={filtersSelected}
+              />
+            </FilterBottomDropDown>
+            <FilterBottomDropDown name={literals.filters.contentType}>
+              <FilterButtons
+                options={contentFilters}
                 filtersSelected={filtersSelected}
               />
             </FilterBottomDropDown>
