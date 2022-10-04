@@ -662,10 +662,10 @@ export default function ItemPage() {
   useEffect(() => {
     const fetchData = async () => {
       await getItemDetails();
+      setLoading(false);
       await getAuctions().then(() => {
         getBid();
         hasAnOffer();
-        setLoading(false);
       });
       const CoinGeckoClient = new CoinGecko();
       let data = await CoinGeckoClient.simple.price({ ids: ["fantom"] });

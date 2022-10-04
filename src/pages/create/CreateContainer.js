@@ -215,6 +215,7 @@ export default function CreateContainer() {
                       setVideoURL={setSanityImgUrl}
                       inputId="inputNFT"
                       onFileSelected={(e) => onFileSelected(e)}
+                      setFileSelected={setSelectedFile}
                       imageError={imageError}
                       icon={false}
                       imageMessageError={imageMessageError}
@@ -245,6 +246,7 @@ export default function CreateContainer() {
                         fileSelected={selectedFile}
                         inputId="audioNFT"
                         onFileSelected={onFileSelected}
+                        setFileSelected={setSelectedFile}
                         imageError={imageError}
                         icon={false}
                         imageMessageError={imageMessageError}

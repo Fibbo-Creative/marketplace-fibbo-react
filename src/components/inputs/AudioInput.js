@@ -16,11 +16,12 @@ export const AudioInput = ({
   backgroundImage,
   className,
   icon,
-  contentType,
+  setFileSelected,
 }) => {
   const [loadingImage, setLoadingImage] = useState(false);
 
   const selectAudio = () => {
+    setFileSelected(null);
     const inputRef = document.getElementById(inputId);
     inputRef.click();
   };

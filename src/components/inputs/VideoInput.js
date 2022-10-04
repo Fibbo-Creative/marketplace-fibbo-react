@@ -15,13 +15,14 @@ export const VideoInput = ({
   onFileSelected,
   backgroundImage,
   className,
-
+  setFileSelected,
   icon,
   contentType,
 }) => {
   const [loadingImage, setLoadingImage] = useState(false);
 
   const selectVideo = () => {
+    setFileSelected(null);
     const inputRef = document.getElementById(inputId);
     inputRef.click();
   };
