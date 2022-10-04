@@ -217,7 +217,6 @@ export default function ItemPage() {
   };
 
   const getItemDetails = async () => {
-    setLoading(true);
     const {
       nftData,
       offers: _offers,
@@ -255,13 +254,9 @@ export default function ItemPage() {
 
     const isFreezed = await contract.isFreezedMetadata(tokenId);
     setIsFreezedMetadata(isFreezed);
-    if (wallet) {
-      const res = await contract.ownerOf(tokenId);
 
-      setIsOwner(res === wallet);
-    } else {
-      setIsOwner(false);
-    }
+    console.log(nftData);
+    setIsOwner(nftData.owner === wallet);
 
     if (_listing) {
       setIsForSale(true);
@@ -661,6 +656,7 @@ export default function ItemPage() {
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log("Fetching");
       await getItemDetails();
       setLoading(false);
       await getAuctions().then(() => {
@@ -671,6 +667,7 @@ export default function ItemPage() {
       let data = await CoinGeckoClient.simple.price({ ids: ["fantom"] });
       setCoinPrice(data.data.fantom.usd);
     };
+
     fetchData();
   }, [collection, tokenId, wallet, refreshMetadata]);
 
