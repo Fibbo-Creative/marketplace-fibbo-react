@@ -24,16 +24,14 @@ export default function DetailImage({
   collectionInfo,
   categories,
 }) {
-  const [imgOrQR, setImgOrQr] = useState(tokenImage);
   const [{ literals }] = useStateContext();
-  const [qrcode, setQrcode] = useState("");
   const [showingQr, setShowingQr] = useState(false);
   const [showImageDetail, setShowImageDetail] = useState(false);
-
+  const [qr, setQr] = useState(null);
   const { theme } = useContext(ThemeContext);
 
   const downloadQR = () => {
-    saveAs(imgOrQR, tokenName);
+    saveAs(qr, tokenName);
   };
 
   const GenerateQRCode = () => {
@@ -41,25 +39,12 @@ export default function DetailImage({
 
     QRCode.toDataURL(url, (err, url) => {
       if (err) return console.error(err);
-
-      var qrIcon = document.getElementById("qrIcon");
-
-      if (imgOrQR === tokenImage) {
-        var qrFlag = document.getElementById("boton_descargar");
-        var nftIcon = document.getElementById("nftIcon");
-        setImgOrQr(url);
-        qrFlag.style.display = "block";
-        nftIcon.style.display = "block";
-        qrIcon.style.display = "none";
+      if (!showingQr) {
+        setQr(url);
         setShowingQr(true);
       } else {
         setShowingQr(false);
-        var qrFlag = document.getElementById("boton_descargar");
-        var nftIcon = document.getElementById("nftIcon");
-        setImgOrQr(tokenImage);
-        qrFlag.style.display = "none";
-        nftIcon.style.display = "none";
-        qrIcon.style.display = "block";
+        setQr(null);
       }
     });
   };
@@ -211,38 +196,48 @@ export default function DetailImage({
                 </div>
               </div>
             </div>
-
-            {tokenInfo.contentType === "VIDEO" ? (
-              <VideoPlayer
-                onClickVideo={() => !showingQr && setShowImageDetail(true)}
-                videoId="video-preview"
-                video={tokenInfo.video}
-              />
-            ) : tokenInfo.contentType === "AUDIO" ? (
-              <div className=" flex flex-col h-full  gap-2">
-                <img
-                  onClick={() => !showingQr && setShowImageDetail(true)}
-                  className={`  ${
-                    !showingQr && "cursor-pointer"
-                  } w-full h-5/6  object-contain`}
-                  src={imgOrQR}
-                  alt={tokenName}
-                />
-                <AudioPlayer
-                  audioId="itemPagePreview"
-                  audio={tokenInfo.audio}
-                />
-              </div>
-            ) : (
+            {showingQr ? (
               <img
-                onClick={() => !showingQr && setShowImageDetail(true)}
-                className={`  ${
-                  !showingQr && "cursor-pointer"
-                } w-full h-5/6  object-contain`}
-                src={imgOrQR}
+                className={`w-full h-5/6  object-contain pt-4 pb-2`}
+                src={qr}
                 alt={tokenName}
               />
+            ) : (
+              <>
+                {tokenInfo.contentType === "VIDEO" ? (
+                  <VideoPlayer
+                    onClickVideo={() => !showingQr && setShowImageDetail(true)}
+                    videoId="video-preview"
+                    video={tokenInfo.video}
+                  />
+                ) : tokenInfo.contentType === "AUDIO" ? (
+                  <div className=" flex flex-col h-full  gap-2">
+                    <img
+                      onClick={() => !showingQr && setShowImageDetail(true)}
+                      className={`  ${
+                        !showingQr && "cursor-pointer"
+                      } w-full h-5/6  object-contain`}
+                      src={tokenInfo.image}
+                      alt={tokenName}
+                    />
+                    <AudioPlayer
+                      audioId="itemPagePreview"
+                      audio={tokenInfo.audio}
+                    />
+                  </div>
+                ) : (
+                  <img
+                    onClick={() => !showingQr && setShowImageDetail(true)}
+                    className={`  ${
+                      !showingQr && "cursor-pointer"
+                    } w-full h-5/6  object-contain`}
+                    src={tokenInfo.image}
+                    alt={tokenName}
+                  />
+                )}
+              </>
             )}
+
             <SeeImageInDetailModal
               image={tokenImage}
               tokenInfo={tokenInfo}
@@ -252,21 +247,22 @@ export default function DetailImage({
             />
           </>
         )}
-        <div className="flex flex-row gap-6 ">
-          <Icon
-            id="nftIcon"
-            className="flex w-[25px] h-[25px] cursor-pointer b-0 hover:w-[30px] hover:h-[30px] hidden"
-            onClick={GenerateQRCode}
-            icon="bi:file-image"
-          />
-          <div id="boton_descargar" className="hidden">
+        {showingQr && (
+          <div className="flex flex-row gap-6 items-center justify-center ">
             <Icon
-              className="flex w-[25px] h-[25px] cursor-pointer b-0 hover:w-[30px] hover:h-[30px]"
+              id="nftIcon"
+              className="flex w-[25px] h-[25px] cursor-pointer hover:w-[30px] hover:h-[30px]"
+              onClick={GenerateQRCode}
+              icon="bi:file-image"
+            />
+
+            <Icon
+              className="flex w-[25px] h-[25px] cursor-pointer hover:w-[30px] hover:h-[30px]"
               icon="charm:download"
               onClick={downloadQR}
             />
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

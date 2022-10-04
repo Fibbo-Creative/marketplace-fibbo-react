@@ -53,7 +53,7 @@ export const VideoPlayer = ({ videoId, video, onClickVideo }) => {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 h-full justify-evenly">
       <div className="cursor-pointer" onClick={handleClickVideo}>
         <video id={videoId}>
           <source src={video} />
