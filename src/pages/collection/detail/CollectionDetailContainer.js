@@ -664,7 +664,8 @@ export const CollectionDetailContainer = () => {
                     />
                     <ItemMenuPageOption
                       position="last"
-                      disabled={wallet === "" || !wallet}
+                      disabled
+                      //disabled={wallet === "" || !wallet}
                       icon="akar-icons:more-vertical"
                       tooltip="more-item"
                       tooltipText={literals.actions.moreOptions}
@@ -741,7 +742,8 @@ export const CollectionDetailContainer = () => {
                   position="last"
                   icon="akar-icons:more-vertical"
                   tooltip="more-item"
-                  disabled={wallet === "" || !wallet}
+                  disabled
+                  //disabled={wallet === "" || !wallet}
                   tooltipText={literals.actions.moreOptions}
                 >
                   <div

@@ -245,13 +245,15 @@ export const useApi = () => {
     creator,
     tokenId,
     royalty,
-    image,
-    ipfsImgUrl,
-    ipfsMetadataUrl,
+    ipfsImage,
+    sanityFileURL,
+    ipfsMetadata,
     collection,
     externalLink,
     additionalContent,
-    categories
+    categories,
+    contentType,
+    audio = null
   ) => {
     try {
       await marketplaceApi.post("nfts/editItem", {
@@ -260,13 +262,15 @@ export const useApi = () => {
         creator: creator,
         tokenId: tokenId,
         royalty: royalty,
-        sanityImgUrl: image,
-        ipfsImgUrl: ipfsImgUrl,
-        ipfsMetadataUrl: ipfsMetadataUrl,
+        sanityFileURL: sanityFileURL,
+        ipfsImgUrl: ipfsImage,
+        ipfsMetadataUrl: ipfsMetadata,
         collection: collection,
         externalLink: externalLink,
         additionalContent: additionalContent,
         categories: categories,
+        contentType: contentType,
+        sanityAudioURL: audio,
       });
     } catch (e) {
       console.log(e);

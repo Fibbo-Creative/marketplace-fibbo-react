@@ -784,7 +784,8 @@ export default function ItemPage() {
                             position="last"
                             icon="akar-icons:more-vertical"
                             tooltip="more-item"
-                            disabled={wallet === "" || !wallet}
+                            disabled
+                            //disabled={wallet === "" || !wallet}
                             tooltipText={literals.actions.moreOptions}
                           >
                             <div
@@ -888,7 +889,8 @@ export default function ItemPage() {
                         position="last"
                         icon="akar-icons:more-vertical"
                         tooltip="more-item"
-                        disabled={wallet === "" || !wallet}
+                        disabled
+                        //disabled={wallet === "" || !wallet}
                         tooltipText={literals.actions.moreOptions}
                       >
                         <div

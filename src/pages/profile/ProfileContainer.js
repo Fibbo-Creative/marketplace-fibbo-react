@@ -310,7 +310,8 @@ export default function ProfileContainer() {
                   icon="akar-icons:more-vertical"
                   tooltip="more-item"
                   tooltipPlacement="left"
-                  disabled={wallet === "" || !wallet}
+                  disabled
+                  //disabled={wallet === "" || !wallet}
                   tooltipText={literals.actions.moreOptions}
                 >
                   <div
