@@ -1,8 +1,9 @@
 import { Icon } from "@iconify/react";
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import moment from "moment";
 import useVideoPlayer from "../hooks/useVideoPlayer";
 import momentDurationFormatSetup from "moment-duration-format";
+import { ThemeContext } from "../context/ThemeContext";
 
 export const VideoPlayer = ({ videoId, video, onClickVideo }) => {
   const {
@@ -14,6 +15,8 @@ export const VideoPlayer = ({ videoId, video, onClickVideo }) => {
     setIsMuted,
     setClickedTime,
   } = useVideoPlayer(videoId);
+
+  const { theme } = useContext(ThemeContext);
 
   const curPercentage = (curTime / duration) * 100;
 
@@ -63,7 +66,12 @@ export const VideoPlayer = ({ videoId, video, onClickVideo }) => {
 
       <div
         className="flex items-center space-evenly py-3 gap-2 px-4 shadow-lg drop-shadow-xl backdrop-blur-lg rounded-lg"
-        style={{ background: "rgba(255, 255, 255, 0.25)" }}
+        style={{
+          background:
+            theme === "dark"
+              ? "rgba(255, 255, 255, 0.25)"
+              : "rgba(91, 91, 91, 0.25)",
+        }}
       >
         <div className="flex">
           {playing ? (

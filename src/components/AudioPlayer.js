@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import moment from "moment";
 import useAudioPlayer from "../hooks/useAudioPlayer";
 import { Icon } from "@iconify/react";
 import momentDurationFormatSetup from "moment-duration-format";
+import { ThemeContext } from "../context/ThemeContext";
 
 export const AudioPlayer = ({ audioId, audio }) => {
   const { curTime, duration, playing, setPlaying, setClickedTime } =
     useAudioPlayer(audioId);
+
+  const { theme } = useContext(ThemeContext);
 
   const curPercentage = (curTime / duration) * 100;
 
@@ -47,7 +50,12 @@ export const AudioPlayer = ({ audioId, audio }) => {
         Your browser does not support the <code>audio</code> element.
       </audio>
       <div
-        style={{ background: "rgba(255, 255, 255, 0.25)" }}
+        style={{
+          background:
+            theme === "dark"
+              ? "rgba(255, 255, 255, 0.25)"
+              : "rgba(91, 91, 91, 0.25)",
+        }}
         className="flex items-center space-evenly py-3 gap-2 px-4 shadow-lg drop-shadow-xl backdrop-blur-lg rounded-lg"
       >
         <div className="flex w-full gap-2">

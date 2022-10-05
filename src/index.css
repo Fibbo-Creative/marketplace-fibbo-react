@@ -20,7 +20,7 @@ code {
   --background: white;
   --text-primary: black;
   --primary: #552aef;
-  --progress: lightgray;
+  --progress: white;
 }
 [data-theme="dark"] {
   --background: #202225;

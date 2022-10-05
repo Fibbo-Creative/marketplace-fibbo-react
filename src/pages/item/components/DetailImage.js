@@ -119,9 +119,9 @@ export default function DetailImage({
                     tooltipText={
                       tokenInfo.contentType !== "IMG"
                         ? tokenInfo.contentType === "AUDIO"
-                          ? "Audio Content"
-                          : "Video Content"
-                        : "Image Content"
+                          ? literals.itemPage.audioContent
+                          : literals.itemPage.videoContent
+                        : literals.itemPage.imageContent
                     }
                     tooltipPlacement="top"
                     className="flex flex-row gap-2"

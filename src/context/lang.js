@@ -27,7 +27,7 @@ const engLiterals = {
   },
   navbar: {
     searchItems: "Search nfts...",
-    verify: "Verify Your Account!",
+    verify: "Verify!",
     collections: "Collections",
     connectWallet: "Connect Wallet",
     noItem: "No nfts found...",
@@ -138,6 +138,9 @@ const engLiterals = {
     listedFor: "Listed for",
     price: "Price",
     state: "State",
+    videoContent: "Video Content",
+    audioContent: "Audio Content",
+    imageContent: "Image Content",
   },
   itemHistory: {
     event: "Event",
@@ -538,6 +541,12 @@ const engLiterals = {
     notOwnerEdit2:
       "You can't edit the NFT, you're not the owner of the collection",
     freezeMetadata: "Freeze Metadata",
+    selectImageError: "Please, select an image file",
+    selectVideoError: "Please, select a video file",
+    selectAudioError: "Please, select an audio file",
+    image: "Image",
+    video: "Video",
+    audio: "Audio",
   },
   events: {
     minted: "Minted",
@@ -696,6 +705,9 @@ const espLiterals = {
     listedFor: "Listado por",
     price: "Precio",
     state: "Estado",
+    videoContent: "Contenido de Vídeo",
+    audioContent: "Contenido de Audio",
+    imageContent: "Contenido de Imágen",
   },
   itemHistory: {
     event: "Evento",
@@ -1095,6 +1107,12 @@ const espLiterals = {
     notOwnerEdit2:
       "No puedes editar el ítem, No eres el propietario de la colección.",
     freezeMetadata: "Congelar Metadata",
+    selectImageError: "Selecciona una imágen",
+    selectVideoError: "Selecciona un archivo de video",
+    selectAudioError: "Selecciona un archivo de audio",
+    image: "Imágen",
+    video: "Vídeo",
+    audio: "Audio",
   },
   events: {
     minted: "NFT minteado",

@@ -57,12 +57,18 @@ export default function CreateContainer() {
 
   const [imageError, setImageError] = useState(false);
   const [imageMessageError, setImageMessageError] = useState("");
+
+  const [audioError, setAudioError] = useState(false);
+  const [audioMessageError, setAudioMessageError] = useState("");
+
   const [nameError, setNameError] = useState(false);
   const [descError, setDescError] = useState(false);
   const [royaltyError, setRoyaltyError] = useState(false);
 
   const selectContentType = (type) => {
     setSelectedFile(null);
+    setImageError(false);
+    setAudioError(false);
     setContentType(type);
   };
   const selectCategory = (cat) => {
@@ -92,14 +98,18 @@ export default function CreateContainer() {
     ) {
       setSelectedFile({ file: file, preview: URL.createObjectURL(file) });
     } else {
-      setImageError(true);
-      setImageMessageError(
-        <div>
-          Selecciona un archivo de imagen
-          <br />
-          JPG, PNG, JPEG, GIF, SVG o WEBP
-        </div>
-      );
+      if (contentType === "AUDIO") {
+        setAudioError(true);
+        setAudioMessageError(literals.createItem.selectAudioError);
+      }
+      if (contentType === "VIDEO") {
+        setImageError(true);
+        setImageMessageError(literals.createItem.selectVideoError);
+      }
+      if (contentType === "IMG") {
+        setImageError(true);
+        setImageMessageError(literals.createItem.selectImageError);
+      }
     }
   };
 
@@ -109,13 +119,7 @@ export default function CreateContainer() {
       setCoverSelected({ file: file, preview: URL.createObjectURL(file) });
     } else {
       setImageError(true);
-      setImageMessageError(
-        <div>
-          Selecciona un archivo de imagen
-          <br />
-          JPG, PNG, JPEG, GIF, SVG o WEBP
-        </div>
-      );
+      setImageMessageError(literals.createItem.selectImageError);
     }
   };
 
@@ -127,8 +131,22 @@ export default function CreateContainer() {
     let error = false;
     if (!selectedFile) {
       if (!imageError) {
-        setImageError(true);
-        setImageMessageError("Selecciona una imágen");
+        if (contentType === "AUDIO") {
+          setAudioError(true);
+          setAudioMessageError(literals.createItem.selectAudioError);
+          if (!coverSelected) {
+            setImageError(true);
+            setImageMessageError(literals.createItem.selectImageError);
+          }
+        }
+        if (contentType === "VIDEO") {
+          setImageError(true);
+          setImageMessageError(literals.createItem.selectVideoError);
+        }
+        if (contentType === "IMG") {
+          setImageError(true);
+          setImageMessageError(literals.createItem.selectImageError);
+        }
       }
       error = true;
     }
@@ -247,9 +265,9 @@ export default function CreateContainer() {
                         inputId="audioNFT"
                         onFileSelected={onFileSelected}
                         setFileSelected={setSelectedFile}
-                        imageError={imageError}
+                        imageError={audioError}
                         icon={false}
-                        imageMessageError={imageMessageError}
+                        imageMessageError={audioMessageError}
                         className="rounded-md w-[300px] h-[100px] md:w-[400px]  lg:w-[500px]"
                       />
                     </div>
@@ -259,7 +277,7 @@ export default function CreateContainer() {
                     <ContentTypeSelector
                       contentType="IMG"
                       selectedContent={contentType}
-                      text="Image"
+                      text={literals.createItem.image}
                       icon="bi:file-image"
                       selectedIcon="bi:file-image-fill"
                       onClick={() => selectContentType("IMG")}
@@ -267,7 +285,7 @@ export default function CreateContainer() {
                     <ContentTypeSelector
                       contentType="VIDEO"
                       selectedContent={contentType}
-                      text="Video"
+                      text={literals.createItem.video}
                       icon="bi:camera-video"
                       selectedIcon="bi:camera-video-fill"
                       onClick={() => selectContentType("VIDEO")}
@@ -275,7 +293,7 @@ export default function CreateContainer() {
                     <ContentTypeSelector
                       contentType="AUDIO"
                       selectedContent={contentType}
-                      text="Audio"
+                      text={literals.createItem.audio}
                       icon="bi:file-music"
                       selectedIcon="bi:file-music-fill"
                       onClick={() => selectContentType("AUDIO")}
@@ -355,7 +373,7 @@ export default function CreateContainer() {
                   {nameError && <div className="text-xs text-red-400 "></div>}
 
                   <NumberInput
-                    label={literals.createItem.royatlies}
+                    label={literals.createItem.royalties}
                     placeholder="ej. 2.5%"
                     value={royalty}
                     onChange={(e) => handleChangeRoyalty(e.target.value)}
