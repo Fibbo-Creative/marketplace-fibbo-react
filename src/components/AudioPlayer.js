@@ -15,7 +15,7 @@ export const AudioPlayer = ({ audioId, audio }) => {
 
   function calcClickedTime(e) {
     const clickPositionInPage = e.pageX;
-    const bar = document.getElementById(audioId);
+    const bar = document.getElementById("bar__progress");
     const barStart = bar.getBoundingClientRect().left + window.scrollX;
     const barWidth = bar.offsetWidth;
     const clickPositionInBar = clickPositionInPage - barStart;
