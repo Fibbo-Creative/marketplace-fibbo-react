@@ -691,7 +691,7 @@ export default function ExploreContainer() {
                     </button>
                   </>
                 )}
-                <div>
+                {/*  <div>
                   <ButtonTooltip
                     onClick={filterByFavorite}
                     tooltip="filter-favorite"
@@ -707,7 +707,7 @@ export default function ExploreContainer() {
                       width={48}
                     />
                   </ButtonTooltip>
-                </div>
+                </div> */}
 
                 <select
                   className="cursor-pointer h-10 w-40 md:w-60 flex border border-gray-300 bg-white dark:bg-dark-1 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
