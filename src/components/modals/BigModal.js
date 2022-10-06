@@ -16,7 +16,7 @@ export const BigModal = ({
       className="fixed inset-0 z-10 overflow-y-auto "
       onClose={handleCloseModal}
     >
-      <div className="min-h-screen px-4 text-center">
+      <div className="h-100vh px-4 text-center">
         <div className="fixed inset-0 bg-black/50" aria-hidden="true" />
         <span className="inline-block h-screen align-middle" aria-hidden="true">
           &#8203;

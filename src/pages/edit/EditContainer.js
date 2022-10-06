@@ -16,6 +16,9 @@ import { ImageInput } from "../../components/inputs/ImageInput";
 import { NotOwner } from "../../components/basic/NotOwner";
 import { useCollections } from "../../contracts/collection";
 import { MultipleSelect } from "../../components/inputs/MultipleSelect";
+import { AudioInput } from "../../components/inputs/AudioInput";
+import { VideoInput } from "../../components/inputs/VideoInput";
+import { IPFS_BASE_URL } from "../../constants/ipfs";
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -34,16 +37,21 @@ export default function EditContainer() {
 
   const { checkFreezedMetadata } = useCollections();
   const {
-    uploadImgToCDN,
+    uploadToCDN,
     getNftInfo,
     editNftData,
     getCollectionInfo,
     getAllCategories,
+    uploadJSONMetadata,
   } = useApi();
   const [ipfsImageUrl, setIpfsImageUrl] = useState("");
   const [ipfsMetadata, setIpfsMetadata] = useState("");
 
   const [sanityImgUrl, setSanityImgUrl] = useState("");
+
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [coverSelected, setCoverSelected] = useState(null);
+
   const [name, setName] = useState("");
   const [externalLink, setExternalLink] = useState("");
   const [desc, setDesc] = useState("");
@@ -58,9 +66,12 @@ export default function EditContainer() {
 
   const [isOwner, setIsOwner] = useState(false);
   const [hasMetadataFreezed, setHasMetadataFreezed] = useState(false);
-
+  const [contentType, setContentType] = useState("IMG");
   const [imageError, setImageError] = useState(false);
   const [imageMessageError, setImageMessageError] = useState("");
+  const [audioError, setAudioError] = useState(false);
+  const [audioMessageError, setAudioMessageError] = useState("");
+
   const [nameError, setNameError] = useState(false);
   const [descError, setDescError] = useState(false);
   const [royaltyError, setRoyaltyError] = useState(false);
@@ -92,9 +103,8 @@ export default function EditContainer() {
   };
 
   const getItemDetails = async () => {
-    setLoading(true);
     const { nftData } = await getNftInfo(collection, tokenId);
-
+    console.log(nftData);
     setName(nftData.name);
     setDesc(nftData.description);
     setRoyalty(nftData.royalty);
@@ -102,10 +112,60 @@ export default function EditContainer() {
     setIpfsMetadata(nftData.ipfsMetadata);
     setSanityImgUrl(nftData.image);
     setExternalLink(nftData.externalLink);
+    setContentType(nftData.contentType);
 
     const collectionInfo = await getCollectionInfo(collection);
     setIsOwner(collectionInfo.creator === wallet);
     setCollectionSelected(collectionInfo);
+
+    let isFreezed = await checkFreezedMetadata(
+      collectionInfo.contractAddress,
+      tokenId
+    );
+    setHasMetadataFreezed(isFreezed);
+
+    let coverTesponse = await fetch(nftData.image);
+    let coverData = await coverTesponse.blob();
+    let coverMetadata = {
+      type: "image/png",
+    };
+    let coverFile = new File([coverData], nftData.name, coverMetadata);
+
+    if (nftData.contentType === "AUDIO") {
+      let response = await fetch(nftData.audio);
+      let data = await response.blob();
+      let metadata = {
+        type: "audio/mp3",
+      };
+      let audioFile = new File([data], nftData.name, metadata);
+      setSelectedFile({
+        file: audioFile,
+        preview: URL.createObjectURL(audioFile),
+      });
+
+      setCoverSelected({
+        file: coverFile,
+        preview: URL.createObjectURL(coverFile),
+      });
+    }
+    if (nftData.contentType === "VIDEO") {
+      let response = await fetch(nftData.video);
+      let data = await response.blob();
+      let metadata = {
+        type: "video/mp4",
+      };
+      let videoFile = new File([data], nftData.name, metadata);
+      setSelectedFile({
+        file: videoFile,
+        preview: URL.createObjectURL(videoFile),
+      });
+    }
+    if (nftData.contentType === "IMG") {
+      setSelectedFile({
+        file: coverFile,
+        preview: URL.createObjectURL(coverFile),
+      });
+    }
 
     if (nftData.additionalContent) {
       setShowHiddenContent(true);
@@ -131,47 +191,47 @@ export default function EditContainer() {
     );
 
     setCategoriesSelected(selected);
-
-    let isFreezed = await checkFreezedMetadata(
-      collectionInfo.contractAddress,
-      tokenId
-    );
-    setHasMetadataFreezed(isFreezed);
+    await sleep(2000);
   };
 
-  const onFileSelected = async (e) => {
+  const onFileSelected = (e) => {
+    const file = e.target.files[0];
+    if (
+      (contentType === "IMG" && file.type.includes("image")) ||
+      (contentType === "VIDEO" && file.type.includes("video")) ||
+      (contentType === "AUDIO" && file.type.includes("audio"))
+    ) {
+      setSelectedFile({ file: file, preview: URL.createObjectURL(file) });
+    } else {
+      if (contentType === "AUDIO") {
+        setAudioError(true);
+        setAudioMessageError(literals.createItem.selectAudioError);
+      }
+      if (contentType === "VIDEO") {
+        setImageError(true);
+        setImageMessageError(literals.createItem.selectVideoError);
+      }
+      if (contentType === "IMG") {
+        setImageError(true);
+        setImageMessageError(literals.createItem.selectImageError);
+      }
+    }
+  };
+
+  const selectContentType = (type) => {
+    setSelectedFile(null);
+    setImageError(false);
+    setAudioError(false);
+    setContentType(type);
+  };
+
+  const onCoverSelected = async (e) => {
     const file = e.target.files[0];
     if (file.type.includes("image")) {
-      setImageError(false);
-
-      try {
-        const isExplicit = collectionSelected.explicitContent;
-        const { sanity, ipfs, error } = await uploadImgToCDN(
-          file,
-          true,
-          isExplicit
-        );
-        setIpfsImageUrl(`https://ipfs.io/ipfs/${ipfs}`);
-
-        if (error) {
-          setImageError(true);
-          setImageMessageError("Imagen no permitida, contiene contenido NFSW");
-        } else {
-          setSanityImgUrl(sanity);
-          setImageError(false);
-        }
-      } catch (error) {
-        console.log("Error uploading file: ", error);
-      }
+      setCoverSelected({ file: file, preview: URL.createObjectURL(file) });
     } else {
       setImageError(true);
-      setImageMessageError(
-        <div>
-          Selecciona un archivo de imagen
-          <br />
-          JPG, PNG, JPEG, GIF, SVG o WEBP
-        </div>
-      );
+      setImageMessageError(literals.createItem.selectImageError);
     }
   };
 
@@ -181,10 +241,24 @@ export default function EditContainer() {
     setRoyaltyError(false);
 
     let error = false;
-    if (sanityImgUrl === "") {
+    if (!selectedFile) {
       if (!imageError) {
-        setImageError(true);
-        setImageMessageError("Selecciona una imágen");
+        if (contentType === "AUDIO") {
+          setAudioError(true);
+          setAudioMessageError(literals.createItem.selectAudioError);
+          if (!coverSelected) {
+            setImageError(true);
+            setImageMessageError(literals.createItem.selectImageError);
+          }
+        }
+        if (contentType === "VIDEO") {
+          setImageError(true);
+          setImageMessageError(literals.createItem.selectVideoError);
+        }
+        if (contentType === "IMG") {
+          setImageError(true);
+          setImageMessageError(literals.createItem.selectImageError);
+        }
       }
       error = true;
     }
@@ -202,23 +276,108 @@ export default function EditContainer() {
     }
 
     if (!error) {
-      console.log(categoriesSelected);
-      await editNftData(
-        name,
-        desc,
-        wallet,
-        tokenId,
-        royalty,
-        sanityImgUrl,
-        ipfsImageUrl,
-        ipfsMetadata,
-        collectionSelected.contractAddress,
-        externalLink,
-        hiddenContent,
-        categoriesSelected.map((cat) => {
-          return cat.identifier;
-        })
-      );
+      if (contentType === "AUDIO") {
+        const audioResponse = await uploadToCDN(
+          selectedFile.file,
+          contentType,
+          true,
+          false
+        );
+        const audioSanity = audioResponse.sanity;
+        const audioIpfs = audioResponse.ipfs;
+        const audioError = audioResponse.error;
+
+        if (audioError) {
+          throw Error(audioError);
+        }
+
+        const audioIpfsURL = `${IPFS_BASE_URL}/${audioIpfs}`;
+
+        const coverResponse = await uploadToCDN(
+          coverSelected.file,
+          "IMG",
+          true,
+          false
+        );
+
+        const coverSanity = coverResponse.sanity;
+        const coverIpfs = coverResponse.ipfs;
+        const coverError = coverResponse.error;
+
+        if (coverError) {
+          throw Error(coverError);
+        }
+        const coverIpfsURL = `${IPFS_BASE_URL}/${coverIpfs}`;
+
+        const ipfsCID = await uploadJSONMetadata(
+          name,
+          desc,
+          coverIpfsURL,
+          externalLink,
+          contentType,
+          audioIpfsURL
+        );
+
+        const ipfsFileURL = `${IPFS_BASE_URL}/${ipfsCID}`;
+
+        await editNftData(
+          name,
+          desc,
+          wallet,
+          tokenId,
+          royalty,
+          coverSanity,
+          coverIpfsURL,
+          ipfsFileURL,
+          collectionSelected.contractAddress,
+          externalLink,
+          hiddenContent,
+          categoriesSelected.map((cat) => {
+            return cat.identifier;
+          }),
+          contentType,
+          audioSanity
+        );
+      } else {
+        const { sanity, ipfs, error } = await uploadToCDN(
+          selectedFile.file,
+          contentType,
+          true,
+          false
+        );
+        if (error) {
+          throw Error(error);
+        }
+        const ipfsURL = `${IPFS_BASE_URL}/${ipfs}`;
+
+        const ipfsCID = await uploadJSONMetadata(
+          name,
+          desc,
+          ipfsURL,
+          externalLink,
+          contentType
+        );
+
+        const ipfsFileURL = `${IPFS_BASE_URL}/${ipfsCID}`;
+
+        await editNftData(
+          name,
+          desc,
+          wallet,
+          tokenId,
+          royalty,
+          sanity,
+          ipfsURL,
+          ipfsFileURL,
+          collectionSelected.contractAddress,
+          externalLink,
+          hiddenContent,
+          categoriesSelected.map((cat) => {
+            return cat.identifier;
+          }),
+          contentType
+        );
+      }
 
       if (freezeMetadata) {
         setShowFreeze(true);
@@ -250,30 +409,94 @@ export default function EditContainer() {
   useEffect(() => {
     const fetchData = async () => {
       await connectToWallet();
-      getItemDetails().then(() => setLoading(false));
+      getItemDetails().then(() => {
+        setLoading(false);
+      });
     };
     fetchData();
-  }, [wallet]);
+    return () => {};
+  }, [wallet, collection, tokenId]);
   return (
     <PageWithLoading loading={loading}>
       {isOwner && !hasMetadataFreezed ? (
         <>
           {verifiedAddress ? (
             <div className="h-full flex-col w-full lg:h-screen justify-center items-center dark:bg-dark-1">
-              <div className="flex lg:flex-row flex-col gap-10 block p-8 justify-center items-center md:items-start">
+              <div className="flex lg:flex-row flex-col gap-10 p-8 justify-center items-center md:items-start">
                 <div className="flex flex-col gap-20">
-                  <ImageInput
-                    imageURL={sanityImgUrl}
-                    setImageURL={setSanityImgUrl}
-                    onFileSelected={onFileSelected}
-                    inputId="nftImageInput"
-                    className={`outline-dashed dark:bg-dark-1 ${
-                      imageError && "outline-red-400"
-                    } w-[300px] h-[300px] md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px] items-center justify-center cursor-pointer`}
-                    imageError={imageError}
-                    imageMessageError={"ERROR"}
-                    icon={true}
-                  />
+                  {contentType === "VIDEO" ? (
+                    <VideoInput
+                      fileSelected={selectedFile}
+                      videoURL={sanityImgUrl}
+                      setVideoURL={setSanityImgUrl}
+                      inputId="inputNFT"
+                      onFileSelected={(e) => onFileSelected(e)}
+                      setFileSelected={setSelectedFile}
+                      imageError={imageError}
+                      icon={false}
+                      imageMessageError={imageMessageError}
+                      className="rounded-md w-[300px] h-[300px] md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px]"
+                    />
+                  ) : contentType === "IMG" ? (
+                    <ImageInput
+                      fileSelected={selectedFile}
+                      inputId="inputNFT"
+                      onFileSelected={onFileSelected}
+                      imageError={imageError}
+                      icon={false}
+                      imageMessageError={imageMessageError}
+                      className="rounded-md w-[300px] h-[300px] md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px]"
+                    />
+                  ) : (
+                    <div>
+                      <ImageInput
+                        fileSelected={coverSelected}
+                        inputId="inputNFT"
+                        onFileSelected={onCoverSelected}
+                        imageError={imageError}
+                        icon={false}
+                        imageMessageError={imageMessageError}
+                        className="rounded-md w-[300px] h-[300px] md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px]"
+                      />
+                      <AudioInput
+                        fileSelected={selectedFile}
+                        inputId="audioNFT"
+                        onFileSelected={onFileSelected}
+                        setFileSelected={setSelectedFile}
+                        imageError={audioError}
+                        icon={false}
+                        imageMessageError={audioMessageError}
+                        className="rounded-md w-[300px] h-[100px] md:w-[400px]  lg:w-[500px]"
+                      />
+                    </div>
+                  )}
+
+                  <div className="flex justify-evenly">
+                    <ContentTypeSelector
+                      contentType="IMG"
+                      selectedContent={contentType}
+                      text={literals.createItem.image}
+                      icon="bi:file-image"
+                      selectedIcon="bi:file-image-fill"
+                      onClick={() => selectContentType("IMG")}
+                    />
+                    <ContentTypeSelector
+                      contentType="VIDEO"
+                      selectedContent={contentType}
+                      text={literals.createItem.video}
+                      icon="bi:camera-video"
+                      selectedIcon="bi:camera-video-fill"
+                      onClick={() => selectContentType("VIDEO")}
+                    />
+                    <ContentTypeSelector
+                      contentType="AUDIO"
+                      selectedContent={contentType}
+                      text={literals.createItem.audio}
+                      icon="bi:file-music"
+                      selectedIcon="bi:file-music-fill"
+                      onClick={() => selectContentType("AUDIO")}
+                    />
+                  </div>
                 </div>
 
                 <div className="">
@@ -454,3 +677,29 @@ export default function EditContainer() {
     </PageWithLoading>
   );
 }
+
+const ContentTypeSelector = ({
+  text,
+  icon,
+  selectedIcon,
+  contentType,
+  selectedContent,
+  onClick,
+}) => {
+  return (
+    <div
+      className={`cursor-pointer rounded-lg flex flex-col items-center gap-2 border ${
+        selectedContent === contentType
+          ? "bg-gray-400 dark:bg-dark-4 "
+          : "bg-gray-200 dark:bg-dark-1"
+      } px-7 py-5`}
+      onClick={onClick}
+    >
+      <Icon
+        icon={selectedContent === contentType ? selectedIcon : icon}
+        width={32}
+      />
+      {text}
+    </div>
+  );
+};

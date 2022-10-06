@@ -3,8 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/StateProvider";
 import fibboLogo from "../../assets/logoNavbarSmall.png";
 export const ImageInput = ({
-  imageURL,
-  setImageURL,
+  fileSelected,
   required,
   info,
   label,
@@ -25,15 +24,13 @@ export const ImageInput = ({
 
   const [{ literals }] = useStateContext();
   const handleOnFileSelected = async (e) => {
-    setImageURL("");
     setLoadingImage(true);
     await onFileSelected(e);
-
     setLoadingImage(false);
   };
 
   useEffect(() => {
-    if (imageURL !== "") {
+    if (fileSelected) {
       let divText = document.getElementById(`divText-${inputId}`);
       if (divText) {
         divText.style.visibility = "hidden";
@@ -75,24 +72,25 @@ export const ImageInput = ({
           className="hidden"
         />
 
-        {!imageError && imageURL !== "" ? (
+        {!imageError && fileSelected?.preview ? (
           <>
             {backgroundImage ? (
               <div
                 className="w-full h-full bg-gray-300 dark:bg-gray-600 z-10 object-cover object-center"
                 style={{
-                  backgroundImage: `url(${imageURL})`,
+                  backgroundImage: `url(${fileSelected.preview})`,
                   backgroundSize: "cover",
                   backgroundRepeat: "no-repeat",
                   backgroundPosition: "center center",
                 }}
               ></div>
             ) : (
-              // eslint-disable-next-line jsx-a11y/alt-text
-              <img
-                className={`h-full w-full object-contain p-1 ${className}`}
-                src={imageURL}
-              />
+              <>
+                <img
+                  className={`h-full w-full object-contain p-1 ${className}`}
+                  src={fileSelected.preview}
+                />
+              </>
             )}
           </>
         ) : (
@@ -117,8 +115,12 @@ export const ImageInput = ({
                         <div className="text-red-600">{imageMessageError}</div>
                       ) : (
                         <div className="text-center">
-                          {literals.createCollection.imgInput} <br></br> JPG,
-                          PNG, JPEG, GIF, SVG, WEBP.
+                          {
+                            <div>
+                              {literals.createCollection.imgInput} <br></br>
+                              {literals.createCollection.imgTypes}
+                            </div>
+                          }
                         </div>
                       )}
                     </>

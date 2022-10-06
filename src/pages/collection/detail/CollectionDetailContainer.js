@@ -27,6 +27,7 @@ import { ButtonTooltip } from "../../../components/tooltips/ButtonTooltip";
 import { useStateContext } from "../../../context/StateProvider";
 import { useTokens } from "../../../contracts/token";
 import OwnersModal from "../../../components/modals/OwnersModal";
+import ReportModal from "../../../components/modals/ReportModal";
 
 export const CollectionDetailContainer = () => {
   const [loading, setLoading] = useState(true);
@@ -70,6 +71,7 @@ export const CollectionDetailContainer = () => {
   const collectionUserOptions = useRef(null);
   const [showRedirect, setShowRedirect] = useState(false);
   const [showOwners, setShowOwners] = useState(false);
+  const [showReport, setShowReport] = useState(false);
 
   const navigate = useNavigate();
   const redirectToItem = (item) => {
@@ -306,11 +308,67 @@ export const CollectionDetailContainer = () => {
     }
   };
 
+  const filterByFavorite = () => {
+    let isSelected = filtersSelected.find((item) => item.favorites === true);
+    if (isSelected) {
+      setFiltersSelected(
+        filtersSelected.filter((item) => item.favorites !== true)
+      );
+    } else {
+      setFiltersSelected([
+        ...filtersSelected,
+        { favorites: true, name: literals.filters.favorites },
+      ]);
+    }
+  };
+
+  const filterByImage = () => {
+    let isSelected = filtersSelected.find(
+      (item) => item === literals.filters.image
+    );
+    if (isSelected) {
+      setFiltersSelected(
+        filtersSelected.filter((item) => item !== literals.filters.image)
+      );
+    } else {
+      setFiltersSelected([...filtersSelected, literals.filters.image]);
+    }
+  };
+
+  const filterByVideo = () => {
+    let isSelected = filtersSelected.find(
+      (item) => item === literals.filters.video
+    );
+    if (isSelected) {
+      setFiltersSelected(
+        filtersSelected.filter((item) => item !== literals.filters.video)
+      );
+    } else {
+      setFiltersSelected([...filtersSelected, literals.filters.video]);
+    }
+  };
+
+  const filterByAudio = () => {
+    let isSelected = filtersSelected.find(
+      (item) => item === literals.filters.audio
+    );
+    if (isSelected) {
+      setFiltersSelected(
+        filtersSelected.filter((item) => item !== literals.filters.audio)
+      );
+    } else {
+      setFiltersSelected([...filtersSelected, literals.filters.audio]);
+    }
+  };
+
   const removeFilter = (filter) => {
     if (typeof filter === "object") {
       //selectPayTokenFilter(filter);
       if (filter.category) {
         removeCategoryFilter(filter);
+      }
+      if (filter.favorites) {
+        removeFavoriteFilter(filter);
       }
     } else {
       switch (filter) {
@@ -325,6 +383,15 @@ export const CollectionDetailContainer = () => {
           break;
         case literals.filters.hasBids:
           filterByBidded();
+          break;
+        case literals.filters.image:
+          filterByImage();
+          break;
+        case literals.filters.video:
+          filterByVideo();
+          break;
+        case literals.filters.audio:
+          filterByAudio();
           break;
         default:
           break;
@@ -422,6 +489,16 @@ export const CollectionDetailContainer = () => {
     }
   };
 
+  const removeFavoriteFilter = (filter) => {
+    let isSelected = filtersSelected.find((item) => item.favorites === true);
+    if (isSelected) {
+      setFilteredNfts(collectionNfts);
+      setFiltersSelected(
+        filtersSelected.filter((item) => item.favorites !== true)
+      );
+    }
+  };
+
   useEffect(() => {
     if (filtersSelected.length > 0) {
       let filtered = [];
@@ -450,44 +527,25 @@ export const CollectionDetailContainer = () => {
           );
           filtered = [...filtered, ...result];
         }
-        if (filter.contractAddress) {
-          let _result = [];
-          if (filtersSelected.includes(literals.filters.onSale)) {
-            _result = collectionNfts.filter(
-              (item) =>
-                item.payToken?.contractAddress === filter.contractAddress
-            );
-          } else if (filtersSelected.includes(literals.filters.offered)) {
-            _result = collectionNfts.filter(
-              (item) =>
-                item.offer?.payToken.contractAddress === filter.contractAddress
-            );
-          } else if (filtersSelected.includes(literals.filters.onAuction)) {
-            _result = collectionNfts.filter(
-              (item) =>
-                item.auction?.payToken.contractAddress ===
-                filter.contractAddress
-            );
-          } else if (filtersSelected.includes(literals.filters.hasBids)) {
-            _result = collectionNfts.filter(
-              (item) =>
-                item.auction?.topBid !== undefined &&
-                item.auction?.payToken.contractAddress ===
-                  filter.contractAddress
-            );
-          } else {
-            _result = collectionNfts.filter(
-              (item) =>
-                item.payToken?.contractAddress === filter.contractAddress ||
-                item.offer?.payToken.contractAddress ===
-                  filter.contractAddress ||
-                item.auction?.payToken.contractAddress ===
-                  filter.contractAddress
-            );
-          }
-
-          filtered = [...filtered, ..._result];
+        if (filter === literals.filters.image) {
+          let result = collectionNfts.filter(
+            (item) => item.contentType === "IMG"
+          );
+          filtered = [...filtered, ...result];
         }
+        if (filter === literals.filters.video) {
+          let result = collectionNfts.filter(
+            (item) => item.contentType === "VIDEO"
+          );
+          filtered = [...filtered, ...result];
+        }
+        if (filter === literals.filters.audio) {
+          let result = collectionNfts.filter(
+            (item) => item.contentType === "AUDIO"
+          );
+          filtered = [...filtered, ...result];
+        }
+
         if (filter.category) {
           let _result = [];
           _result = collectionNfts.filter((item) =>
@@ -604,13 +662,34 @@ export const CollectionDetailContainer = () => {
                       tooltip="share-item"
                       tooltipText={literals.actions.share}
                     />
-                    <ItemPageOption
-                      disabled
+                    <ItemMenuPageOption
                       position="last"
+                      disabled
+                      //disabled={wallet === "" || !wallet}
                       icon="akar-icons:more-vertical"
                       tooltip="more-item"
                       tooltipText={literals.actions.moreOptions}
-                    />
+                    >
+                      <div
+                        onClick={() => setShowReport(true)}
+                        className="cursor-pointer flex items-center gap-2 px-2 py-2 hover:bg-gray-300"
+                      >
+                        <Icon icon="ic:baseline-report" width={32}></Icon>
+                        <div className="text-sm">
+                          {literals.actions.reportCollection}
+                        </div>
+                      </div>
+                    </ItemMenuPageOption>
+                    {showReport && (
+                      <ReportModal
+                        showModal={showReport}
+                        handleCloseModal={() => setShowReport(false)}
+                        type="COLLECTION"
+                        reportedItem={{
+                          collection: collectionInfo.contractAddress,
+                        }}
+                      />
+                    )}
                   </div>
                 </div>
               )}
@@ -659,13 +738,32 @@ export const CollectionDetailContainer = () => {
                   tooltip="share-item"
                   tooltipText={literals.actions.share}
                 />
-                <ItemPageOption
-                  disabled
+                <ItemMenuPageOption
                   position="last"
                   icon="akar-icons:more-vertical"
                   tooltip="more-item"
+                  disabled
+                  //disabled={wallet === "" || !wallet}
                   tooltipText={literals.actions.moreOptions}
-                />
+                >
+                  <div
+                    onClick={() => setShowReport(true)}
+                    className="cursor-pointer flex items-center gap-2 px-2 py-2 hover:bg-gray-300"
+                  >
+                    <Icon icon="ic:baseline-report" width={32}></Icon>
+                    <div>{literals.actions.reportCollection}</div>
+                  </div>
+                </ItemMenuPageOption>
+                {showReport && (
+                  <ReportModal
+                    showModal={showReport}
+                    handleCloseModal={() => setShowReport(false)}
+                    type="COLLECTION"
+                    reportedItem={{
+                      collection: collectionInfo.contractAddress,
+                    }}
+                  />
+                )}
               </div>
             </div>
           )}
@@ -687,7 +785,7 @@ export const CollectionDetailContainer = () => {
               onClick={() =>
                 isMobile
                   ? navigate(`/account/${ownerInfo?.wallet}`)
-                  : window.open(`/profile/${ownerInfo?.wallet}`)
+                  : window.open(`/account/${ownerInfo?.wallet}`)
               }
               className="text-primary-2 underline cursor-pointer"
             >
@@ -820,6 +918,11 @@ export const CollectionDetailContainer = () => {
                 { name: literals.filters.onAuction, filter: filterByAuctioned },
                 { name: literals.filters.hasBids, filter: filterByBidded },
               ]}
+              contentFilters={[
+                { name: literals.filters.image, filter: filterByImage },
+                { name: literals.filters.video, filter: filterByVideo },
+                { name: literals.filters.audio, filter: filterByAudio },
+              ]}
               payTokenFilters={allErc20Tokens.map((item) => {
                 return {
                   ...item,
@@ -860,6 +963,23 @@ export const CollectionDetailContainer = () => {
                     </button>
                   </>
                 )}
+                {/* <div>
+                  <ButtonTooltip
+                    onClick={filterByFavorite}
+                    tooltip="filter-favorite"
+                    tooltipText={literals.filters.seeFavorites}
+                    tooltipPlacement="bottom"
+                  >
+                    <Icon
+                      icon={
+                        filtersSelected.find((f) => f.favorites === true)
+                          ? "uis:favorite"
+                          : "uit:favorite"
+                      }
+                      width={48}
+                    />
+                  </ButtonTooltip>
+                </div> */}
                 <select
                   onChange={(e) => sortItems(e.target.value)}
                   className="cursor-pointer h-10 w-40 md:w-60 flex border border-gray-300 bg-white dark:bg-dark-1 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -968,6 +1088,11 @@ export const CollectionDetailContainer = () => {
                 { name: literals.filters.onAuction, filter: filterByAuctioned },
                 { name: literals.filters.hasBids, filter: filterByBidded },
               ]}
+              contentFilters={[
+                { name: literals.filters.image, filter: filterByImage },
+                { name: literals.filters.video, filter: filterByVideo },
+                { name: literals.filters.audio, filter: filterByAudio },
+              ]}
               filtersSelected={filtersSelected}
               payTokenFilters={allErc20Tokens.map((item) => {
                 return {
@@ -1032,6 +1157,91 @@ const ItemPageOption = ({
           multiline={true}
         />
       )}
+    </div>
+  );
+};
+
+const ItemMenuPageOption = ({
+  position,
+  icon,
+  tooltip,
+  tooltipText,
+  tooltipPlacement,
+  disabled,
+  children,
+}) => {
+  const { theme } = useContext(ThemeContext);
+  const buttonRef = useRef(null);
+  const [openMenu, setOpenMenu] = useState(false);
+
+  const showMenu = (e) => {
+    setOpenMenu(!openMenu);
+  };
+  return (
+    <div>
+      <div
+        onClick={() => !disabled && showMenu()}
+        ref={buttonRef}
+        className={`${
+          disabled ? "cursor-not-allowed" : "cursor-pointer"
+        } p-2 hover ${
+          disabled
+            ? "dark:text-gray-600 text-gray-200"
+            : "dark:hover:text-gray-400 hover:text-gray-400"
+        }`}
+        data-for={tooltip}
+        data-tip={tooltipText}
+      >
+        <Icon icon={icon} width={28} />
+        {tooltip && !disabled && (
+          <ReactTooltip
+            id={tooltip}
+            place={tooltipPlacement ? tooltipPlacement : "top"}
+            type={theme === "dark" ? "light" : "dark"}
+            effect="solid"
+            multiline={true}
+          />
+        )}
+      </div>
+      {openMenu && (
+        <MenuOptions
+          openMenu={openMenu}
+          setOpenMenu={setOpenMenu}
+          buttonRef={buttonRef}
+        >
+          {children}
+        </MenuOptions>
+      )}
+    </div>
+  );
+};
+
+const MenuOptions = ({ openMenu, setOpenMenu, buttonRef, children }) => {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        ref.current &&
+        !ref.current.contains(event.target) &&
+        !buttonRef.current.contains(event.target)
+      ) {
+        setOpenMenu(false);
+      }
+    }
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [ref]);
+  return (
+    <div
+      ref={ref}
+      className="w-[200px] md:w-[200px] bg-gray-100 dark:bg-dark-2 absolute right-5 md:right-10 z-20 flex flex-col  rounded-md"
+    >
+      {children}
     </div>
   );
 };

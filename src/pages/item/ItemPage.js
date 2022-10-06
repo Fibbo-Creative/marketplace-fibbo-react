@@ -44,6 +44,7 @@ import TransferModal from "../../components/modals/TransferModal";
 import DeleteItemModal from "../../components/modals/DeleteItemModal";
 import { formatLiteral } from "../../utils/language";
 import { ButtonTooltip } from "../../components/tooltips/ButtonTooltip";
+import ReportModal from "../../components/modals/ReportModal";
 
 const formatPriceInUsd = (price) => {
   let priceStr = price.toString().split(".");
@@ -130,6 +131,8 @@ export default function ItemPage() {
   const [isCreator, setIsCreator] = useState(false);
   const [isFreezedMetadata, setIsFreezedMetadata] = useState(false);
   const [showRedirect, setShowRedirect] = useState(false);
+  const [showReport, setShowReport] = useState(false);
+
   const [likes, setLikes] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const [categories, setCategories] = useState([]);
@@ -214,7 +217,6 @@ export default function ItemPage() {
   };
 
   const getItemDetails = async () => {
-    setLoading(true);
     const {
       nftData,
       offers: _offers,
@@ -252,13 +254,9 @@ export default function ItemPage() {
 
     const isFreezed = await contract.isFreezedMetadata(tokenId);
     setIsFreezedMetadata(isFreezed);
-    if (wallet) {
-      const res = await contract.ownerOf(tokenId);
 
-      setIsOwner(res === wallet);
-    } else {
-      setIsOwner(false);
-    }
+    console.log(nftData);
+    setIsOwner(nftData.owner === wallet);
 
     if (_listing) {
       setIsForSale(true);
@@ -658,16 +656,18 @@ export default function ItemPage() {
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log("Fetching");
       await getItemDetails();
+      setLoading(false);
       await getAuctions().then(() => {
         getBid();
         hasAnOffer();
-        setLoading(false);
       });
       const CoinGeckoClient = new CoinGecko();
       let data = await CoinGeckoClient.simple.price({ ids: ["fantom"] });
       setCoinPrice(data.data.fantom.usd);
     };
+
     fetchData();
   }, [collection, tokenId, wallet, refreshMetadata]);
 
@@ -703,6 +703,7 @@ export default function ItemPage() {
             <DetailImage
               isFreezedMetadata={isFreezedMetadata}
               collectionInfo={collectionInfo}
+              tokenInfo={tokenInfo?.current}
               tokenImage={tokenInfo?.current.image}
               tokenName={tokenInfo?.current.name}
               loading={loading}
@@ -779,13 +780,33 @@ export default function ItemPage() {
                             tooltip="share-item"
                             tooltipText={literals.actions.share}
                           />
-                          <ItemPageOption
-                            disabled
+                          <ItemMenuPageOption
                             position="last"
                             icon="akar-icons:more-vertical"
                             tooltip="more-item"
+                            disabled
+                            //disabled={wallet === "" || !wallet}
                             tooltipText={literals.actions.moreOptions}
-                          />
+                          >
+                            <div
+                              onClick={() => setShowReport(true)}
+                              className="cursor-pointer flex items-center gap-2 px-2 py-2 hover:bg-gray-300"
+                            >
+                              <Icon icon="ic:baseline-report" width={32}></Icon>
+                              <div>{literals.actions.reportItem}</div>
+                            </div>
+                          </ItemMenuPageOption>
+                          {showReport && (
+                            <ReportModal
+                              showModal={showReport}
+                              handleCloseModal={() => setShowReport(false)}
+                              type="NFT"
+                              reportedItem={{
+                                collection: collectionInfo.contractAddress,
+                                tokenId: tokenId,
+                              }}
+                            />
+                          )}
                         </div>
                       </div>
                     )}
@@ -864,13 +885,33 @@ export default function ItemPage() {
                         tooltip="share-item"
                         tooltipText={literals.actions.share}
                       />
-                      <ItemPageOption
-                        disabled
+                      <ItemMenuPageOption
                         position="last"
                         icon="akar-icons:more-vertical"
                         tooltip="more-item"
+                        disabled
+                        //disabled={wallet === "" || !wallet}
                         tooltipText={literals.actions.moreOptions}
-                      />
+                      >
+                        <div
+                          onClick={() => setShowReport(true)}
+                          className="cursor-pointer flex items-center gap-2 px-2 py-2 hover:bg-gray-300"
+                        >
+                          <Icon icon="ic:baseline-report" width={32}></Icon>
+                          <div>{literals.actions.reportItem}</div>
+                        </div>
+                      </ItemMenuPageOption>
+                      {showReport && (
+                        <ReportModal
+                          showModal={showReport}
+                          handleCloseModal={() => setShowReport(false)}
+                          type="NFT"
+                          reportedItem={{
+                            collection: collectionInfo.contractAddress,
+                            tokenId: tokenId,
+                          }}
+                        />
+                      )}
                     </div>
                   )}
                 </div>
@@ -1034,10 +1075,10 @@ export default function ItemPage() {
                                 onClick={() =>
                                   isMobile
                                     ? navigate(
-                                        `/profile/${highestBid.bidder.wallet}`
+                                        `/account/${highestBid.bidder.wallet}`
                                       )
                                     : window.open(
-                                        `/profile/${highestBid.bidder.wallet}`,
+                                        `/account/${highestBid.bidder.wallet}`,
                                         "_blank"
                                       )
                                 }
@@ -1482,6 +1523,89 @@ const ItemPageOption = ({
           multiline={true}
         />
       )}
+    </div>
+  );
+};
+
+const ItemMenuPageOption = ({
+  position,
+  icon,
+  tooltip,
+  tooltipText,
+  tooltipPlacement,
+  disabled,
+  children,
+}) => {
+  const { theme } = useContext(ThemeContext);
+  const buttonRef = useRef(null);
+  const [openMenu, setOpenMenu] = useState(false);
+
+  const showMenu = (e) => {
+    setOpenMenu(!openMenu);
+  };
+  return (
+    <div>
+      <div
+        onClick={() => !disabled && showMenu()}
+        ref={buttonRef}
+        className={`${
+          disabled ? "cursor-not-allowed" : "cursor-pointer"
+        } p-2 hover ${
+          disabled
+            ? "dark:text-gray-600 text-gray-200"
+            : "dark:hover:text-gray-400 hover:text-gray-400"
+        }`}
+        data-for={tooltip}
+        data-tip={tooltipText}
+      >
+        <Icon icon={icon} width={28} />
+        {tooltip && !disabled && (
+          <ReactTooltip
+            id={tooltip}
+            place={tooltipPlacement ? tooltipPlacement : "top"}
+            type={theme === "dark" ? "light" : "dark"}
+            effect="solid"
+            multiline={true}
+          />
+        )}
+      </div>
+      <MenuOptions
+        openMenu={openMenu}
+        setOpenMenu={setOpenMenu}
+        buttonRef={buttonRef}
+      >
+        {children}
+      </MenuOptions>
+    </div>
+  );
+};
+
+const MenuOptions = ({ openMenu, setOpenMenu, buttonRef, children }) => {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        ref.current &&
+        !ref.current.contains(event.target) &&
+        !buttonRef.current.contains(event.target)
+      ) {
+        setOpenMenu(false);
+      }
+    }
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [ref]);
+  return (
+    <div
+      ref={ref}
+      className="w-[175px] md:w-[200px] bg-gray-100 dark:bg-dark-2 absolute md:right-10 z-20 flex flex-col  rounded-md"
+    >
+      {openMenu && children}
     </div>
   );
 };

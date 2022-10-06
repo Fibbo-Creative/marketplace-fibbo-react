@@ -249,7 +249,7 @@ export default function ProfileActivityTable({ historyItems }) {
                               isMobile
                                 ? navigate(`/account/${item.from.wallet}`)
                                 : window.open(
-                                    `/profile/${item.to.wallet}`,
+                                    `/account/${item.to.wallet}`,
                                     "_blank"
                                   )
                             }
@@ -352,7 +352,7 @@ export default function ProfileActivityTable({ historyItems }) {
                             className="text-primary-2 underline cursor-pointer"
                             onClick={() =>
                               window.open(
-                                `/profile/${item.from.wallet}`,
+                                `/account/${item.from.wallet}`,
                                 "_blank"
                               )
                             }
@@ -382,7 +382,7 @@ export default function ProfileActivityTable({ historyItems }) {
                             className="text-primary-2 underline cursor-pointer"
                             onClick={() =>
                               window.open(
-                                `/profile/${item.to.wallet}`,
+                                `/account/${item.to.wallet}`,
                                 "_blank"
                               )
                             }

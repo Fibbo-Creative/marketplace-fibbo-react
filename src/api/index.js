@@ -4,7 +4,7 @@ const localURL = "http://localhost:9000/";
 const localDevURL = "http://192.168.1.48.sslip.io:9000";
 const herokuDevURL = "https://market-api-dev.herokuapp.com/";
 
-const marketplaceApi = axios.create({ baseURL: herokuDevURL });
+const marketplaceApi = axios.create({ baseURL: localURL });
 const isMainnet = false;
 
 export const useApi = () => {
@@ -211,13 +211,15 @@ export const useApi = () => {
     creator,
     tokenId,
     royalty,
-    image,
+    sanityFileURL,
     ipfsImage,
     ipfsMetadata,
     collection,
     externalLink,
     additionalContent,
-    categories
+    categories,
+    contentType,
+    audio = null
   ) => {
     await marketplaceApi.post("nfts/newItem", {
       name: name,
@@ -225,13 +227,15 @@ export const useApi = () => {
       creator: creator,
       tokenId: tokenId,
       royalty: royalty,
-      sanityImgUrl: image,
+      sanityFileURL: sanityFileURL,
       ipfsImgUrl: ipfsImage,
       ipfsMetadataUrl: ipfsMetadata,
       collection: collection,
       externalLink: externalLink,
       additionalContent: additionalContent,
       categories: categories,
+      contentType: contentType,
+      sanityAudioURL: audio,
     });
   };
 
@@ -241,13 +245,15 @@ export const useApi = () => {
     creator,
     tokenId,
     royalty,
-    image,
-    ipfsImgUrl,
-    ipfsMetadataUrl,
+    ipfsImage,
+    sanityFileURL,
+    ipfsMetadata,
     collection,
     externalLink,
     additionalContent,
-    categories
+    categories,
+    contentType,
+    audio = null
   ) => {
     try {
       await marketplaceApi.post("nfts/editItem", {
@@ -256,13 +262,15 @@ export const useApi = () => {
         creator: creator,
         tokenId: tokenId,
         royalty: royalty,
-        sanityImgUrl: image,
-        ipfsImgUrl: ipfsImgUrl,
-        ipfsMetadataUrl: ipfsMetadataUrl,
+        sanityFileURL: sanityFileURL,
+        ipfsImgUrl: ipfsImage,
+        ipfsMetadataUrl: ipfsMetadata,
         collection: collection,
         externalLink: externalLink,
         additionalContent: additionalContent,
         categories: categories,
+        contentType: contentType,
+        sanityAudioURL: audio,
       });
     } catch (e) {
       console.log(e);
@@ -369,8 +377,8 @@ export const useApi = () => {
     return res.data;
   };
 
-  const getAllCollections = async () => {
-    const res = await marketplaceApi.get(`collections/all`);
+  const getAllCollections = async (user) => {
+    const res = await marketplaceApi.get(`collections/all?user=${user}`);
     return res.data;
   };
 
@@ -527,9 +535,15 @@ export const useApi = () => {
     };
   };
 
-  const uploadImgToCDN = async (file, uploadToIpfs, isExplicit = false) => {
+  const uploadToCDN = async (
+    file,
+    contentType,
+    uploadToIpfs,
+    isExplicit = false
+  ) => {
     var formData = new FormData();
-    formData.append("image", file);
+    formData.append("file", file);
+    formData.append("contentType", contentType);
     formData.append("uploadToIpfs", uploadToIpfs);
     formData.append("isExplicit", isExplicit);
 
@@ -549,12 +563,21 @@ export const useApi = () => {
     }
   };
 
-  const uploadJSONMetadata = async (name, desc, image, externalLink) => {
+  const uploadJSONMetadata = async (
+    name,
+    desc,
+    image,
+    externalLink,
+    contentType,
+    audio = null
+  ) => {
     const imgAddedToSanity = await marketplaceApi.post("api/uploadJson", {
       name: name,
       description: desc,
       image: image,
       externalLink: externalLink,
+      contentType: contentType,
+      audio: audio,
     });
     return imgAddedToSanity.data;
   };
@@ -603,6 +626,18 @@ export const useApi = () => {
 
   //#endregion
 
+  //#region Reports
+  const createNewReport = async (type, reporter, descr, reported) => {
+    const rep = await marketplaceApi.post("admin/newReport", {
+      type,
+      reporter,
+      descr,
+      reported,
+    });
+    return rep.data;
+  };
+  //#endregion
+
   //#region Notifications
 
   const getUserNotifications = async (wallet) => {
@@ -648,7 +683,7 @@ export const useApi = () => {
     deleteFavorite,
     saveCollectionDetails,
     searchItemsAndProfiles,
-    uploadImgToCDN,
+    uploadToCDN,
     uploadJSONMetadata,
     createNewSuggestion,
     voteIntoSuggestion,
@@ -676,5 +711,6 @@ export const useApi = () => {
     getAllCategories,
     getWatchlistedCollections,
     deleteNotification,
+    createNewReport,
   };
 };

@@ -134,7 +134,7 @@ export default function MakeBidModal({
                       isMobile
                         ? navigate(`/account/${highestBid.bidder.wallet}`)
                         : window.open(
-                            `/profile/${highestBid.bidder.wallet}`,
+                            `/account/${highestBid.bidder.wallet}`,
                             "_blank"
                           )
                     }

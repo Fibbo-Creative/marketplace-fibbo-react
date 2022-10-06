@@ -27,7 +27,7 @@ const engLiterals = {
   },
   navbar: {
     searchItems: "Search nfts...",
-    verify: "Verify Your Account!",
+    verify: "Verify!",
     collections: "Collections",
     connectWallet: "Connect Wallet",
     noItem: "No nfts found...",
@@ -59,6 +59,12 @@ const engLiterals = {
     offers: "Offers",
     auctions: "Auctions",
     categories: "Categories",
+    favorites: "Favorites",
+    seeFavorites: "See Favorites",
+    contentType: "Content",
+    image: "Image",
+    video: "Video",
+    audio: "Audio",
   },
   explore: {
     filterSort: "Sort By",
@@ -132,6 +138,9 @@ const engLiterals = {
     listedFor: "Listed for",
     price: "Price",
     state: "State",
+    videoContent: "Video Content",
+    audioContent: "Audio Content",
+    imageContent: "Image Content",
   },
   itemHistory: {
     event: "Event",
@@ -186,9 +195,15 @@ const engLiterals = {
     nameCharacters: "The name must contain between 4 and 30 characters",
     descriptionCharacters:
       "The description must contain between 50 and 1000 characters",
-    imgInput: "Drag or select image files",
+
     incorrectFormat: "Not valid format",
     explicitContent: "Explícit or Sensible content",
+    imgInput: "Drag or select image files",
+    videoInput: "Drag or select video files",
+    imgTypes: "JPG, PNG, JPEG, GIF, SVG, WEBP.",
+    videoTypes: "MP4, WMV, AVI, MOV...",
+    audioInput: "Drag or select audio files",
+    audioTypes: "MP3, MPEG, OGG...",
   },
   profile: {
     collected: "Collected",
@@ -309,6 +324,10 @@ const engLiterals = {
     addToWatchlist: "Add to watchlist",
     deleteFromWatchlist: "Remove from watchlist",
     addCategory: "Add",
+    makeReport: "Make Report",
+    reportCollection: "Report Collection",
+    reportItem: "Report NFT",
+    reportProfile: "Report Account",
   },
   modals: {
     connectSentence: "Connect a wallet",
@@ -329,7 +348,12 @@ const engLiterals = {
     notEnoughWftm: "Not enough {0} to buy the NFT",
     offerMade: "Succesfully placed offer for  {0} {1}",
     bidPlaced: "Succesfully placed  bid for  {0} {1}",
-    close: "Cerrar",
+    close: "close",
+    sendReport: "Send Report",
+    completedReport:
+      "Your report has been sent and it will be checked with detail",
+    reportDesc: "Report Message",
+    reportInfo: "Explain with detail why you are reporting this content",
   },
   acceptOfferModal: {
     acceptOffer: "Accept offer",
@@ -517,6 +541,12 @@ const engLiterals = {
     notOwnerEdit2:
       "You can't edit the NFT, you're not the owner of the collection",
     freezeMetadata: "Freeze Metadata",
+    selectImageError: "Please, select an image file",
+    selectVideoError: "Please, select a video file",
+    selectAudioError: "Please, select an audio file",
+    image: "Image",
+    video: "Video",
+    audio: "Audio",
   },
   events: {
     minted: "Minted",
@@ -598,6 +628,12 @@ const espLiterals = {
     offers: "Ofertas",
     auctions: "Subastas",
     categories: "Categorias",
+    favorites: "Favoritos",
+    seeFavorites: "Ver Favoritos",
+    contentType: "Contenido",
+    image: "Imágen",
+    video: "Video",
+    audio: "Audio",
   },
   explore: {
     filterSort: "Ordenar Por",
@@ -655,7 +691,6 @@ const espLiterals = {
     putForSale: "Poner en venta",
     createAuction: "Subastar NFT",
     update: "Actualizar",
-    cancel: "Cancelar",
   },
   itemPage: {
     chainData: "Datos de la cadena",
@@ -670,6 +705,9 @@ const espLiterals = {
     listedFor: "Listado por",
     price: "Precio",
     state: "Estado",
+    videoContent: "Contenido de Vídeo",
+    audioContent: "Contenido de Audio",
+    imageContent: "Contenido de Imágen",
   },
   itemHistory: {
     event: "Evento",
@@ -724,9 +762,14 @@ const espLiterals = {
     nameCharacters: "El nombre debe tener entre 4 y 30 carácteres",
     descriptionCharacters:
       "La descripción debe tener entre 50 y 1000 carácteres",
-    imgInput: "Arrastra o selecciona ficheros de imágen",
     incorrectFormat: "Formato incorrecto",
     explicitContent: "Contenido Explícito o Sensible",
+    imgInput: "Arrastra o selecciona ficheros de imágen",
+    videoInput: "Arrastra o selecciona ficheros de video",
+    imgTypes: "JPG, PNG, JPEG, GIF, SVG, WEBP.",
+    videoTypes: "MP4, WMV, AVI, MOV...",
+    audioInput: "Arrastra o selecciona ficheros de audio",
+    audioTypes: "MP3, MPEG, OGG...",
   },
   profile: {
     collected: "En posesión",
@@ -844,6 +887,10 @@ const espLiterals = {
     addToWatchlist: "Añadir a favoritos",
     deleteFromWatchlist: "Eliminar de favoritos",
     addCategory: "Añadir",
+    makeReport: "Realizar Reporte",
+    reportCollection: "Reportar Colección",
+    reportItem: "Reportar NFT",
+    reportProfile: "Reportar Cuenta",
   },
   modals: {
     connectSentence: "Conectar una billetera",
@@ -865,6 +912,11 @@ const espLiterals = {
     offerMade: "Oferta por {0} {1} creada correctamente",
     bidPlaced: "Puja por {0} {1} creada correctamente",
     close: "Cerrar",
+    sendReport: "Enviar Reporte",
+    completedReport: "Tu reporte ha sido enviado y será revisado con detalle",
+    reportDesc: "Mensaje del Reporte",
+    reportInfo:
+      "Explicanos porque estas reportando este contenido, se lo más detallado y transparente",
   },
   acceptOfferModal: {
     acceptOffer: "Aceptar oferta",
@@ -1055,6 +1107,12 @@ const espLiterals = {
     notOwnerEdit2:
       "No puedes editar el ítem, No eres el propietario de la colección.",
     freezeMetadata: "Congelar Metadata",
+    selectImageError: "Selecciona una imágen",
+    selectVideoError: "Selecciona un archivo de video",
+    selectAudioError: "Selecciona un archivo de audio",
+    image: "Imágen",
+    video: "Vídeo",
+    audio: "Audio",
   },
   events: {
     minted: "NFT minteado",

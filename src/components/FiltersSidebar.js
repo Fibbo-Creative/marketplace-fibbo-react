@@ -9,6 +9,7 @@ export default function FiltersSidebar({
   setOpenedSidebar,
   filtersSelected,
   statusFilters,
+  contentFilters,
   payTokenFilters,
   collections,
   categories,
@@ -49,6 +50,12 @@ export default function FiltersSidebar({
             <FilterBottomDropDown name={literals.filters.state}>
               <FilterButtons
                 options={statusFilters}
+                filtersSelected={filtersSelected}
+              />
+            </FilterBottomDropDown>
+            <FilterBottomDropDown name={literals.filters.contentType}>
+              <FilterButtons
+                options={contentFilters}
                 filtersSelected={filtersSelected}
               />
             </FilterBottomDropDown>

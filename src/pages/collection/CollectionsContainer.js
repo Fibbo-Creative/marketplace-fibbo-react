@@ -59,12 +59,11 @@ export default function CollectionsContainer() {
     const fetchData = async () => {
       await connectToWallet();
 
-      const collections = await getAllCollections();
+      const collections = await getAllCollections(wallet);
       setCollections(collections);
 
-      const watchList = await getWatchlistedCollections(wallet);
+      console.log(collections);
 
-      setWatchlistCollections(watchList);
       setItems(collections);
       setFilteredCollections(collections);
       setLoading(false);
@@ -80,6 +79,7 @@ export default function CollectionsContainer() {
           return item;
         }
       });
+
       setFilteredCollections(finalFiltered);
     } else {
       setFilteredCollections(collections);
@@ -90,22 +90,6 @@ export default function CollectionsContainer() {
       loading={loading}
       className="flex flex-col mt-[79px] mb-[79px] w-screen content-center justify-center"
     >
-      <div className="my-10 flex gap-4 w-full  content-center justify-center">
-        <CollectionsTab
-          title={"WatchList"}
-          type={"watchlist"}
-          selectedType={itemsType}
-          count={watchListCollections.length}
-          onClick={() => handleSetItemsType("watchlist")}
-        />
-        <CollectionsTab
-          title={"All"}
-          type={"all"}
-          selectedType={itemsType}
-          count={collections.length}
-          onClick={() => handleSetItemsType("all")}
-        />
-      </div>
       <div className="flex w-full py-[20px] content-center justify-center">
         <div className="flex flex-col items-center gap-5">
           <div className="w-80 flex border-2 rounded">
@@ -135,7 +119,12 @@ export default function CollectionsContainer() {
                   key={col._id}
                   className="hover:-translate-y-1 rounded-lg cursor-pointer flex flex-col items-center gap-5 text-xl"
                 >
-                  <div className="font-bold">{col.name}</div>
+                  <div className="flex gap-2 items-center font-bold">
+                    {col.name}
+                    {col.isWatchlisted && (
+                      <Icon icon="uis:favorite" width={28} />
+                    )}
+                  </div>
                   <div
                     onClick={() => redirectToColectionPage(col)}
                     className=" flex w-[150px] h-full items-center justify-center"
