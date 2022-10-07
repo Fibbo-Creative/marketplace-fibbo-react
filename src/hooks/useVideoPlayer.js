@@ -5,6 +5,7 @@ const useVideoPlayer = (videoId) => {
   const [curTime, setCurTime] = useState();
   const [isMuted, setIsMuted] = useState(false);
   const [playing, setPlaying] = useState(false);
+  const [isFullScreen, setIsFullscreen] = useState();
   const [clickedTime, setClickedTime] = useState();
 
   useEffect(() => {
@@ -22,6 +23,10 @@ const useVideoPlayer = (videoId) => {
     video.addEventListener("loadeddata", setAudioData);
 
     video.addEventListener("timeupdate", setAudioTime);
+
+    video.addEventListener("fullscreenchange", (event) => {
+      setIsFullscreen(!isFullScreen);
+    });
 
     // React state listeners: update DOM on React state changes
     playing ? video.play() : video.pause();
@@ -45,6 +50,7 @@ const useVideoPlayer = (videoId) => {
     duration,
     playing,
     isMuted,
+    isFullScreen,
     setPlaying,
     setIsMuted,
     setClickedTime,
