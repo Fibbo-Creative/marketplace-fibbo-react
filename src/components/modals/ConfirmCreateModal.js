@@ -70,7 +70,6 @@ export const ConfirmCreateModal = ({
         );
 
         const ipfsFileURL = `${IPFS_BASE_URL}/${ipfsCID}`;
-        console.log(ipfsFileURL);
         //await mintGassless(collection.contractAddress, wallet, ipfsFileURL);
         let newTokenId = collection.numberOfItems + 1;
         //Si todo va bien, crear a sanity
@@ -91,6 +90,69 @@ export const ConfirmCreateModal = ({
           }),
           itemData.contentType,
           audioSanity
+        );
+        setNewTokenId(newTokenId);
+        setAddress(address);
+        setCompletedAction(true);
+      } else if (itemData.contentType === "VIDEO") {
+        const { sanity, ipfs, error } = await uploadToCDN(
+          itemData.fileSelected.file,
+          itemData.contentType,
+          true,
+          itemData.isExplicit
+        );
+        if (error) {
+          throw Error(error);
+        }
+        const videoIpfsURL = `${IPFS_BASE_URL}/${ipfs}`;
+
+        const coverResponse = await uploadToCDN(
+          itemData.coverSelected.file,
+          "IMG",
+          true,
+          itemData.isExplicit
+        );
+
+        const coverSanity = coverResponse.sanity;
+        const coverIpfs = coverResponse.ipfs;
+        const coverError = coverResponse.error;
+
+        if (coverError) {
+          throw Error(coverError);
+        }
+        const coverIpfsURL = `${IPFS_BASE_URL}/${coverIpfs}`;
+
+        const ipfsCID = await uploadJSONMetadata(
+          itemData.name,
+          itemData.description,
+          coverIpfsURL,
+          itemData.externalLink,
+          itemData.contentType,
+          videoIpfsURL
+        );
+
+        const ipfsFileURL = `${IPFS_BASE_URL}/${ipfsCID}`;
+
+        await mintGassless(collection.contractAddress, wallet, ipfsFileURL);
+        let newTokenId = collection.numberOfItems + 1;
+        //Si todo va bien, crear a sanity
+        await saveMintedItem(
+          itemData.name,
+          itemData.description,
+          wallet,
+          newTokenId,
+          itemData.royalty ? itemData.royalty : 0,
+          coverSanity,
+          itemData.ipfsImage,
+          ipfsFileURL,
+          collection.contractAddress,
+          itemData.externalLink,
+          itemData.hiddenContent,
+          itemData.categories.map((cat) => {
+            return cat.identifier;
+          }),
+          itemData.contentType,
+          sanity
         );
         setNewTokenId(newTokenId);
         setAddress(address);

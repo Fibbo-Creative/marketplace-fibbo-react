@@ -19,14 +19,22 @@ const useVideoPlayer = (videoId) => {
 
     const setAudioTime = () => setCurTime(video.currentTime);
 
+    const setFullScreen = () => {
+      if (document.fullscreenElement) {
+        setPlaying(false);
+        setIsFullscreen(true);
+      } else {
+        setPlaying(false);
+        setIsFullscreen(false);
+      }
+    };
+
     // DOM listeners: update React state on DOM events
     video.addEventListener("loadeddata", setAudioData);
 
     video.addEventListener("timeupdate", setAudioTime);
 
-    video.addEventListener("fullscreenchange", (event) => {
-      setIsFullscreen(!isFullScreen);
-    });
+    video.addEventListener("fullscreenchange", setFullScreen);
 
     // React state listeners: update DOM on React state changes
     playing ? video.play() : video.pause();
@@ -42,8 +50,9 @@ const useVideoPlayer = (videoId) => {
     return () => {
       video.removeEventListener("loadeddata", setAudioData);
       video.removeEventListener("timeupdate", setAudioTime);
+      video.removeEventListener("fullscreenchange", setFullScreen);
     };
-  });
+  }, [clickedTime, curTime, isMuted, playing, videoId, isFullScreen]);
 
   return {
     curTime,

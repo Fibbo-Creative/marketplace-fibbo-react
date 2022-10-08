@@ -75,8 +75,8 @@ export const VideoPlayer = ({ videoId, video, onClickVideo }) => {
         <video
           id={videoId}
           controls={isFullScreen}
-          onPlay={() => isFullScreen && setPlaying(true)}
-          onPause={() => isFullScreen && setPlaying(false)}
+          onPlay={(e) => !playing && setPlaying(true)}
+          onPause={(e) => playing && setPlaying(false)}
         >
           <source src={video} />
           Your browser does not support the <code>video</code> element

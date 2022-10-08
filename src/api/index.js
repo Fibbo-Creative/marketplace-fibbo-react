@@ -4,7 +4,7 @@ const localURL = "http://localhost:9000/";
 const localDevURL = "http://192.168.1.48.sslip.io:9000";
 const herokuDevURL = "https://market-api-dev.herokuapp.com/";
 
-const marketplaceApi = axios.create({ baseURL: herokuDevURL });
+const marketplaceApi = axios.create({ baseURL: localURL });
 const isMainnet = false;
 
 export const useApi = () => {
@@ -219,7 +219,7 @@ export const useApi = () => {
     additionalContent,
     categories,
     contentType,
-    audio = null
+    animated = null
   ) => {
     await marketplaceApi.post("nfts/newItem", {
       name: name,
@@ -235,7 +235,7 @@ export const useApi = () => {
       additionalContent: additionalContent,
       categories: categories,
       contentType: contentType,
-      sanityAudioURL: audio,
+      sanityAnimatedURL: animated,
     });
   };
 
@@ -253,7 +253,7 @@ export const useApi = () => {
     additionalContent,
     categories,
     contentType,
-    audio = null
+    animated = null
   ) => {
     try {
       await marketplaceApi.post("nfts/editItem", {
@@ -270,7 +270,7 @@ export const useApi = () => {
         additionalContent: additionalContent,
         categories: categories,
         contentType: contentType,
-        sanityAudioURL: audio,
+        sanityAnimatedURL: animated,
       });
     } catch (e) {
       console.log(e);

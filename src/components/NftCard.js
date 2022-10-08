@@ -104,15 +104,11 @@ export default function NftCard({ item, onClick, isSmall, wallet }) {
           isSmall ? "h-[212px] w-[212px]" : "h-[322px] w-[322px]"
         } flex pb-3 border-b-2 border-gray-700 dark:border-gray-300 `}
       >
-        {item.contentType === "VIDEO" ? (
-          <video src={item.video}></video>
-        ) : (
-          <img
-            className="object-contain w-full h-full"
-            src={item.nft ? item.nft.image : item.image}
-            alt={item.name}
-          />
-        )}
+        <img
+          className="object-contain w-full h-full"
+          src={item.nft ? item.nft.image : item.image}
+          alt={item.name}
+        />
       </div>
       <div
         onClick={onClick}
