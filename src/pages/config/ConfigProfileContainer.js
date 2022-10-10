@@ -17,7 +17,7 @@ export default function ConfigProfileContainer({ children }) {
   const { wallet, connectToWallet } = useAccount();
   const navigate = useNavigate();
   const { _width } = useRespnsive();
-  const { setProfileData, uploadImgToCDN } = useApi();
+  const { setProfileData, uploadToCDN } = useApi();
   const [username, setUsername] = useState("");
   const [profileImg, setProfileImg] = useState("");
   const [bannerImage, setBannerImage] = useState("");
@@ -27,13 +27,40 @@ export default function ConfigProfileContainer({ children }) {
   const [completedAction, setCompletedAction] = useState(false);
 
   const updateProfile = async () => {
-    await setProfileData(username, wallet, email, bio, profileImg, bannerImage);
+    //Upload to sanity
+
+    const profileResponse = await uploadToCDN(
+      profileImg.file,
+      "IMG",
+      false,
+      false
+    );
+
+    const profileSanity = profileResponse.sanity;
+
+    const bannerResponse = await uploadToCDN(
+      bannerImage.file,
+      "IMG",
+      false,
+      false
+    );
+
+    const bannerSanity = bannerResponse.sanity;
+
+    await setProfileData(
+      username,
+      wallet,
+      email,
+      bio,
+      profileSanity,
+      bannerSanity
+    );
 
     //Dispatch actualizar username, banner y profileIMG
     dispatch({
       type: actionTypes.UPDATE_PROFILE,
-      profileImg: profileImg,
-      profileBanner: bannerImage,
+      profileImg: profileSanity,
+      profileBanner: bannerSanity,
       username: username,
     });
     setCompletedAction(true);
@@ -42,32 +69,49 @@ export default function ConfigProfileContainer({ children }) {
   const onSelectProfileImage = async (e) => {
     const file = e.target.files[0];
     if (file.type.includes("image")) {
-      const { sanity } = await uploadImgToCDN(file, false);
-      if (sanity === "INVALID IMG") {
-      } else {
-        setProfileImg(sanity);
-      }
+      setProfileImg({ file: file, preview: URL.createObjectURL(file) });
     }
   };
   const onSelectBannerImage = async (e) => {
     const file = e.target.files[0];
     if (file.type.includes("image")) {
-      const { sanity } = await uploadImgToCDN(file, false);
-      if (sanity === "INVALID IMG") {
-      } else {
-        setBannerImage(sanity);
-      }
+      setBannerImage({ file: file, preview: URL.createObjectURL(file) });
     }
   };
 
   useEffect(() => {
-    connectToWallet();
-    //Get Profile info
-    setUsername(userProfile.username);
-    setProfileImg(userProfile.profileImg);
-    setBannerImage(userProfile.profileBanner);
-    setBio(userProfile.bio);
-    setEmail(userProfile.email);
+    const fetchData = async () => {
+      connectToWallet();
+      //Get Profile info
+      setUsername(userProfile.username);
+      let response = await fetch(userProfile.profileImg);
+      let data = await response.blob();
+      let metadata = {
+        type: "image/png",
+      };
+      let profileFile = new File([data], userProfile.username, metadata);
+      setProfileImg({
+        file: profileFile,
+        preview: URL.createObjectURL(profileFile),
+      });
+      response = await fetch(userProfile.profileBanner);
+      data = await response.blob();
+      metadata = {
+        type: "image/png",
+      };
+      let bannerFile = new File(
+        [data],
+        userProfile.username + "banner",
+        metadata
+      );
+      setBannerImage({
+        file: bannerFile,
+        preview: URL.createObjectURL(bannerFile),
+      });
+      setBio(userProfile.bio);
+      setEmail(userProfile.email);
+    };
+    fetchData();
   }, [wallet]);
   return (
     <div className="p-10 flex flex-col gap-10">
@@ -107,7 +151,7 @@ export default function ConfigProfileContainer({ children }) {
         <div className="flex flex-col gap-5 w-1/3">
           <ImageInput
             label={literals.profileSettings.profileImg}
-            imageURL={profileImg}
+            fileSelected={profileImg}
             setImageURL={setProfileImg}
             className=" rounded-full w-[200px] h-[200px]"
             inputId="profileImageInput"
@@ -116,7 +160,7 @@ export default function ConfigProfileContainer({ children }) {
           />
           <ImageInput
             label={literals.profileSettings.backgroundImg}
-            imageURL={bannerImage}
+            fileSelected={bannerImage}
             setImageURL={setBannerImage}
             className=" w-[300px] h-[200px]"
             inputId="bannerImageInput"

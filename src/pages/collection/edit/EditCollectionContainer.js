@@ -21,6 +21,7 @@ export default function EditCollectionContainer() {
     checkUrlRepeated,
     getCollectionDetail,
     editCollectionDetails,
+    uploadToCDN,
   } = useApi();
   const navigate = useNavigate();
   const { collection } = useParams();
@@ -101,65 +102,34 @@ export default function EditCollectionContainer() {
     }
     return true;
   };
-
   const onSelectLogoImage = async (e) => {
     const file = e.target.files[0];
     if (file.type.includes("image")) {
       setLogoImageError(false);
-      try {
-        const { sanity, ipfs } = await uploadImgToCDN(file, false);
-        if (sanity === "INVALID IMG") {
-          setLogoImageError(true);
-          setLogoImageError("Imagen no permitida, contiene contenido NFSW");
-        } else {
-          setLogoImage(sanity);
-          setLogoImageError(false);
-        }
-      } catch (error) {
-        console.log("Error uploading file: ", error);
-      }
+      setLogoImage({ file: file, preview: URL.createObjectURL(file) });
+    } else {
+      setLogoImageError(true);
+      setLogoImageMessageError(literals.createItem.selectImageError);
     }
   };
 
   const onSelectMainImage = async (e) => {
     const file = e.target.files[0];
     if (file.type.includes("image")) {
-      setMainImageError(false);
-      try {
-        const { sanity, ipfs } = await uploadImgToCDN(file, false);
-        if (sanity === "INVALID IMG") {
-          setMainImageError(true);
-          setMainImageMessageError(
-            "Imagen no permitida, contiene contenido NFSW"
-          );
-        } else {
-          setMainImage(sanity);
-          setMainImageError(false);
-        }
-      } catch (error) {
-        console.log("Error uploading file: ", error);
-      }
+      setMainImage({ file: file, preview: URL.createObjectURL(file) });
+    } else {
+      setMainImageError(true);
+      setMainImageMessageError(literals.createItem.selectImageError);
     }
   };
 
   const onSelectBannerImage = async (e) => {
     const file = e.target.files[0];
     if (file.type.includes("image")) {
-      setBannerImageError(false);
-      try {
-        const { sanity, ipfs } = await uploadImgToCDN(file, false);
-        if (sanity === "INVALID IMG") {
-          setBannerImageError(true);
-          setBannerImageMessageError(
-            "Imagen no permitida, contiene contenido NFSW"
-          );
-        } else {
-          setBannerImage(sanity);
-          setBannerImageError(false);
-        }
-      } catch (error) {
-        console.log("Error uploading file: ", error);
-      }
+      setBannerImage({ file: file, preview: URL.createObjectURL(file) });
+    } else {
+      setBannerImage(true);
+      setBannerImageMessageError(literals.createItem.selectImageError);
     }
   };
 
@@ -293,14 +263,42 @@ export default function EditCollectionContainer() {
       //Llamar al endpoint para editarla
       let customURL = url.split("https://fibbo-market.web.app/collection/")[1];
 
+      const logoResponse = await uploadToCDN(
+        logoImage.file,
+        "IMG",
+        false,
+        false
+      );
+      const logoSanity = logoResponse.sanity;
+
+      const mainResponse = await uploadToCDN(
+        mainImage.file,
+        "IMG",
+        false,
+        false
+      );
+
+      const mainSanity = mainResponse.sanity;
+
+      let bannerSanity = "";
+      if (bannerImage) {
+        const bannerResponse = await uploadToCDN(
+          bannerImage.file,
+          "IMG",
+          false,
+          false
+        );
+        bannerSanity = bannerResponse.sanity;
+      }
+
       await editCollectionDetails(
         collectionInfo.contractAddress,
         wallet,
         name,
         desc,
-        logoImage,
-        mainImage,
-        bannerImage,
+        logoSanity,
+        mainSanity,
+        bannerSanity,
         customURL,
         website,
         discord,
@@ -320,11 +318,44 @@ export default function EditCollectionContainer() {
     setIsOwner(collectionDetail.creator === wallet);
 
     setCollectionInfo(collectionDetail);
-
+    console.log(collectionDetail);
     setName(collectionDetail.name);
-    setLogoImage(collectionDetail.logoImage);
-    setMainImage(collectionDetail.featuredImage);
-    setBannerImage(collectionDetail.bannerImage);
+    let response = await fetch(collectionDetail.logoImage);
+    let data = await response.blob();
+    let metadata = {
+      type: "image/png",
+    };
+    let logoFile = new File([data], collection.name + "logo", metadata);
+    setLogoImage({
+      file: logoFile,
+      preview: URL.createObjectURL(logoFile),
+    });
+    response = await fetch(collectionDetail.featuredImage);
+    data = await response.blob();
+    metadata = {
+      type: "image/png",
+    };
+    let mainFile = new File([data], collection.name + "main", metadata);
+    setMainImage({
+      file: mainFile,
+      preview: URL.createObjectURL(mainFile),
+    });
+    console.log(mainFile);
+    if (bannerImage !== "") {
+      response = await fetch(collectionDetail.bannerImage);
+      data = await response.blob();
+      metadata = {
+        type: "image/png",
+      };
+      let bannerFile = new File([data], collection.name + "banner", metadata);
+      setBannerImage({
+        file: bannerFile,
+        preview: URL.createObjectURL(bannerFile),
+      });
+    } else {
+      setBannerImage(null);
+    }
+
     setDesc(collectionDetail.description);
     setExplicitContent(collectionDetail.explicitContent);
 
@@ -368,7 +399,7 @@ export default function EditCollectionContainer() {
                 required
                 info={literals.createCollection.logoDesc}
                 label={literals.createCollection.logo}
-                imageURL={logoImage}
+                fileSelected={logoImage}
                 setImageURL={setLogoImage}
                 onFileSelected={onSelectLogoImage}
                 inputId="logoImageInput"
@@ -383,7 +414,7 @@ export default function EditCollectionContainer() {
           <div className="flex flex-col w-full  content-center justify-left">
             <div className="flex pt-[30px]">
               <ImageInput
-                imageURL={mainImage}
+                fileSelected={mainImage}
                 info={literals.createCollection.imgPrincipalDesc}
                 label={literals.createCollection.imgPrincipal}
                 inputId="mainImageInput"
@@ -401,7 +432,7 @@ export default function EditCollectionContainer() {
           <div className="flex flex-col w-full  content-center justify-left">
             <div className="flex pt-[30px]">
               <ImageInput
-                imageURL={bannerImage}
+                fileSelected={bannerImage}
                 setImageURL={setBannerImage}
                 info={literals.createCollection.bannerDesc}
                 label={literals.createCollection.banner}

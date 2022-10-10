@@ -104,7 +104,6 @@ export default function EditContainer() {
 
   const getItemDetails = async () => {
     const { nftData } = await getNftInfo(collection, tokenId);
-    console.log(nftData);
     setName(nftData.name);
     setDesc(nftData.description);
     setRoyalty(nftData.royalty);
