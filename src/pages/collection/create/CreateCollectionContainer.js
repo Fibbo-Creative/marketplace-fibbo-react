@@ -90,60 +90,30 @@ export default function CreateCollectionContainer() {
     const file = e.target.files[0];
     if (file.type.includes("image")) {
       setLogoImageError(false);
-      try {
-        const { sanity } = await uploadImgToCDN(file, false);
-        if (sanity === "INVALID IMG") {
-          setLogoImageError(true);
-          setLogoImageError("Imagen no permitida, contiene contenido NFSW");
-        } else {
-          setLogoImage(sanity);
-          setLogoImageError(false);
-        }
-      } catch (error) {
-        console.log("Error uploading file: ", error);
-      }
+      setLogoImage({ file: file, preview: URL.createObjectURL(file) });
+    } else {
+      setLogoImageError(true);
+      setLogoImageMessageError(literals.createItem.selectImageError);
     }
   };
 
   const onSelectMainImage = async (e) => {
     const file = e.target.files[0];
     if (file.type.includes("image")) {
-      setMainImageError(false);
-      try {
-        const { sanity } = await uploadImgToCDN(file, false);
-        if (sanity === "INVALID IMG") {
-          setMainImageError(true);
-          setMainImageMessageError(
-            "Imagen no permitida, contiene contenido NFSW"
-          );
-        } else {
-          setMainImage(sanity);
-          setMainImageError(false);
-        }
-      } catch (error) {
-        console.log("Error uploading file: ", error);
-      }
+      setMainImage({ file: file, preview: URL.createObjectURL(file) });
+    } else {
+      setMainImageError(true);
+      setMainImageMessageError(literals.createItem.selectImageError);
     }
   };
 
   const onSelectBannerImage = async (e) => {
     const file = e.target.files[0];
     if (file.type.includes("image")) {
-      setBannerImageError(false);
-      try {
-        const { sanity } = await uploadImgToCDN(file, false);
-        if (sanity === "INVALID IMG") {
-          setBannerImageError(true);
-          setBannerImageMessageError(
-            "Imagen no permitida, contiene contenido NFSW"
-          );
-        } else {
-          setBannerImage(sanity);
-          setBannerImageError(false);
-        }
-      } catch (error) {
-        console.log("Error uploading file: ", error);
-      }
+      setBannerImage({ file: file, preview: URL.createObjectURL(file) });
+    } else {
+      setBannerImage(true);
+      setBannerImageMessageError(literals.createItem.selectImageError);
     }
   };
 
@@ -300,7 +270,7 @@ export default function CreateCollectionContainer() {
               required
               info={literals.createCollection.logoDesc}
               label={literals.createCollection.logo}
-              imageURL={logoImage}
+              fileSelected={logoImage}
               setImageURL={setLogoImage}
               onFileSelected={onSelectLogoImage}
               inputId="logoImageInput"
@@ -315,7 +285,7 @@ export default function CreateCollectionContainer() {
         <div className="text-justify flex flex-col w-full  content-center justify-left">
           <div className="flex pt-[30px] mr-5 md:mr-0">
             <ImageInput
-              imageURL={mainImage}
+              fileSelected={mainImage}
               info={literals.createCollection.imgPrincipalDesc}
               label={literals.createCollection.imgPrincipal}
               inputId="mainImageInput"
@@ -333,7 +303,7 @@ export default function CreateCollectionContainer() {
         <div className=" text-justify flex flex-col w-full  content-center justify-left">
           <div className="flex pt-[30px] mr-5 md:mr-0">
             <ImageInput
-              imageURL={bannerImage}
+              fileSelected={bannerImage}
               info={literals.createCollection.bannerDesc}
               label={literals.createCollection.banner}
               backgroundImage={true}

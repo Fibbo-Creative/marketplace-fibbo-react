@@ -12,7 +12,7 @@ export const ConfirmCreateCollection = ({
   collectionData,
   wallet,
 }) => {
-  const { saveCollectionDetails } = useApi();
+  const { saveCollectionDetails, uploadToCDN } = useApi();
   const [address, setAddress] = useState("");
 
   const navigate = useNavigate();
@@ -33,14 +33,30 @@ export const ConfirmCreateCollection = ({
     } = collectionData;
     const customURL = url.split("https://fibbo-market.web.app/collection/")[1];
 
+    //UPLOAD TO SANITY
+    const logoResponse = await uploadToCDN(logoImage.file, "IMG", false, false);
+    const logoSanity = logoResponse.sanity;
+
+    const mainResponse = await uploadToCDN(mainImage.file, "IMG", false, false);
+
+    const mainSanity = mainResponse.sanity;
+    const bannerResponse = await uploadToCDN(
+      collectionData.bannerImage.file,
+      "IMG",
+      false,
+      false
+    );
+
+    const bannerSanity = bannerResponse.sanity;
+
     try {
       const response = await saveCollectionDetails(
         wallet,
         name,
         description,
-        logoImage,
-        mainImage !== "" ? mainImage : logoImage,
-        bannerImage,
+        logoSanity,
+        mainImage ? mainSanity : logoSanity,
+        bannerSanity,
         customURL,
         websiteURL,
         discordURL,
@@ -87,7 +103,7 @@ export const ConfirmCreateCollection = ({
         <div className="flex flex-col md:flex-row md:justify-between gap-4 mt-10">
           <div className="w-[225px] lg:w-[300px] object-contain">
             <img
-              src={collectionData.logoImage}
+              src={collectionData.logoImage.preview}
               alt={`item-${collectionData.name}`}
               width={300}
               className="object-contain"
