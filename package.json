@@ -16,6 +16,7 @@
     "axios": "^0.25.0",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
+    "capture-video-frame": "^1.0.0",
     "coingecko-api": "^1.0.10",
     "crypto": "npm:crypto-browserify",
     "crypto-browserify": "^3.12.0",

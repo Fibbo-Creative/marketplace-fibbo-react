@@ -16,6 +16,7 @@ import { MultipleSelect } from "../../components/inputs/MultipleSelect";
 import { Icon } from "@iconify/react";
 import { VideoInput } from "../../components/inputs/VideoInput";
 import { AudioInput } from "../../components/inputs/AudioInput";
+import captureVideoFrame from "capture-video-frame";
 
 const validateName = (name) => {
   if (name.length > 4 && name.length < 30) return true;
@@ -111,6 +112,16 @@ export default function CreateContainer() {
         setImageMessageError(literals.createItem.selectImageError);
       }
     }
+  };
+
+  const onFrameSelectedVideo = async (dataUri) => {
+    let response = await fetch(dataUri);
+    let data = await response.blob();
+    let metadata = {
+      type: "image/jpeg",
+    };
+    let file = new File([data], "cover.jpg", metadata);
+    setCoverSelected({ file: file, preview: URL.createObjectURL(file) });
   };
 
   const onCoverSelected = async (e) => {
@@ -228,6 +239,8 @@ export default function CreateContainer() {
                 <div className="flex flex-col gap-20">
                   {contentType === "VIDEO" ? (
                     <VideoInput
+                      frameSelected={coverSelected}
+                      setFrameSelected={onFrameSelectedVideo}
                       fileSelected={selectedFile}
                       videoURL={sanityImgUrl}
                       setVideoURL={setSanityImgUrl}

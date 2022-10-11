@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import moment from "moment";
 import useVideoPlayer from "../hooks/useVideoPlayer";
 import momentDurationFormatSetup from "moment-duration-format";
@@ -11,6 +11,7 @@ export const VideoPlayer = ({ videoId, video, onClickVideo }) => {
     duration,
     playing,
     isMuted,
+    isFullScreen,
     setPlaying,
     setIsMuted,
     setClickedTime,
@@ -50,6 +51,19 @@ export const VideoPlayer = ({ videoId, video, onClickVideo }) => {
     });
   }
 
+  const setFullScreen = () => {
+    const el = document.getElementById(videoId);
+    if (el.requestFullscreen) {
+      el.requestFullscreen();
+    } else if (el.msRequestFullscreen) {
+      el.msRequestFullscreen();
+    } else if (el.mozRequestFullScreen) {
+      el.mozRequestFullScreen();
+    } else if (el.webkitRequestFullscreen) {
+      el.webkitRequestFullscreen();
+    }
+  };
+
   const handleClickVideo = () => {
     console.log("ke");
     onClickVideo();
@@ -58,7 +72,12 @@ export const VideoPlayer = ({ videoId, video, onClickVideo }) => {
   return (
     <div className="flex flex-col gap-4 h-full justify-evenly">
       <div className="cursor-pointer" onClick={handleClickVideo}>
-        <video id={videoId}>
+        <video
+          id={videoId}
+          controls={isFullScreen}
+          onPlay={(e) => !playing && setPlaying(true)}
+          onPause={(e) => playing && setPlaying(false)}
+        >
           <source src={video} />
           Your browser does not support the <code>video</code> element
         </video>
@@ -97,6 +116,7 @@ export const VideoPlayer = ({ videoId, video, onClickVideo }) => {
               background: `linear-gradient(to right, var(--primary) ${curPercentage}%, var(--progress) 0)`,
             }}
             onMouseDown={(e) => handleTimeDrag(e)}
+            onTouchStart={(e) => handleTimeDrag(e)}
           >
             <span
               className="relative h-[16px] w-[16px] rounded-full border-[1.5px] border-white"
@@ -125,6 +145,11 @@ export const VideoPlayer = ({ videoId, video, onClickVideo }) => {
             onClick={() => setIsMuted(true)}
           />
         )}
+        <Icon
+          width={20}
+          icon="mingcute:fullscreen-2-line"
+          onClick={() => setFullScreen(true)}
+        />
       </div>
     </div>
   );

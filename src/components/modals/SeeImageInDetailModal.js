@@ -12,7 +12,7 @@ export default function SeeImageInDetailModal({
 }) {
   return (
     <BigModal showModal={showModal} handleCloseModal={handleCloseModal}>
-      <div className="my-2 mx-3 md:mx-8 flex flex-col gap-10">
+      <div className="my-2 h-80vh mx-3 md:mx-8 flex flex-col gap-10">
         {contentType === "VIDEO" && (
           <VideoPlayer video={tokenInfo.video} videoId="Large-video" />
         )}

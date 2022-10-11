@@ -13,17 +13,17 @@ export const BigModal = ({
     <Dialog
       as="div"
       open={showModal}
-      className="fixed inset-0 z-10 overflow-y-auto "
+      className="fixed  inset-0 z-10 overflow-y-auto "
       onClose={handleCloseModal}
     >
-      <div className="h-100vh px-4 text-center">
+      <div className="px-4 text-center">
         <div className="fixed inset-0 bg-black/50" aria-hidden="true" />
         <span className="inline-block h-screen align-middle" aria-hidden="true">
           &#8203;
         </span>
 
         <div
-          className={`dark:bg-dark-3 dark:text-white inline-block w-full p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl dark:shadow-dark-1 shadow-gray-400  rounded-2xl`}
+          className={`dark:bg-dark-3 dark:text-white inline-block p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl dark:shadow-dark-1 shadow-gray-400  rounded-2xl`}
         >
           <Dialog.Title
             as="h3"

@@ -219,7 +219,7 @@ export const useApi = () => {
     additionalContent,
     categories,
     contentType,
-    audio = null
+    animated = null
   ) => {
     await marketplaceApi.post("nfts/newItem", {
       name: name,
@@ -235,7 +235,7 @@ export const useApi = () => {
       additionalContent: additionalContent,
       categories: categories,
       contentType: contentType,
-      sanityAudioURL: audio,
+      sanityAnimatedURL: animated,
     });
   };
 
@@ -253,7 +253,7 @@ export const useApi = () => {
     additionalContent,
     categories,
     contentType,
-    audio = null
+    animated = null
   ) => {
     try {
       await marketplaceApi.post("nfts/editItem", {
@@ -270,7 +270,7 @@ export const useApi = () => {
         additionalContent: additionalContent,
         categories: categories,
         contentType: contentType,
-        sanityAudioURL: audio,
+        sanityAnimatedURL: animated,
       });
     } catch (e) {
       console.log(e);

@@ -3,9 +3,12 @@ import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/StateProvider";
 import fibboLogo from "../../assets/logoNavbarSmall.png";
 import { VideoPlayer } from "../VideoPlayer";
+import captureVideoFrame from "capture-video-frame";
 
 export const VideoInput = ({
   fileSelected,
+  frameSelected,
+  setFrameSelected,
   required,
   info,
   label,
@@ -20,18 +23,22 @@ export const VideoInput = ({
   contentType,
 }) => {
   const [loadingImage, setLoadingImage] = useState(false);
-
   const selectVideo = () => {
     setFileSelected(null);
     const inputRef = document.getElementById(inputId);
     inputRef.click();
   };
 
+  const selectFrame = async () => {
+    const frame = captureVideoFrame("inputVideo", "png");
+    console.log(frame);
+    await setFrameSelected(frame.dataUri);
+  };
+
   const [{ literals }] = useStateContext();
   const handleOnFileSelected = async (e) => {
     setLoadingImage(true);
     await onFileSelected(e);
-
     setLoadingImage(false);
   };
 
@@ -148,11 +155,99 @@ export const VideoInput = ({
         </div>
       </div>
       {fileSelected && (
-        <div
-          onClick={selectVideo}
-          className="cursor-pointer flex px-4 py-3 border rounded-lg bg-gray-300 dark:bg-dark-1"
-        >
-          Select another video
+        <div className="flex flex-col gap-4 items-center">
+          <div
+            id={`div-${inputId}`}
+            className={`outline-dashed dark:bg-dark-1 items-center justify-center h-[150px] w-[300px] cursor-pointer`}
+          >
+            {!imageError ? (
+              <div className="flex flex-col justify-center items-center h-full px-2">
+                {frameSelected ? (
+                  <img id="frameSelected" src={frameSelected.preview} />
+                ) : (
+                  <video src={fileSelected.preview} />
+                )}
+              </div>
+            ) : (
+              <>
+                {!icon ? (
+                  <>
+                    <div
+                      id={`divText-${inputId}`}
+                      className={`flex h-full items-center justify-center text-center${
+                        imageError && "text-red-400"
+                      } `}
+                    >
+                      {loadingImage ? (
+                        <img
+                          src={fibboLogo}
+                          className="w-[128px] animate-pulse"
+                          alt={`loading-${inputId}`}
+                        />
+                      ) : (
+                        <>
+                          {!loadingImage && imageError ? (
+                            <div className="text-red-600">
+                              {imageMessageError}
+                            </div>
+                          ) : (
+                            <div className="text-center">
+                              {
+                                <div>
+                                  {literals.createCollection.videoInput}{" "}
+                                  <br></br>
+                                  {literals.createCollection.videoTypes}
+                                </div>
+                              }
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  <div
+                    id={`divText-${inputId}`}
+                    className={`flex h-full items-center justify-center text-center${
+                      imageError && "text-red-400"
+                    } `}
+                  >
+                    {loadingImage ? (
+                      <img
+                        src={fibboLogo}
+                        className="w-[128px] animate-pulse"
+                        alt={`loading-${inputId}`}
+                      />
+                    ) : (
+                      <>
+                        {!loadingImage && imageError ? (
+                          <div className="text-red-600">
+                            {imageMessageError}
+                          </div>
+                        ) : (
+                          <Icon icon="bi:image-fill" width={48} />
+                        )}
+                      </>
+                    )}
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+          <div className="flex flex-col md:flex-row gap-2">
+            <div
+              onClick={selectVideo}
+              className="cursor-pointer flex px-4 py-3 border rounded-lg bg-gray-300 dark:bg-dark-1"
+            >
+              Select another video
+            </div>
+            <div
+              onClick={selectFrame}
+              className="cursor-pointer flex px-4 py-3 border rounded-lg bg-gray-300 dark:bg-dark-1"
+            >
+              Select caption
+            </div>
+          </div>
         </div>
       )}
     </div>
