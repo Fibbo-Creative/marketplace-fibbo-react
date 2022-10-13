@@ -36,27 +36,44 @@ export const ConfirmCreateCollection = ({
     //UPLOAD TO SANITY
     const logoResponse = await uploadToCDN(logoImage.file, "IMG", false, false);
     const logoSanity = logoResponse.sanity;
+    console.log(logoSanity);
 
-    const mainResponse = await uploadToCDN(mainImage.file, "IMG", false, false);
+    let mainSanity = null;
+    if (mainImage.file) {
+      const mainResponse = await uploadToCDN(
+        mainImage.file,
+        "IMG",
+        false,
+        false
+      );
 
-    const mainSanity = mainResponse.sanity;
-    const bannerResponse = await uploadToCDN(
-      collectionData.bannerImage.file,
-      "IMG",
-      false,
-      false
-    );
+      mainSanity = mainResponse.sanity;
+    }
 
-    const bannerSanity = bannerResponse.sanity;
+    console.log(mainSanity);
 
+    let bannerSanity = null;
+
+    if (bannerImage.file) {
+      const bannerResponse = await uploadToCDN(
+        collectionData.bannerImage.file,
+        "IMG",
+        false,
+        false
+      );
+
+      bannerSanity = bannerResponse.sanity;
+    }
+
+    console.log(bannerSanity);
     try {
       const response = await saveCollectionDetails(
         wallet,
         name,
         description,
         logoSanity,
-        mainImage ? mainSanity : logoSanity,
-        bannerSanity,
+        mainSanity ? mainSanity : logoSanity,
+        bannerSanity ?? "",
         customURL,
         websiteURL,
         discordURL,

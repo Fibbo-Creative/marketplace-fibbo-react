@@ -156,11 +156,14 @@ export default function EditCollectionContainer() {
 
   const handleChangeWebiste = (value) => {
     let finalValue = value.split("https://");
-
     if (finalValue[1]) {
       setWebsite(`https://${finalValue[1]}`);
     } else {
-      setWebsite("https://");
+      if (finalValue[2]) {
+        setWebsite(`https://${finalValue[2]}`);
+      } else {
+        setWebsite(`https://`);
+      }
     }
   };
 

@@ -5,7 +5,13 @@ import useVideoPlayer from "../hooks/useVideoPlayer";
 import momentDurationFormatSetup from "moment-duration-format";
 import { ThemeContext } from "../context/ThemeContext";
 
-export const VideoPlayer = ({ videoId, video, onClickVideo }) => {
+export const VideoPlayer = ({
+  videoId,
+  video,
+  caption,
+  isInput,
+  onClickVideo,
+}) => {
   const {
     curTime,
     duration,
@@ -72,11 +78,16 @@ export const VideoPlayer = ({ videoId, video, onClickVideo }) => {
   return (
     <div className="flex flex-col gap-4 h-full justify-evenly">
       <div className="cursor-pointer" onClick={handleClickVideo}>
+        <img
+          src={caption}
+          className={`${playing || curTime > 0 ? "hidden" : "flex"}`}
+        />
         <video
           id={videoId}
           controls={isFullScreen}
           onPlay={(e) => !playing && setPlaying(true)}
           onPause={(e) => playing && setPlaying(false)}
+          className={`${playing || curTime > 0 ? "flex" : "hidden"}`}
         >
           <source src={video} />
           Your browser does not support the <code>video</code> element

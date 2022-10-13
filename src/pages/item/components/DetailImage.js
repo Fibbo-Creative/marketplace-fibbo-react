@@ -208,6 +208,7 @@ export default function DetailImage({
                   <VideoPlayer
                     onClickVideo={() => !showingQr && setShowImageDetail(true)}
                     videoId="video-preview"
+                    caption={tokenInfo.image}
                     video={tokenInfo.video}
                   />
                 ) : tokenInfo.contentType === "AUDIO" ? (
