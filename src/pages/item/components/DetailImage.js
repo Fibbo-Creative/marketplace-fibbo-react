@@ -206,7 +206,6 @@ export default function DetailImage({
               <>
                 {tokenInfo.contentType === "VIDEO" ? (
                   <VideoPlayer
-                    onClickVideo={() => !showingQr && setShowImageDetail(true)}
                     videoId="video-preview"
                     caption={tokenInfo.image}
                     video={tokenInfo.video}
