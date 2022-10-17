@@ -77,7 +77,10 @@ export const VideoPlayer = ({
 
   return (
     <div className="flex flex-col gap-4 h-full justify-evenly">
-      <div className="cursor-pointer" onClick={handleClickVideo}>
+      <div
+        className="cursor-pointer"
+        onClick={() => onClickVideo && handleClickVideo()}
+      >
         <img
           src={caption}
           className={`${playing || curTime > 0 ? "hidden" : "flex"}`}
@@ -85,8 +88,8 @@ export const VideoPlayer = ({
         <video
           id={videoId}
           controls={isFullScreen}
-          onPlay={(e) => !playing && setPlaying(true)}
-          onPause={(e) => playing && setPlaying(false)}
+          onPlay={(e) => !isFullScreen && setPlaying(true)}
+          onPause={(e) => !isFullScreen && setPlaying(false)}
           className={`${playing || curTime > 0 ? "flex" : "hidden"}`}
         >
           <source src={video} />
