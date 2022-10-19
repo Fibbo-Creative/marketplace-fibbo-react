@@ -251,11 +251,14 @@ export default function ItemPage() {
     const contract = await getERC721Contract(
       collectionResponse.contractAddress
     );
+    console.log(collectionResponse);
+    if (window.ethereum) {
+      const isFreezed = await contract.isFreezedMetadata(tokenId);
+      setIsFreezedMetadata(isFreezed);
+    } else {
+      setIsFreezedMetadata(nftData.hasFreezedMetadata);
+    }
 
-    const isFreezed = await contract.isFreezedMetadata(tokenId);
-    setIsFreezedMetadata(isFreezed);
-
-    console.log(nftData);
     setIsOwner(nftData.owner === wallet);
 
     if (_listing) {
@@ -279,13 +282,19 @@ export default function ItemPage() {
 
     const recipientInfo = await getProfileInfo(nftData.creator);
 
-    const numberOfTokens = await contract.getCurrentTokenID();
+    let numberOfTokens = 0;
+    if (window.ethereum) {
+      numberOfTokens = await contract.getCurrentTokenID();
+      numberOfTokens = numberOfTokens.toNumber();
+    } else {
+      numberOfTokens = collectionResponse.numberOfItems;
+    }
 
     setProperties({
       royalty: nftData.royalty,
       recipient: recipientInfo,
       collection: collectionResponse,
-      totalItems: numberOfTokens.toNumber(),
+      totalItems: numberOfTokens,
     });
 
     setIsLiked(isFavorited);
