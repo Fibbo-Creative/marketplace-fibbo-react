@@ -81,16 +81,20 @@ export const VideoPlayer = ({
         className="cursor-pointer"
         onClick={() => onClickVideo && handleClickVideo()}
       >
-        <img
-          src={caption}
-          className={`${playing || curTime > 0 ? "hidden" : "flex"}`}
-        />
+        {caption && (
+          <img
+            src={caption}
+            className={`${playing || curTime > 0 ? "hidden" : "flex"}`}
+          />
+        )}
         <video
           id={videoId}
           controls={isFullScreen}
           onPlay={(e) => !isFullScreen && setPlaying(true)}
           onPause={(e) => !isFullScreen && setPlaying(false)}
-          className={`${playing || curTime > 0 ? "flex" : "hidden"}`}
+          className={`${
+            !caption || playing || curTime > 0 ? "flex" : "hidden"
+          }`}
         >
           <source src={video} />
           Your browser does not support the <code>video</code> element
