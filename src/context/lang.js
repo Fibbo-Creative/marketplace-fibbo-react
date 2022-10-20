@@ -33,6 +33,8 @@ const engLiterals = {
     noItem: "No nfts found...",
     noProfile: "No profiles found...",
     noCollections: "No Collections found...",
+    profiles: "Profiles",
+    nfts: "Nfts",
   },
   userMenu: {
     profile: "Profile",
@@ -602,6 +604,8 @@ const espLiterals = {
     noItem: "NFTs no encontrados...",
     noProfile: "Perfiles no encontrados...",
     noCollections: "Colecciones no encontradas...",
+    profiles: "Perfiles",
+    nfts: "Nfts",
   },
   userMenu: {
     profile: "Perfil",

@@ -68,12 +68,11 @@ export default function Navbar() {
       } else {
         setSearchProfilesData(profiles);
       }
-
       if (collections.length === 0) {
         setSearchCollectionsData([
           {
-            username: literals.navbar.noCollections,
-            profileImg:
+            name: literals.navbar.noCollections,
+            logoImage:
               "https://cdn2.iconfinder.com/data/icons/documents-and-files-v-2/100/doc-03-512.png",
           },
         ]);
@@ -281,13 +280,21 @@ export default function Navbar() {
                         />
                       </div>
                     </div>
-                    {(searchItemsData.length > 0 ||
-                      searchProfilesData.length > 0) && (
-                      <SearchResult
-                        itemsResult={searchItemsData}
-                        profilesResult={searchProfilesData}
-                      />
-                    )}
+                    {openSearchResult &&
+                      (searchItemsData.length > 0 ||
+                        searchProfilesData.length > 0) && (
+                        <SearchResult
+                          setInputValue={setSearchText}
+                          setSearchResult={{
+                            items: setSearchItemsData,
+                            profiles: setSearchProfilesData,
+                          }}
+                          itemsResult={searchItemsData}
+                          profilesResult={searchProfilesData}
+                          collectionsResult={searchCollectionsData}
+                          setOpenSearchResult={setOpenSearchResult}
+                        />
+                      )}
                   </div>
                 </div>
               </div>
