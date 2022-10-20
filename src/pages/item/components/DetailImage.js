@@ -51,7 +51,7 @@ export default function DetailImage({
 
   return (
     <div className="col-span-1 flex items-center justify-center  ">
-      <div className="w-[450px] h-[450px] dark:bg-dark-2 border-gray border-2 p-2  m-2 rounded-md flex flex-col justify-between  gap-2">
+      <div className="w-[450px]  dark:bg-dark-2 border-gray border-2 p-2  m-2 rounded-md flex flex-col justify-between  gap-2">
         {loading ? (
           <div className="w-full h-full animate-pulse bg-gray-400"></div>
         ) : (
@@ -216,7 +216,7 @@ export default function DetailImage({
                       onClick={() => !showingQr && setShowImageDetail(true)}
                       className={`  ${
                         !showingQr && "cursor-pointer"
-                      } w-full h-5/6  object-contain`}
+                      } w-[450px] max-h-[400px]  object-contain`}
                       src={tokenInfo.image}
                       alt={tokenName}
                     />
