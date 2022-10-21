@@ -88,6 +88,7 @@ export const VideoPlayer = ({
           />
         )}
         <video
+          controlsList="nodownload"
           id={videoId}
           controls={isFullScreen}
           onPlay={(e) => !isFullScreen && setPlaying(true)}

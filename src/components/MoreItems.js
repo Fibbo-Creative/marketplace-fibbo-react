@@ -13,7 +13,8 @@ export const MoreItems = ({ nfts, collectionInfo, wallet }) => {
         collectionInfo.customURL
           ? collectionInfo.customURL
           : item.collectionAddress
-      }/${item.tokenId}`
+      }/${item.tokenId}`,
+      { replace: true }
     );
   };
 

@@ -131,7 +131,6 @@ export default function ProfileContainer() {
   useEffect(() => {
     const fetchData = async () => {
       if (!loading) {
-        setLoading(true);
         setLoadingInfo(true);
         let isMyProfile = wallet === address;
         setMyprofile(isMyProfile);
@@ -162,6 +161,7 @@ export default function ProfileContainer() {
         setLoadingInfo(false);
       }
     };
+    setLoading(true);
     fetchData();
   }, [wallet]);
 

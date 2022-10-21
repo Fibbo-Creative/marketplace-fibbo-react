@@ -147,6 +147,8 @@ export default function ItemPage() {
   const listing = useRef(null);
   const auctionInfo = useRef(null);
 
+  const top = useRef(null);
+
   const formatDate = (datetime) => {
     const nowTimestamp = Math.floor(new Date().getTime() / 1000);
     const period = datetime - nowTimestamp;
@@ -664,8 +666,9 @@ export default function ItemPage() {
   };
 
   useEffect(() => {
+    setLoading(true);
+
     const fetchData = async () => {
-      console.log("Fetching");
       await getItemDetails();
       setLoading(false);
       await getAuctions().then(() => {
@@ -678,7 +681,8 @@ export default function ItemPage() {
     };
 
     fetchData();
-  }, [collection, tokenId, wallet, refreshMetadata]);
+    window.scrollTo(0, 0);
+  }, [collection, tokenId, wallet]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -702,7 +706,10 @@ export default function ItemPage() {
 
   return (
     <div className="h-screen w-screen dark:bg-dark-1">
-      <div className=" dark:bg- mt-[79px] pt-10 mb-[50px] mx-[50px] grid grid-cols-1  md:grid-cols-[400px_minmax(300px,_0.9fr)] md:grid-rows-[auto_auto] gap-7">
+      <div
+        ref={top}
+        className=" dark:bg- mt-[79px] pt-10 mb-[50px] mx-[50px] grid grid-cols-1  md:grid-cols-[400px_minmax(300px,_0.9fr)] md:grid-rows-[auto_auto] gap-7"
+      >
         {loading ? (
           <div className="w-screen h-[50vh] w-[80vw] md:w-[100vw] animate-pulse flex items-center justify-center">
             <img src={fibboLogo} className="w-[128px] animate-spin" />
