@@ -8,13 +8,13 @@ export const MoreItems = ({ nfts, collectionInfo, wallet }) => {
   const navigate = useNavigate();
   const [{ literals }] = useStateContext();
   const redirectToItem = (item) => {
-    window.open(
+    navigate(
       `/explore/${
         collectionInfo.customURL
           ? collectionInfo.customURL
           : item.collectionAddress
       }/${item.tokenId}`,
-      "_blank"
+      { replace: true }
     );
   };
 

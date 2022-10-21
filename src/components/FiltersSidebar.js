@@ -26,7 +26,7 @@ export default function FiltersSidebar({
     <div className="hidden md:flex ">
       {openedSidebar ? (
         <div
-          className={`flex dark:text-gray-400 flex-col  w-[17vw] bg-white-600  fixed h-full z-40 border-r border-gray-300 ${
+          className={`flex no-scrollbar overflow-y-scroll  dark:text-gray-400 flex-col  w-[17vw] bg-white-600  fixed h-full z-40 border-r border-gray-300 pb-20 ${
             openedSidebar ? "-translate-x-0 " : "-translate-x-full"
           }`}
         >
