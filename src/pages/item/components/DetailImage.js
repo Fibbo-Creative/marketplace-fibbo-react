@@ -231,7 +231,7 @@ export default function DetailImage({
                       onClick={() => !showingQr && setShowImageDetail(true)}
                       className={`  ${
                         !showingQr && "cursor-pointer"
-                      } w-full h-5/6  object-contain`}
+                      } w-[450px] max-h-[400px]  object-contain`}
                       src={tokenInfo.image}
                       alt={tokenName}
                     />

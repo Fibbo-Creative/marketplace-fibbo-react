@@ -188,12 +188,14 @@ export default function ProfileActivityTable({ historyItems }) {
                     <td className="px-6 py-4">{item.eventDesc}</td>
                     <td className="px-6 py-4">
                       <div className="flex gap-2 items-center">
-                        <img
-                          className="rounded-full"
-                          width={32}
-                          src={item.item?.image}
-                          alt={`from-${item._id}-img`}
-                        />
+                        {item.item?.image && (
+                          <img
+                            className="rounded-full"
+                            width={32}
+                            src={item.item?.image}
+                            alt={`from-${item._id}-img`}
+                          />
+                        )}
                         <p
                           className="text-primary-2 underline cursor-pointer"
                           onClick={() => navigateToItem(item)}
@@ -240,21 +242,21 @@ export default function ProfileActivityTable({ historyItems }) {
                           <img
                             className="rounded-full"
                             width={32}
-                            src={item.to.profileImg}
-                            alt={`from-${item.to._id}-img`}
+                            src={item.to?.profileImg}
+                            alt={`from-${item.to?._id}-img`}
                           />
                           <p
                             className="text-primary-2 underline cursor-pointer"
                             onClick={() =>
                               isMobile
-                                ? navigate(`/account/${item.from.wallet}`)
+                                ? navigate(`/account/${item.from?.wallet}`)
                                 : window.open(
-                                    `/account/${item.to.wallet}`,
+                                    `/account/${item.to?.wallet}`,
                                     "_blank"
                                   )
                             }
                           >
-                            {item.to.username}
+                            {item.to?.username}
                           </p>
                         </div>
                       )}
@@ -293,12 +295,14 @@ export default function ProfileActivityTable({ historyItems }) {
                     </div>
                     <div>
                       <div className="flex gap-2 items-center">
-                        <img
-                          className="rounded-full"
-                          width={32}
-                          src={item.item?.image}
-                          alt={`from-${item._id}-img`}
-                        />
+                        {item.item?.image && (
+                          <img
+                            className="rounded-full"
+                            width={32}
+                            src={item.item?.image}
+                            alt={`from-${item._id}-img`}
+                          />
+                        )}
                         <p
                           className="text-primary-2 underline cursor-pointer"
                           onClick={() =>
@@ -375,19 +379,19 @@ export default function ProfileActivityTable({ historyItems }) {
                           <img
                             className="rounded-full"
                             width={32}
-                            src={item.to.profileImg}
-                            alt={`from-${item.to._id}-img`}
+                            src={item.to?.profileImg}
+                            alt={`from-${item.to?._id}-img`}
                           />
                           <p
                             className="text-primary-2 underline cursor-pointer"
                             onClick={() =>
                               window.open(
-                                `/account/${item.to.wallet}`,
+                                `/account/${item.to?.wallet}`,
                                 "_blank"
                               )
                             }
                           >
-                            {item.to.username}
+                            {item.to?.username}
                           </p>
                         </div>
                       )}
