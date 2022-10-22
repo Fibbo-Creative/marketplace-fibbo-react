@@ -49,6 +49,12 @@ export default function DetailImage({
     });
   };
 
+  const openBigAudio = () => {
+    const audio = document.getElementById("itemPagePreview");
+    audio.pause();
+    setShowImageDetail(true);
+  };
+
   return (
     <div className="col-span-1 flex items-center justify-center  ">
       <div className="w-[450px] min-h-[450px] max-h-[550px]  dark:bg-dark-2 border-gray border-2 p-2  m-2 rounded-md flex flex-col   gap-2">
@@ -213,15 +219,18 @@ export default function DetailImage({
                     />
                   ) : tokenInfo.contentType === "AUDIO" ? (
                     <div className=" flex flex-col h-full items-center  gap-2">
-                      <img
-                        onClick={() => !showingQr && setShowImageDetail(true)}
-                        className={`  ${
-                          !showingQr && "cursor-pointer"
-                        } w-[450px] max-h-[400px]  object-contain`}
-                        src={tokenInfo.image}
-                        alt={tokenName}
-                      />
                       <AudioPlayer
+                        imagePreview={
+                          <img
+                            onClick={() => !showingQr && openBigAudio(true)}
+                            className={`  ${
+                              !showingQr && "cursor-pointer"
+                            } w-[450px] max-h-[400px]  object-contain`}
+                            src={tokenInfo.image}
+                            alt={tokenName}
+                          />
+                        }
+                        openPreview={openBigAudio}
                         audioId="itemPagePreview"
                         audio={tokenInfo.audio}
                       />
