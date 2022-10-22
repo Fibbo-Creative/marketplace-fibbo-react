@@ -64,7 +64,7 @@ export default function ExploreContainer() {
 
       let forSaleItems = await getAllTokens(wallet);
       forSaleItems = forSaleItems.sort(orderByRecently);
-      console.log(forSaleItems);
+
       setAllMarketItems(forSaleItems);
       setMarketItems(forSaleItems);
 
@@ -138,30 +138,12 @@ export default function ExploreContainer() {
 
       toSortAll = [...forSaleAll, ...auctionAll];
 
-      let toSort = [];
-      const forSale = visibleMarketItems.filter(
-        (item) => item.price !== undefined
-      );
-      const auctioned = visibleMarketItems.filter(
-        (item) => item.auction !== undefined
-      );
-
-      toSort = [...forSale, ...auctioned];
-      let leftItems = visibleMarketItems.filter((item) => {
-        return !forSale.find((forSaleItem) => forSaleItem === item);
-      });
-      leftItems = leftItems.filter((item) => {
-        return !auctioned.find((auctioned) => auctioned === item);
-      });
-
       const sortedArrayAll = toSortAll.sort(orderByRecentlyListed);
-      const sortedArray = toSort.sort(orderByRecentlyListed);
 
       let finalArrayAll = sortedArrayAll.concat(leftItemsAll);
-      let finalArray = sortedArray.concat(leftItems);
 
       setAllMarketItems(finalArrayAll);
-      setVisibleMarketItems(finalArray.slice(0, visibleItemsCount));
+      setVisibleMarketItems(finalArrayAll.slice(0, visibleItemsCount));
     }
     if (value === "5") {
       //Lowest price
@@ -181,30 +163,12 @@ export default function ExploreContainer() {
 
       toSortAll = [...forSaleAll, ...auctionAll];
 
-      let toSort = [];
-      const forSale = visibleMarketItems.filter(
-        (item) => item.price !== undefined
-      );
-      const auctioned = visibleMarketItems.filter(
-        (item) => item.auction !== undefined
-      );
-
-      toSort = [...forSale, ...auctioned];
-      let leftItems = visibleMarketItems.filter((item) => {
-        return !forSale.find((forSaleItem) => forSaleItem === item);
-      });
-      leftItems = leftItems.filter((item) => {
-        return !auctioned.find((auctioned) => auctioned === item);
-      });
-
       const sortedArrayAll = toSortAll.sort(orderByOldestListed);
-      const sortedArray = toSort.sort(orderByOldestListed);
 
       let finalArrayAll = sortedArrayAll.concat(leftItemsAll);
-      let finalArray = sortedArray.concat(leftItems);
 
       setAllMarketItems(finalArrayAll);
-      setVisibleMarketItems(finalArray.slice(0, visibleItemsCount));
+      setVisibleMarketItems(finalArrayAll.slice(0, visibleItemsCount));
     }
     if (value === "6") {
       //highest price
@@ -231,43 +195,43 @@ export default function ExploreContainer() {
         return !auctionAll.find((auctioned) => auctioned === item);
       });
 
-      let toOrder = [];
-      const forSale = visibleMarketItems.filter(
+      const sortedArrayAll = toOrderAll.sort(orderByHighestP);
+
+      let finalArrayAll = sortedArrayAll.concat(leftItemsAll);
+
+      setAllMarketItems(finalArrayAll);
+      setVisibleMarketItems(finalArrayAll.slice(0, visibleItemsCount));
+    }
+    if (value === "7") {
+      let toOrderAll = [];
+      const forSaleAll = allMarketItems.filter(
         (item) => item.price !== undefined
       );
-      const offered = visibleMarketItems.filter(
+      const offeredAll = allMarketItems.filter(
         (item) => item.offer !== undefined
       );
-      const auctioned = visibleMarketItems.filter(
+      const auctionAll = allMarketItems.filter(
         (item) => item.auction !== undefined
       );
 
-      toOrder = [...forSale, ...offered, ...auctioned];
-      let leftItems = visibleMarketItems.filter((item) => {
-        return !forSale.find((forSaleItem) => forSaleItem === item);
+      toOrderAll = [...forSaleAll, ...offeredAll, ...auctionAll];
+
+      let leftItemsAll = allMarketItems.filter((item) => {
+        return !forSaleAll.find((forSaleItem) => forSaleItem === item);
       });
-      leftItems = leftItemsAll.filter((item) => {
-        return !offered.find((offered) => offered === item);
+      leftItemsAll = leftItemsAll.filter((item) => {
+        return !offeredAll.find((offered) => offered === item);
       });
-      leftItems = leftItemsAll.filter((item) => {
-        return !auctioned.find((auctioned) => auctioned === item);
+      leftItemsAll = leftItemsAll.filter((item) => {
+        return !auctionAll.find((auctioned) => auctioned === item);
       });
 
-      const sortedArrayAll = toOrderAll.sort(orderByHighestP);
-      const sortedArray = toOrder.sort(orderByHighestP);
+      const sortedArrayAll = toOrderAll.sort(orderByLowestP);
 
       let finalArrayAll = sortedArrayAll.concat(leftItemsAll);
-      let finalArray = sortedArray.concat(leftItems);
 
       setAllMarketItems(finalArrayAll);
-      setVisibleMarketItems(finalArray.slice(0, visibleItemsCount));
-    }
-    if (value === "7") {
-      //Lowest price
-      const sortedArray = allMarketItems.sort(orderByLowestP);
-      const visibledsortedArray = visibleMarketItems.sort(orderByLowestP);
-      setAllMarketItems(sortedArray);
-      setVisibleMarketItems(visibledsortedArray.slice(0, visibleItemsCount));
+      setVisibleMarketItems(finalArrayAll.slice(0, visibleItemsCount));
     }
     if (value === "8") {
       const auctionsAll = allMarketItems.filter(
@@ -277,21 +241,12 @@ export default function ExploreContainer() {
         return !auctionsAll.find((auction) => auction === item);
       });
 
-      const auctions = visibleMarketItems.filter(
-        (item) => item.auction !== undefined
-      );
-      const leftItems = visibleMarketItems.filter((item) => {
-        return !auctions.find((auction) => auction === item);
-      });
-
       const sortedArrayAll = auctionsAll.sort(orderByNearestEnd);
-      const sortedArray = auctions.sort(orderByNearestEnd);
 
       let finalArrayAll = sortedArrayAll.concat(leftItemsAll);
-      let finalArray = sortedArray.concat(leftItems);
 
       setAllMarketItems(finalArrayAll);
-      setVisibleMarketItems(finalArray.slice(0, visibleItemsCount));
+      setVisibleMarketItems(finalArrayAll.slice(0, visibleItemsCount));
     }
   };
 
