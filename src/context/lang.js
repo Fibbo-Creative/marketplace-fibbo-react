@@ -695,6 +695,7 @@ const espLiterals = {
     putForSale: "Poner en venta",
     createAuction: "Subastar NFT",
     update: "Actualizar",
+    cancel: "Cancelar",
   },
   itemPage: {
     chainData: "Datos de la cadena",
