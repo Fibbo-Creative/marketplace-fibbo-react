@@ -163,9 +163,16 @@ export const VideoInput = ({
             {!imageError ? (
               <div className="flex flex-col justify-center items-center h-full px-2">
                 {frameSelected ? (
-                  <img id="frameSelected" src={frameSelected.preview} />
+                  <img
+                    id="frameSelected"
+                    src={frameSelected.preview}
+                    className="h-[150px] w-[300px] object-contain"
+                  />
                 ) : (
-                  <video src={fileSelected.preview} />
+                  <video
+                    className="h-[150px] w-[300px] object-contain"
+                    src={fileSelected.preview}
+                  />
                 )}
               </div>
             ) : (
