@@ -35,6 +35,14 @@ const useVideoPlayer = (videoId) => {
     video.addEventListener("fullscreenchange", setFullScreen);
     video.addEventListener("webkitfullscreenchange", setFullScreen);
 
+    video.addEventListener(
+      "contextmenu",
+      function (e) {
+        e.preventDefault();
+      },
+      false
+    );
+
     // React state listeners: update DOM on React state changes
     playing ? video.play() : video.pause();
 
@@ -51,6 +59,13 @@ const useVideoPlayer = (videoId) => {
       video.removeEventListener("timeupdate", setAudioTime);
       video.removeEventListener("fullscreenchange", setFullScreen);
       video.removeEventListener("webkitfullscreenchange", setFullScreen);
+      video.removeEventListener(
+        "contextmenu",
+        function (e) {
+          e.preventDefault();
+        },
+        false
+      );
     };
   }, [clickedTime, curTime, isMuted, playing, videoId, isFullScreen]);
 

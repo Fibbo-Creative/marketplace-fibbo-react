@@ -84,18 +84,23 @@ export const VideoPlayer = ({
         {caption && (
           <img
             src={caption}
-            className={`${playing || curTime > 0 ? "hidden" : "flex"}`}
+            className={`${
+              playing || curTime > 0 ? "hidden" : "flex"
+            } w-[450px] max-h-[400px]  object-contain`}
           />
         )}
         <video
+          onContextMenu={() => false}
+          loop={false}
           controlsList="nodownload"
           id={videoId}
           controls={isFullScreen}
-          onPlay={(e) => !isFullScreen && setPlaying(true)}
+          onPlay={(e) => setPlaying(true)}
           onPause={(e) => !isFullScreen && setPlaying(false)}
+          height="400"
           className={`${
             !caption || playing || curTime > 0 ? "flex" : "hidden"
-          }`}
+          } w-[450px] max-h-[400px]  object-contain`}
         >
           <source src={video} />
           Your browser does not support the <code>video</code> element

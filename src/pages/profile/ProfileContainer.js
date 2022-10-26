@@ -418,7 +418,7 @@ export default function ProfileContainer() {
                   {myProfile && (
                     <ProfileTab
                       title={literals.profile.bids}
-                      count={myOffers.length}
+                      count={walletBids.length}
                       type={{ type: "Bids", viewAs: "table" }}
                       selectedType={itemsType}
                       onClick={() =>

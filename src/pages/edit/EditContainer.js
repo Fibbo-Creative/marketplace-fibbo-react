@@ -83,6 +83,8 @@ export default function EditContainer() {
   const [freezeMetadata, setFreezedMetadata] = useState(false);
   const [showFreeze, setShowFreeze] = useState(false);
 
+  const [mediaEdited, setMediaEdited] = useState(false);
+
   const selectCategory = (cat) => {
     const isSelected = categoriesSelected.find(
       (c) => c.identifier === cat.identifier
@@ -205,6 +207,7 @@ export default function EditContainer() {
       (contentType === "AUDIO" && file.type.includes("audio"))
     ) {
       setSelectedFile({ file: file, preview: URL.createObjectURL(file) });
+      setMediaEdited(true);
     } else {
       if (contentType === "AUDIO") {
         setAudioError(true);
@@ -236,12 +239,14 @@ export default function EditContainer() {
     };
     let file = new File([data], "cover.jpg", metadata);
     setCoverSelected({ file: file, preview: URL.createObjectURL(file) });
+    setMediaEdited(true);
   };
 
   const onCoverSelected = async (e) => {
     const file = e.target.files[0];
     if (file.type.includes("image")) {
       setCoverSelected({ file: file, preview: URL.createObjectURL(file) });
+      setMediaEdited(true);
     } else {
       setImageError(true);
       setImageMessageError(literals.createItem.selectImageError);
