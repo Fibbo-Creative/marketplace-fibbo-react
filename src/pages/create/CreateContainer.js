@@ -97,7 +97,15 @@ export default function CreateContainer() {
       (contentType === "VIDEO" && file.type.includes("video")) ||
       (contentType === "AUDIO" && file.type.includes("audio"))
     ) {
-      setSelectedFile({ file: file, preview: URL.createObjectURL(file) });
+      const sizeInMB = file.size / 1000000;
+      console.log(sizeInMB);
+      if (sizeInMB > 50) {
+        setAudioError(true);
+        setImageError(true);
+        setImageMessageError(literals.createItem.selectVideoError);
+      } else {
+        setSelectedFile({ file: file, preview: URL.createObjectURL(file) });
+      }
     } else {
       if (contentType === "AUDIO") {
         setAudioError(true);
