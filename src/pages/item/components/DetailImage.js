@@ -49,9 +49,15 @@ export default function DetailImage({
     });
   };
 
+  const openBigAudio = () => {
+    const audio = document.getElementById("itemPagePreview");
+    audio.pause();
+    setShowImageDetail(true);
+  };
+
   return (
     <div className="col-span-1 flex items-center justify-center  ">
-      <div className="w-[450px] h-[450px] dark:bg-dark-2 border-gray border-2 p-2  m-2 rounded-md flex flex-col justify-between  gap-2">
+      <div className="w-[450px] min-h-[450px] max-h-[550px]  dark:bg-dark-2 border-gray border-2 p-2  m-2 rounded-md flex flex-col   gap-2">
         {loading ? (
           <div className="w-full h-full animate-pulse bg-gray-400"></div>
         ) : (
@@ -196,56 +202,60 @@ export default function DetailImage({
                 </div>
               </div>
             </div>
-            {showingQr ? (
-              <img
-                className={`w-full h-5/6  object-contain pt-4 pb-2`}
-                src={qr}
-                alt={tokenName}
-              />
-            ) : (
-              <>
-                {tokenInfo.contentType === "VIDEO" ? (
-                  <VideoPlayer
-                    onClickVideo={() => !showingQr && setShowImageDetail(true)}
-                    videoId="video-preview"
-                    caption={tokenInfo.image}
-                    video={tokenInfo.video}
-                  />
-                ) : tokenInfo.contentType === "AUDIO" ? (
-                  <div className=" flex flex-col h-full  gap-2">
+            <div className="flex flex-col flex-1 justify-center items-center ">
+              {showingQr ? (
+                <img
+                  className={`w-full h-5/6  object-contain pt-4 pb-2`}
+                  src={qr}
+                  alt={tokenName}
+                />
+              ) : (
+                <>
+                  {tokenInfo.contentType === "VIDEO" ? (
+                    <VideoPlayer
+                      videoId="video-preview"
+                      caption={tokenInfo.image}
+                      video={tokenInfo.video}
+                    />
+                  ) : tokenInfo.contentType === "AUDIO" ? (
+                    <div className=" flex flex-col h-full items-center  gap-2">
+                      <AudioPlayer
+                        imagePreview={
+                          <img
+                            onClick={() => !showingQr && openBigAudio(true)}
+                            className={`  ${
+                              !showingQr && "cursor-pointer"
+                            } w-[450px] max-h-[400px]  object-contain`}
+                            src={tokenInfo.image}
+                            alt={tokenName}
+                          />
+                        }
+                        openPreview={openBigAudio}
+                        audioId="itemPagePreview"
+                        audio={tokenInfo.audio}
+                      />
+                    </div>
+                  ) : (
                     <img
                       onClick={() => !showingQr && setShowImageDetail(true)}
                       className={`  ${
                         !showingQr && "cursor-pointer"
-                      } w-full h-5/6  object-contain`}
+                      } w-[450px] max-h-[400px]  object-contain`}
                       src={tokenInfo.image}
                       alt={tokenName}
                     />
-                    <AudioPlayer
-                      audioId="itemPagePreview"
-                      audio={tokenInfo.audio}
-                    />
-                  </div>
-                ) : (
-                  <img
-                    onClick={() => !showingQr && setShowImageDetail(true)}
-                    className={`  ${
-                      !showingQr && "cursor-pointer"
-                    } w-full h-5/6  object-contain`}
-                    src={tokenInfo.image}
-                    alt={tokenName}
-                  />
-                )}
-              </>
-            )}
+                  )}
+                </>
+              )}
 
-            <SeeImageInDetailModal
-              image={tokenImage}
-              tokenInfo={tokenInfo}
-              showModal={showImageDetail}
-              contentType={tokenInfo.contentType}
-              handleCloseModal={() => setShowImageDetail(false)}
-            />
+              <SeeImageInDetailModal
+                image={tokenImage}
+                tokenInfo={tokenInfo}
+                showModal={showImageDetail}
+                contentType={tokenInfo.contentType}
+                handleCloseModal={() => setShowImageDetail(false)}
+              />
+            </div>
           </>
         )}
         {showingQr && (

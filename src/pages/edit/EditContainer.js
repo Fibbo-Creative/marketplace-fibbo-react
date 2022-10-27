@@ -83,6 +83,8 @@ export default function EditContainer() {
   const [freezeMetadata, setFreezedMetadata] = useState(false);
   const [showFreeze, setShowFreeze] = useState(false);
 
+  const [mediaEdited, setMediaEdited] = useState(false);
+
   const selectCategory = (cat) => {
     const isSelected = categoriesSelected.find(
       (c) => c.identifier === cat.identifier
@@ -205,6 +207,7 @@ export default function EditContainer() {
       (contentType === "AUDIO" && file.type.includes("audio"))
     ) {
       setSelectedFile({ file: file, preview: URL.createObjectURL(file) });
+      setMediaEdited(true);
     } else {
       if (contentType === "AUDIO") {
         setAudioError(true);
@@ -236,12 +239,14 @@ export default function EditContainer() {
     };
     let file = new File([data], "cover.jpg", metadata);
     setCoverSelected({ file: file, preview: URL.createObjectURL(file) });
+    setMediaEdited(true);
   };
 
   const onCoverSelected = async (e) => {
     const file = e.target.files[0];
     if (file.type.includes("image")) {
       setCoverSelected({ file: file, preview: URL.createObjectURL(file) });
+      setMediaEdited(true);
     } else {
       setImageError(true);
       setImageMessageError(literals.createItem.selectImageError);
@@ -633,7 +638,7 @@ export default function EditContainer() {
                     onChange={(e) => handleChangeLink(e.target.value)}
                   />
                   <NumberInput
-                    label={literals.createItem.royatlies}
+                    label={literals.createItem.royalties}
                     placeholder="ej. 2.5%"
                     value={royalty}
                     onChange={(e) => handleChangeRoyalty(e.target.value)}
@@ -694,7 +699,7 @@ export default function EditContainer() {
                           </div>
                         )}
                         <span className="font-bold text-lg text-gray-700 dark:text-gray-400 border-gray-300 p-3 flex-row ">
-                          Congelar Metadata
+                          {literals.createItem.freezeMedatadat}
                         </span>
                       </div>
                     </div>

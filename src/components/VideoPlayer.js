@@ -77,17 +77,30 @@ export const VideoPlayer = ({
 
   return (
     <div className="flex flex-col gap-4 h-full justify-evenly">
-      <div className="cursor-pointer" onClick={handleClickVideo}>
-        <img
-          src={caption}
-          className={`${playing || curTime > 0 ? "hidden" : "flex"}`}
-        />
+      <div
+        className="cursor-pointer"
+        onClick={() => onClickVideo && handleClickVideo()}
+      >
+        {caption && (
+          <img
+            src={caption}
+            className={`${
+              playing || curTime > 0 ? "hidden" : "flex"
+            } w-[450px] max-h-[400px]  object-contain`}
+          />
+        )}
         <video
+          onContextMenu={() => false}
+          loop={false}
+          controlsList="nodownload"
           id={videoId}
           controls={isFullScreen}
-          onPlay={(e) => !playing && setPlaying(true)}
-          onPause={(e) => playing && setPlaying(false)}
-          className={`${playing || curTime > 0 ? "flex" : "hidden"}`}
+          onPlay={(e) => setPlaying(true)}
+          onPause={(e) => !isFullScreen && setPlaying(false)}
+          height="400"
+          className={`${
+            !caption || playing || curTime > 0 ? "flex" : "hidden"
+          } w-[450px] max-h-[400px]  object-contain`}
         >
           <source src={video} />
           Your browser does not support the <code>video</code> element

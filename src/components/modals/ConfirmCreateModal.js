@@ -279,7 +279,7 @@ export const ConfirmCreateModal = ({
               {itemData.hiddenContent && (
                 <div className="flex gap-2 items-center">
                   <b>{literals.confirmCreateModal.aditionalContent} </b>
-                  <input type="checkbox" checked={true} disabled={true} />
+                  <input type="checkbox" checked={true} />
                 </div>
               )}
             </div>
