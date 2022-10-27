@@ -6,7 +6,6 @@ import { useStateContext } from "../../context/StateProvider";
 import { PageWithLoading } from "../../components/basic/PageWithLoading";
 import { useState } from "react";
 import Captura from "./media/vid1.mp4";
-import JCCepeda from "./media/jccepeda.mp4";
 import fibbo_vid from "./media/fibbo_logo.mp4";
 import laConquista from "./media/laConquista.jpeg";
 
@@ -66,7 +65,7 @@ export default function Home2Container() {
           </div>
           <div className="sm:flex items-center w-full justify-center">
           <video controls >
-              <source src={JCCepeda} type="video/mp4"></source>
+              <source src="" type="video/mp4"></source>
             </video>
           </div>
         </section>

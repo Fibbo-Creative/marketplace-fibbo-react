@@ -570,7 +570,7 @@ const espLiterals = {
   home: {
     slogan: "FIBBO : El Arte de expresar tu Arte",
     sentence1:
-      "Marketplace enfocado con especial énfasis en artistas y creadores de contenido.",
+      "El marketplace para artistas y creadores de contenido. La creatividad nace contigo!",
     title2: "Únete a nuestra comunidad",
     sentence2:
       "Verifícate cómo Artista y aporta tu talento al ecosistema. Disfruta de las ventajas de ser parte de nuestra comunidad activa",
