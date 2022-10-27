@@ -51,7 +51,7 @@ export const AudioPlayer = ({ audioId, audio, imagePreview, openPreview }) => {
     <>
       <div onClick={clickPreview}>{imagePreview}</div>
       <div className="w-full flex-col gap-4">
-        <audio id={audioId}>
+        <audio loop={false} id={audioId}>
           <source src={audio} />
           Your browser does not support the <code>audio</code> element.
         </audio>
