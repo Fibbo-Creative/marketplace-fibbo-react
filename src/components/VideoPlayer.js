@@ -71,16 +71,12 @@ export const VideoPlayer = ({
   };
 
   const handleClickVideo = () => {
-    console.log("ke");
     onClickVideo();
   };
 
   return (
     <div className="flex flex-col gap-4 h-full justify-evenly">
-      <div
-        className="cursor-pointer"
-        onClick={() => onClickVideo && handleClickVideo()}
-      >
+      <div className="" onClick={() => onClickVideo && handleClickVideo()}>
         {caption && (
           <img
             src={caption}
@@ -91,12 +87,11 @@ export const VideoPlayer = ({
         )}
         <video
           onContextMenu={() => false}
-          loop={false}
           controlsList="nodownload"
           id={videoId}
           controls={isFullScreen}
-          onPlay={(e) => setPlaying(true)}
-          onPause={(e) => !isFullScreen && setPlaying(false)}
+          onPlay={(e) => isFullScreen && setPlaying(true)}
+          //onPause={(e) => isFullScreen && setPlaying(false)}
           height="400"
           className={`${
             !caption || playing || curTime > 0 ? "flex" : "hidden"

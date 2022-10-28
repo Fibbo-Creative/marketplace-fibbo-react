@@ -100,7 +100,6 @@ export default function CreateContainer() {
       (contentType === "AUDIO" && file.type.includes("audio"))
     ) {
       const sizeInMB = file.size / 1000000;
-      console.log(sizeInMB);
       if (sizeInMB > 50) {
         setAudioError(true);
         setImageError(true);

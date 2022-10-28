@@ -8,9 +8,14 @@ const useVideoPlayer = (videoId) => {
   const [isFullScreen, setIsFullscreen] = useState();
   const [clickedTime, setClickedTime] = useState();
 
+  const endedVideo = () => {
+    setPlaying(false);
+    setCurTime(0);
+    setClickedTime(0);
+  };
+
   useEffect(() => {
     const video = document.getElementById(videoId);
-
     // state setters wrappers
     const setAudioData = () => {
       setDuration(video.duration);
@@ -32,6 +37,8 @@ const useVideoPlayer = (videoId) => {
 
     video.addEventListener("timeupdate", setAudioTime);
 
+    video.addEventListener("ended", endedVideo);
+
     video.addEventListener("fullscreenchange", setFullScreen);
     video.addEventListener("webkitfullscreenchange", setFullScreen);
 
@@ -42,7 +49,6 @@ const useVideoPlayer = (videoId) => {
       },
       false
     );
-
     // React state listeners: update DOM on React state changes
     playing ? video.play() : video.pause();
 
@@ -58,6 +64,7 @@ const useVideoPlayer = (videoId) => {
       video.removeEventListener("loadeddata", setAudioData);
       video.removeEventListener("timeupdate", setAudioTime);
       video.removeEventListener("fullscreenchange", setFullScreen);
+      video.removeEventListener("ended", endedVideo);
       video.removeEventListener("webkitfullscreenchange", setFullScreen);
       video.removeEventListener(
         "contextmenu",
