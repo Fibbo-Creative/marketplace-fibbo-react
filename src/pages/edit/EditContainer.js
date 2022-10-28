@@ -64,6 +64,7 @@ export default function EditContainer() {
   const [showHiddenContent, setShowHiddenContent] = useState(false);
   const [hiddenContent, setHiddenContent] = useState("");
 
+  const [nftInfo, setNftInfo] = useState(null);
   const [isOwner, setIsOwner] = useState(false);
   const [hasMetadataFreezed, setHasMetadataFreezed] = useState(false);
   const [contentType, setContentType] = useState("IMG");
@@ -106,6 +107,7 @@ export default function EditContainer() {
 
   const getItemDetails = async () => {
     const { nftData } = await getNftInfo(collection, tokenId);
+    setNftInfo(nftData);
     setName(nftData.name);
     setDesc(nftData.description);
     setRoyalty(nftData.royalty);
@@ -302,58 +304,64 @@ export default function EditContainer() {
 
     if (!error) {
       if (contentType === "AUDIO") {
-        const audioResponse = await uploadToCDN(
-          selectedFile.file,
-          contentType,
-          true,
-          false
-        );
-        const audioSanity = audioResponse.sanity;
-        const audioIpfs = audioResponse.ipfs;
-        const audioError = audioResponse.error;
+        let sanityAudioUrl = nftInfo.audio;
+        let sanityCoverUrl = nftInfo.image;
+        let ipfsCoverUrl = nftInfo.ipfsImage;
+        let ipfsMetadataUrl = nftInfo.ipfsMetadata;
 
-        if (audioError) {
-          throw Error(audioError);
+        if (mediaEdited) {
+          const audioResponse = await uploadToCDN(
+            selectedFile.file,
+            contentType,
+            true,
+            false
+          );
+          sanityAudioUrl = audioResponse.sanity;
+          const audioIpfs = audioResponse.ipfs;
+          const audioError = audioResponse.error;
+
+          if (audioError) {
+            throw Error(audioError);
+          }
+
+          const audioIpfsURL = `${IPFS_BASE_URL}/${audioIpfs}`;
+
+          const coverResponse = await uploadToCDN(
+            coverSelected.file,
+            "IMG",
+            true,
+            false
+          );
+
+          sanityCoverUrl = coverResponse.sanity;
+          const coverIpfs = coverResponse.ipfs;
+          const coverError = coverResponse.error;
+
+          if (coverError) {
+            throw Error(coverError);
+          }
+          ipfsCoverUrl = `${IPFS_BASE_URL}/${coverIpfs}`;
+
+          const ipfsCID = await uploadJSONMetadata(
+            name,
+            desc,
+            ipfsCoverUrl,
+            externalLink,
+            contentType,
+            audioIpfsURL
+          );
+
+          ipfsMetadataUrl = `${IPFS_BASE_URL}/${ipfsCID}`;
         }
-
-        const audioIpfsURL = `${IPFS_BASE_URL}/${audioIpfs}`;
-
-        const coverResponse = await uploadToCDN(
-          coverSelected.file,
-          "IMG",
-          true,
-          false
-        );
-
-        const coverSanity = coverResponse.sanity;
-        const coverIpfs = coverResponse.ipfs;
-        const coverError = coverResponse.error;
-
-        if (coverError) {
-          throw Error(coverError);
-        }
-        const coverIpfsURL = `${IPFS_BASE_URL}/${coverIpfs}`;
-
-        const ipfsCID = await uploadJSONMetadata(
-          name,
-          desc,
-          coverIpfsURL,
-          externalLink,
-          contentType,
-          audioIpfsURL
-        );
-
-        const ipfsFileURL = `${IPFS_BASE_URL}/${ipfsCID}`;
-
         await editNftData(
           name,
           desc,
           wallet,
           tokenId,
           royalty,
-          coverSanity,
-          coverIpfsURL,
-          ipfsFileURL,
+          ipfsCoverUrl,
+          sanityCoverUrl,
+          ipfsMetadataUrl,
           collectionSelected.contractAddress,
           externalLink,
           hiddenContent,
@@ -361,86 +369,101 @@ export default function EditContainer() {
             return cat.identifier;
           }),
           contentType,
-          audioSanity
+          sanityAudioUrl
         );
       } else if (contentType === "VIDEO") {
-        const { sanity, ipfs, error } = await uploadToCDN(
-          selectedFile.file,
-          contentType,
-          true,
-          false
-        );
-        if (error) {
-          throw Error(error);
+        let sanityVideoUrl = nftInfo.video;
+        let sanityCoverUrl = nftInfo.image;
+        let ipfsCoverUrl = nftInfo.ipfsImage;
+        let ipfsMetadataUrl = nftInfo.ipfsMetadata;
+
+        if (mediaEdited) {
+          const { sanity, ipfs, error } = await uploadToCDN(
+            selectedFile.file,
+            contentType,
+            true,
+            false
+          );
+          if (error) {
+            throw Error(error);
+          }
+          const videoIpfsURL = `${IPFS_BASE_URL}/${ipfs}`;
+
+          const coverResponse = await uploadToCDN(
+            coverSelected.file,
+            "IMG",
+            true,
+            false
+          );
+
+          sanityVideoUrl = sanity;
+          sanityCoverUrl = coverResponse.sanity;
+          ipfsCoverUrl = coverResponse.ipfs;
+          const coverError = coverResponse.error;
+
+          if (coverError) {
+            throw Error(coverError);
+          }
+          const coverIpfsURL = `${IPFS_BASE_URL}/${ipfsCoverUrl}`;
+
+          const ipfsCID = await uploadJSONMetadata(
+            name,
+            desc,
+            coverIpfsURL,
+            externalLink,
+            contentType,
+            videoIpfsURL
+          );
+
+          ipfsMetadataUrl = `${IPFS_BASE_URL}/${ipfsCID}`;
         }
-        const videoIpfsURL = `${IPFS_BASE_URL}/${ipfs}`;
-
-        const coverResponse = await uploadToCDN(
-          coverSelected.file,
-          "IMG",
-          true,
-          false
-        );
-
-        const coverSanity = coverResponse.sanity;
-        const coverIpfs = coverResponse.ipfs;
-        const coverError = coverResponse.error;
-
-        if (coverError) {
-          throw Error(coverError);
-        }
-        const coverIpfsURL = `${IPFS_BASE_URL}/${coverIpfs}`;
-
-        const ipfsCID = await uploadJSONMetadata(
-          name,
-          desc,
-          coverIpfsURL,
-          externalLink,
-          contentType,
-          videoIpfsURL
-        );
-
-        const ipfsFileURL = `${IPFS_BASE_URL}/${ipfsCID}`;
-
         await editNftData(
           name,
           desc,
           wallet,
           tokenId,
           royalty ? royalty : 0,
-          coverIpfsURL,
-          coverSanity,
-          ipfsFileURL,
-          collection.contractAddress,
+          ipfsCoverUrl,
+          sanityCoverUrl,
+          ipfsMetadataUrl,
+          collectionSelected.contractAddress,
           externalLink,
           hiddenContent,
           categoriesSelected.map((cat) => {
             return cat.identifier;
           }),
           contentType,
-          sanity
+          sanityVideoUrl
         );
       } else {
-        const { sanity, ipfs, error } = await uploadToCDN(
-          selectedFile.file,
-          contentType,
-          true,
-          false
-        );
-        if (error) {
-          throw Error(error);
+        let sanityUrl = nftInfo.image;
+        let ipfsFileUrl = nftInfo.ipfsMetadata;
+        let ipfsImageUrl = nftInfo.ipfsImage;
+
+        if (mediaEdited) {
+          const { sanity, ipfs, error } = await uploadToCDN(
+            selectedFile.file,
+            contentType,
+            true,
+            false
+          );
+          if (error) {
+            throw Error(error);
+          }
+          const ipfsURL = `${IPFS_BASE_URL}/${ipfs}`;
+
+          const ipfsCID = await uploadJSONMetadata(
+            name,
+            desc,
+            ipfsURL,
+            externalLink,
+            contentType
+          );
+
+          sanityUrl = sanity;
+          ipfsImageUrl = ipfsURL;
+          ipfsFileUrl = `${IPFS_BASE_URL}/${ipfsCID}`;
         }
-        const ipfsURL = `${IPFS_BASE_URL}/${ipfs}`;
-
-        const ipfsCID = await uploadJSONMetadata(
-          name,
-          desc,
-          ipfsURL,
-          externalLink,
-          contentType
-        );
-
-        const ipfsFileURL = `${IPFS_BASE_URL}/${ipfsCID}`;
 
         await editNftData(
           name,
@@ -448,9 +471,9 @@ export default function EditContainer() {
           wallet,
           tokenId,
           royalty,
-          sanity,
-          ipfsURL,
-          ipfsFileURL,
+          sanityUrl,
+          ipfsImageUrl,
+          ipfsFileUrl,
           collectionSelected.contractAddress,
           externalLink,
           hiddenContent,
