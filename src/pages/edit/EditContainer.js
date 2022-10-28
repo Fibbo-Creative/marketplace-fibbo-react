@@ -206,8 +206,15 @@ export default function EditContainer() {
       (contentType === "VIDEO" && file.type.includes("video")) ||
       (contentType === "AUDIO" && file.type.includes("audio"))
     ) {
-      setSelectedFile({ file: file, preview: URL.createObjectURL(file) });
-      setMediaEdited(true);
+      const sizeInMB = file.size / 1000000;
+      if (sizeInMB > 50) {
+        setAudioError(true);
+        setImageError(true);
+        setImageMessageError(literals.createItem.sizeError);
+      } else {
+        setSelectedFile({ file: file, preview: URL.createObjectURL(file) });
+        setMediaEdited(true);
+      }
     } else {
       if (contentType === "AUDIO") {
         setAudioError(true);

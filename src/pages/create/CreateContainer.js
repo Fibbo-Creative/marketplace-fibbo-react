@@ -91,6 +91,8 @@ export default function CreateContainer() {
     }
   };
   const onFileSelected = (e) => {
+    setAudioError(false);
+    setImageError(false);
     const file = e.target.files[0];
     if (
       (contentType === "IMG" && file.type.includes("image")) ||
@@ -102,7 +104,7 @@ export default function CreateContainer() {
       if (sizeInMB > 50) {
         setAudioError(true);
         setImageError(true);
-        setImageMessageError(literals.createItem.selectVideoError);
+        setImageMessageError(literals.createItem.sizeError);
       } else {
         setSelectedFile({ file: file, preview: URL.createObjectURL(file) });
       }
