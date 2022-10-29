@@ -1,9 +1,11 @@
 import { Icon } from "@iconify/react";
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import moment from "moment";
 import useVideoPlayer from "../hooks/useVideoPlayer";
 import momentDurationFormatSetup from "moment-duration-format";
 import { ThemeContext } from "../context/ThemeContext";
+
+import { isMobile, isTablet } from "react-device-detect";
 
 export const VideoPlayer = ({
   videoId,
@@ -26,6 +28,8 @@ export const VideoPlayer = ({
   const { theme } = useContext(ThemeContext);
 
   const curPercentage = (curTime / duration) * 100;
+
+  const [displayControl, setDisplayControl] = useState(true);
 
   function calcClickedTime(e) {
     const clickPositionInPage = e.pageX;
@@ -74,102 +78,72 @@ export const VideoPlayer = ({
     onClickVideo();
   };
 
-  return (
-    <div className="flex flex-col gap-4 h-full justify-evenly">
-      <div className="" onClick={() => onClickVideo && handleClickVideo()}>
-        {caption && (
-          <img
-            src={caption}
-            className={`${
-              playing || curTime > 0 ? "hidden" : "flex"
-            } w-[450px] max-h-[400px]  object-contain`}
-          />
-        )}
-        <video
-          onContextMenu={() => false}
-          controlsList="nodownload"
-          id={videoId}
-          controls={isFullScreen}
-          onPlay={(e) => isFullScreen && setPlaying(true)}
-          //onPause={(e) => isFullScreen && setPlaying(false)}
-          height="400"
-          className={`${
-            !caption || playing || curTime > 0 ? "flex" : "hidden"
-          } w-[450px] max-h-[400px]  object-contain`}
-        >
-          <source src={video} />
-          Your browser does not support the <code>video</code> element
-        </video>
-      </div>
+  const handleOnTouch = () => {
+    if (isMobile || isTablet) {
+      setDisplayControl(!displayControl);
+    }
+  };
 
+  return (
+    <>
       <div
-        className="flex items-center space-evenly py-3 gap-2 px-4 shadow-lg drop-shadow-xl backdrop-blur-lg rounded-lg"
-        style={{
-          background:
-            theme === "dark"
-              ? "rgba(255, 255, 255, 0.25)"
-              : "rgba(91, 91, 91, 0.25)",
-        }}
+        className="flex flex-col gap-4 h-full justify-evenly "
+        onMouseLeave={() => playing && setDisplayControl(false)}
+        onMouseEnter={() => setDisplayControl(true)}
       >
-        <div className="flex">
-          {playing ? (
-            <Icon
-              width={32}
-              icon="carbon:pause-outline-filled"
-              onClick={() => setPlaying(false)}
-            />
-          ) : (
-            <Icon
-              width={32}
-              icon="carbon:play-filled"
-              onClick={() => setPlaying(true)}
+        <div className="" onClick={() => onClickVideo && handleClickVideo()}>
+          {caption && (
+            <img
+              src={caption}
+              className={`${
+                playing || curTime > 0 ? "hidden" : "flex"
+              } w-[450px] max-h-[400px]  object-contain`}
             />
           )}
-        </div>
-
-        <div className="flex items-center w-full gap-2">
-          <div
-            id="bar__progress"
-            className="flex-1 h-[10px] bg-white flex items-center rounded-lg"
-            style={{
-              background: `linear-gradient(to right, var(--primary) ${curPercentage}%, var(--progress) 0)`,
-            }}
-            onMouseDown={(e) => handleTimeDrag(e)}
-            onTouchStart={(e) => handleTimeDrag(e)}
+          <video
+            onContextMenu={() => false}
+            controlsList="nodownload"
+            id={videoId}
+            controls={isFullScreen}
+            onPlay={(e) => isFullScreen && setPlaying(true)}
+            //onPause={(e) => isFullScreen && setPlaying(false)}
+            height="200"
+            width="450"
+            className={`video-js vjs-big-play-centered ${
+              !caption || playing || curTime > 0 ? "flex" : "hidden"
+            } w-[450px] max-h-[400px]  object-contain`}
           >
-            <span
-              className="relative h-[16px] w-[16px] rounded-full border-[1.5px] border-white"
-              style={{
-                left: `${curPercentage - 2}%`,
-                backgroundColor: "var(--primary)",
-              }}
-            ></span>
-          </div>
+            <source src={video} />
+            Your browser does not support the <code>video</code> element
+          </video>
         </div>
-        <span className="bar__time">
-          {playing || curTime > 0
-            ? formatDuration(curTime)
-            : formatDuration(duration)}
-        </span>
-        {isMuted ? (
-          <Icon
-            width={20}
-            icon="carbon:volume-mute-filled"
-            onClick={() => setIsMuted(false)}
-          />
-        ) : (
-          <Icon
-            width={20}
-            icon="carbon:volume-up-filled"
-            onClick={() => setIsMuted(true)}
-          />
-        )}
-        <Icon
-          width={20}
-          icon="mingcute:fullscreen-2-line"
-          onClick={() => setFullScreen(true)}
-        />
+        <div
+          className={`flex justify-center w-[275px] h-[200px]  md:w-[375px]   gap-4 absolute`}
+          onClick={handleOnTouch}
+        >
+          <div
+            className={`m-auto ${displayControl ? "opacity-100" : "opacity-0"}`}
+          >
+            {playing ? (
+              <button onClick={() => setPlaying(false)}>
+                <Icon width={64} icon="carbon:pause-outline-filled" />
+              </button>
+            ) : (
+              <button onClick={() => setPlaying(true)}>
+                <Icon width={64} icon="carbon:play-filled" />
+              </button>
+            )}
+          </div>
+          <button
+            className={`absolute bottom-0 right-7 ${
+              displayControl ? "opacity-100" : "opacity-0"
+            }`}
+            onClick={() => setFullScreen(true)}
+          >
+            <Icon width={20} icon="mingcute:fullscreen-2-line" />
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
