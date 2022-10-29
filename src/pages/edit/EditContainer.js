@@ -729,7 +729,7 @@ export default function EditContainer() {
                           </div>
                         )}
                         <span className="font-bold text-lg text-gray-700 dark:text-gray-400 border-gray-300 p-3 flex-row ">
-                          {literals.createItem.freezeMedatadat}
+                          {literals.createItem.freezeMedatadata}
                         </span>
                       </div>
                     </div>
