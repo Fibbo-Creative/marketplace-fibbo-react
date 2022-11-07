@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { useStateContext } from "../context/StateProvider";
 import SearchResultItem from "./SearchResultItem";
 
 export default function SearchResult({
@@ -11,6 +12,7 @@ export default function SearchResult({
   setOpenSearchResult,
 }) {
   const ref = useRef(null);
+  const [{ literals }] = useStateContext();
   const navigate = useNavigate();
   const goToItemDetail = (item) => {
     navigate(`/explore/${item.collectionAddress}/${item.tokenId}`);
@@ -61,7 +63,7 @@ export default function SearchResult({
       className="overflow-y-scroll h-[700px] dark:bg-gray-700 absolute z-99 flex flex-col bg-white w-[300px]  md:w-[400px] border border-gray"
     >
       <div className="dark:bg-dark-3 uppercase cursor-pointer flex items-center px-2 py-1 gap-3 bg-gray-100 border-b ">
-        <div>Items</div>
+        <div>{literals.navbar.nfts}</div>
       </div>
       {itemsResult.map((item) => {
         return (
@@ -74,7 +76,7 @@ export default function SearchResult({
         );
       })}
       <div className="dark:bg-dark-3 uppercase cursor-pointer flex items-center px-2 py-1 gap-3 bg-gray-100 border-b ">
-        <div>Collecciones</div>
+        <div>{literals.navbar.collections}</div>
       </div>
       {collectionsResult.map((item) => {
         return (
@@ -87,7 +89,7 @@ export default function SearchResult({
         );
       })}
       <div className="dark:bg-dark-3 uppercase cursor-pointer flex items-center px-2 py-1 gap-3 bg-gray-100 border-b ">
-        <div>Profiles</div>
+        <div>{literals.navbar.profiles}</div>
       </div>
       {profilesResult.map((item) => {
         return (

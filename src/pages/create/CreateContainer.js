@@ -97,7 +97,15 @@ export default function CreateContainer() {
       (contentType === "VIDEO" && file.type.includes("video")) ||
       (contentType === "AUDIO" && file.type.includes("audio"))
     ) {
-      setSelectedFile({ file: file, preview: URL.createObjectURL(file) });
+      const sizeInMB = file.size / 1000000;
+      console.log(sizeInMB);
+      if (sizeInMB > 50) {
+        setAudioError(true);
+        setImageError(true);
+        setImageMessageError(literals.createItem.selectVideoError);
+      } else {
+        setSelectedFile({ file: file, preview: URL.createObjectURL(file) });
+      }
     } else {
       if (contentType === "AUDIO") {
         setAudioError(true);
@@ -397,7 +405,7 @@ export default function CreateContainer() {
                   {/** Contenido adicional */}
                   <div className="flex flex-col gap-3">
                     <div className="flex flex-col gap-2">
-                      <label className="">
+                      <div className="flex gap-2 items-center">
                         <input
                           type="checkbox"
                           className=""
@@ -409,7 +417,8 @@ export default function CreateContainer() {
                         <span className="font-bold text-lg text-gray-700 dark:text-gray-400 border-gray-300 p-3">
                           {literals.createItem.additionalContent}
                         </span>
-                      </label>
+                      </div>
+
                       {showHiddenContent && (
                         <TextArea
                           placeholder={

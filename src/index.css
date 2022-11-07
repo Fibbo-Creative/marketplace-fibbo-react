@@ -27,3 +27,21 @@ code {
   --text-primary: white;
   --progress: white;
 }
+
+input[type="checkbox"] {
+  position: relative;
+  cursor: pointer;
+  color: #552aef;
+  background-color: white;
+}
+
+input[type="checkbox"]:checked {
+  content: "";
+  accent-color: var(--primary);
+  width: 20;
+  height: 20;
+}
+
+input[type="checkbox"]:disabled {
+  cursor: not-allowed;
+}
