@@ -8,7 +8,6 @@ import { useState } from "react";
 import Captura from "./media/vid1.mp4";
 import fibbo_vid from "./media/fibbo_logo.mp4";
 import laConquista from "./media/laConquista.jpeg";
-import background from "./media/cool-background.png";
 import { Icon } from "@iconify/react";
 
 import FiboIMG from "../../assets/logoHome.png";
