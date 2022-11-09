@@ -54,7 +54,9 @@ export default function Home2Container() {
 
             <div className="flex items-center w-9/12 justify-center mt-10 border-4 rounded-lg border-black">
               <video controls loop autoPlay >
-                <source ></source>
+             
+                <source src="https://cdn.sanity.io/files/lmw8etck/dev-cdn/9fab060b03ba8580e7c50b097c34ba0c14174607.mp4" ></source>
+ 
               </video>
             </div>
 
