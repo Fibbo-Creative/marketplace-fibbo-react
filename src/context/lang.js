@@ -14,6 +14,13 @@ const engLiterals = {
     buttonVerify: "Verify Account",
     buttonSuggestion: "Suggest changes",
   },
+  home2: {
+    title1: "Exodus: The first JC Cepeda NFT collection",
+    text1: "Exodus is a collection made up of 25 tokenized physical works, the physical works will be exhibited in the Senate of the Republic of Mexico in February 2023.",
+    title2: "The conquest",
+    text2: "It is the first NFT of the collection, the physical work will be shot and its value transferred to the digital asset.",
+    title3:"Do you want to create your collection with us?",
+  },
   verify: {
     title: "Why verify myself as an Artist?",
     title1: "Create NFTs",
@@ -330,6 +337,7 @@ const engLiterals = {
     reportCollection: "Report Collection",
     reportItem: "Report NFT",
     reportProfile: "Report Account",
+    viewNFT: "See NFT",
   },
   modals: {
     connectSentence: "Connect a wallet",
@@ -584,6 +592,13 @@ const espLiterals = {
     buttonExplore: "Explorar",
     buttonVerify: "Verifícate",
     buttonSuggestion: "Sugerir cambios",
+  },
+  home2: {
+    title1: "Éxodo: La primera colección NFT de JC Cepeda",
+    text1: "Éxodo es una colección formada por 25 obras físicas tokenizadas, las obras físicas serán expuestas en el senado de la república de México en Febrero de 2023.",
+    title2: "La Conquista",
+    text2: "És el primer NFT de la colección, la obra física será tiroteada y su valor trasladado al activo digital.",
+    title3:"¿Quieres crear tu colección con nosotros?",
   },
   verify: {
     title: "Porqué verificarme cómo Artista?",
@@ -897,6 +912,7 @@ const espLiterals = {
     reportCollection: "Reportar Colección",
     reportItem: "Reportar NFT",
     reportProfile: "Reportar Cuenta",
+    viewNFT: "Ver NFT",
   },
   modals: {
     connectSentence: "Conectar una billetera",
