@@ -26,20 +26,6 @@ export default function Home2Container() {
   const goToExplore = () => {
     navigate("/explore");
   };
-
-  const ref = useRef(null);
-  const handleClick = () => {
-    ref.current?.scrollIntoView({behavior: 'smooth'});
-  };
-  const ref2 = useRef(null);
-  const handleClick2 = () => {
-    ref2.current?.scrollIntoView({behavior: 'smooth'});
-  };
-  const ref3 = useRef(null);
-  const handleClick3 = () => {
-    ref3.current?.scrollIntoView({behavior: 'smooth'});
-  };
-
   
   return (
 
@@ -48,7 +34,7 @@ export default function Home2Container() {
 
 
       
-        <div className="w-screen h-full m-0 p-0 b-0 bg-gradient-to-r bg-gradient-to-r from-violet-500 to-fuchsia-500 dark:bg-dark-1">
+        <div className="w-screen h-full m-0 p-0 b-0 bg-gradient-to-r bg-gradient-to-r from-blue-800 to-violet-600 dark:bg-dark-1">
         
           <section className="flex flex-col items-center justify-center w-full h-full gap-10 ">
 
@@ -62,21 +48,17 @@ export default function Home2Container() {
 
             <div className="flex items-center justify-center w-9/12 h-auto mt-10 ">
               <h1 className="flex text-3xl leading-normal text-white sm:text-4xl xl:text-6xl  ">
-                <b className="text-justify">Éxodo: La primera colección NFT de JC Cepeda</b>
+                <b className="text-justify">{literals.home2.title1}</b>
               </h1>
             </div>
             <div className="flex items-center justify-center  w-8/12 sm:w-6/12 h-auto  ">
               <p className="text-sm text-white sm:text-lg md:text-xl p-0  xl:p-10 text-justify">
-              Éxodo es una colección formada por 25 obras físicas tokenizadas, las obras físicas serán expuestas en el senado de la república de México en Febrero de 2023.
+              {literals.home2.text1}
               </p>
             </div>
             
           </section>
-          <div className="flex items-center justify-center w-full h-auto ">
-            <Icon onClick={handleClick} className="cursor-pointer hover:-translate-y-1 hover:scale-110 mt-10" width="40px" icon="bi:arrow-down-square-fill" color="white" />
-
-          </div>
-          <div ref={ref}></div>
+        
           <section  className="flex flex-col items-center justify-center w-full h-full gap-10 mt-40 ">
 
 
@@ -88,12 +70,12 @@ export default function Home2Container() {
 
             <div className="flex items-center justify-center w-9/12 h-auto mt-10 ">
               <h1 className="flex text-3xl leading-normal text-white sm:text-4xl xl:text-6xl  ">
-                <b>La Conquista</b>
+                <b>{literals.home2.title2}</b>
               </h1>
             </div>
             <div className="flex items-center justify-center w-8/12 sm:w-6/12 h-auto ">
               <p className="text-sm text-white sm:text-lg md:text-xl p-0  xl:p-10 text-justify">
-              És el primer NFT de la colección, la obra física será tiroteada y su valor trasladado al activo digital.
+              {literals.home2.text2}
               </p>
             </div>
             <div className="flex gap-10 items-center justify-center">
@@ -101,18 +83,12 @@ export default function Home2Container() {
                   gradient
                   size="large"
                   variant="contained"
-                  text="Ver NFT"
+                  text={literals.actions.viewNFT}
                 />
               </div>
             
           </section>
-          <div className="flex items-center justify-center w-full h-auto mt-10 ">
-            <Icon onClick={handleClick2} className="cursor-pointer hover:-translate-y-1 hover:scale-110 mt-10" width="40px" icon="bi:arrow-down-square-fill" color="white" />
-
-          </div>
-          <div ref={ref2}></div>
-
-
+         
           <section className="flex flex-col-reverse lg:flex-row items-center justify-center w-full h-full gap-10 py-40 px-10">
 
             <div className="flex flex-col items-center justify-center w-full h-auto ">
@@ -131,28 +107,24 @@ export default function Home2Container() {
                   buttonAction={(e) => goToExplore()}
                 />
               </div>
-              <div className="flex items-center justify-center w-full h-auto ">
-            <Icon onClick={handleClick3} className="cursor-pointer hover:-translate-y-1 hover:scale-110 mt-10" width="40px" icon="bi:arrow-down-square-fill" color="white" />
-              </div>
-
             </div>
             <div className="flex items-center w-full justify-center  ">
               <img src={FiboIMG}></img>
             </div>
           </section>
 
-          <div ref={ref3}></div>
+     
           <section className="flex flex-col-reverse lg:flex-row-reverse items-center justify-center w-full h-full gap-10 py-20 px-10">
             <div className="flex flex-col items-center justify-center w-full h-auto ">
               <h1 className="flex text-white text-2xl leading-normal sm:text-4xl pb-4 md:pb-7 xl:text-6xl xl:p-10 text-justify">
-                <b>¿Quieres crear tu colección con nosotros? </b>
+                <b>{literals.home2.title3}</b>
               </h1>
               <div className="flex flex-wrap gap-10 p-10 items-center justify-center">
               <ActionButton
                   gradient
                   size="large"
                   variant="contained"
-                  text="Crear Coleccion"
+                  text={literals.actions.createCollection}
                 />
               </div>
             </div>
