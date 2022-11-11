@@ -4,7 +4,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import useAccount from "./hooks/useAccount";
 import ExploreContainer from "./pages/explore/ExploreContainer";
 import HomeContainer from "./pages/home/HomeContainer";
-import Home2Container from "./pages/home2/Home2Container";
 
 import CreateContainer from "./pages/create/CreateContainer";
 import ItemPage from "./pages/item/ItemPage";
@@ -12,9 +11,6 @@ import ItemPage from "./pages/item/ItemPage";
 import ProfileContainer from "./pages/profile/ProfileContainer";
 import NotFoundContainer from "./pages/notFound/NotFoundContainer";
 import FeaturesContainer from "./pages/features/FeaturesContainer";
-
-
-import useChain from "./hooks/useChain";
 import { VerificationFormContainer } from "./pages/verficiation/VerificationFormContainer";
 import { useContext } from "react";
 import { ThemeContext } from "./context/ThemeContext";
@@ -29,12 +25,9 @@ import ConfigNotificationsContainer from "./pages/config/ConfigNotifiactionsCont
 import ConfigAppeareanceContainer from "./pages/config/ConfigAppeareanceContainer";
 import CollectionsContainer from "./pages/collection/CollectionsContainer";
 
-
-
 function App() {
   const { theme } = useContext(ThemeContext);
   const { wallet, connectToWallet } = useAccount();
-  const chain = useChain();
 
   return (
     <div
@@ -60,10 +53,7 @@ function App() {
 
             {/* <Route path="/create" element={<CreateContainer />} /> */}
             <Route path="/explore" element={<ExploreContainer />} />
-            
-           
-            <Route path="/home2" element={<Home2Container />} />
-            
+
             <Route
               path="/explore/:collection/:tokenId"
               element={<ItemPage />}

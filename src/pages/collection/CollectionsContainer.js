@@ -9,18 +9,16 @@ import { useStateContext } from "../../context/StateProvider";
 
 export default function CollectionsContainer() {
   const navigate = useNavigate();
-  const { getAllCollections, getWatchlistedCollections } = useApi();
-  const [{ verifiedAddress, literals }] = useStateContext();
+  const { getAllCollections } = useApi();
+  const [{ literals }] = useStateContext();
   const { wallet, connectToWallet } = useAccount();
   const [loading, setLoading] = useState(true);
   const [queryText, setQueryText] = useState("");
 
   const [collections, setCollections] = useState([]);
-  const [watchListCollections, setWatchlistCollections] = useState([]);
 
   const [filteredCollections, setFilteredCollections] = useState([]);
 
-  const [itemsType, setItemsType] = useState("all");
   const [items, setItems] = useState([]);
 
   const redirectToColectionPage = (col) => {
@@ -35,34 +33,12 @@ export default function CollectionsContainer() {
     setQueryText(value);
   };
 
-  const handleSetItemsType = (newType) => {
-    switch (newType) {
-      case "watchlist":
-        setItems(watchListCollections);
-        setFilteredCollections(watchListCollections);
-        break;
-      case "all":
-        setItems(collections);
-        setFilteredCollections(collections);
-        break;
-      default:
-        setItems(collections);
-        setFilteredCollections(collections);
-
-        break;
-    }
-    setQueryText("");
-    setItemsType(newType);
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       await connectToWallet();
 
       const collections = await getAllCollections(wallet);
       setCollections(collections);
-
-      console.log(collections);
 
       setItems(collections);
       setFilteredCollections(collections);
@@ -146,19 +122,3 @@ export default function CollectionsContainer() {
     </PageWithLoading>
   );
 }
-
-const CollectionsTab = ({ title, count, type, selectedType, onClick }) => {
-  return (
-    <div
-      className={`flex text-2xl items-center gap-4 cursor-pointer hover:text-blue-400 transition ${
-        type === selectedType && "text-blue-400"
-      } `}
-      onClick={onClick}
-    >
-      <div className="font-extrabold">{title}</div>
-      <div className="rounded-full px-2 py-1 text-sm bg-gray-300 dark:bg-dark-4">
-        {count}
-      </div>
-    </div>
-  );
-};
