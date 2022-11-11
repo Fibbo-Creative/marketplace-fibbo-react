@@ -29,6 +29,8 @@ import ConfigNotificationsContainer from "./pages/config/ConfigNotifiactionsCont
 import ConfigAppeareanceContainer from "./pages/config/ConfigAppeareanceContainer";
 import CollectionsContainer from "./pages/collection/CollectionsContainer";
 
+
+
 function App() {
   const { theme } = useContext(ThemeContext);
   const { wallet, connectToWallet } = useAccount();
@@ -58,7 +60,10 @@ function App() {
 
             {/* <Route path="/create" element={<CreateContainer />} /> */}
             <Route path="/explore" element={<ExploreContainer />} />
+            
+           
             <Route path="/home2" element={<Home2Container />} />
+            
             <Route
               path="/explore/:collection/:tokenId"
               element={<ItemPage />}
