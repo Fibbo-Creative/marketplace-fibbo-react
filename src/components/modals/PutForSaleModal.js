@@ -21,6 +21,7 @@ export default function PutForSaleModal({
         return "OK";
       }
     } catch (e) {
+      console.log(e);
       return "ERROR";
     }
   };

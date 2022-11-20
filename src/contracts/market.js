@@ -10,6 +10,7 @@ import { useWFTMContract } from "./wftm";
 import useAccount from "../hooks/useAccount";
 import useProvider from "../hooks/useProvider";
 import { sendMetaTx } from "./meta";
+import { getManagerWallet } from "../utils/wallet";
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -35,6 +36,8 @@ export const useMarketplace = () => {
     const marketContract = await getMarketContract();
     let ERC721contract = await getERC721Contract(collection);
 
+    console.log(payToken);
+    console.log(marketContract.address);
     const isApproved = await ERC721contract.isApprovedForAll(
       wallet,
       marketContract.address
@@ -102,7 +105,7 @@ export const useMarketplace = () => {
 
     await sendMetaTx(marketContract, provider, signer, {
       functionName: "buyItem",
-      args: [collection, tokenId, tokenAddress, owner],
+      args: [collection, tokenId, tokenAddress, getManagerWallet()],
     });
     await sleep(4000);
 

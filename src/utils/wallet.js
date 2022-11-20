@@ -11,3 +11,7 @@ export const truncateWallet = (wallet, slicer) => {
     )}`;
   }
 };
+
+export const getManagerWallet = () => {
+  return "0xBcBE0c2F3aB715340DECf7b444577935599b0F8f";
+};

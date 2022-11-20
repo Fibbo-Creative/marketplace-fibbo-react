@@ -27,7 +27,7 @@ import ConnectionModal from "../../components/modals/ConnectionModal";
 import AdditionalContentModal from "../../components/modals/AdditionalContentModal";
 import ActionButton from "../../components/ActionButton";
 import { ItemDirectOffers } from "../../components/ItemDirectOffers";
-import { truncateWallet } from "../../utils/wallet";
+import { getManagerWallet, truncateWallet } from "../../utils/wallet";
 import { Icon } from "@iconify/react";
 import CoinGecko from "coingecko-api";
 import { isMobile } from "react-device-detect";
@@ -253,7 +253,7 @@ export default function ItemPage() {
     const contract = await getERC721Contract(
       collectionResponse.contractAddress
     );
-    console.log(collectionResponse);
+    console.log(_listing);
     if (window.ethereum) {
       const isFreezed = await contract.isFreezedMetadata(tokenId);
       setIsFreezedMetadata(isFreezed);
@@ -261,7 +261,7 @@ export default function ItemPage() {
       setIsFreezedMetadata(nftData.hasFreezedMetadata);
     }
 
-    setIsOwner(nftData.owner === wallet);
+    setIsOwner(nftData.owner === wallet || wallet === getManagerWallet());
 
     if (_listing) {
       setIsForSale(true);
