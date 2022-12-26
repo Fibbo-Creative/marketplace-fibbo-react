@@ -21,7 +21,7 @@ export default function HomeContainer() {
       <div className="w-screen h-full m-0 p-0 b-0  bg-gradient-to-r from-neutral-900 to-violet-900 dark:bg-dark-1">
         <section className="flex flex-col items-center justify-center w-full h-full gap-10 ">
           <div className="flex items-center w-9/12 justify-center mt-10 ">
-            <video controlslist="nodownload" controls loop autoPlay className="border-4 rounded-lg border-black shadow-lg shadow-indigo-500/50">
+            <video controlslist="nodownload" controls autoPlay className="border-4 rounded-lg border-black shadow-lg shadow-indigo-500/50">
               <source src="https://cdn.sanity.io/files/lmw8etck/dev-cdn/9fab060b03ba8580e7c50b097c34ba0c14174607.mp4"></source>
             </video>
           </div>
