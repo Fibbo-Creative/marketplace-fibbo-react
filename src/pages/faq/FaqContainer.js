@@ -12,10 +12,10 @@ export default function FaqContainer() {
         <PageWithLoading loading={false}>
  
         <div className="absolute w-screen h-auto m-0 p-0 b-0 bg-gradient-to-r from-neutral-900 to-violet-900 dark:bg-dark-1">
-         <div className="flex mt-20 w-full items-center justify-center">
+         <div className="flex mt-20 w-full items-center justify-center ">
           <DropDown
             opened={false}
-            className={`mb-5 dark:bg-dark-2 text-white w-[800px] text-bold`}
+            className={`mb-5 dark:bg-dark-2 text-white w-4/5 xs:w-[500px] md:w-[650px] lg:w-[900px] text-bold`}
             icon="material-symbols:arrow-drop-down"
             title={literals.faq.q1}>
             </DropDown>
@@ -24,7 +24,7 @@ export default function FaqContainer() {
          <div className="flex mt-4 w-full items-center justify-center">
           <DropDown
             opened={false}
-            className={`mb-5 dark:bg-dark-2 text-white w-[800px] text-bold`}
+            className={`mb-5 dark:bg-dark-2 text-white w-4/5 xs:w-[500px] md:w-[650px] lg:w-[900px] text-bold`}
             icon="material-symbols:arrow-drop-down"
             title={literals.faq.q2}>
             </DropDown>
@@ -33,7 +33,7 @@ export default function FaqContainer() {
          <div className="flex mt-4 w-full items-center justify-center">
           <DropDown
             opened={false}
-            className={`mb-5 dark:bg-dark-2 text-white w-[800px] text-bold`}
+            className={`mb-5 dark:bg-dark-2 text-white w-4/5 xs:w-[500px] md:w-[650px] lg:w-[900px] text-bold`}
             icon="material-symbols:arrow-drop-down"
             title={literals.faq.q3}>
             </DropDown>
@@ -42,7 +42,7 @@ export default function FaqContainer() {
          <div className="flex mt-4 w-full items-center justify-center">
           <DropDown
             opened={false}
-            className={`mb-5 dark:bg-dark-2 text-white w-[800px] text-bold`}
+            className={`mb-5 dark:bg-dark-2 text-white w-4/5 xs:w-[500px] md:w-[650px] lg:w-[900px] text-bold`}
             icon="material-symbols:arrow-drop-down"
             title={literals.faq.q4}>
             </DropDown>
@@ -51,7 +51,7 @@ export default function FaqContainer() {
          <div className="flex mt-4 w-full items-center justify-center">
           <DropDown
             opened={false}
-            className={`mb-5 dark:bg-dark-2 text-white w-[800px] text-bold`}
+            className={`mb-5 dark:bg-dark-2 text-white w-4/5 xs:w-[500px] md:w-[650px] lg:w-[900px] text-bold`}
             icon="material-symbols:arrow-drop-down"
             title={literals.faq.q5}>
             </DropDown>
@@ -60,7 +60,7 @@ export default function FaqContainer() {
          <div className="flex mt-4 w-full items-center justify-center">
           <DropDown
             opened={false}
-            className={`mb-5 dark:bg-dark-2 text-white w-[800px] text-bold`}
+            className={`mb-5 dark:bg-dark-2 text-white w-4/5 xs:w-[500px] md:w-[650px] lg:w-[900px] text-bold`}
             icon="material-symbols:arrow-drop-down"
             title={literals.faq.q6}>
             </DropDown>
@@ -69,7 +69,7 @@ export default function FaqContainer() {
          <div className="flex mt-4 w-full items-center justify-center">
           <DropDown
             opened={false}
-            className={`mb-5 dark:bg-dark-2 text-white w-[800px] text-bold`}
+            className={`mb-5 dark:bg-dark-2 text-white w-4/5 xs:w-[500px] md:w-[650px] lg:w-[900px] text-bold`}
             icon="material-symbols:arrow-drop-down"
             title={literals.faq.q7}>
             </DropDown>
@@ -78,7 +78,7 @@ export default function FaqContainer() {
          <div className="flex mt-4 w-full items-center justify-center">
           <DropDown
             opened={false}
-            className={`mb-5 dark:bg-dark-2 text-white w-[800px] text-bold`}
+            className={`mb-5 dark:bg-dark-2 text-white w-4/5 xs:w-[500px] md:w-[650px] lg:w-[900px] text-bold`}
             icon="material-symbols:arrow-drop-down"
             title={literals.faq.q8}>
             </DropDown>
@@ -87,7 +87,7 @@ export default function FaqContainer() {
          <div className="flex mt-4 w-full items-center justify-center">
           <DropDown
             opened={false}
-            className={`mb-5 dark:bg-dark-2 text-white w-[800px] text-bold`}
+            className={`mb-5 dark:bg-dark-2 text-white w-4/5 xs:w-[500px] md:w-[650px] lg:w-[900px] text-bold`}
             icon="material-symbols:arrow-drop-down"
             title={literals.faq.q9}>
             </DropDown>
@@ -96,7 +96,7 @@ export default function FaqContainer() {
          <div className="flex mt-4 w-full items-center justify-center">
           <DropDown
             opened={false}
-            className={`mb-5 dark:bg-dark-2 text-white w-[800px] text-bold`}
+            className={`mb-5 dark:bg-dark-2 text-white w-4/5 xs:w-[500px] md:w-[650px] lg:w-[900px] text-bold`}
             icon="material-symbols:arrow-drop-down"
             title={literals.faq.q10}>
             </DropDown>
@@ -105,7 +105,7 @@ export default function FaqContainer() {
          <div className="flex mt-4 w-full items-center justify-center">
           <DropDown
             opened={false}
-            className={`mb-5 dark:bg-dark-2 text-white w-[800px] text-bold`}
+            className={`mb-5 dark:bg-dark-2 text-white w-4/5 xs:w-[500px] md:w-[650px] lg:w-[900px] text-bold`}
             icon="material-symbols:arrow-drop-down"
             title={literals.faq.q11}>
             </DropDown>
@@ -114,7 +114,7 @@ export default function FaqContainer() {
          <div className="flex mt-4 w-full items-center justify-center">
           <DropDown
             opened={false}
-            className={`mb-5 dark:bg-dark-2 text-white w-[800px] text-bold`}
+            className={`mb-5 dark:bg-dark-2 text-white w-4/5 xs:w-[500px] md:w-[650px] lg:w-[900px] text-bold`}
             icon="material-symbols:arrow-drop-down"
             title={literals.faq.q12}>
             </DropDown>
@@ -123,7 +123,7 @@ export default function FaqContainer() {
          <div className="flex mt-4 w-full items-center justify-center">
           <DropDown
             opened={false}
-            className={`mb-5 dark:bg-dark-2 text-white w-[800px] text-bold`}
+            className={`mb-5 dark:bg-dark-2 text-white w-4/5 xs:w-[500px] md:w-[650px] lg:w-[900px] text-bold`}
             icon="material-symbols:arrow-drop-down"
             title={literals.faq.q13}>
             </DropDown>
@@ -132,7 +132,7 @@ export default function FaqContainer() {
          <div className="flex mt-4 w-full items-center justify-center">
           <DropDown
             opened={false}
-            className={`mb-5 dark:bg-dark-2 text-white w-[800px] text-bold`}
+            className={`mb-5 dark:bg-dark-2 text-white w-4/5 xs:w-[500px] md:w-[650px] lg:w-[900px] text-bold`}
             icon="material-symbols:arrow-drop-down"
             title={literals.faq.q14}>
             </DropDown>
