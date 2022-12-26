@@ -24,7 +24,7 @@ import ConfigProfileContainer from "./pages/config/ConfigProfileContainer";
 import ConfigNotificationsContainer from "./pages/config/ConfigNotifiactionsContainer";
 import ConfigAppeareanceContainer from "./pages/config/ConfigAppeareanceContainer";
 import CollectionsContainer from "./pages/collection/CollectionsContainer";
-
+import FaqContainer from "./pages/faq/FaqContainer";
 function App() {
   const { theme } = useContext(ThemeContext);
   const { wallet, connectToWallet } = useAccount();
@@ -46,6 +46,7 @@ function App() {
             />
 
             <Route path="/community" element={<FeaturesContainer />} />
+            <Route path="/faq" element={<FaqContainer />} />
             <Route
               path="/verificate/request"
               element={<VerificationFormContainer />}
