@@ -52,7 +52,6 @@ function App() {
               element={<VerificationFormContainer />}
             />
 
-            {/* <Route path="/create" element={<CreateContainer />} /> */}
             <Route path="/explore" element={<ExploreContainer />} />
 
             <Route
